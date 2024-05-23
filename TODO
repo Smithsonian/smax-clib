@@ -1,0 +1,81 @@
+Configuration:
+
+   * Instead of standard obj file, users should compile redisrm from
+     source, where options can be set via compiler -D directives:
+
+	- REDIS server IP
+	- pipelined mode
+	- RM (and DSM) nodes
+	- exit on connection error policy 
+	  
+
+Security:
+
+   * Authentication?
+
+
+DSM:
+
+   * DSM node list
+
+	char *getDSMTarget(char *id)
+
+     returns:
+
+	- the local hostname or `id`, whichever appears first in the ordered
+	  list of nodes
+	- `id` if neither hostName, nor `id` is known.. 
+    
+   * idx -> nodeMame in common calls, e.g.:
+
+	rm_write(idx, ...)  --> setShared(rmNode[idx], ...)
+	dsm_write(name, ...) --> setShared(getDSMTarget(name), ...)  
+
+     Expose common functions for a cleaner RM/DSM-free future.
+
+   * DSM structures are stored as '\n' separated "key:value <timestamp>"
+     on Redis E.g.
+
+	DSM_STRUCT_X =  
+		"FIELD1_F:1.00 @{2018-02-18 15:50:12.44}\n"
+		"FIELD2_C30:hello\t@{@{2018-02-18 15:50:12.44}\n"
+
+     time-stamps are generated when the field values are set.
+
+   * DSM/RM share all functionality, with slightly different APIs on top,
+     so a DSM entry can be retrived via RM calls, and vice versa.
+     (For the future we should have a common clean API -- TBD).
+
+
+COMMON interface:
+
+   startSharing();
+
+   endSharing();
+
+   setShared(char *owner, char *key, void *value);
+      - owner can be NULL for local node.
+
+   shareValues(char *key, void *value);
+      -> setShared(NULL, key, value);
+
+   getShared(char *owner, char *key, void *value);
+
+   watchShared(char *owner, char *id);
+
+   unwatchShared(char *owner, char *id);
+
+   unwatchAllShared();
+
+   waitOnShared(char *owner, char *id);
+      - owner = NULL for all owners.
+      - id = NULL for all watched keys.
+
+   timedWaitOnShared(char *owner, char *id, int timeoutMillis);
+
+   notifyShared(char *owner, char *id)
+
+   interruptSharedWaits();
+   
+   
+

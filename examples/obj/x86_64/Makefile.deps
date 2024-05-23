@@ -1,0 +1,4 @@
+simpleScalar.o: src/simpleScalar.c \
+ /home/pumukli/git/SMA-Software/global/include/smax.h \
+ /home/pumukli/git/SMA-Software/global/include/redisx.h \
+ /home/pumukli/git/SMA-Software/global/include/xchange.h
