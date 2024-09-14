@@ -133,6 +133,7 @@ void smaxSetOrigin(XMeta *m, const char *origin) {
  * @sa redisxSetTrasmitErrorHandler()
  */
 // cppcheck-suppress constParameterPointer
+// cppcheck-suppress constParameter
 void smaxTransmitErrorHandler(Redis *redis, enum redisx_channel channel, const char *op) {
   pthread_t tid;
 
