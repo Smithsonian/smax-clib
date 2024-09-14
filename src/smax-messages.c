@@ -199,7 +199,7 @@ int smaxSendProgress(double fraction, const char *msg) {
   }
 
   progress = malloc(10 + strlen(msg));
-  if(!progress) return x_error(X_NULL, errno, fn, "malloc() error (%d bytes)", 10 + strlen(msg));
+  if(!progress) return x_error(X_NULL, errno, fn, "malloc() error (%ld bytes)", 10 + (long) strlen(msg));
 
   sprintf(progress, "%.1f %s", (100.0 * fraction), msg);
 
