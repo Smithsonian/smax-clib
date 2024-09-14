@@ -56,8 +56,6 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-      with:
-        path: smax-clib
 
     - name: Checkout xchange dependency
       uses: actions/checkout@v4
@@ -78,18 +76,23 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: manual
 
-    - name: Manual build
+    - name: Manual build dependencies
       shell: bash
       env:
         XCHANGE: ../xchange
-        REDISX: ../redisx
       run: |
         make -C xchange shared
         make -C redisx shared
-        make -C smax-clib shared
+        
+    - name: Manual build
+      shell: bash
+      env:
+        XCHANGE: xchange
+        REDISX: redisx
+      run: |
+        make shared
     
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:
-        working-directory: smax-clib 
         category: "/language:${{matrix.language}}"
