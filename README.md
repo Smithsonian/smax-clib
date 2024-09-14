@@ -129,7 +129,7 @@ to use a specific host and/or an alternative Redis port number to use instead.
 Also, while SMA-X will normally run on database index 0, you can also specify a different database number to use. E.g.:
 
 ```c
-    smaxSetDB(3);
+  smaxSetDB(3);
 ```
 
 (Note, you can switch the database later also, but beware that if you have an active subscription client open, you cannot
@@ -139,7 +139,7 @@ You can also set up the authentication credentials for using the SMA-X database 
 
 ```c
   smaxSetUser("johndoe");
-  smaxSetPassword("mySecretPassword);
+  smaxSetPassword(mySecretPassword);
 ```
 
 And finally, you can select the option to automatically try reconnect to the SMA-X server in case of lost connection or

@@ -38,6 +38,40 @@
 #  define SMAX_RECONNECT_RETRY_SECONDS      3           ///< (s) Time between reconnection attempts on lost SMA-X connections.
 #endif
 
+/// API major version
+#define SMAX_MAJOR_VERSION  0
+
+/// API minor version
+#define SMAX_MINOR_VERSION  9
+
+/// Integer sub version of the release
+#define SMAX_PATCHLEVEL     0
+
+/// Additional release information in version, e.g. "-1", or "-rc1".
+#define SMAX_RELEASE_STRING "-devel"
+
+/// \cond PRIVATE
+
+#ifdef str_2
+#  undef str_2
+#endif
+
+/// Stringify level 2 macro
+#define str_2(s) str_1(s)
+
+#ifdef str_1
+#  undef str_1
+#endif
+
+/// Stringify level 1 macro
+#define str_1(s) #s
+
+/// \endcond
+
+/// The version string for this library
+/// \hideinitializer
+#define SMAX_VERSION_STRING str_2(SMAX_MAJOR_VERSION) "." str_2(SMAX_MINOR_VERSION) \
+                                  "." str_2(SMAX_PATCHLEVEL) SMAX_RELEASE_STRING
 
 /**
  * Character arrays a treated somewhat differently, with the element size
