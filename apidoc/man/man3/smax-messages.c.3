@@ -1,0 +1,297 @@
+.TH "src/smax-messages.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/smax-messages.c \- Simple API for sending and receiving program broadcast messages through SMA-X\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Macros"
+
+.in +1c
+.ti -1c
+.RI "#define \fBMESSAGES_ID\fP   'messages'"
+.br
+.RI "Redis PUB_SUB channel head used for program messages\&. "
+.ti -1c
+.RI "#define \fBMESSAGES_PREFIX\fP   \fBMESSAGES_ID\fP X_SEP"
+.br
+.RI "Prefix for Redis PUB/SUB channel for program messages (e\&.g\&. 'messages:') "
+.in -1c
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBsmaxAddDefaultMessageProcessor\fP (const char *host, const char *prog, const char *type)"
+.br
+.ti -1c
+.RI "int \fBsmaxAddMessageProcessor\fP (const char *host, const char *prog, const char *type, void(*f)(\fBXMessage\fP *))"
+.br
+.ti -1c
+.RI "int \fBsmaxRemoveMessageProcessor\fP (int id)"
+.br
+.ti -1c
+.RI "int \fBsmaxSendDebug\fP (const char *msg)"
+.br
+.ti -1c
+.RI "int \fBsmaxSendDetail\fP (const char *msg)"
+.br
+.ti -1c
+.RI "int \fBsmaxSendError\fP (const char *msg)"
+.br
+.ti -1c
+.RI "int \fBsmaxSendInfo\fP (const char *msg)"
+.br
+.ti -1c
+.RI "int \fBsmaxSendProgress\fP (double fraction, const char *msg)"
+.br
+.ti -1c
+.RI "int \fBsmaxSendStatus\fP (const char *msg)"
+.br
+.ti -1c
+.RI "int \fBsmaxSendWarning\fP (const char *msg)"
+.br
+.ti -1c
+.RI "void \fBsmaxSetMessageSenderID\fP (const char *id)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+Simple API for sending and receiving program broadcast messages through SMA-X\&. 
+
+
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+\fBDate\fP
+.RS 4
+Created on 12 December 2020 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "int smaxAddDefaultMessageProcessor (const char * host, const char * prog, const char * type)"
+Report messages to stdout/stderr in default formats\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIhost\fP Host name where messages originate from, or '*' or NULL if any\&. 
+.br
+\fIprog\fP Program name of message originator, or '*' or NULL if any\&. 
+.br
+\fItype\fP Message type, or '*' or NULL if any\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Serial ID number (> 0) of the message processor, or X_NULL\&. 
+.RE
+.PP
+
+.PP
+References \fBsmaxAddMessageProcessor()\fP\&.
+.SS "int smaxAddMessageProcessor (const char * host, const char * prog, const char * type, void(*)(\fBXMessage\fP *) f)"
+Adds a message processor function for a specific host (or all hosts), a specific program (or all programs), and a specific message type (or all message types)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIhost\fP Host name where messages originate from, or '*' or NULL if any\&. 
+.br
+\fIprog\fP Program name of message originator, or '*' or NULL if any\&. 
+.br
+\fItype\fP Message type, or '*' or NULL if any\&. 
+.br
+\fIf\fP Callback function 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Serial ID number (> 0) of the message processor, or X_NULL if callback function is null, or X_FAILURE if malloc failed\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxRemoveMessageProcessor()\fP 
+.RE
+.PP
+
+.PP
+References \fBMESSAGES_PREFIX\fP, \fBsmaxGetRedis()\fP, and \fBsmaxRemoveMessageProcessor()\fP\&.
+.SS "int smaxRemoveMessageProcessor (int id)"
+Stops a running message processor\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP Message processor ID, as returned by \fBsmaxAddMessageProcessor()\fP 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or X_NULL if no message processor is running by that ID\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxAddMessageProcessor()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxGetRedis()\fP\&.
+.SS "int smaxSendDebug (const char * msg)"
+Broadcast a debugging message via SMA-X (e\&.g\&. program traces)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message text 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an X error\&. 
+.RE
+.PP
+
+.PP
+References \fBSMAX_MSG_DEBUG\fP\&.
+.SS "int smaxSendDetail (const char * msg)"
+Broadcast non-essential verbose informational detail via SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message text 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an X error\&. 
+.RE
+.PP
+
+.PP
+References \fBSMAX_MSG_DETAIL\fP\&.
+.SS "int smaxSendError (const char * msg)"
+Broadcast an error message via SMA-X\&. Errors should be used for an issues that impair program functionality\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message text 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an X error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSendWarning()\fP; 
+.PP
+\fBsmaxSendDebug()\fP; 
+.RE
+.PP
+
+.PP
+References \fBSMAX_MSG_ERROR\fP\&.
+.SS "int smaxSendInfo (const char * msg)"
+Broadcast an informational message via SMA-X\&. These should be confirmations or essential information reported back to users\&. Non-essential information should be sent with sendDetail() instead\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message text 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an X error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+sendDetail() 
+.PP
+sendStatus() 
+.RE
+.PP
+
+.PP
+References \fBSMAX_MSG_INFO\fP\&.
+.SS "int smaxSendProgress (double fraction, const char * msg)"
+Broadcast a progress update over SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIfraction\fP (0\&.0:1\&.0) Completion fraction\&. 
+.br
+\fImsg\fP Message text 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an X error\&. 
+.RE
+.PP
+
+.PP
+References \fBSMAX_MSG_DETAIL\fP\&.
+.SS "int smaxSendStatus (const char * msg)"
+Broadcast a program status update via SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message text 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an X error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+sendInfo() 
+.RE
+.PP
+
+.PP
+References \fBSMAX_MSG_STATUS\fP\&.
+.SS "int smaxSendWarning (const char * msg)"
+Broadcast a warning message via SMA-X\&. Warnings should be used for any potentially problematic issues that nonetheless do not impair program functionality\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImsg\fP Message text 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an X error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSendError()\fP; 
+.PP
+\fBsmaxSendDebug()\fP; 
+.RE
+.PP
+
+.PP
+References \fBSMAX_MSG_WARNING\fP\&.
+.SS "void smaxSetMessageSenderID (const char * id)"
+Sets the sender ID for outgoing program messages\&. By default the sender ID is <host>:<program> for the program that calls this function, but it can be modified to use some other SMA-X style hierarchical ID also\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The new sender ID for outgoing program messages, or NULL to reinstate the default <host>:<program> style ID\&. The argument is not referenced and can be deallocated as desired after the call without affecting the newly defined message ID\&. 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

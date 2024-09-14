@@ -1,0 +1,104 @@
+.TH "src/smax-resilient.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/smax-resilient.c \- This module adds trusty push delivery to SMA-X\&. If the server cannot be reached, push requests are stored and updated locally until the server connection is restored, at which point they are delivered\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "boolean \fBsmaxIsResilient\fP ()"
+.br
+.ti -1c
+.RI "void \fBsmaxSetResilient\fP (boolean value)"
+.br
+.ti -1c
+.RI "void \fBsmaxSetResilientExit\fP (boolean value)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+This module adds trusty push delivery to SMA-X\&. If the server cannot be reached, push requests are stored and updated locally until the server connection is restored, at which point they are delivered\&. 
+
+
+.PP
+\fBDate\fP
+.RS 4
+Aug 14, 2019 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+.PP
+This way, push requests are guaranteed to make it to the database sooner or later as long as the calling program keeps running\&.
+.PP
+It's mainly useful for daemons that generate infrequent data for the database\&. It's not especially meaningful for simple executables, which are run for limited time without persistence\&.
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetResilient()\fP 
+.PP
+\fBsmaxIsResilient()\fP 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "boolean smaxIsResilient ()"
+Checks whether the resiliency feature has been enabled\&.
+.PP
+\fBReturns\fP
+.RS 4
+TRUE if enabled, otherwise FALSE\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetResilient()\fP 
+.RE
+.PP
+
+.SS "void smaxSetResilient (boolean value)"
+Enables the resiliency feature of the library, which keeps track of local changes destined to the database when the database is not reachable, and sending all locally stored updates once the database comes online again\&. However, after sending all pending updates to the remote server, the program may exit (default behavior), unless \fBsmaxSetResilientExit()\fP is set to FALSE (0), so that it can be restarted in a fresh state, setting up subscriptions and scripts again as necessary\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP TRUE (non-zero) to enable, or FALSE (0) to disable resiliency\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxIsResilient()\fP 
+.PP
+\fBsmaxSetResilientExit()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxAddConnectHook()\fP, and \fBsmaxRemoveConnectHook()\fP\&.
+.SS "void smaxSetResilientExit (boolean value)"
+Sets whether the program should exit in resilient mode, after having pushed all local updates\&. The default is to exit since the reconnecting in resilient mode does not by itself re-establish existing subscriptions\&. However, when subscriptions aren't used, or if they are set up as a connect hook, the user may want the program to simply continue\&. This is possible by passing FALSE (0) as the argument to this call\&. This setting only takes effect when resilient mode is enabled\&. Otherwise, the exit policy is set by the RedisX library\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP Whether to exit the program after all local updates have been pushed to SMA-X after a recovering from an outage\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetResilient()\fP 
+.PP
+\fBsmaxAddConnectHook()\fP 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

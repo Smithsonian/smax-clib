@@ -1,0 +1,368 @@
+.TH "src/smax-lazy.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/smax-lazy.c \- A set of functions to support the efficient retrieval of lazy variables, that is variables that change infrequently, from the SMA-X database\&. Rather than querying the database on every call, the first lazy pull of a variable initiates monitoring for updates\&. The pull requests will return the current state of the variable at all times, but it generates minimal network traffic only when the underlying value in the database is changed\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBsmaxGetLazyCached\fP (const char *table, const char *key, XType type, int count, void *value, \fBXMeta\fP *meta)"
+.br
+.ti -1c
+.RI "int \fBsmaxGetLazyUpdateCount\fP (const char *table, const char *key)"
+.br
+.ti -1c
+.RI "int \fBsmaxLazyCache\fP (const char *table, const char *key, XType type)"
+.br
+.ti -1c
+.RI "int \fBsmaxLazyEnd\fP (const char *table, const char *key)"
+.br
+.ti -1c
+.RI "int \fBsmaxLazyFlush\fP ()"
+.br
+.ti -1c
+.RI "int \fBsmaxLazyPull\fP (const char *table, const char *key, XType type, int count, void *value, \fBXMeta\fP *meta)"
+.br
+.ti -1c
+.RI "int \fBsmaxLazyPullChars\fP (const char *table, const char *key, char *buf, int n)"
+.br
+.ti -1c
+.RI "double \fBsmaxLazyPullDouble\fP (const char *table, const char *key)"
+.br
+.ti -1c
+.RI "double \fBsmaxLazyPullDoubleDefault\fP (const char *table, const char *key, double defaultValue)"
+.br
+.ti -1c
+.RI "long long \fBsmaxLazyPullLong\fP (const char *table, const char *key, long long defaultValue)"
+.br
+.ti -1c
+.RI "char * \fBsmaxLazyPullString\fP (const char *table, const char *key)"
+.br
+.ti -1c
+.RI "int \fBsmaxLazyPullStruct\fP (const char *id, XStructure *s)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+A set of functions to support the efficient retrieval of lazy variables, that is variables that change infrequently, from the SMA-X database\&. Rather than querying the database on every call, the first lazy pull of a variable initiates monitoring for updates\&. The pull requests will return the current state of the variable at all times, but it generates minimal network traffic only when the underlying value in the database is changed\&. 
+
+
+.PP
+\fBDate\fP
+.RS 4
+Jun 24, 2019 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "int smaxGetLazyCached (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
+Retrieve a variable from the local cache (if available), or else pull from the SMA-X database\&. If local caching was not previously eanbled, it will be enabled with this call, so that subsequent calls will always return data from the locally updated cache with minimal overhead and effectively no latency\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+.br
+\fIcount\fP The number of elements to retrieve 
+.br
+\fIvalue\fP Pointer to the native data buffer in which to restore values 
+.br
+\fImeta\fP Optional metadata pointer, or NULL if metadata is not required\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or X_NO_SERVICE is SMA-X is not accessible, or another error (<0) from \fBsmax\&.h\fP or xchange\&.h\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+sa \fBsmaxLazyCache()\fP 
+.PP
+sa smaxLaxyPull() 
+.RE
+.PP
+
+.SS "int smaxGetLazyUpdateCount (const char * table, const char * key)"
+Returns the actual number of times a variable has been updated from SMA-X\&. It may be useful information when deciding if lazy pulling is appropriate (it is if the number of pull requests exceeds the actual number of transfers significantly)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The number of times a variable has been updated, or -1 if the variable is not being monitored, or if the arguments are invalid\&. 
+.RE
+.PP
+
+.SS "int smaxLazyCache (const char * table, const char * key, XType type)"
+Specify that a specific variable should be cached for minimum overhead lazy access\&. When a variable is lazy cached its local copy is automatically updated in the background so that accessing it is always nearly instantaneous\&. Lazy caching is a good choice for variables that change less frequently than they are polled typically\&. For variables that change frequently (ans used less frequently), lazy caching is not a great choice since it consumes network bandwidth even when the variable is not being accessed\&.
+.PP
+Once a variable is lazy cached, it can be accessed instantaneously via \fBsmaxGetLazyCached()\fP without any blocking network operations\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) or X_NO_SERVICE\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxGetLazyCached()\fP 
+.RE
+.PP
+
+.SS "int smaxLazyEnd (const char * table, const char * key)"
+Stops processing lazy updates in the background for a given variable\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0)
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyFlush()\fP 
+.PP
+\fBsmaxLazyPull()\fP 
+.RE
+.PP
+
+.SS "int smaxLazyFlush ()"
+Discards caches for all lazy variables (i\&.e\&. stops all subscriptions to variable updates, at least until the next \fBsmaxLazyPull()\fP call)\&. Generally speaking, it's a good idea to call this routine when one is done using a set of lazy variables for the time being, but want to avoid the tedium of calling \fBsmaxLazyEnd()\fP individually for each of them\&. Note however, that after flushing the lazy caches, the fist lazy call following for each variable will inevitably result in a real SMA-X pull\&. So use it carefully!
+.PP
+\fBReturns\fP
+.RS 4
+Number of monitor points flushed\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPull()\fP 
+.PP
+\fBsmaxLazyEnd()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxRemoveSubscribers()\fP\&.
+.SS "int smaxLazyPull (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
+Poll an infrequently changing variable without stressing out the network or the SMA-X database\&. The first lazy pull for a variable will fetch its value from SMA-X and subscribe to update notifications\&. Subsequent \fBsmaxLazyPull()\fP calls to the same variable will retrieve its value from a local cache (without contacting SMA-X) as long as it is unchanged\&.
+.PP
+Note, after you are done using a variable that has been lazy pulled, you should call \fBsmaxLazyEnd()\fP to signal that it no longer requires to be cached and updated in the background, or call \fBsmaxLazyFlush()\fP to flush all lazy caches for all lazy variables (if that is what you want)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+.br
+\fIcount\fP The number of points to retrieve into the buffer\&. 
+.br
+\fIvalue\fP Pointer to the buffer to which the data is to be retrieved\&. 
+.br
+\fImeta\fP Pointer to metadata or NULL if no metadata is needed\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) on success, or else an error code (<0) of \fBsmaxPull()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyEnd()\fP 
+.PP
+\fBsmaxLazyFlush()\fP 
+.PP
+\fBsmaxPull()\fP 
+.PP
+\fBsmaxQueue()\fP 
+.RE
+.PP
+
+.SS "int smaxLazyPullChars (const char * table, const char * key, char * buf, int n)"
+Lazy pulls a string value into the specified string buffer\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIbuf\fP Buffer to fill with stored data 
+.br
+\fIn\fP Number of bytes to fill in buffer\&. The retrieved data will be truncated as necessary\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or the error code (<0) returned by \fBsmaxLazyPull()\fP\&. 
+.RE
+.PP
+
+.PP
+References \fBsmaxLazyPull()\fP\&.
+.SS "double smaxLazyPullDouble (const char * table, const char * key)"
+Returns a single double-precision value for a given SMA-X variable, or NAN if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The floating-point value stored in SMA-X, or NaN if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPullDoubleDefault()\fP 
+.PP
+\fBsmaxPullDouble()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxLazyPullDoubleDefault()\fP\&.
+.SS "double smaxLazyPullDoubleDefault (const char * table, const char * key, double defaultValue)"
+Returns a single double-precision value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIdefaultValue\fP The value to return in case of an error\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The floating-point value stored in SMA-X, or the specified default if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPullDouble()\fP 
+.PP
+\fBsmaxPullDoubleDefault()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxLazyPull()\fP\&.
+.SS "long long smaxLazyPullLong (const char * table, const char * key, long long defaultValue)"
+Returns a single integer value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIdefaultValue\fP The value to return in case of an error\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The long integer value stored in SMA-X, or the specified default if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxPullLong()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxLazyPull()\fP\&.
+.SS "char * smaxLazyPullString (const char * table, const char * key)"
+Returns a single string value for a given SMA-X variable, or a NULL if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP Hash table name\&. 
+.br
+\fIkey\fP Variable name under which the data is stored\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to the string value stored in SMA-X, or NULL if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxPullString()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxLazyPull()\fP\&.
+.SS "int smaxLazyPullStruct (const char * id, XStructure * s)"
+Lazy pulls data into a structure, discarding any prior data that the structure might contain\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP Aggregate structure ID\&. 
+.br
+\fIs\fP Destination structure to populate with the retrieved fields 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or the error code (<0) returned by \fBsmaxLazyPull()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxPullStruct()\fP 
+.PP
+xCreateStruct() 
+.RE
+.PP
+
+.PP
+References \fBsmaxLazyPull()\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

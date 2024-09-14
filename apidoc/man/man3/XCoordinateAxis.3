@@ -1,0 +1,51 @@
+.TH "XCoordinateAxis" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+XCoordinateAxis \- Structure that defines a coordinate axis in an \fBXCoordinateSystem\fP for an SMA-X data array\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <smax\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char * \fBname\fP"
+.br
+.RI "Coordinate name, e\&.g\&. 'x' or 'time'\&. "
+.ti -1c
+.RI "double \fBrefIndex\fP"
+.br
+.RI "Data index at which the reference coordinate value is defined\&. "
+.ti -1c
+.RI "double \fBrefValue\fP"
+.br
+.RI "Reference coordinate value in units set above\&. "
+.ti -1c
+.RI "double \fBstep\fP"
+.br
+.RI "Coordinate step between consecutive data, in the units defined above\&. "
+.ti -1c
+.RI "char * \fBunit\fP"
+.br
+.RI "Coordinate unit name, e\&.g\&. 'GHz' or 'ms'\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Structure that defines a coordinate axis in an \fBXCoordinateSystem\fP for an SMA-X data array\&. 
+
+
+.PP
+\fBSee also\fP
+.RS 4
+\fBXCoordinateSystem\fP 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

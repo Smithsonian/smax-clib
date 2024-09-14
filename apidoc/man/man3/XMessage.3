@@ -1,0 +1,42 @@
+.TH "XMessage" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+XMessage \- SMA-X program message\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <smax\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char * \fBhost\fP"
+.br
+.RI "Host where message originated from\&. "
+.ti -1c
+.RI "char * \fBprog\fP"
+.br
+.RI "Originator program name\&. "
+.ti -1c
+.RI "char * \fBtext\fP"
+.br
+.RI "Message body (with timestamp stripped)\&. "
+.ti -1c
+.RI "double \fBtimestamp\fP"
+.br
+.RI "Message timestamp, if available (otherwise 0\&.0) "
+.ti -1c
+.RI "char * \fBtype\fP"
+.br
+.RI "Message type, e\&.g\&. 'info', 'detail', 'warning', 'error'\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+SMA-X program message\&. 
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

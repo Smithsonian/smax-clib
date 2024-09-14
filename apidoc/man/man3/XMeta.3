@@ -1,0 +1,63 @@
+.TH "XMeta" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+XMeta \- SMA-X standard metadata\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <smax\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "char \fBorigin\fP [\fBSMAX_ORIGIN_LENGTH\fP]"
+.br
+.RI "Host name that last modified\&. "
+.ti -1c
+.RI "int \fBserial\fP"
+.br
+.RI "Number of times the variable was updated\&. "
+.ti -1c
+.RI "int \fBstatus\fP"
+.br
+.RI "Error code or X_SUCCESS\&. "
+.ti -1c
+.RI "int \fBstoreBytes\fP"
+.br
+.RI "Total number of bytes stored\&. "
+.ti -1c
+.RI "int \fBstoreDim\fP"
+.br
+.RI "Dimensionality of the data as stored\&. "
+.ti -1c
+.RI "int \fBstoreSizes\fP [X_MAX_DIMS]"
+.br
+.RI "Sizes along each dimension of the data as stored\&. "
+.ti -1c
+.RI "XType \fBstoreType\fP"
+.br
+.RI "Type of variable as stored\&. "
+.ti -1c
+.RI "struct timespec \fBtimestamp\fP"
+.br
+.RI "Timestamp of the last modification\&. "
+.in -1c
+.SH "Detailed Description"
+.PP 
+SMA-X standard metadata\&. 
+
+
+.PP
+\fBSee also\fP
+.RS 4
+smaxDestroyMeta() 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

@@ -1,0 +1,1203 @@
+.TH "src/smax-easy.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/smax-easy.c \- A set of functions for simplified access to SMA-X for specific variable types\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "XField * \fBsmaxCreate1DField\fP (const char *name, XType type, int size, const void *value)"
+.br
+.ti -1c
+.RI "XField * \fBsmaxCreateBooleanField\fP (const char *name, boolean value)"
+.br
+.ti -1c
+.RI "XField * \fBsmaxCreateDoubleField\fP (const char *name, double value)"
+.br
+.ti -1c
+.RI "XField * \fBsmaxCreateIntField\fP (const char *name, int value)"
+.br
+.ti -1c
+.RI "XField * \fBsmaxCreateLongField\fP (const char *name, long long value)"
+.br
+.ti -1c
+.RI "XField * \fBsmaxCreateScalarField\fP (const char *name, XType type, const void *value)"
+.br
+.ti -1c
+.RI "XField * \fBsmaxCreateStringField\fP (const char *name, const char *value)"
+.br
+.ti -1c
+.RI "int \fBsmaxGetArrayField\fP (const XStructure *s, const char *name, void *dst, XType type, int count)"
+.br
+.ti -1c
+.RI "boolean \fBsmaxGetBooleanField\fP (const XStructure *s, const char *name, boolean defaultValue)"
+.br
+.ti -1c
+.RI "double \fBsmaxGetDoubleField\fP (const XStructure *s, const char *name, double defaultValue)"
+.br
+.ti -1c
+.RI "long long \fBsmaxGetLongField\fP (const XStructure *s, const char *name, long long defaultValue)"
+.br
+.ti -1c
+.RI "char * \fBsmaxGetRawField\fP (const XStructure *s, const char *name, char *defaultValue)"
+.br
+.ti -1c
+.RI "double \fBsmaxPullDouble\fP (const char *table, const char *key)"
+.br
+.ti -1c
+.RI "double \fBsmaxPullDoubleDefault\fP (const char *table, const char *key, double defaultValue)"
+.br
+.ti -1c
+.RI "double * \fBsmaxPullDoubles\fP (const char *table, const char *key, \fBXMeta\fP *meta, int *n)"
+.br
+.ti -1c
+.RI "int \fBsmaxPullInt\fP (const char *table, const char *key, int defaultValue)"
+.br
+.ti -1c
+.RI "int * \fBsmaxPullInts\fP (const char *table, const char *key, \fBXMeta\fP *meta, int *n)"
+.br
+.ti -1c
+.RI "long long \fBsmaxPullLong\fP (const char *table, const char *key, long long defaultValue)"
+.br
+.ti -1c
+.RI "long long * \fBsmaxPullLongs\fP (const char *table, const char *key, \fBXMeta\fP *meta, int *n)"
+.br
+.ti -1c
+.RI "char * \fBsmaxPullRaw\fP (const char *table, const char *key, \fBXMeta\fP *meta, int *status)"
+.br
+.ti -1c
+.RI "char * \fBsmaxPullString\fP (const char *table, const char *key)"
+.br
+.ti -1c
+.RI "char ** \fBsmaxPullStrings\fP (const char *table, const char *key, \fBXMeta\fP *meta, int *n)"
+.br
+.ti -1c
+.RI "XStructure * \fBsmaxPullStruct\fP (const char *id, \fBXMeta\fP *meta, int *status)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareBoolean\fP (const char *table, const char *key, boolean value)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareBooleans\fP (const char *table, const char *key, const boolean *values, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareBytes\fP (const char *table, const char *key, const char *values, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareDouble\fP (const char *table, const char *key, double value)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareDoubles\fP (const char *table, const char *key, const double *values, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareFloats\fP (const char *table, const char *key, const float *values, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareHex\fP (const char *table, const char *key, long long value)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareInt\fP (const char *table, const char *key, long long value)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareInts\fP (const char *table, const char *key, const int *values, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareLongs\fP (const char *table, const char *key, const long long *values, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareShorts\fP (const char *table, const char *key, const short *values, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareString\fP (const char *table, const char *key, const char *sValue)"
+.br
+.ti -1c
+.RI "int \fBsmaxShareStrings\fP (const char *table, const char *key, const char **sValues, int n)"
+.br
+.ti -1c
+.RI "int \fBsmaxWaitOnSubscribed\fP (const char *table, const char *key, int timeout)"
+.br
+.ti -1c
+.RI "int \fBsmaxWaitOnSubscribedGroup\fP (const char *matchTable, char **changedKey, int timeout)"
+.br
+.ti -1c
+.RI "int \fBsmaxWaitOnSubscribedVar\fP (const char *matchKey, char **changedTable, int timeout)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+A set of functions for simplified access to SMA-X for specific variable types\&. 
+
+
+.PP
+\fBDate\fP
+.RS 4
+Apr 6, 2019 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "XField * smaxCreate1DField (const char * name, XType type, int size, const void * value)"
+Creates a field for 1-D array of a given name and type using specified native values\&. It is like \fRxCreate1DField()\fP except that the field is created in serialized form\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Field name 
+.br
+\fItype\fP Storage type, e\&.g\&. X_INT\&. 
+.br
+\fIsize\fP Array size\&. 
+.br
+\fIvalue\fP Pointer to the native array in memory\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A newly created field with the supplied data, or NULL if there was an error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xSetField() 
+.RE
+.PP
+
+.PP
+References \fBsmaxCreateField()\fP\&.
+.SS "XField * smaxCreateBooleanField (const char * name, boolean value)"
+Creates a field holding a single boolean value\&. It is like \fRxCreateBooleanField()\fP except that the field is created in serialized form\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Field name 
+.br
+\fIvalue\fP Associated value
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A newly created field with the supplied data, or NULL if there was an error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xSetField() 
+.RE
+.PP
+
+.PP
+References \fBsmaxCreateScalarField()\fP\&.
+.SS "XField * smaxCreateDoubleField (const char * name, double value)"
+Creates a field holding a single double-precision value\&. It is like \fRxCreateDoubleField()\fP except that the field is created in serialized form\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Field name 
+.br
+\fIvalue\fP Associated value
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A newly created field with the supplied data, or NULL if there was an error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xSetField() 
+.RE
+.PP
+
+.PP
+References \fBsmaxCreateScalarField()\fP\&.
+.SS "XField * smaxCreateIntField (const char * name, int value)"
+Creates a field holding a single integer value\&. It is like \fRxCreateIntField()\fP except that the field is created in serialized form\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Field name 
+.br
+\fIvalue\fP Associated value
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A newly created field with the supplied data, or NULL if there was an error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xSetField() 
+.RE
+.PP
+
+.PP
+References \fBsmaxCreateScalarField()\fP\&.
+.SS "XField * smaxCreateLongField (const char * name, long long value)"
+Creates a field holding a single wide (64-bit) integer value\&. It is like \fRxCreateLongField()\fP except that the field is created in serialized form\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Field name 
+.br
+\fIvalue\fP Associated value
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A newly created field with the supplied data, or NULL if there was an error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xSetField() 
+.RE
+.PP
+
+.PP
+References \fBsmaxCreateScalarField()\fP\&.
+.SS "XField * smaxCreateScalarField (const char * name, XType type, const void * value)"
+Creates a scalar field of a given name and type using the specified native value\&. It is like \fRxCreateScalarField()\fP except that the field is created in serialized form\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Field name 
+.br
+\fItype\fP Storage type, e\&.g\&. X_INT\&. 
+.br
+\fIvalue\fP Pointer to the native data location in memory\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A newly created scalar field with the supplied data, or NULL if there was an error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xSetField() 
+.RE
+.PP
+
+.PP
+References \fBsmaxCreate1DField()\fP\&.
+.SS "XField * smaxCreateStringField (const char * name, const char * value)"
+Creates a field holding a single string value\&. It is like \fRxCreateStringField()\fP except that the field is created in serialized form\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIname\fP Field name 
+.br
+\fIvalue\fP Associated value
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A newly created field referencing the supplied string, or NULL if there was an error\&. 
+.RE
+.PP
+
+.PP
+References \fBsmaxCreateScalarField()\fP\&.
+.SS "int smaxGetArrayField (const XStructure * s, const char * name, void * dst, XType type, int count)"
+Gets the data of an SMA-X structure field as an array of values of the specified type and element count\&. The field's data will be truncated or padded with zeroes to provide the requested element count always\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIs\fP Pointer to SMA-X structure 
+.br
+\fIname\fP Field name 
+.br
+\fIdst\fP Array to return values in\&. 
+.br
+\fItype\fP Type of data\&. 
+.br
+\fIcount\fP Number of elements in return array\&. The field data will be truncated or padded as necessary\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or X_STRUCT_INVALID if the input structure is NULL, X_NULL if dst is NULL, X_SIZE_INVALID if n is 0 or negative, X_NAME_INVALID if the structure does not have a field by the specified name, or else an error returned by smaxStringtoValues()\&. 
+.RE
+.PP
+
+.PP
+References \fBsmaxStringToValues()\fP\&.
+.SS "boolean smaxGetBooleanField (const XStructure * s, const char * name, boolean defaultValue)"
+Returns the first value in a structure's field as an integer, or the specified default value if there is no such field in the structure, or the content cannot be parse into an integer\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIs\fP Pointer to the XStructure\&. 
+.br
+\fIname\fP Field name 
+.br
+\fIdefaultValue\fP Value to return if no corresponding integer field value\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The (first) field value as a long long, or the default value if there is no such field\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xGetField() 
+.RE
+.PP
+
+.SS "double smaxGetDoubleField (const XStructure * s, const char * name, double defaultValue)"
+Returns the first value in a structure's field as a double precision float, or the specified default value if there is no such field in the structure, or the content cannot be parse into an double\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIs\fP Pointer to the XStructure\&. 
+.br
+\fIname\fP Field name 
+.br
+\fIdefaultValue\fP Value to return if no corresponding integer field value\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The (first) field value as a double, or the specified default if there is no such field\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xGetField() 
+.RE
+.PP
+
+.SS "long long smaxGetLongField (const XStructure * s, const char * name, long long defaultValue)"
+Returns the first value in a structure's field as an integer, or the specified default value if there is no such field in the structure, or the content cannot be parse into an integer\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIs\fP Pointer to the XStructure\&. 
+.br
+\fIname\fP Field name 
+.br
+\fIdefaultValue\fP Value to return if no corresponding integer field value\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The (first) field value as a long long, or the default value if there is no such field\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xGetField() 
+.RE
+.PP
+
+.SS "char * smaxGetRawField (const XStructure * s, const char * name, char * defaultValue)"
+Returns the string value in a structure's field, or the specified default value if there is no such field in the structure\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIs\fP Pointer to the XStructure\&. 
+.br
+\fIname\fP Field name 
+.br
+\fIdefaultValue\fP Value to return if no corresponding integer field value\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The field's string (raw) value, or the specified default if there is no such field\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+xGetField() 
+.RE
+.PP
+
+.SS "double smaxPullDouble (const char * table, const char * key)"
+Returns a single floating-point value for a given SMA-X variable, or a NAN if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP Hash table name\&. 
+.br
+\fIkey\fP Variable name under which the data is stored\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The floating-point value stored in SMA-X, or NAN if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPullDouble()\fP 
+.PP
+\fBsmaxPullDoubleDefault()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxPullDoubleDefault()\fP\&.
+.SS "double smaxPullDoubleDefault (const char * table, const char * key, double defaultValue)"
+Returns a single floating-point value for a given SMA-X variable, or a specified default value if the SMA-X value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP Hash table name\&. 
+.br
+\fIkey\fP Variable name under which the data is stored\&. 
+.br
+\fIdefaultValue\fP The value to return in case of an error\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The floating-point value stored in SMA-X, or the specified default if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPullDoubleDefault()\fP 
+.PP
+\fBsmaxPullDouble()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxPull()\fP\&.
+.SS "double * smaxPullDoubles (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+Returns a dynamically allocated array of doubles stored in an SMA-X variable\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fImeta\fP (optional) Pointer to metadata to be filled or NULL if not required\&. 
+.br
+\fIn\fP Pointer to which the number of double is returned (if *n > 0) or else an error code\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to C double[] array containing *n elements, or NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxPullDouble()\fP 
+.PP
+smaxPullFloats() 
+.RE
+.PP
+
+.SS "int smaxPullInt (const char * table, const char * key, int defaultValue)"
+Returns a single integer value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIdefaultValue\fP The value to return in case of an error\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The integer value stored in SMA-X, or the specified default if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+smaxLazyPullInt() 
+.PP
+\fBsmaxPullInts()\fP 
+.PP
+smaPullLong() 
+.RE
+.PP
+
+.PP
+References \fBsmaxPull()\fP\&.
+.SS "int * smaxPullInts (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+Returns a dynamically allocated array of integers stored in an SMA-X variable\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fImeta\fP (optional) Pointer to metadata to be filled or NULL if not required\&. 
+.br
+\fIn\fP Pointer to which the number of integers is returned (if *n > 0) or else an error code\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to C int[] array containing *n elements, or NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+smaxPullShorts() 
+.PP
+\fBsmaxPullLongs()\fP 
+.PP
+\fBsmaxPullInt()\fP 
+.RE
+.PP
+
+.SS "long long smaxPullLong (const char * table, const char * key, long long defaultValue)"
+Returns a single integer value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIdefaultValue\fP The value to return in case of an error\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+The integer value stored in SMA-X, or the specified default if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPullLong()\fP 
+.PP
+\fBsmaxPullLongs()\fP 
+.PP
+\fBsmaxPullInt()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxPull()\fP\&.
+.SS "long long * smaxPullLongs (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+Returns a dynamically allocated array of long long (int64) integers stored in an SMA-X variable\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fImeta\fP (optional) Pointer to metadata to be filled or NULL if not required\&. 
+.br
+\fIn\fP Pointer to which the number of integers is returned (if *n > 0) or else an error code\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to C int[] array containing *n elements, or NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxPullInts()\fP 
+.PP
+smaxPullShorts() 
+.PP
+\fBsmaxPullLong()\fP 
+.RE
+.PP
+
+.SS "char * smaxPullRaw (const char * table, const char * key, \fBXMeta\fP * meta, int * status)"
+Returns a dynamically allocated buffer with the raw string value stored in SMA-X\&. This call can also be used to get single string values from SMA-X, since for single string the stored raw value is simply the string itself\&. However, to properly retrieve string arrays, you want to use \fBsmaxPullStrings()\fP instead\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fImeta\fP (optional) Pointer to metadata to be filled or NULL if not required\&. 
+.br
+\fIstatus\fP Pointer int which an error status is returned\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to C array containing the elements of the specified type, or NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxPullStrings()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxPull()\fP\&.
+.SS "char * smaxPullString (const char * table, const char * key)"
+Returns a single string value for a given SMA-X variable, or a NULL if the value could not be retrieved\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP Hash table name\&. 
+.br
+\fIkey\fP Variable name under which the data is stored\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pouinter to the string value stored in SMA-X, or NULL if the value could not be retrieved\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPullString()\fP 
+.PP
+\fBsmaxPullStrings()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxPull()\fP\&.
+.SS "char ** smaxPullStrings (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+Returns an array of pointers to individuals strings inside the retrieved contiguous data buffer\&. Thus, to discard the returned data after use, you must first discard the underlying buffer (as pointed by the first element) before discarding the array of pointers themselves\&. E\&.g\&.:
+.PP
+\fR char **array = smaxPullStrings('mygroup', 'myfield', &meta); \&.\&.\&. if(array != NULL) { free(array[0]); // discards the underlying contiguous buffer free(array); // discards the array of pointers\&. } \fP
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fImeta\fP (optional) Pointer to metadata to be filled or NULL if not required\&. 
+.br
+\fIn\fP Pointer to which the number of double is returned (if *n > 0) or else an error code\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to a an array of strings (char *) containing *n elements, or NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxPullString()\fP 
+.PP
+\fBsmaxPullRaw()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxGetMetaCount()\fP, \fBsmaxPullRaw()\fP, \fBXMeta::storeBytes\fP, and \fBX_META_INIT\fP\&.
+.SS "XStructure * smaxPullStruct (const char * id, \fBXMeta\fP * meta, int * status)"
+Returns a dynamically allocated XStrucure for the specified hashtable in SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP Aggregated structure ID\&. 
+.br
+\fImeta\fP (optional) Pointer to metadata to be filled or NULL if not required\&. 
+.br
+\fIstatus\fP Pointer int which an error status is returned\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+Pointer to an XStructure, or NULL\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxLazyPullStruct()\fP 
+.PP
+xDestroyStruct() 
+.RE
+.PP
+
+.PP
+References \fBsmaxPull()\fP\&.
+.SS "int smaxShareBoolean (const char * table, const char * key, boolean value)"
+Shares a single boolean value to SMA-X\&. All non-zero values are mapped to '1'\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalue\fP A boolean value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareBooleans()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShareBooleans()\fP\&.
+.SS "int smaxShareBooleans (const char * table, const char * key, const boolean * values, int n)"
+Shares an array of boolean values to SMA-X\&. All non-zero values are mapped to '1'\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP Hash table name\&. 
+.br
+\fIkey\fP Variable name under which the data is stored\&. 
+.br
+\fIvalues\fP Pointer to boolean[] array\&. 
+.br
+\fIn\fP Number of elements in array to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareBoolean()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareBytes (const char * table, const char * key, const char * values, int n)"
+Shares a binary sequence to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalues\fP pointer to the byte buffer\&. 
+.br
+\fIn\fP Number of bytes in buffer to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareShorts()\fP 
+.PP
+\fBsmaxShareInts()\fP 
+.PP
+\fBsmaxShareLongs()\fP 
+.PP
+\fBsmaxShareInt()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareDouble (const char * table, const char * key, double value)"
+Shares a single floating point value to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalue\fP floating-point value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareDoubles()\fP 
+.PP
+\fBsmaxShareFloats()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShareDoubles()\fP\&.
+.SS "int smaxShareDoubles (const char * table, const char * key, const double * values, int n)"
+Shares an array of doubles to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalues\fP Pointer to double[] array\&. 
+.br
+\fIn\fP Number of elements in array to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareDouble()\fP 
+.PP
+\fBsmaxShareFloats()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareFloats (const char * table, const char * key, const float * values, int n)"
+Shares an array of floats to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalues\fP Pointer to float[] array\&. 
+.br
+\fIn\fP Number of elements in array to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareDouble()\fP 
+.PP
+\fBsmaxShareDoubles()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareHex (const char * table, const char * key, long long value)"
+Shares a single integer value to SMA-X in a hexadecimal representatin\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalue\fP Integer value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareInt()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareInt (const char * table, const char * key, long long value)"
+Shares a single integer value to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP Hash table name\&. 
+.br
+\fIkey\fP Variable name under which the data is stored\&. 
+.br
+\fIvalue\fP Integer value\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareHex()\fP 
+.PP
+\fBsmaxShareInts()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShareLongs()\fP\&.
+.SS "int smaxShareInts (const char * table, const char * key, const int * values, int n)"
+Shares an array of long integers to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalues\fP Pointer to int[] array\&. 
+.br
+\fIn\fP Number of elements in array to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareLongs()\fP 
+.PP
+\fBsmaxShareShorts()\fP 
+.PP
+\fBsmaxShareBytes()\fP 
+.PP
+\fBsmaxShareInt()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareLongs (const char * table, const char * key, const long long * values, int n)"
+Shares an array of wide integers to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalues\fP Pointer to long long[] array\&. 
+.br
+\fIn\fP Number of elements in array to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareInts()\fP 
+.PP
+\fBsmaxShareShorts()\fP 
+.PP
+\fBsmaxShareBytes()\fP 
+.PP
+\fBsmaxShareInt()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareShorts (const char * table, const char * key, const short * values, int n)"
+Shares an array of shorts to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIvalues\fP Pointer to short[] array\&. 
+.br
+\fIn\fP Number of elements in array to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS(0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareInt()\fP 
+.PP
+\fBsmaxShareBytes()\fP 
+.PP
+\fBsmaxShareInts()\fP 
+.PP
+\fBsmaxShareLongs()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareString (const char * table, const char * key, const char * sValue)"
+Shares a single string value to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIsValue\fP Pointer to string\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareStrings()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxShareStrings (const char * table, const char * key, const char ** sValues, int n)"
+Shares an array of strings to SMA-X\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP The hash table name\&. 
+.br
+\fIkey\fP The variable name under which the data is stored\&. 
+.br
+\fIsValues\fP Pointer to array of string pointers\&. 
+.br
+\fIn\fP Number of elements in array to share\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareString()\fP 
+.RE
+.PP
+
+.PP
+References \fBsmaxShare()\fP\&.
+.SS "int smaxWaitOnSubscribed (const char * table, const char * key, int timeout)"
+Waits for a specific pushed entry\&. There must be an active subscription that includes the specified group & variable, or else the call will block indefinitely\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fItable\fP Hash table name 
+.br
+\fIkey\fP Variable name to wait on\&. 
+.br
+\fItimeout\fP (s) Timeout value\&. 0 or negative values result in an indefinite wait\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if the variable was updated on some host (or owner)\&. X_NO_INIT if the SMA-X sharing was not initialized via \fBsmaxConnect()\fP\&. X_GROUP_INVALID if the 'group' argument is NULL; X_NAME_INVALID if the 'key' argument is NULL\&. X_REL_PREMATURE if \fBsmaxReleaseWaits()\fP was called\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSubscribe()\fP 
+.PP
+\fBsmaxWaitOnSubscribed()\fP 
+.PP
+\fBsmaxWaitOnSubscribedGroup()\fP 
+.PP
+\fBsmaxWaitOnSubscribedVar()\fP 
+.PP
+\fBsmaxWaitOnAnySubscribed()\fP 
+.PP
+\fBsmaxReleaseWaits()\fP 
+.RE
+.PP
+
+.SS "int smaxWaitOnSubscribedGroup (const char * matchTable, char ** changedKey, int timeout)"
+Waits for changes on a specific group\&. The must be an active subscription including that group, or else the call will block indefinitely\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImatchTable\fP Hash table name (e\&.g\&. owner ID) to wait on\&. 
+.br
+\fIchangedKey\fP Pointer to the string that holds the name of the variable which unblocked the wait or which is set to NULL\&. The lease of the buffer is for the call only\&. The caller should copy its content if persistent storage is required\&. 
+.br
+\fItimeout\fP (s) Timeout value\&. 0 or negative values result in an indefinite wait\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if a variable was updated on the host\&. X_NO_INIT if the SMA-X sharing was not initialized via \fBsmaxConnect()\fP\&. X_GROUP_INVALID if the table name to match is invalid\&. X_REL_PREMATURE if \fBsmaxReleaseWaits()\fP was called\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSubscribe()\fP 
+.PP
+\fBsmaxWaitOnSubscribedVar()\fP 
+.PP
+\fBsmaxWaitOnSubscribed()\fP 
+.PP
+\fBsmaxWaitOnAnySubscribed()\fP 
+.PP
+\fBsmaxReleaseWaits()\fP 
+.RE
+.PP
+
+.SS "int smaxWaitOnSubscribedVar (const char * matchKey, char ** changedTable, int timeout)"
+Waits for a specific pushed variable from any group/table\&. There must be an active subscription that includes the specified variable in one or more groups/tables, or else the call will block indefinitely\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fImatchKey\fP Variable name to wait on\&. 
+.br
+\fIchangedTable\fP Pointer to the string that holds the name of the table which unblocked the wait or which is set to NULL\&. The lease of the buffer is for the call only\&. The caller should copy its content if persistent storage is required\&. 
+.br
+\fItimeout\fP (s) Timeout value\&. 0 or negative values result in an indefinite wait\&.
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if the variable was updated on some host (or owner)\&. X_NO_INIT if the SMA-X sharing was not initialized via \fBsmaxConnect()\fP\&. X_NAME_INVALID if the 'key' argument is NULL\&. X_REL_PREMATURE if \fBsmaxReleaseWaits()\fP was called\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSubscribe()\fP 
+.PP
+\fBsmaxWaitOnSubscribedGroup()\fP 
+.PP
+\fBsmaxWaitOnSubscribed()\fP 
+.PP
+\fBsmaxWaitOnAnySubscribed()\fP 
+.PP
+\fBsmaxReleaseWaits()\fP 
+.RE
+.PP
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

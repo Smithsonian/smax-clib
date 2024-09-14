@@ -1,0 +1,47 @@
+.TH "XSyncPoint" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+XSyncPoint \- Synchronization point that can be waited upon when queueing pipelined pulls\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.PP
+\fR#include <smax\&.h>\fP
+.SS "Data Fields"
+
+.in +1c
+.ti -1c
+.RI "pthread_cond_t * \fBisComplete\fP"
+.br
+.RI "Condition variable that is used for the actual wait\&. "
+.ti -1c
+.RI "pthread_mutex_t * \fBlock\fP"
+.br
+.RI "Mutex lock\&. "
+.ti -1c
+.RI "int \fBstatus\fP"
+.br
+.RI "Synchronization status variable (usually X_INCOMPLETE or X_SUCCESS) "
+.in -1c
+.SH "Detailed Description"
+.PP 
+Synchronization point that can be waited upon when queueing pipelined pulls\&. 
+
+
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxCreateSyncPoint()\fP 
+.PP
+\fBsmaxDestroySyncPoint()\fP 
+.PP
+\fBsmaxSync()\fP 
+.RE
+.PP
+
+
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.
