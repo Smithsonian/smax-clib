@@ -4,7 +4,7 @@ github_username: attipaci
 title: smax-clib
 description: C/C++ client library for SMA-X structured data exchange
 show_downloads: false
-#google_analytics: G-2L0MEN3Z8Q
+google_analytics: G-EMRD1TX0PD
 url: "https://smithsonian.github.io"
 read_time: true
 titles_from_headings:
