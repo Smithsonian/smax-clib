@@ -35,7 +35,7 @@ int main(int argc, const char *argv[]) {
   smaxSetVerbose(FALSE);
 
   if(rm_open(antlist)) {
-    fprintf(stderr, "ERROR connecting to REDIS. Exiting...\n");
+    fprintf(stderr, "ERROR connecting to Redis. Exiting...\n");
     exit(1);
   }
 

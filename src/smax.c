@@ -7,7 +7,7 @@
  * \brief
  *      SMA-X is a software implementation for SMA shared data, and is the base layer for the software
  *      reflective memory (RM) emulation, and DSM replacement.
- *      It works by communicating TCP/IP messages to a central REDIS server.
+ *      It works by communicating TCP/IP messages to a central Redis server.
  *
  *      There is also extra functionality, for configuring, performance tweaking, verbosity control,
  *      and some convenience methods (e.g. data serialization/deserialization).
@@ -23,9 +23,8 @@
 #include <unistd.h>
 #include <ctype.h>
 #include <errno.h>
+#include <sys/utsname.h>
 
-#include "redisx.h"
-#include "smax.h"
 #include "smax-private.h"
 
 #if __Lynx__
@@ -62,9 +61,8 @@ char *HMSET_WITH_META;      ///< SHA1 key for calling HMSetWithMeta LUA script
 char *GET_STRUCT;           ///< SHA1 key for calling HGetStruct LUA script
 
 
-
 // Local prototypes ------------------->
-static void ProcessUpdateNotificationAsync(const char *pattern, const char *channel, const char *msg, int length);
+static void ProcessUpdateNotificationAsync(const char *pattern, const char *channel, const char *msg, long length);
 
 static int ProcessStructRead(RESP **component, PullRequest *req);
 static int ParseStructData(XStructure *s, RESP *names, RESP *data, XMeta *meta);
@@ -74,7 +72,7 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
 static void InitScriptsAsync();
 
 static boolean usePipeline = TRUE;
-static int tcpBufSize = REDIS_TCP_BUF;
+static int tcpBufSize = REDISX_TCP_BUF_SIZE;
 
 // A lock for ensuring exlusive access for the monitor list...
 // and the variables that it controls, e.g. via lockNotify()
@@ -85,9 +83,98 @@ static pthread_cond_t notifyBlock = PTHREAD_COND_INITIALIZER;
 static char *notifyID;
 static int notifySize;
 
+static char *server;
+static int serverPort = REDISX_TCP_PORT;
+static char *user;
+static char *auth;
+static int dbIndex;
+
 static Redis *redis;
 
+static char *hostName;
 static char *programID;
+
+/**
+ * Configures the SMA-X server before connecting.
+ *
+ * @param host    The SMA-X REdis server host name or IP address.
+ * @param port    The Redis port number on the SMA-X server, or &lt=0 to use the default
+ * @return        X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server configuration
+ *                because we are already in a connected state.
+ *
+ * @sa smaxSetAuth()
+ * @sa smaxSetDB()
+ * @sa smaxConnect()
+ */
+int smaxSetServer(const char *host, int port) {
+  smaxLockConfig();
+
+  if(smaxIsConnected()) {
+    smaxUnlockConfig();
+    return x_error(X_ALREADY_OPEN, EALREADY, "smaxSetServer", "already in connected state");
+  }
+
+  if(server) free(server);
+  server = xStringCopyOf(host);
+
+  serverPort = port > 0 ? port : REDISX_TCP_PORT;
+
+  smaxUnlockConfig();
+  return X_SUCCESS;
+}
+
+/**
+ * Sets the SMA-X database authentication parameters (if any) before connecting to the SMA-X server.
+ *
+ * @param username    Redis ACL user name (if any), or NULL for no user-based authentication
+ * @param password    Redis database password (if any), or NULL if the database is not password protected
+ * @return            X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server configuration
+ *                    because we are already in a connected state.
+ *
+ * @sa smaxSetServer()
+ * @sa smaxConnect()
+ */
+int smaxSetAuth(const char *username, const char *password) {
+  smaxLockConfig();
+
+  if(smaxIsConnected()) {
+    smaxUnlockConfig();
+    return x_error(X_ALREADY_OPEN, EALREADY, "smaxSetAuth", "already in connected state");
+  }
+
+  if(user) free(user);
+  user = xStringCopyOf(username);
+
+  if(auth) free(auth);
+  auth = xStringCopyOf(password);
+
+  smaxUnlockConfig();
+  return X_SUCCESS;
+}
+
+/**
+ * Sets a non-default Redis database index to use for SMA-X before connecting to the SMA-X server.
+ *
+ * @param idx         The Redis database index to use (if not the default one)
+ * @return            X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server configuration
+ *                    because we are already in a connected state.
+ *
+ * @sa smaxSetServer()
+ * @sa smaxConnect()
+ */
+int smaxSetDB(int idx) {
+  smaxLockConfig();
+
+  if(smaxIsConnected()) {
+    smaxUnlockConfig();
+    return x_error(X_ALREADY_OPEN, EALREADY, "smaxSetDB", "already in connected state");
+  }
+
+  dbIndex = idx > 0 ? idx : 0;
+
+  smaxUnlockConfig();
+  return X_SUCCESS;
+}
 
 /**
  * Enable or disable verbose reporting of all SMA-X operations (and possibly some details of them).
@@ -103,7 +190,6 @@ void smaxSetVerbose(boolean value) {
   redisxSetVerbose(value);
 }
 
-
 /**
  * Checks id verbose reporting is enabled.
  *
@@ -115,13 +201,12 @@ boolean smaxIsVerbose() {
   return redisxIsVerbose();
 }
 
-
 /**
- * Enable or disable pipelined write operations. When pipelining, shares calls will return
- * as soon as the request is sent to the REDIS server, without waiting for a response.
+ * Enable or disable pipelined write operations (enabled by default). When pipelining, share calls
+ * will return as soon as the request is sent to the Redis server, without waiting for a response.
  * Instead, responses are consumed asynchronously by a dedicated thread, which will report
  * errors to stderr. Pipelined writes can have a significant performance advantage over
- * handshaking at the cost of one extra socket connection to REDIS (dedicated to pipelining)
+ * handshaking at the cost of one extra socket connection to Redis (dedicated to pipelining)
  * and the extra thread consuming responses.
  *
  * The default state of pipelined writes might vary by platform (e.g. enabled on Linux,
@@ -129,25 +214,29 @@ boolean smaxIsVerbose() {
  *
  * __IMPORTANT__: calls to smaxSetPipelined() must precede the call to smaxConnect().
  *
- * \param isEnabled     TRUE to enable pipelined writes, FALSE to disable.
+ * @param isEnabled     TRUE to enable pipelined writes, FALSE to disable (default is enabled).
  *
- * \return              X_SUCCESS   if the setting was successful
- *                      X_FAILURE   if the state could not be changed
- *                                  (e.g. because smaxOpen() was called previously).
+ * @return            X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server configuration
+ *                    because we are already in a connected state.
  *
  * @sa smaxIsPipelined()
  * @sa smaxSetPipelineConsumer()
  */
 int smaxSetPipelined(boolean isEnabled) {
   if(usePipeline == isEnabled) return X_SUCCESS;
+
+  smaxLockConfig();
+
   if(smaxIsConnected()) {
-    fprintf(stderr, "WARNING! SMA-X : Cannot change pipeline state after smaxOpen().\n");
-    return X_FAILURE;
+    smaxUnlockConfig();
+    return x_error(X_ALREADY_OPEN, EALREADY, "smaxSetPipelined", "Cannot change pipeline state after connecting");
   }
+
   usePipeline = isEnabled;
+  smaxUnlockConfig();
+
   return X_SUCCESS;
 }
-
 
 /**
  * Check if SMA-X is configured with pipeline mode enabled.
@@ -160,51 +249,69 @@ boolean smaxIsPipelined() {
   return usePipeline;
 }
 
-
 /**
  * Set the size of the TCP/IP buffers (send and receive) for future client connections.
  *
  * @param size      (bytes) requested buffer size, or <= 0 to use default value
  *
- * @sa smaxGetTcpBuf()
+ * @sa smaxConnect;
  */
-void smaxSetTcpBuf(int size) {
+int smaxSetTcpBuf(int size) {
+  smaxLockConfig();
+
+  if(smaxIsConnected()) {
+    smaxUnlockConfig();
+    return x_error(X_ALREADY_OPEN, EALREADY, "smaxSetTcpBuf", "Cannot change pipeline state after connecting");
+  }
+
   tcpBufSize = size;
+  smaxUnlockConfig();
+
+  return X_SUCCESS;
 }
 
 /**
- * Returns the current TCP/IP buffer size (send and receive) to be used for future client connections.
- *
- * @return      (bytes) future TCP/IP buffer size, 0 if system default.
- *
- * @sa smaxSetTcpBuf()
- */
-int smaxGetTcpBuf() {
-  return tcpBufSize > 0 ? tcpBufSize : 0;
-}
-
-
-/**
- * Returns the host name on which we are running. It returns a reference to the same
+ * Returns the host name on which this program is running. It returns a reference to the same
  * static variable every time. As such you should never call free() on the returned value.
+ * Note, that only the leading part of the host name is returned, so for a host
+ * that is registered as 'somenode.somedomain' only 'somenode' is returned.
  *
- * \return      The host computer/node name.
+ * \return      The host name string (leading part only).
  *
- * @sa smaxSetHostName()
+ * \sa smaxSetHostName()
+ *
  */
 char *smaxGetHostName() {
-  return redisxGetHostName();
+  if(hostName == NULL) {
+    struct utsname u;
+    int i;
+    uname(&u);
+
+    // Keep only the leading part only...
+    for(i=0; u.nodename[i]; i++) if(u.nodename[i] == '.') {
+      u.nodename[i] = '\0';
+      break;
+    }
+
+    hostName = xStringCopyOf(u.nodename);
+  }
+  return hostName;
 }
 
 /**
- * Sets a user-specified host name, to use instead of the system default.
+ * Changes the host name to the user-specified value instead of the default (leading component
+ * of the value returned by gethostname()). Subsequent calls to smaxGetHostName() will return
+ * the newly set value. An argument of NULL resets to the default.
  *
- * @param name  The user specified host name, or NULL to restore the system default.
+ * @param name      the host name to use, or NULL to revert to the default (leading component
+ *                  of gethostname()).
  *
  * @sa smaxGetHostName()
  */
 void smaxSetHostName(const char *name) {
-  redisxSetHostName(name);
+  char *oldName = hostName;
+  hostName = xStringCopyOf(name);
+  if(oldName) free(oldName);
 }
 
 /**
@@ -214,7 +321,7 @@ void smaxSetHostName(const char *name) {
  *
  */
 char *smaxGetProgramID() {
-#if __Lynx__
+#if __Lynx__ && __powerpc__
   char procName[40];
 #else
   const char *procName;
@@ -225,7 +332,7 @@ char *smaxGetProgramID() {
 
   if(programID) return programID;
 
-#if __Lynx__
+#if __Lynx__ && __powerpc__
   getProcessName(getpid(), procName, 40);
 #else
   procName = __progname;
@@ -236,7 +343,6 @@ char *smaxGetProgramID() {
 
   return programID;
 }
-
 
 /**
  * Returns the Redis connection information for SMA-X
@@ -251,7 +357,6 @@ Redis *smaxGetRedis() {
   return redis;
 }
 
-
 /**
  * Checks whether SMA-X sharing is currently open (by a preceding call to smaxConnect() call.
  *
@@ -264,25 +369,6 @@ int smaxIsConnected() {
   return redisxIsConnected(redis);
 }
 
-
-/**
- * Initializes the SMA-X sharing library in this runtime instance, with the default Redis server address.
- *
- *
- * \return      X_SUCCESS           If the library was successfully initialized
- *              X_ALREADY_OPEN      If SMA-X sharing was already open.
- *              X_NO_SERVICE        If the there was an issue establishing the necessary network connection(s).
- *              X_NAME_INVALID      If the default redis name lookup failed.
- *              X_NULL              If the Redis IP address is NULL
- *
- * @sa smaxConnectTo()
- * \sa smaxDisconnect()
- * @sa smaxReconnect()
- * @sa smaxIsConnected()
- */
-int smaxConnect() {
-  return smaxConnectTo(SMAX_DEFAULT_HOSTNAME);
-}
 
 
 /**
@@ -304,9 +390,34 @@ int smaxConnect() {
  *
  */
 int smaxConnectTo(const char *server) {
-  static int isInitialized = FALSE;
+  static const char *fn = "smaxConnectTo";
 
-  const char *funcName = "smaxConnectTo()";
+  prop_error(fn, smaxSetServer(server, -1));
+  prop_error(fn, smaxConnect());
+
+  return X_SUCCESS;
+}
+
+/**
+ * Initializes the SMA-X sharing library in this runtime instance.
+ *
+ *
+ * \return      X_SUCCESS           If the library was successfully initialized
+ *              X_ALREADY_OPEN      If SMA-X sharing was already open.
+ *              X_NO_SERVICE        If the there was an issue establishing the necessary network connection(s).
+ *              X_NAME_INVALID      If the redis server name lookup failed.
+ *              X_NULL              If the Redis IP address is NULL
+ *
+ * @sa smaxSetServer()
+ * @sa smaxSetAuth()
+ * @sa smaxConnectTo()
+ * @sa smaxDisconnect()
+ * @sa smaxReconnect()
+ * @sa smaxIsConnected()
+ */
+int smaxConnect() {
+  static const char *fn = "smaxConnect";
+  static int isInitialized = FALSE;
 
   int status;
 
@@ -325,11 +436,17 @@ int smaxConnectTo(const char *server) {
     xvprintf("SMA-X> program ID: %s\n", programID);
 
     redisxSetTcpBuf(tcpBufSize);
-    redis = redisxInit(server);
+
+    redis = redisxInit(server ? server : SMAX_DEFAULT_HOSTNAME);
     if(redis == NULL) {
       smaxUnlockConfig();
-      return smaxError(funcName, X_NO_INIT);
+      return x_trace(fn, NULL, X_NO_INIT);
     }
+
+    redisxSetPort(redis, serverPort);
+    redisxSetUser(redis, user);
+    redisxSetPassword(redis, auth);
+    redisxSelectDB(redis, dbIndex);
 
     redisxSetTransmitErrorHandler(redis, smaxTransmitErrorHandler);
 
@@ -339,6 +456,7 @@ int smaxConnectTo(const char *server) {
     // Initial sotrage for update notifications
     notifySize = 80;
     notifyID = (char *) calloc(1, notifySize);
+    x_check_alloc(notifyID);
 
     isInitialized = TRUE;
   }
@@ -352,10 +470,13 @@ int smaxConnectTo(const char *server) {
   // Flush lazy cache after disconnecting from Redis.
   smaxAddDisconnectHook((void (*)) smaxLazyFlush);
 
+  // Release pending waits if disconnected
+  smaxAddDisconnectHook((void (*)) smaxReleaseWaits);
+
   status = redisxConnect(redis, usePipeline);
   if(status) {
     smaxUnlockConfig();
-    return smaxError(funcName, status);
+    return x_trace(fn, NULL, status);
   }
 
   // By default, we'll try to reconnect to Redis if the connection is severed.
@@ -365,9 +486,8 @@ int smaxConnectTo(const char *server) {
 
   xvprintf("SMA-X> opened & ready.\n");
 
-  return status;
+  return X_SUCCESS;
 }
-
 
 /**
  * Disables the SMA-X sharing capability, closing underlying network connections.
@@ -381,7 +501,7 @@ int smaxConnectTo(const char *server) {
  * @sa smaxIsConnected()
  */
 int smaxDisconnect() {
-  if(!smaxIsConnected()) return X_NO_INIT;
+  if(!smaxIsConnected()) return x_error(X_NO_INIT, ENOTCONN, "smaxDisconnect", "not connected");
 
   redisxDisconnect(redis);
 
@@ -389,7 +509,6 @@ int smaxDisconnect() {
 
   return X_SUCCESS;
 }
-
 
 /**
  * Reconnects to the SMA-X server. It will try connecting repeatedly at regular intervals until the
@@ -411,7 +530,7 @@ int smaxDisconnect() {
  * @sa smaxAddConnectHook()
  */
 int smaxReconnect() {
-  if(redis == NULL) return X_NO_INIT;
+  if(redis == NULL) return x_error(X_NO_INIT, ENOTCONN, "smaxReconnect", "not connected");
 
   xvprintf("SMA-X> reconnecting.\n");
 
@@ -425,51 +544,58 @@ int smaxReconnect() {
  * Add a callback function for when SMA-X is connected. It's a wrapper to redisxAddConnectHook().
  *
  * @param setupCall     Callback function
+ * @return              X_SUCCESS (0) or an error code (&lt;0) from redisxAddConnectHook().
  *
  * @sa smaxRemoveConnectHook()
  * @sa smaxConnect()
  * @sa smaxConnectTo()
  */
-void smaxAddConnectHook(const void (*setupCall)(void)) {
-  redisxAddConnectHook(smaxGetRedis(), setupCall);
+int smaxAddConnectHook(void (*setupCall)(void)) {
+  prop_error("smaxAddConnectHook", redisxAddConnectHook(smaxGetRedis(), (void (*)(Redis *)) setupCall));
+  return X_SUCCESS;
 }
 
 /**
  * Remove a post-connection callback function. It's a wrapper to redisxRemoveConnectHook().
  *
  * @param setupCall     Callback function
+ * @return              X_SUCCESS (0) or an error code (&lt;0) from redisxAddConnectHook().
  *
  * @sa smaxAddConnectHook()
  * @sa smaxConnect()
  * @sa smaxConnectTo()
  */
-void smaxRemoveConnectHook(const void (*setupCall)(void)) {
-  redisxRemoveConnectHook(smaxGetRedis(), setupCall);
+int smaxRemoveConnectHook(void (*setupCall)(void)) {
+  prop_error("smaxRemoveConnectHook", redisxRemoveConnectHook(smaxGetRedis(), (void (*)(Redis *)) setupCall));
+  return X_SUCCESS;
 }
-
 
 /**
  * Add a callback function for when SMA-X is disconnected. It's a wrapper to redisxAddDisconnectHook().
  *
  * @param cleanupCall   Callback function
+ * @return              X_SUCCESS (0) or an error code (&lt;0) from redisxAddConnectHook().
  *
  * @sa smaxRemoveDisconnectHook()
  * @sa smaxDisconnect()
  */
-void smaxAddDisconnectHook(const void (*cleanupCall)(void)) {
-  redisxAddDisconnectHook(smaxGetRedis(), cleanupCall);
+int smaxAddDisconnectHook(void (*cleanupCall)(void)) {
+  prop_error("smaxAddDisconnectHook", redisxAddDisconnectHook(smaxGetRedis(), (void (*)(Redis *)) cleanupCall));
+  return X_SUCCESS;
 }
 
 /**
  * Remove a post-cdisconnect callback function. It's a wrapper to redisxRemiveDisconnectHook().
  *
  * @param cleanupCall   Callback function
+ * @return              X_SUCCESS (0) or an error code (&lt;0) from redisxAddConnectHook().
  *
  * @sa smaxAddDisconnectHook()
  * @sa smaxDisconnect()
  */
-void smaxRemoveDisconnectHook(const void (*cleanupCall)(void)) {
-  redisxRemoveDisconnectHook(smaxGetRedis(), cleanupCall);
+int smaxRemoveDisconnectHook(void (*cleanupCall)(void)) {
+  prop_error("smaxRemoveDisconnectHook", redisxRemoveDisconnectHook(smaxGetRedis(), (void (*)(Redis *)) cleanupCall));
+  return X_SUCCESS;
 }
 
 /**
@@ -477,13 +603,14 @@ void smaxRemoveDisconnectHook(const void (*cleanupCall)(void)) {
  * for redisxSetPipelineConsumer().
  *
  * @param f     The function to process ALL pipeline responses from Redis.
- * @return      X_SUCCESS if successful, or else an error by redisxSetPipelineConsumer()
+ * @return      X_SUCCESS (0) if successful, or else an error by redisxSetPipelineConsumer()
  *
  * @sa smaxSetPipelined()
  * @sa smaxIsPipelined()
  */
 int smaxSetPipelineConsumer(void (*f)(RESP *)) {
-  return redisxSetPipelineConsumer(smaxGetRedis(), f);
+  prop_error("smaxSetPipelineConsumer", redisxSetPipelineConsumer(smaxGetRedis(), f));
+  return X_SUCCESS;
 }
 
 /**
@@ -498,9 +625,9 @@ int smaxSetPipelineConsumer(void (*f)(RESP *)) {
  *
  * \return          X_SUCCESS (0)       if successful, or
  *                  X_NO_INIT           if the SMA-X library was not initialized.
- *                  X_HOST_INVALID      if the host (owner ID) is NULL.
- *                  X_NAME_INVALID      if the 'key' argument is NULL.
- *                  X_NULL_VALUE        if the 'value' argument is NULL.
+ *                  X_GROUP_INVALID     if the 'table' argument is invalid.
+ *                  X_NAME_INVALID      if the 'key' argument is invalid.
+ *                  X_NULL              if an essential argument is NULL or contains NULL.
  *                  X_NO_SERVICE        if there was no connection to the Redis server.
  *                  X_FAILURE           if there was an underlying failure.
  *
@@ -508,15 +635,24 @@ int smaxSetPipelineConsumer(void (*f)(RESP *)) {
  * @sa smaxQueue()
  */
 int smaxPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta) {
+  static const char *fn = "smaxPull";
+
   PullRequest *data;
+  char *id = NULL;
   int status;
 
+  if(type == X_STRUCT) {
+    id = xGetAggregateID(table, key);
+    if(!id) return x_trace(fn, NULL, X_NULL);
+  }
+
   data = (PullRequest *) calloc(1, sizeof(PullRequest));
+  x_check_alloc(data);
 
   // Make sure structures are retrieved all the same no matter how their names are split
   // into group + key.
   if(type == X_STRUCT) {
-    data->group = xGetAggregateID(table, key);
+    data->group = id;
     data->key = NULL;
   }
   else {
@@ -529,16 +665,15 @@ int smaxPull(const char *table, const char *key, XType type, int count, void *va
   data->count = count;
   data->meta = meta;
 
-  status = smaxRead(data, INTERACTIVE_CHANNEL);
+  status = smaxRead(data, REDISX_INTERACTIVE_CHANNEL);
   //if(status) smaxZero(value, type, count);
 
   smaxDestroyPullRequest(data);
 
-  if(status) return smaxError("smaxPull()", status);
+  prop_error(fn, status);
 
   return X_SUCCESS;
 }
-
 
 /**
  * Share the data into a Redis hash table over the interactive Redis client. It's a fire-and-forget
@@ -559,10 +694,10 @@ int smaxPull(const char *table, const char *key, XType type, int count, void *va
  *
  * \return          X_SUCCESS (0)       if successful, or
  *                  X_NO_INIT           if the SMA-X library was not initialized.
- *                  X_HOST_INVALID      if the host (owner ID) is NULL.
- *                  X_NAME_INVALID      if the 'key' argument is NULL.
+ *                  X_GROUP_INVALID     if the table name is invalid.
+ *                  X_NAME_INVALID      if the 'key' argument is invalid.
  *                  X_SIZE_INVALID      if count < 1 or count > X_MAX_ELEMENTS
- *                  X_NULL_VALUE        if the 'value' argument is NULL.
+ *                  X_NULL        if the 'value' argument is NULL.
  *                  X_NO_SERVICE        if there was no connection to the Redis server.
  *                  X_FAILURE           if there was an underlying failure.
  *
@@ -571,48 +706,48 @@ int smaxPull(const char *table, const char *key, XType type, int count, void *va
  * \sa smaxShareStruct()
  */
 int smaxShare(const char *table, const char *key, const void *value, XType type, int count) {
-  return smaxShareArray(table, key, value, type, 1, &count);
+  prop_error("smaxShare", smaxShareArray(table, key, value, type, 1, &count));
+  return X_SUCCESS;
 }
 
-
 /**
- * Share a multidimensional array, such as an int[][][], or float[][], in a single atomic
+ * Share a multidimensional array, such as an `int[][][]`, or `float[][]`, in a single atomic
  * transaction.
  *
  * \param table     Hash table in which to write entry.
  * \param key       Variable name under which the data is stored.
- * \param ptr       Pointer to the data buffer, such as an int[][][] or float[][].
+ * \param ptr       Pointer to the data buffer, such as an `int[][][]` or `float[][]`.
  * \param type      SMA-X variable type, e.g. X_FLOAT or X_CHARS(40), of the buffer.
- * \param ndim      Dimensionality of the data (0 <= ndim <= X_MAX_DIMS).
+ * \param ndim      Dimensionality of the data (0 <= `ndim` <= X_MAX_DIMS).
  * \param sizes     An array of ints containing the sizes along each dimension.
  *
  * \return          X_SUCCESS (0)       if successful, or
  *                  X_NO_INIT           if the SMA-X library was not initialized.
- *                  X_HOST_INVALID      if the host (owner ID) is NULL.
- *                  X_NAME_INVALID      if the 'key' argument is NULL.
+ *                  X_GROUP_INVALID     if the table name is invalid.
+ *                  X_NAME_INVALID      if the 'key' argument is invalid.
  *                  X_SIZE_INVALID      if ndim or sizes are invalid.
- *                  X_NULL_VALUE        if the 'value' argument is NULL.
+ *                  X_NULL              if the 'value' argument is NULL.
  *                  X_NO_SERVICE        if there was no connection to the Redis server.
  *                  X_FAILURE           if there was an underlying failure.
  *
  * @sa smaxShare()
  */
 int smaxShareArray(const char *table, const char *key, const void *ptr, XType type, int ndim, const int *sizes) {
-  const char *funcName = "smaxShareArray()";
+  static const char *fn = "smaxShareArray";
 
-  XField f = {0};
-  char trybuf[REDIS_CMDBUF_SIZE];
+  XField f = {};
+  char trybuf[REDISX_CMDBUF_SIZE];
   int count, status;
 
-  if(ndim < 0 || ndim > X_MAX_DIMS) return smaxError(funcName, X_SIZE_INVALID);
   count = xGetElementCount(ndim, sizes);
-  if(count < 1 || count > X_MAX_ELEMENTS) return smaxError(funcName, X_SIZE_INVALID);
+  prop_error(fn, count);
+
+  if(count < 1 || count > X_MAX_ELEMENTS) return x_error(X_SIZE_INVALID, EINVAL, fn, "invalid element count: %d", count);
 
   f.value = (type == X_RAW || type == X_STRUCT) ?
-          (char *) ptr :
-          smaxValuesToString(ptr, type, count, trybuf, REDIS_CMDBUF_SIZE);
+          (char *) ptr : smaxValuesToString(ptr, type, count, trybuf, REDISX_CMDBUF_SIZE);
 
-  if(f.value == NULL) return smaxError(funcName, X_NULL);
+  if(f.value == NULL) return x_trace(fn, NULL, X_NULL);
 
   f.isSerialized = TRUE;
   f.name = (char *) key;
@@ -624,9 +759,10 @@ int smaxShareArray(const char *table, const char *key, const void *ptr, XType ty
 
   if(f.value != trybuf) if(type != X_RAW && type != X_STRUCT) free(f.value);
 
-  return status;
-}
+  prop_error(fn, status);
 
+  return X_SUCCESS;
+}
 
 /**
  * Share a field object, which may contain any SMA-X data type.
@@ -636,10 +772,10 @@ int smaxShareArray(const char *table, const char *key, const void *ptr, XType ty
  *
  * \return          X_SUCCESS (0)       if successful, or
  *                  X_NO_INIT           if the SMA-X library was not initialized.
- *                  X_HOST_INVALID      if the host (owner ID) is NULL.
- *                  X_NAME_INVALID      if the 'key' argument is NULL.
+ *                  X_GROUP_INVALID     if the table name is invalid.
+ *                  X_NAME_INVALID      if the 'key' argument is invalid.
  *                  X_SIZE_INVALID      if ndim or sizes are invalid.
- *                  X_NULL_VALUE        if the 'value' argument is NULL.
+ *                  X_NULL              if the 'value' argument is NULL.
  *                  X_NO_SERVICE        if there was no connection to the Redis server.
  *                  X_FAILURE           if there was an underlying failure.
  *
@@ -650,24 +786,25 @@ int smaxShareArray(const char *table, const char *key, const void *ptr, XType ty
  * @sa xGetField()
  */
 int smaxShareField(const char *table, const XField *f) {
+  static const char *fn = "smaxShareField";
+
   int status;
 
   if(f->type == X_STRUCT) {
     char *id = xGetAggregateID(table, f->name);
     status = smaxShareStruct(id, (XStructure *) f->value);
     if(id != NULL) free(id);
-    return status;
+    return x_trace(fn, NULL, status);
   }
 
   status = smaxWrite(table, f);
   if(status) {
-    if(status == X_NO_SERVICE) smaxStorePush(table, f);
-    return smaxError("smaxShareField()", status);
+    if(status == X_NO_SERVICE) status = smaxStorePush(table, f);
+    return x_trace(fn, NULL, status);
   }
 
   return X_SUCCESS;
 }
-
 
 /**
  * Sends a structure to Redis, and all its data including recursive
@@ -678,9 +815,9 @@ int smaxShareField(const char *table, const XField *f) {
  *
  * \return          X_SUCCESS (0)       if successful, or
  *                  X_NO_INIT           if the SMA-X library was not initialized.
- *                  X_HOST_INVALID      if the host (owner ID) is NULL.
+ *                  X_GROUP_INVALID     if the table name is invalid.
  *                  X_NAME_INVALID      if the 'key' argument is NULL.
- *                  X_NULL_VALUE        if the 'value' argument is NULL.
+ *                  X_NULL              if the 'value' argument is NULL.
  *                  X_NO_SERVICE        if there was no connection to the Redis server.
  *                  X_FAILURE           if there was an underlying failure.
  * \sa smaxShare()
@@ -688,16 +825,12 @@ int smaxShareField(const char *table, const XField *f) {
  * \sa xCreateStruct()
  */
 static int SendStruct(const char *id, const XStructure *s) {
-  const char *funcName = "SendStruct()";
+  static const char *fn = "SendStruct";
 
   RedisClient *cl = redis->interactive;
   int status;
 
-  if(id == NULL) return smaxError(funcName, X_GROUP_INVALID);
-  if(s == NULL) return smaxError(funcName, X_NULL);
-  if(!redisxIsConnected(redis)) return smaxError(funcName, X_NO_SERVICE);
-
-  status = redisxLockEnabled(cl);
+  status = redisxLockConnected(cl);
   if(!status) {
     // TODO the following should be done atomically, but multi/exec blocks don't work
     // with evalsha(?)...
@@ -707,7 +840,9 @@ static int SendStruct(const char *id, const XStructure *s) {
     redisxUnlockClient(cl);
   }
 
-  return status ? smaxError(funcName, status) : X_SUCCESS;
+  prop_error(fn, status);
+
+  return X_SUCCESS;
 }
 
 /**
@@ -719,9 +854,9 @@ static int SendStruct(const char *id, const XStructure *s) {
  *
  * \return          X_SUCCESS (0)       if successful, or
  *                  X_NO_INIT           if the SMA-X library was not initialized.
- *                  X_HOST_INVALID      if the host (owner ID) is NULL.
- *                  X_NAME_INVALID      if the 'key' argument is NULL.
- *                  X_NULL_VALUE        if the 'value' argument is NULL.
+ *                  X_GROUP_INVALID     if the table name is invalid.
+ *                  X_NAME_INVALID      if the 'key' argument is invalid.
+ *                  X_NULL              if the 'value' argument is NULL.
  *                  X_NO_SERVICE        if there was no connection to the Redis server.
  *                  X_FAILURE           if there was an underlying failure.
  * \sa smaxShare()
@@ -729,18 +864,22 @@ static int SendStruct(const char *id, const XStructure *s) {
  * \sa xCreateStruct()
  */
 int smaxShareStruct(const char *id, const XStructure *s) {
+  static const char *fn = "smaxShareStruct";
+
   int status = SendStruct(id, s);
 
   if(status == X_NO_SERVICE) {
     XField *f = smaxCreateField(id, X_STRUCT, 0, NULL, s);
 
     if(f) {
-      smaxStorePush(NULL, f);
+      status = smaxStorePush(NULL, f);
       free(f);
     }
   }
 
-  return status;
+  prop_error(fn, status);
+
+  return X_SUCCESS;
 }
 
 /**
@@ -772,10 +911,9 @@ int smaxSubscribe(const char *table, const char *key) {
   char *p = smaxGetUpdateChannelPattern(table, key);
   int status = redisxSubscribe(redis, p);
   free(p);
-  if(status) return smaxError("smaxSubscribe()", status);
+  prop_error("smaxSubscribe", status);
   return X_SUCCESS;
 }
-
 
 /**
  * Unsubscribes from a specific key(s) in specific group(s). Both the group and key names may contain Redis
@@ -800,11 +938,9 @@ int smaxUnsubscribe(const char *table, const char *key) {
   char *p = smaxGetUpdateChannelPattern(table, key);
   int status = redisxUnsubscribe(redis, p);
   free(p);
-  if(status) return smaxError("smaxUnsubscribe()", status);
+  prop_error("smaxUnsubscribe", status);
   return X_SUCCESS;
 }
-
-
 
 /**
  * Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id). The
@@ -826,10 +962,12 @@ int smaxUnsubscribe(const char *table, const char *key) {
  *
  * @sa smaxSubscribe()
  */
-void smaxAddSubscriber(const char *idStem, RedisSubscriberCall f) {
+int smaxAddSubscriber(const char *idStem, RedisSubscriberCall f) {
   char *stem = xGetAggregateID(SMAX_UPDATES_ROOT, idStem);
-  redisxAddSubscriber(smaxGetRedis(), stem, f);
+  int status = redisxAddSubscriber(smaxGetRedis(), stem, f);
   free(stem);
+  prop_error("smaxAddSubscriber", status);
+  return X_SUCCESS;
 }
 
 /**
@@ -839,14 +977,14 @@ void smaxAddSubscriber(const char *idStem, RedisSubscriberCall f) {
  * for variables that no longer have associated callbacks.
  *
  * @param f     Function to remove
- * @return      X_SUCCESS if successful, or else an error returned by redisxRemoveSubscriber().
+ * @return      X_SUCCESS (0) if successful, or else an error (&lt;0) returned by redisxRemoveSubscriber().
  *
  * @sa smaxUnsubscribe()
  */
-void smaxRemoveSubscribers(RedisSubscriberCall f) {
-  redisxRemoveSubscribers(smaxGetRedis(), f);
+int smaxRemoveSubscribers(RedisSubscriberCall f) {
+  prop_error("smaxRemoveSubscribers", redisxRemoveSubscribers(smaxGetRedis(), f));
+  return X_SUCCESS;
 }
-
 
 /**
  * \cond PROTECTED
@@ -866,10 +1004,12 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
   if(table == NULL) table = "*";
   if(key == NULL) {
     p = (char *) malloc(sizeof(SMAX_UPDATES) + strlen(table));
+    x_check_alloc(p);
     sprintf(p, SMAX_UPDATES "%s", table);
   }
   else {
     p = (char *) malloc(sizeof(SMAX_UPDATES) + strlen(table) + X_SEP_LENGTH + strlen(key));
+    x_check_alloc(p)
     sprintf(p, SMAX_UPDATES "%s" X_SEP "%s", table, key);
   }
   return p;
@@ -889,7 +1029,8 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
  *
  * \return      X_SUCCESS (0)       if a variable was pushed on a host.
  *              X_NO_INIT           if the SMA-X sharing was not initialized via smaxConnect().
- *              X_HOST_INVALID      if the buffer for the returned host name is NULL.
+ *              X_NO_SERVICE        if the connection was broken
+ *              X_GROUP_INVALID     if the buffer for the returned table name is NULL.
  *              X_NAME_INVALID      if the buffer for the returned variable name is NULL.
  *              X_INTERRUPTED       if smaxReleaseWaits() was called.
  *              X_INCOMPLETE        if the wait timed out.
@@ -901,12 +1042,12 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
  *
  */
 int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout) {
-  const char *funcName = "smaxWaitOnAnySubscribed()";
+  static const char *fn = "smaxWaitOnAnySubscribed";
   int status = X_SUCCESS;
   struct timespec endTime;
 
-  if(changedTable == NULL) return smaxError(funcName, X_GROUP_INVALID);
-  if(changedKey == NULL) return smaxError(funcName, X_NAME_INVALID);
+  if(changedTable == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "'changedTable' parameter is NULL");
+  if(changedKey == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "'changedKey' parameter is NULL");
 
   xvprintf("SMA-X> waiting for notification...\n");
 
@@ -927,24 +1068,28 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout)
     status = timeout > 0 ? pthread_cond_timedwait(&notifyBlock, &notifyLock, &endTime) : pthread_cond_wait(&notifyBlock, &notifyLock);
     if(status) {
       // If the wait returns with an error, the mutex is uncloked.
-      if(status == ETIMEDOUT) return X_INCOMPLETE;
-
-      fprintf(stderr, "WARNING! SMA-X : pthread_cond_wait() error %d. Ignored.\n", status);
+      if(status == ETIMEDOUT) return x_error(X_INCOMPLETE, status, fn, "wait timed out");
+      xdprintf("WARNING! SMA-X : pthread_cond_wait() error %d. Ignored.\n", status);
       continue;
+    }
+
+    if(!smaxIsConnected()) {
+      smaxUnlockNotify();
+      return x_error(X_NO_SERVICE, EPIPE, fn, "wait aborted due to broken connection");
     }
 
     // Check for premature release...
     if(!strcmp(notifyID, RELEASEID)) {
       smaxUnlockNotify();
-      return smaxError(funcName, X_INTERRUPTED);
+      return x_error(X_INTERRUPTED, EINTR, fn, "wait interrupted");
     }
 
     if(notifyID[0] == '\0') {
-      fprintf(stderr, "WARNING! SMA-X : published message contained NULL. Ignored.\n");
+      xdprintf("WARNING! SMA-X : published message contained NULL. Ignored.\n");
       continue;
     }
 
-    xvprintf("SMA-X> %s: got %s.\n", funcName, notifyID);
+    xvprintf("SMA-X> %s: got %s.\n", fn, notifyID);
 
     // Find the last separator
     sep = xLastSeparator(notifyID);
@@ -963,17 +1108,15 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout)
 
   smaxUnlockNotify();
 
-  if(status) return smaxError(funcName, status);
+  prop_error(fn, status);
 
   return X_SUCCESS;
 }
 
-
 /**
- * Unblocks all sma_wait*() calls, which will return X_REL_PREMATURE, as a result.
+ * Unblocks all smax_wait*() calls, which will return X_REL_PREMATURE, as a result.
  *
- * \return  X_SUCCESS (0)       if a variable was pushed on a host.
- *          X_NO_INIT           if the SMA-X sharing was not initialized, e.g. via smaxConnect().
+ * \return  X_SUCCESS (0)
  *
  * \sa smaxWaitOnAnySubscribed()
  *
@@ -987,22 +1130,22 @@ int smaxReleaseWaits() {
     char *oldid = notifyID;
     notifyID = realloc(notifyID, sizeof(RELEASEID));
     if(!notifyID) {
-      perror("WARNING! realloc notifyID");
+      perror("ERROR! alloc error");
       free(oldid);
+      exit(errno);
     }
-    notifySize = notifyID ? sizeof(RELEASEID) : 0;
+    notifySize = sizeof(RELEASEID);
   }
 
   if(notifyID) {
     strcpy(notifyID, RELEASEID);
     pthread_cond_broadcast(&notifyBlock);
   }
+
   smaxUnlockNotify();
 
   return X_SUCCESS;
 }
-
-
 
 /**
  * Retrieve the current number of variables stored on host (or owner ID).
@@ -1011,64 +1154,65 @@ int smaxReleaseWaits() {
  *
  * \return         The number of keys (fields) in the specified table (>= 0), or an error code (<0), such as:
  *                 X_NO_INIT           if the SMA-X sharing was not initialized, e.g. via smaConnect().
- *                 X_HOST_INVALID      if the host (owner ID) is NULL.
- *                 or one of the errors returned by redisxArrayRequest().
+ *                 X_GROUP_INVALID     if the table name is invalid.
+ *                 or one of the errors (&lt;0) returned by redisxRequest().
  *
  * @sa smaxGetKeys()
  */
 int smaxKeyCount(const char *table) {
-  const char *funcName = "smaNumVars()";
+  static const char *fn = "smaxKeyCount";
   RESP *reply;
   int status;
 
-  if(table == NULL) return smaxError(funcName, X_GROUP_INVALID);
+  if(table == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is NULL");
+  if(!table[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is empty");
 
   reply = redisxRequest(redis, "HLEN", table, NULL, NULL, &status);
   if(status) {
     redisxDestroyRESP(reply);
-    return smaxError(funcName, status);
+    return x_trace(fn, NULL, status);
   }
 
   status = redisxCheckRESP(reply, RESP_INT, 0);
-  if(status) return redisxError(funcName, status);
-
-  status = reply->n;
+  if(!status) status = reply->n;
   redisxDestroyRESP(reply);
 
-  if(status < 0) return smaxError(funcName, status);
+  prop_error(fn, status);
 
-  xvprintf("SMA-X> Get number of variables: %d.\n", reply->n);
-
-  return reply->n;
+  xvprintf("SMA-X> Get number of variables: %d.\n", status);
+  return status;
 }
-
 
 /**
  * Returns a snapshot of the key names stored in a given Redis hash table, ot NULL if there
  * was an error.
  *
- * \param[out]  table     Host name or owner ID whose variable to count.
+ * \param table           Host name or owner ID whose variable to count.
  * \param[out]  n         Pointer to which the number of keys (>=0) or an error (<0) is returned.
  *                        An error returned by redisxGetKeys(), or else:
  *
  *                          X_NO_INIT           if the SMA-X sharing was not initialized, e.g. via smaxConnect().
- *                          X_HOST_INVALID      if the host (owner ID) is NULL.
+ *                          X_GROUP_INVALID     if the table name is invalid.
+ *                          X_NULL              if the output 'n' pointer is NULL.
  *
  * \return          An array of pointers to the names of Redis keys.
  *
  * @sa smaxKeyCount()
  */
 char **smaxGetKeys(const char *table, int *n) {
+  static const char *fn = "smaxGetKeys";
+
   char **keys;
 
-  if(table == NULL) {
-    *n = X_GROUP_INVALID;
+  if(n == NULL) {
+    x_error(0, EINVAL, fn, "parameter 'n' is NULL");
     return NULL;
   }
 
   xvprintf("SMA-X> get variable names.\n");
 
   keys = redisxGetKeys(redis, table, n);
+
   if(*n > 0) return keys;
 
   // CLEANUP --- There was an error.
@@ -1077,41 +1221,48 @@ char **smaxGetKeys(const char *table, int *n) {
     for(i=*n; --i >= 0; ) if(keys[i]) free(keys[i]);
     free(keys);
   }
+
+  if(*n < 0) x_trace_null(fn, NULL);
+
   *n = 0;
+
   return NULL;
 }
-
 
 /**
  * \cond PROTECTED
  *
- * Retrieves data from the SMA-X database, interatively or as a pipelined request.
+ * Retrieves data from the SMA-X database, interactively or as a pipelined request.
  *
  * \param[in,out]   req           Pull request
- * \param[in]       channel       INTERACTIVE_CHANNEL or PIPELINE_CHANNEL
+ * \param[in]       channel       REDISX_INTERACTIVE_CHANNEL or REDISX_PIPELINE_CHANNEL
  *
  * \return              X_SUCCESS (0)       if successful, or
  *                      X_NULL              if the request or its value field is NULL
- *                      X_N_INIT            if the SMA-X library was not initialized.
- *                      X_HOST_INVALID      if the host (owner ID) is NULL.
- *                      X_GROUP_INVALID     if the 'group' argument is NULL.
+ *                      X_NO_INIT           if the SMA-X library was not initialized.
+ *                      X_GROUP_INVALID     if the table name is invalid.
+ *                      X_NAME_INVALID      if the 'key argument is invalid.
  *                      X_NO_SERVICE        if there was no connection to the Redis server.
  *                      X_FAILURE           if there was an underlying failure.
  */
 int smaxRead(PullRequest *req, int channel) {
-  const char *funcName = "smaxRead()";
+  static const char *fn = "smaxRead";
+
   char *args[5], *script = NULL;
   RESP *reply = NULL;
   RedisClient *cl;
   int status, n = 0;
 
-  if(req == NULL) return smaxError(funcName, X_NULL);
-  if(req->group == NULL) return smaxError(funcName, X_GROUP_INVALID);
-  if(req->value == NULL) return smaxError(funcName, X_NULL);
-  if(redis == NULL) smaxError(funcName, X_NO_INIT);
-  if(!redisxIsConnected(redis)) return smaxError(funcName, X_NO_SERVICE);
+  if(req == NULL) return x_error(X_NULL, EINVAL, fn, "'req' is NULL");
+  if(req->group == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "req->group is NULL");
+  if(!req->group[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "req->group is empty");
+  if(req->value == NULL) return x_error(X_NULL, EINVAL, fn, "req->value is NULL");
+  if(req->type != X_STRUCT) {
+    if(req->key == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "req->group is NULL");
+    if(!req->key[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "req->group is empty");
+  }
 
-  xvprintf("SMA-X> read %s:%s.\n", (req->group == NULL ? "" : req->group), req->key);
+  xvprintf("SMA-X> read %s:%s.\n", (req->group ? req->group : ""), (req->key ? req->key : ""));
 
   script = (req->type == X_STRUCT) ? GET_STRUCT : HGET_WITH_META;
 
@@ -1138,32 +1289,28 @@ int smaxRead(PullRequest *req, int channel) {
     args[n++] = req->key;
   }
 
-  cl = redisxGetClient(redis, channel);
-  if(cl == NULL) return smaxError(funcName, X_NO_SERVICE);
-
-  status = redisxLockEnabled(cl);
-  if(status) return smaxError(funcName, status);
+  cl = redisxGetLockedConnectedClient(redis, channel);
+  if(cl == NULL) return x_trace(fn, NULL, X_NO_SERVICE);
 
   // Call script
   status = redisxSendArrayRequestAsync(cl, args, NULL, n);
 
-  if(channel != PIPELINE_CHANNEL) if(!status) reply = redisxReadReplyAsync(cl);
+  if(channel != REDISX_PIPELINE_CHANNEL) if(!status) reply = redisxReadReplyAsync(cl);
 
   redisxUnlockClient(cl);
 
   // Process reply as needed...
-  if(channel != PIPELINE_CHANNEL) if(!status) {
+  if(reply) {
     // Process the value
     status = smaxProcessReadResponse(reply, req);
     redisxDestroyRESP(reply);
   }
 
-  if(status) return smaxError(funcName, status);
+  prop_error(fn, status);
 
   return X_SUCCESS;
 }
 /// \endcond
-
 
 /**
  * Private error handling for xProcessReadResponse(). Not used otherwise.
@@ -1171,9 +1318,8 @@ int smaxRead(PullRequest *req, int channel) {
  */
 static int RequestError(const PullRequest *req, int status) {
   if(req->meta) req->meta->status = status;
-  return smaxError("xProcessReadResponse()", status);
+  return status;
 }
-
 
 /**
  * \cond PROTECTED
@@ -1183,16 +1329,18 @@ static int RequestError(const PullRequest *req, int status) {
  * \param[in]       reply         String content of the Redis response to a read.
  * \param[in,out]   req           Pointer to a PullRequest structure to be completed with the data.
  *
- * \return              X_SUCCESS (0) if successful, or else an appropriate error
- *                      such as expected for sma_pull().
+ * \return              X_SUCCESS (0) if successful, or else an appropriate error code (&lt;0)
+ *                      such as expected for smax_pull().
  *
  */
 int smaxProcessReadResponse(RESP *reply, PullRequest *req) {
+  static const char *fn = "smaxProcessReadResponse";
+
   int status = X_SUCCESS;
   RESP *data = NULL;
 
-  if(req == NULL) return smaxError("smaxProcessReadResponse()", X_NULL);
-  if(reply == NULL) return RequestError(req, REDIS_NULL);
+  if(reply == NULL) return x_error(RequestError(req, REDIS_NULL), ENOENT, fn, "Redis NULL response");
+  if(req == NULL) return x_error(X_NULL, EINVAL, fn, "'req' is NULL");
 
   // Clear metadata if requested.
   if(req->meta != NULL) smaxResetMeta(req->meta);
@@ -1201,7 +1349,7 @@ int smaxProcessReadResponse(RESP *reply, PullRequest *req) {
   if(req->type == X_RAW || req->type == X_STRUCT) req->count = 1;
 
   // Check that request is not crazy.
-  if(req->count <= 0) return RequestError(req, X_SIZE_INVALID);
+  if(req->count <= 0) return x_error(RequestError(req, X_SIZE_INVALID), ERANGE, fn, "invalid req->count: %d", req->count);
 
   // (nil)
   if(reply->n < 0) {
@@ -1211,7 +1359,7 @@ int smaxProcessReadResponse(RESP *reply, PullRequest *req) {
   }
 
   // If we had a NULL value without n < 0, then it's an error.
-  if(!req->value) return RequestError(req, X_NULL);
+  if(!req->value) return x_error(RequestError(req, X_NULL), ENOENT, fn, "unexpected NULL value");
   xvprintf("SMA-X> received %s:%s.\n", req->group == NULL ? "" : req->group, req->key);
 
   // If expecting metadata, then initialize the destination metadata to defaults.
@@ -1239,7 +1387,7 @@ int smaxProcessReadResponse(RESP *reply, PullRequest *req) {
       XMeta *m = req->meta;
 
       m->storeBytes = component[0]->n;
-      if(reply->n > 1) m->storeType = xTypeForString((char *) component[1]->value);
+      if(reply->n > 1) m->storeType = smaxTypeForString((char *) component[1]->value);
       if(reply->n > 2) m->storeDim = xParseDims((char *) component[2]->value, m->storeSizes);
       if(reply->n > 3) smaxParseTime((char *) component[3]->value, &m->timestamp.tv_sec, &m->timestamp.tv_nsec);
       if(reply->n > 4) smaxSetOrigin(m, (char *) component[4]->value);
@@ -1264,26 +1412,26 @@ int smaxProcessReadResponse(RESP *reply, PullRequest *req) {
     }
     else if(req->type == X_STRING) {
       // Unpack strings
-      xUnpackStrings((char *) data->value, data->n, req->count, (char **) req->value);
+      smaxUnpackStrings((char *) data->value, data->n, req->count, (char **) req->value);
     }
     else {
       // Unpack fixed-sized types.
       int parsed;
       status = smaxStringToValues((char *) data->value, req->value, req->type, req->count, &parsed);
-      if(status >= 0) status = X_SUCCESS; // Keeps errors only, not the number of elements parsed.
     }
   }
 
   if(reply->type == RESP_ERROR) if(strstr("NOSCRIPT", (char *) reply->value)) return smaxScriptError("smaxProcessReadResponse()", X_NULL);
 
-  if(status) return RequestError(req, status);
+  prop_error(fn, RequestError(req, status));
 
+  // Keeps errors only, not the number of elements parsed.
   return X_SUCCESS;
 }
 /// \endcond
 
 static int ProcessStructRead(RESP **component, PullRequest *req) {
-  const char *funcName = "xProcessStructRead()";
+  static const char *fn = "xProcessStructRead";
 
   XStructure *base = (XStructure *) req->value;
   XStructure **s;
@@ -1293,11 +1441,17 @@ static int ProcessStructRead(RESP **component, PullRequest *req) {
 
   nStructs = component[0]->n;
 
-  if(nStructs <= 0) return smaxError(funcName, X_STRUCT_INVALID);
+  if(nStructs <= 0) return x_error(X_STRUCT_INVALID, EINVAL, fn, "invalid number of structures: %d", nStructs);
 
   // Allocate temporary storage
   names = (char **) calloc(nStructs, sizeof(char *));
+  if(!names) return x_error(X_NULL, errno, fn, "calloc() error (%d char *)", nStructs);
+
   metas = (XMeta *) calloc(nStructs, sizeof(XMeta));
+  if(!metas) {
+    free(names);
+    return x_error(X_NULL, errno, fn, "calloc() error (%d char *)", nStructs);
+  }
 
   if(req->meta != NULL) {
     smaxResetMeta(req->meta);
@@ -1308,6 +1462,11 @@ static int ProcessStructRead(RESP **component, PullRequest *req) {
 
   // Parse all structure data (for embedded structures)
   s = (XStructure **) calloc(nStructs, sizeof(XStructure *));
+  if(!s) {
+    free(metas);
+    free(names);
+    return x_error(X_NULL, errno, fn, "calloc() error (%d XStructure)", nStructs);
+  }
 
   for(i=0; i<nStructs; i++) {
     RESP **sub = (RESP **) component[0]->value;
@@ -1376,29 +1535,28 @@ static int ProcessStructRead(RESP **component, PullRequest *req) {
   free(metas);
   free(s);
 
-  if(status) return smaxError(funcName, status);
+  prop_error(fn, status);
 
   return X_SUCCESS;
 }
 
-
 static int ParseStructData(XStructure *s, RESP *names, RESP *data, XMeta *meta) {
-  const char *funcName = "xParseStructData()";
+  static const char *fn = "xParseStructData";
 
   RESP **component, **keys, **values, **types, **dims, **timestamps, **origins, **serials;
   int i;
 
-  if(names == NULL) return smaxError(funcName, X_NULL);
-  if(data == NULL) return smaxError(funcName, X_NULL);
-  if(names->type != RESP_ARRAY) return smaxError(funcName, REDIS_UNEXPECTED_RESP);
-  if(data->type != RESP_ARRAY) return smaxError(funcName, REDIS_UNEXPECTED_RESP);
-  if(data->n != HMGET_COMPONENTS) return smaxError(funcName, X_NOT_ENOUGH_TOKENS);
+  if(names == NULL) return x_error(X_NULL, EINVAL, fn, "RESP names is NULL");
+  if(data == NULL) return x_error(X_NULL, EINVAL, fn, "RESP data is NULL");
+  if(names->type != RESP_ARRAY) return x_error(REDIS_UNEXPECTED_RESP, EINVAL, fn, "RESP names is not an array: '%c'", names->type);
+  if(data->type != RESP_ARRAY) return x_error(REDIS_UNEXPECTED_RESP, EINVAL, fn, "RESP data is not an array: '%c'", data->type);
+  if(data->n != HMGET_COMPONENTS) return x_error(X_NOT_ENOUGH_TOKENS, ERANGE, fn, "RESP data size: expected %d, got %d", HMGET_COMPONENTS, data->n);
 
   component = (RESP **) data->value;
 
   for(i=HMGET_COMPONENTS; --i >= 0; ) {
-    if(component[i]->type != RESP_ARRAY) return smaxError(funcName, REDIS_UNEXPECTED_RESP);
-    if(component[i]->n != names->n) return smaxError(funcName, X_NOT_ENOUGH_TOKENS);
+    if(component[i]->type != RESP_ARRAY) return x_error(REDIS_UNEXPECTED_RESP, EINVAL, fn, "RESP component[%d] is not an array: '%c'", i, component[i]->type);
+    if(component[i]->n != names->n) return x_error(X_NOT_ENOUGH_TOKENS, ERANGE, fn, "RESP component[%d] wrong size: expected %d, got %d", i, names->n, component[i]->n);
   }
 
   if(meta != NULL) smaxResetMeta(meta);
@@ -1422,7 +1580,7 @@ static int ParseStructData(XStructure *s, RESP *names, RESP *data, XMeta *meta) 
     f->value = (char *) values[i]->value;
     values[i]->value = NULL;    // Dereference the RESP data so it does not get destroyed with RESP.
 
-    f->type = xTypeForString((char *) types[i]->value);
+    f->type = smaxTypeForString((char *) types[i]->value);
     f->ndim = xParseDims((char *) dims[i]->value, f->sizes);
 
     xSetField(s, f);
@@ -1446,12 +1604,10 @@ static int ParseStructData(XStructure *s, RESP *names, RESP *data, XMeta *meta) 
   return X_SUCCESS;
 }
 
-
 /**
- *
  * \cond PROTECTED
  *
- * Sends a write request to REDIS over the specified communication channel. The caller
+ * Sends a write request to Redis over the specified communication channel. The caller
  * is responsible for granting exclusive access to that channel before calling this
  * function in order to avoid clobber in a parallel environment.
  *
@@ -1468,32 +1624,30 @@ static int ParseStructData(XStructure *s, RESP *names, RESP *data, XMeta *meta) 
  * \param f             XField value to write (it cannot be an XStructure!)
  *
  * \return              X_SUCCESS       if successful, or one of the errors returned by setRedisValue(), or
- *                      X_NO_INIT       if the SMA-X sharing was not initialized (via sma_x_open()).
- *                      X_HOST_INVALID  if the host (owner ID) is NULL.
- *                      X_NAME_INVALID  if the 'key' arhument is NULL.
+ *                      X_NO_INIT       if the SMA-X sharing was not initialized (via smax_x_open()).
+ *                      X_GROUP_INVALID if the table name is invalid.
+ *                      X_NAME_INVALID  if the field's name is invalid.
  *                      X_SIZE_INVALID  if ndim or sizes is invalid or if the total element count exceeds
  *                                      X_MAX_ELEMENTS.
  *                      X_NULL          if the 'value' argument is NULL.
  */
 int smaxWrite(const char *table, const XField *f) {
-  const char *funcName = "smaxWrite()";
+  static const char *fn = "smaxWrite";
 
   int status;
   char *args[9];
   char dims[X_MAX_STRING_DIMS];
   RedisClient *cl;
 
-  if(table == NULL) return smaxError(funcName, X_GROUP_INVALID);
-  if(f->name == NULL) return smaxError(funcName, X_NAME_INVALID);
-  if(f->value == NULL) return smaxError(funcName, X_NULL);
-  if(f->ndim < 0 || f->ndim > X_MAX_DIMS) return smaxError(funcName, X_SIZE_INVALID);
-  if(xGetFieldCount(f) <= 0) return smaxError(funcName, X_SIZE_INVALID);
-  if(redis == NULL) return smaxError(funcName, X_NO_INIT);
-  if(!redisxIsConnected(redis)) return smaxError(funcName, X_NO_SERVICE);
+  if(table == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is NULL");
+  if(!table[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is empty");
+  if(f->name == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "field->name is NULL");
+  if(!f->name[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "field->name is empty");
+  if(f->value == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "field->value is NULL");
   if(HSET_WITH_META == NULL) return smaxScriptError("HSetWithMeta", X_NULL);
 
   // Create timestamped string values.
-  if(f->type == X_STRUCT) return smaxError(funcName, X_TYPE_INVALID);
+  if(f->type == X_STRUCT) return x_error(X_TYPE_INVALID, EINVAL, fn, "structures not supported");
 
   xPrintDims(dims, f->ndim, f->sizes);
 
@@ -1504,41 +1658,41 @@ int smaxWrite(const char *table, const XField *f) {
   args[4] = smaxGetProgramID();
   args[5] = f->name;                // hash field name.
   args[6] = f->value;               // Value. If not serialized, we'll deal with it below...
-  args[7] = xStringType(f->type);
+  args[7] = smaxStringType(f->type);
   args[8] = dims;
 
-  cl = redisxGetClient(redis, INTERACTIVE_CHANNEL);
-  if(cl == NULL) return smaxError(funcName, X_NO_SERVICE);
-
   if(!f->isSerialized) {
+    int count = xGetFieldCount(f);
+    prop_error(fn, count);
+
     args[6] = smaxValuesToString(f->value, f->type, xGetFieldCount(f), NULL, 0);
-    if(!args[6]) return smaxError(funcName, X_NULL);
+    if(!args[6]) return x_trace(fn, NULL, X_NULL);
   }
 
-  status = redisxLockEnabled(cl);
+  cl = redisxGetLockedConnectedClient(redis, REDISX_INTERACTIVE_CHANNEL);
+  if(cl == NULL) {
+    if(!f->isSerialized) if(f->type != X_RAW) free(args[6]);
+    return x_trace(fn, NULL, X_NO_SERVICE);
+  }
+
+  // Writes not to request reply.
+  status = redisxSkipReplyAsync(cl);
   if(!status) {
-    // Writes not to request reply.
-    status = redisxSkipReplyAsync(cl);
+    int L[9] = {0};
 
     // Call script
-    if(!status) {
-      int L[9] = {0};
-      status = redisxSendArrayRequestAsync(cl, args, L, 9);
-    }
-
-    if(status) smaxError(funcName, status);
-
-    redisxUnlockClient(cl);
+    status = redisxSendArrayRequestAsync(cl, args, L, 9);
   }
+
+  redisxUnlockClient(cl);
 
   if(!f->isSerialized) if(f->type != X_RAW) free(args[6]);
 
-  if(status) return smaxError(funcName, status);
+  prop_error(fn, status);
 
   return X_SUCCESS;
 }
 /// \endcond
-
 
 /**
  * Writes the structure data, recursively for nested sub-structures, into the database, by calling
@@ -1552,18 +1706,18 @@ int smaxWrite(const char *table, const XField *f) {
  *                      should usually set this TRUE, and as the call processes nested
  *                      substructures, the recursion will make those calls with the parameter set to FALSE.
  *
- * \return      X_SUCCESS, or else an appropriate error code.
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0).
  */
 static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure *s, boolean isTop) {
-  const char *funcName = "xSendStructDataAsync()";
+  static const char *fn = "xSendStructDataAsync";
 
   int status = X_SUCCESS, nFields = 0, *L, n, next;
   char **args;
   XField *f;
 
-  if(id == NULL) return smaxError(funcName, X_GROUP_INVALID);
-  if(s == NULL) return smaxError(funcName, X_NULL);
-  if(!redisxIsConnected(redis)) return smaxError(funcName, X_NO_SERVICE);
+  if(id == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "'id' is NULL");
+  if(!id[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "'id' is empty");
+  if(s == NULL) return x_error(X_NULL, EINVAL, fn, "input structure is NULL");
   if(HMSET_WITH_META == NULL) return smaxScriptError("HMSetWithMeta", X_NULL);
 
   for(f = s->firstField; f != NULL; f = f->next) {
@@ -1574,13 +1728,13 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
   if(nFields == 0) return X_SUCCESS;    // Empty struct, nothing to do...
 
   n = 6 + nFields * HMSET_COMPONENTS;
-  args = (char **) calloc(n, sizeof(char *));
-  if(!args) return smaxError(funcName, X_FAILURE);
+  args = (char **) malloc(n * sizeof(char *));
+  if(!args) return x_error(X_FAILURE, errno, fn, "malloc() error (%d char *)", n);
 
   L = (int *) calloc(n, sizeof(int));
   if(!L) {
     free(args);
-    return smaxError(funcName, X_FAILURE);
+    return x_error(X_FAILURE, errno, fn, "malloc() error (%d int)", n);
   }
 
   args[0] = "EVALSHA";
@@ -1595,7 +1749,7 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
     if(!xIsFieldValid(f)) continue;
 
     args[next + HMSET_NAME_OFFSET] = f->name;
-    args[next + HMSET_TYPE_OFFSET] = xStringType(f->type);
+    args[next + HMSET_TYPE_OFFSET] = smaxStringType(f->type);
 
     if(f->type == X_STRUCT) {
       args[next + HMSET_VALUE_OFFSET] = xGetAggregateID(id, f->name);
@@ -1615,12 +1769,9 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
   if(!status) {
     // Don't want a reply.
     status = redisxSkipReplyAsync(cl);
-    if(status) smaxError(funcName, status);
 
     // Call script
-    status = redisxSendArrayRequestAsync(cl, args, NULL, n);
-
-    if(status) smaxError(funcName, status);
+    if(!status) status = redisxSendArrayRequestAsync(cl, args, NULL, n);
   }
 
   next = 5;
@@ -1636,11 +1787,10 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
   free(args);
   free(L);
 
-  if(status) return smaxError(funcName, status);
+  prop_error(fn, status);
 
   return X_SUCCESS;
 }
-
 
 /**
  * Loads the script SHA1 ids for a given SMA-X script name, and checks to make sure
@@ -1653,12 +1803,14 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
  *
  *                    X_NULL            if either argument is NULL, or if there is no script SHA available
  *                                      in Redis for the given name, or
- *                    X_NAME_INVALID    if the name is empty, or
+ *                    X_NAME_INVALID    if the name is invalid, or
  *                    X_NO_SERVICE      if the script with the given SHA1 id is not loaded into Redis.
  *
  * @sa InitScriptsAsync()
  */
 static int InitScript(const char *name, char **pSHA1) {
+  static const char *fn = "InitScript";
+
   RESP *reply;
   char *sha1 = NULL;
   int status = X_SUCCESS;
@@ -1667,8 +1819,11 @@ static int InitScript(const char *name, char **pSHA1) {
   *pSHA1 = NULL;
 
   sha1 = smaxGetScriptSHA1(name, &status);
-  if(status) return status;
-  if(!sha1) return X_NULL;
+  if(status) {
+    if(sha1) free(sha1);
+    return x_trace(fn, name, status);
+  }
+  if(!sha1) return x_trace(fn, name, X_NULL);
 
   reply = redisxRequest(redis, "SCRIPT", "EXISTS", sha1, NULL, &status);
   if(!status) status = redisxCheckRESP(reply, RESP_ARRAY, 1);
@@ -1679,11 +1834,12 @@ static int InitScript(const char *name, char **pSHA1) {
 
   redisxDestroyRESP(reply);
 
-  if(!status) *pSHA1 = sha1;
+  if(status) return x_trace(fn, name, status);
 
-  return status;
+  *pSHA1 = sha1;
+
+  return X_SUCCESS;
 }
-
 
 /**
  * Initializes the SHA1 script IDs for the essential LUA helpers.
@@ -1704,6 +1860,7 @@ static void InitScriptsAsync() {
     }
 
     if(status != X_SUCCESS) {
+      x_trace_null("InitScriptsAsync", NULL);
 
       if(!smaxIsDisabled()) {
         if(first) fprintf(stderr, "ERROR! SMA-X: Missing LUA script(s) in Redis.\n");
@@ -1716,8 +1873,8 @@ static void InitScriptsAsync() {
   }
 }
 
-
 /// \cond PROTECTED
+
 /**
  * Get exclusive access for accessing or updating notifications.
  *
@@ -1730,7 +1887,6 @@ int smaxLockNotify() {
   if(status) fprintf(stderr, "WARNING! SMA-X : smaxLockNotify() failed with code: %d.\n", status);
   return status;
 }
-
 
 /**
  * Relinquish exclusive access notifications.
@@ -1746,7 +1902,7 @@ int smaxUnlockNotify() {
 }
 
 
-static void ProcessUpdateNotificationAsync(const char *pattern, const char *channel, const char *msg, int length) {
+static void ProcessUpdateNotificationAsync(const char *pattern, const char *channel, const char *msg, long length) {
   xdprintf("{message} %s %s\n", channel, msg);
 
   if(strncmp(channel, SMAX_UPDATES, SMAX_UPDATES_LENGTH)) return; // Wrong message prefix
@@ -1773,7 +1929,6 @@ static void ProcessUpdateNotificationAsync(const char *pattern, const char *chan
   smaxUnlockNotify();
 }
 
-
 /**
  *
  * Process responses to pipelined HSET calls (integer RESP).
@@ -1781,6 +1936,7 @@ static void ProcessUpdateNotificationAsync(const char *pattern, const char *chan
  * \param reply     The RESP reply received from Redis on its pipeline channel.
  *
  */
+// cppcheck-suppress constParameterCallback
 void smaxProcessPipedWritesAsync(RESP *reply) {
   if(reply->type == RESP_INT) {
     xvprintf("pipe RESP: %d\n", reply->n);

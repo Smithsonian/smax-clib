@@ -14,11 +14,7 @@
 #include <errno.h>
 #include <math.h>
 
-#include "redisx.h"
-#include "smax.h"
 #include "smax-private.h"
-
-
 
 /**
  * Adds/updates metadata associated with an SMA-X variable. The data will be pushed via the
@@ -36,21 +32,20 @@
  * \sa smaxPullMeta(), redisxSetValue()
  */
 int smaxPushMeta(const char *meta, const char *table, const char *key, const char *value) {
-  static const char *funcName = "smaxPushMeta()";
+  static const char *fn = "smaxPushMeta";
 
   int status;
   Redis *redis = smaxGetRedis();
   char *var, *channel;
 
-  if(redis == NULL) return smaxError(funcName, X_NO_INIT);
+  if(meta == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "input 'meta' is NULL");
+  if(!meta[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "input 'meta' is empty");
+  if(value == NULL) return x_error(X_NULL, EINVAL, fn, "int value is NULL");
 
-  if(meta == NULL) return smaxError(funcName, X_GROUP_INVALID);
-  if(table == NULL) return smaxError(funcName, X_GROUP_INVALID);
-  if(key == NULL) return smaxError(funcName, X_NAME_INVALID);
-  if(value == NULL)  return smaxError(funcName, X_NULL);
+  if(redis == NULL) return x_error(X_NO_INIT, ENOTCONN, fn, "not connected");
 
   var = xGetAggregateID(table, key);
-  if(var == NULL) return smaxError(funcName, X_NULL);
+  if(var == NULL) return x_trace(fn, NULL, X_NULL);
 
   // Use the interactive channel to ensure the notification
   // strictly follows the update itself. The extra metadata should
@@ -62,14 +57,13 @@ int smaxPushMeta(const char *meta, const char *table, const char *key, const cha
 
   free(var);
 
-  if(channel == NULL) return X_INCOMPLETE;
+  if(channel == NULL) return x_trace(fn, NULL, X_INCOMPLETE);
 
   if(!status) status = redisxNotify(redis, channel, smaxGetProgramID());
   free(channel);
 
-  return status ? X_INCOMPLETE : X_SUCCESS;
+  return status ? x_trace(fn, NULL, X_INCOMPLETE) : X_SUCCESS;
 }
-
 
 /**
  * Retrieves a metadata string value for a given variable from the database
@@ -84,45 +78,35 @@ int smaxPushMeta(const char *meta, const char *table, const char *key, const cha
  * \sa setPushMeta()
  */
 char *smaxPullMeta(const char *meta, const char *table, const char *key, int *status) {
-  static const char *funcName = "smaxPullMeta()";
+  static const char *fn = "smaxPullMeta";
 
   Redis *redis = smaxGetRedis();
-  RESP *reply;
-  char *var;
+  char *var, *value;
 
   if(redis == NULL) {
-    smaxError(funcName, X_NO_INIT);
+    x_error(X_NO_INIT, EINVAL, fn, "not initialized");
     return NULL;
   }
 
   if(meta == NULL) {
-    smaxError(funcName, X_GROUP_INVALID);
+    x_error(X_GROUP_INVALID, EINVAL, fn, "meta name is NULL");
     return NULL;
   }
 
-  if(key == NULL) {
-    smaxError(funcName, X_NAME_INVALID);
+  if(!meta[0]) {
+    x_error(X_GROUP_INVALID, EINVAL, fn, "meta name is empty");
     return NULL;
   }
 
   var = xGetAggregateID(table, key);
-  if(var == NULL) {
-    smaxError(funcName, X_NULL);
-    return NULL;
-  }
+  if(var == NULL) return x_trace_null(fn, NULL);
 
-  reply = redisxGetValue(redis, meta, var, status);
-
+  value = redisxGetStringValue(redis, meta, var, status);
   free(var);
 
-  *status = redisxCheckDestroyRESP(reply, RESP_BULK_STRING, 0);
-  if(*status) return NULL;
+  if(status) x_trace_null(fn, NULL);
 
-  var = reply->value;
-  reply->value = NULL;
-  redisxDestroyRESP(reply);
-
-  return var;
+  return value;
 }
 
 /**
@@ -142,7 +126,7 @@ double smaxPullTime(const char *table, const char *key) {
   double ts;
 
   if(status) {
-    xError("smaxPullTime()", status);
+    x_trace_null("smaxPullTime", NULL);
     if(str) free(str);
     return NAN;
   }
@@ -154,7 +138,6 @@ double smaxPullTime(const char *table, const char *key) {
 
   return ts;
 }
-
 
 /**
  * Retrieves the timestamp for a given variable from the database.
@@ -170,12 +153,19 @@ double smaxPullTime(const char *table, const char *key) {
  * \sa setPushMeta()
  */
 XType smaxPullTypeDimension(const char *table, const char *key, int *ndim, int *sizes) {
+  static const char *fn = "smaxPullTYpeDimension";
+
   XType type;
   int status;
   char *str = smaxPullMeta(SMAX_TYPES, table, key, &status);
 
-  if(status) type = X_UNKNOWN;
-  else type = xTypeForString(str);
+  if(status) {
+    type = x_trace(fn, NULL, X_UNKNOWN);
+  }
+  else {
+    type = smaxTypeForString(str);
+    if(type == X_UNKNOWN) x_trace(fn, NULL, X_UNKNOWN);
+  }
 
   if(str) free(str);
 
@@ -202,9 +192,9 @@ XType smaxPullTypeDimension(const char *table, const char *key, int *ndim, int *
  * \sa smaxSetDescription(), smaxPushMeta()
  */
 int smaxSetDescription(const char *table, const char *key, const char *description) {
-  return smaxPushMeta(META_DESCRIPTION, table, key, description);
+  prop_error("smaxSetDescription", smaxPushMeta(META_DESCRIPTION, table, key, description));
+  return X_SUCCESS;
 }
-
 
 /**
  * Returns a concise description of a variable.
@@ -217,10 +207,11 @@ int smaxSetDescription(const char *table, const char *key, const char *descripti
  * \sa smaxSetDescription()
  */
 char *smaxGetDescription(const char *table, const char *key) {
-  int status;
-  return smaxPullMeta(META_DESCRIPTION, table, key, &status);
+  int status = X_SUCCESS;
+  char *desc = smaxPullMeta(META_DESCRIPTION, table, key, &status);
+  if(status) x_trace_null("smaxGetDescription", NULL);
+  return desc;
 }
-
 
 /**
  * Sets the physical unit name for a given SMA-X variable.
@@ -235,9 +226,9 @@ char *smaxGetDescription(const char *table, const char *key) {
  * \sa smaxGetUnits(), smaxPushMeta()
  */
 int smaxSetUnits(const char *table, const char *key, const char *unit) {
-  return smaxPushMeta(META_UNIT, table, key, unit);
+  prop_error("smaxSetUnits", smaxPushMeta(META_UNIT, table, key, unit));
+  return X_SUCCESS;
 }
-
 
 /**
  * Returns the physical unit name, if any, for the given variable.
@@ -250,10 +241,11 @@ int smaxSetUnits(const char *table, const char *key, const char *unit) {
  * \sa smaxSetUnits()
  */
 char *smaxGetUnits(const char *table, const char *key) {
-  int status;
-  return smaxPullMeta(META_UNIT, table, key, &status);
+  int status = X_SUCCESS;
+  char *unit = smaxPullMeta(META_UNIT, table, key, &status);
+  if(status) x_trace_null("smaxGetUnits", NULL);
+  return unit;
 }
-
 
 /**
  * Defines the n'th coordinate axis for a given SMA-X coordinate system table id.
@@ -263,19 +255,21 @@ char *smaxGetUnits(const char *table, const char *key) {
  * \param axis      Pointer to the structure describing the coordinate axis.
  *
  * \return          X_SUCCESS (0)   if the coordinate axis was successfully set in the database.
- *                  or else re return value of redisxMultiSet().
+ *                  or else the return value of redisxMultiSet().
  *
  * \sa smaxSetCoordinateAxis(), redisxMultiSet()
  *
  */
 int smaxSetCoordinateAxis(const char *id, int n, const XCoordinateAxis *axis) {
+  static const char *fn = "smaxSetCoordinateAxis";
+
   RedisEntry fields[5];
   char cidx[30], ridx[30], rval[30], step[30];
   int status;
 
   sprintf(cidx, "%d", n+1);
   id = xGetAggregateID(id, cidx);
-  if(!id) return X_FAILURE;
+  if(!id) return x_trace(fn, NULL, X_FAILURE);
 
   sprintf(ridx, "%g", axis->refIndex);
   sprintf(rval, "%g", axis->refValue);
@@ -296,10 +290,11 @@ int smaxSetCoordinateAxis(const char *id, int n, const XCoordinateAxis *axis) {
   fields[4].key = "step";
   fields[4].value = step;
 
-  status = redisxMultiSet(smaxGetRedis(), id, fields, 5, TRUE);
+  status = redisxMultiSet(smaxGetRedis(), id, fields, 5, FALSE);
   free((char *) id);
 
-  return status;
+  prop_error(fn, status);
+  return X_SUCCESS;
 }
 
 /**
@@ -308,36 +303,42 @@ int smaxSetCoordinateAxis(const char *id, int n, const XCoordinateAxis *axis) {
  * \param id        Fully qualified SMA-X coordinate system ID.
  * \param n         The (0-based) index of the coordinate axis
  *
- * \return          Pointer to a newlt allocated CoordinateAxis structure or NULL if
+ * \return          Pointer to a newly allocated XCoordinateAxis structure or NULL if
  *                  the axis is undefined, or could not be retrieved from the database.
  *
  * \sa smaxSetCoordinateAxis()
  *
  */
 XCoordinateAxis *smaxGetCoordinateAxis(const char *id, int n) {
+  static const char *fn = "smaxGetCoordinateAxis";
+
   RedisEntry *fields;
   XCoordinateAxis *axis;
   char *axisName, idx[20];
   int i;
 
   if(n < 0) {
-    smaxError("xSetCoordinateAxis()", X_SIZE_INVALID);
+    x_error(0, EINVAL, fn, "invalid coordinate index: %d", n);
     return NULL;
   }
 
   sprintf(idx, "%d", (n+1));
   axisName = xGetAggregateID(id, idx);
+  if(!axisName) return x_trace_null(fn, NULL);
 
   fields = redisxGetTable(smaxGetRedis(), axisName, &n);
   free(axisName);
 
-  if(fields == NULL) return NULL;
   if(n <= 0) {
-    free(fields);
-    return NULL;
+    if(fields) free(fields);
+    return x_trace_null(fn, NULL);
   }
 
+  if(fields == NULL) return x_trace_null(fn, NULL);
+
   axis = (XCoordinateAxis *) calloc(1, sizeof(XCoordinateAxis));
+  x_check_alloc(axis);
+
   axis->step = 1.0;
 
   for(i=0; i<n; i++) {
@@ -380,7 +381,6 @@ XCoordinateAxis *smaxGetCoordinateAxis(const char *id, int n) {
   return axis;
 }
 
-
 /**
  * Sets the coordinate system metadata for data in the database.
  *
@@ -395,21 +395,31 @@ XCoordinateAxis *smaxGetCoordinateAxis(const char *id, int n) {
  * \sa smaxSetCoordinateAxis()
  */
 int smaxSetCoordinateSystem(const char *table, const char *key, const XCoordinateSystem *coords) {
+  static const char *fn = "smaxSetCoordinateSystem";
+
   int i;
   int firstError = 0;
-  const char *var, *id;
+  char *var, *id;
 
   var = xGetAggregateID(table, key);
+  if(!var) return x_trace(fn, NULL, X_NULL);
+
   id = xGetAggregateID(META_COORDS, var);
+  free(var);
+
+  if(!id) return x_trace(fn, NULL, X_NULL);
 
   for(i=0; i<coords->nAxis; i++) {
     int status = smaxSetCoordinateAxis(id, i, &coords->axis[i]);
     if(status) if(!firstError) firstError = status;
   }
 
-  return firstError;
-}
+  free(id);
 
+  prop_error(fn, firstError);
+
+  return X_SUCCESS;
+}
 
 /**
  * Returns the coordinate system, if any, associated to a given SMA-X variable.
@@ -423,33 +433,43 @@ int smaxSetCoordinateSystem(const char *table, const char *key, const XCoordinat
  * \sa smaxGetCoordinateAxis()
  */
 XCoordinateSystem *smaxGetCoordinateSystem(const char *table, const char *key) {
+  static const char *fn = "smaxGetCoordinateSystem";
+
   XCoordinateSystem *s;
   XCoordinateAxis *a[X_MAX_DIMS];
   char *var, *id;
   int n;
 
   var = xGetAggregateID(table, key);
+  if(!var) return x_trace_null(fn, NULL);
+
   id = xGetAggregateID(META_COORDS, var);
+  free(var);
+  if(!id) return x_trace_null(fn, NULL);
 
   for(n=0; n<X_MAX_DIMS; n++) {
     a[n] = smaxGetCoordinateAxis(id, n);
-    if(a[n] == NULL) break;
+    if(a[n] == NULL) {
+      x_trace_null(fn, NULL);
+      break;
+    }
   }
 
   free(id);
-  free(var);
 
   if(n == 0) return NULL;
 
   s = (XCoordinateSystem *) calloc(1, sizeof(XCoordinateSystem));
+  x_check_alloc(s);
+
   s->nAxis = n;
   s->axis = (XCoordinateAxis *) calloc(n, sizeof(XCoordinateAxis));
+  x_check_alloc(s->axis);
 
   while(--n >= 0) s->axis[n] = *a[n];
 
   return s;
 }
-
 
 /**
  * Creates a coordinate system with the desired dimension, and standard Cartesian coordinates
@@ -465,16 +485,16 @@ XCoordinateSystem *smaxGetCoordinateSystem(const char *table, const char *key) {
 XCoordinateSystem *smaxCreateCoordinateSystem(int nAxis) {
   XCoordinateSystem *coords;
 
-  if(nAxis <= 0) return NULL;
-
-  coords = (XCoordinateSystem *) calloc(1, sizeof(XCoordinateSystem));
-  if(!coords) return NULL;
-
-  coords->axis = (XCoordinateAxis *) calloc(nAxis, sizeof(XCoordinateAxis));
-  if(!coords->axis) {
-    free(coords);
+  if(nAxis <= 0 || nAxis > X_MAX_DIMS) {
+    x_error(0, EINVAL, "smaxCreateCoordinateSystem", "invalid dimension: %d", nAxis);
     return NULL;
   }
+
+  coords = (XCoordinateSystem *) calloc(1, sizeof(XCoordinateSystem));
+  x_check_alloc(coords);
+
+  coords->axis = (XCoordinateAxis *) calloc(nAxis, sizeof(XCoordinateAxis));
+  x_check_alloc(coords->axis);
 
   coords->nAxis = nAxis;
 
@@ -485,7 +505,6 @@ XCoordinateSystem *smaxCreateCoordinateSystem(int nAxis) {
 
   return coords;
 }
-
 
 /**
  * Deallocates a coordinate system structure.

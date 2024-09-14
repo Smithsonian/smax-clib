@@ -13,13 +13,13 @@
 #ifndef SMAX_PRIVATE_H_
 #define SMAX_PRIVATE_H_
 
+#define __XCHANGE_INTERNAL_API__        ///< User internal definitions
+
 #include "smax.h"
-#include "redisx.h"
 
 #define RELEASEID       "<release>"     ///< Redis PUB/SUB channel prefix for wait release notifications.
 
 /// \cond PROTECTED
-
 
 typedef struct PullRequest {
   char *group;
@@ -31,31 +31,13 @@ typedef struct PullRequest {
   struct PullRequest *next;
 } PullRequest;
 
-/**
- * An single entry (array of doubles) in a SMA-X buffer,
- */
-typedef struct Entry {
-  double t;
-  double *values;
-} Entry;
 
-/**
- * A buffered sequence of SMA-X numerical data.
- *
- */
-typedef struct Buffer {
-  pthread_mutex_t mutex;
-  int id;
-  char *channel;
-  char *table;
-  char *key;
-  int count;
-  int size;
-  int firstIndex;
-  int n;
-  Entry *entries;
-  struct Buffer *next;
-} Buffer;
+int smaxLockConfig();
+int smaxUnlockConfig();
+int smaxLockNotify();
+int smaxUnlockNotify();
+
+long smaxGetHash(const char *buf, const int size, const XType type);
 
 int smaxRead(PullRequest *req, int channel);
 int smaxWrite(const char *group, const XField *f);
@@ -65,7 +47,7 @@ void smaxProcessPipedWritesAsync(RESP *reply);
 unsigned char smaxGetHashLookupIndex(const char *group, int lGroup, const char *key, int lKey);
 char *smaxGetUpdateChannelPattern(const char *table, const char *key);
 int smaxStorePush(const char *table, const XField *field);
-void smaxTransmitErrorHandler(Redis *r, int channel, const char *op);
+void smaxTransmitErrorHandler(Redis *r, enum redisx_channel channel, const char *op);
 int smaxScriptError(const char *name, int status);
 int smaxScriptErrorAsync(const char *name, int status);
 boolean smaxIsDisabled();

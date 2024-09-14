@@ -18,7 +18,6 @@
 #include <errno.h>
 #include <ctype.h>
 
-#include "smax.h"
 #include "smax-private.h"
 
 #if SMAX_LEGACY
@@ -26,11 +25,8 @@
 #endif
 
 
-
-
 // Local prototypes ----------------------------------->
 static void *SMAXReconnectThread(void *arg);
-
 
 // Local variables ------------------------------------>
 
@@ -74,7 +70,8 @@ int smaxUnlockConfig() {
  */
 XMeta *smaxCreateMeta() {
   XMeta *m = (XMeta *) malloc(sizeof(XMeta));
-  if(m) smaxResetMeta(m);
+  x_check_alloc(m);
+  smaxResetMeta(m);
   return m;
 }
 
@@ -101,7 +98,9 @@ void smaxResetMeta(XMeta *m) {
  * @return      the total number of elements represented by the metadata
  */
 int smaxGetMetaCount(const XMeta *m) {
-  return xGetElementCount(m->storeDim, m->storeSizes);
+  int n = xGetElementCount(m->storeDim, m->storeSizes);
+  prop_error("smaxGetMetaCount", n);
+  return n;
 }
 
 /**
@@ -133,7 +132,8 @@ void smaxSetOrigin(XMeta *m, const char *origin) {
  * @sa smaxSetResilient()
  * @sa redisxSetTrasmitErrorHandler()
  */
-void smaxTransmitErrorHandler(Redis *redis, int channel, const char *op) {
+// cppcheck-suppress constParameterPointer
+void smaxTransmitErrorHandler(Redis *redis, enum redisx_channel channel, const char *op) {
   pthread_t tid;
 
   if(redis != smaxGetRedis()) {
@@ -248,7 +248,6 @@ int smaxError(const char *func, int errorCode) {
   return redisxError(func, errorCode);
 }
 
-
 /**
  * Returns a string description for one of the RM error codes.
  *
@@ -266,7 +265,6 @@ const char *smaxErrorDescription(int code) {
   return redisxErrorDescription(code);
 }
 
-
 /**
  * \cond PROTECTED
  *
@@ -280,11 +278,8 @@ void smaxDestroyPullRequest(PullRequest *p) {
   if(p->key != NULL) free(p->key);
   free(p);
 }
-/// \endcond
-
 
 /**
- * \cond PROTECTED
  *
  * Returns a hash table lookup index for the given table (group) name and
  * Redis field (key) name.
@@ -314,8 +309,9 @@ unsigned char smaxGetHashLookupIndex(const char *table, int lTab, const char *ke
 }
 /// \endcond
 
-
 /**
+ * \cond PROTECTED
+ *
  * A quick 32-bit integer hashing algorithm. It uses a combination of 32-bit XOR products and summing to
  * obtain something reasonably robust at detecting changes. The returned hash is unique for data that fits in
  * 4-bytes.
@@ -347,7 +343,7 @@ long smaxGetHash(const char *buf, const int size, const XType type) {
 
   return sum;
 }
-
+/// \endcond
 
 /**
  * Gets the SHA1 script ID for the currently loaded script with the specified name.
@@ -361,15 +357,24 @@ long smaxGetHash(const char *buf, const int size, const XType type) {
  *
  */
 char *smaxGetScriptSHA1(const char *scriptName, int *status) {
-  static const char *funcName = "smaxGetScriptSHA1()";
+  static const char *fn = "smaxGetScriptSHA1";
 
   Redis *redis = smaxGetRedis();
   RESP *reply;
   char *sha1;
 
+  if(!status) {
+    x_error(0, EINVAL, fn, "output status is NULL");
+    return NULL;
+  }
 
   if(scriptName == NULL) {
-    *status = smaxError(funcName, X_NAME_INVALID);
+    *status = x_error(X_NAME_INVALID, EINVAL, fn, "script name is NULL");
+    return NULL;
+  }
+
+  if(!scriptName[0]) {
+    *status = x_error(X_NAME_INVALID, EINVAL, fn, "script name is empty");
     return NULL;
   }
 
@@ -377,15 +382,11 @@ char *smaxGetScriptSHA1(const char *scriptName, int *status) {
 
   if(*status) {
     redisxDestroyRESP(reply);
-    smaxError(funcName, *status);
-    return NULL;
+    return x_trace_null(fn, NULL);
   }
 
   *status = redisxCheckDestroyRESP(reply, RESP_BULK_STRING, 0);
-  if(*status) {
-    smaxError(funcName, *status);
-    return NULL;
-  }
+  if(*status) return x_trace_null(fn, NULL);
 
   sha1 = (char *) reply->value;
   reply->value = NULL;
@@ -395,8 +396,9 @@ char *smaxGetScriptSHA1(const char *scriptName, int *status) {
   return sha1;
 }
 
+/// \cond PROTECTED
+
 /**
- * \cond PROTECTED
  *
  * \return <code>TRUE</code> (non-zero) if SMA-X is currently diabled (e.g. to reconnect), or else
  *         <code>FALSE</code> (zero).
@@ -427,6 +429,7 @@ static void *SMAXReconnectThread(void *arg) {
   return NULL;
 }
 
+/// \endcond
 
 /**
  * Prints the given UNIX time into the supplied buffer with subsecond precision.
@@ -434,27 +437,32 @@ static void *SMAXReconnectThread(void *arg) {
  * \param[in]   time    Pointer to time value.
  * \param[out]  buf     Pointer to string buffer, must be at least X_TIMESTAMP_LENGTH in size.
  *
- * \return      Number of characters printed, not including the terminating '\0';
+ * \return      Number of characters printed, not including the terminating '\\0', or else
+ *              an error code (&lt;0) if the `buf` argument is NULL.
  *
  */
 __inline__ int smaxTimeToString(const struct timespec *time, char *buf) {
-  if(!buf) return X_NULL;
+  if(!buf) return x_error(X_NULL, EINVAL, "smaxTimeToString", "output buffer is NULL");
   return sprintf(buf, "%lld.%06ld", (long long) time->tv_sec, (time->tv_nsec / 1000));
 }
-
 
 /**
  * Prints the current time into the supplied buffer with subsecond precision.
  *
  * \param[out]  buf     Pointer to string buffer, must be at least X_TIMESTAMP_LENGTH in size.
  *
- * \return      Number of characters printed, not including the terminating '\0';
+ * \return      Number of characters printed, not including the terminating '\\0', or else
+ *              an error code (&lt;0) if the `buf` argument is NULL.
  *
  */
 int smaxTimestamp(char *buf) {
   struct timespec ts;
+  int n;
+
   clock_gettime(CLOCK_REALTIME, &ts);
-  return smaxTimeToString(&ts, buf);
+  n = smaxTimeToString(&ts, buf);
+  prop_error("smaxTimestamp", n);
+  return n;
 }
 
 /**
@@ -465,20 +473,23 @@ int smaxTimestamp(char *buf) {
  * \param[out]  nanosecs      Pointer to the retuned sub-second remainder as nanoseconds, or NULL if nor requested.
  *
  * \return              X_SUCCESS(0)    if the timestamp was successfully parsed.
- *                      -1              if there was no timestamp (empty or invalid string)
+ *                      X_NULL          if there was no timestamp (empty or invalid string), or the `secs` argument is NULL.
+ *                      X_PARSE_ERROR   if the seconds could not be parsed.
  *                      1               if there was an error parsing the nanosec part.
  *                      X_NULL          if the secs arhument is NULL
  */
 int smaxParseTime(const char *timestamp, time_t *secs, long *nanosecs) {
+  static const char *fn = "smaxParseTime";
+
   char *next;
 
-  if(!timestamp) return -1;
-  if(!secs) return X_NULL;
+  if(!timestamp) return x_error(X_NULL, EINVAL, fn, "input timestamp is NULL");
+  if(!secs) return x_error(X_NULL, EINVAL, fn, "output seconds is NULL");
 
   *secs = (time_t) strtoll(timestamp, &next, 10);
   if(errno == ERANGE || next == timestamp) {
     *nanosecs = 0;
-    return -1;
+    return x_error(X_PARSE_ERROR, ENOMSG, fn, "cannot parse seconds: '%s'", timestamp);
   }
 
   if(*next == '.') {
@@ -495,27 +506,35 @@ int smaxParseTime(const char *timestamp, time_t *secs, long *nanosecs) {
   return X_SUCCESS;
 }
 
-
 /**
  * Returns the a sub-second precision UNIX time value for the given SMA-X timestamp
  *
  * \param timestamp     The string timestamp returned by SMA-X
  *
- * \return      Corresponding UNIX time with sub-second precision.
+ * \return      Corresponding UNIX time with sub-second precision, or NAN if the input could not be parsed.
  */
 double smaxGetTime(const char *timestamp) {
+  static const char *fn = "smaxGetTime";
+
   time_t sec;
   long nsec;
 
-  if(timestamp == NULL) return 0.0; // TODO NAN?
+  if(timestamp == NULL) {
+    x_error(X_NULL, EINVAL, fn, "input timestamp is NULL");
+    return NAN;
+  }
 
-  if(smaxParseTime(timestamp, &sec, &nsec) < 0) return 0.0;
+  if(smaxParseTime(timestamp, &sec, &nsec) < 0) {
+    x_trace(fn, NULL, 0);
+    return NAN;
+  }
+
   return sec + 1e-9 * nsec;
 }
 
-
 /**
  * Creates a generic field of a given name and type and dimensions using the specified native values.
+ * It is like `xCreateField()` except that the field is created in serialized form for SMA-X.
  *
  * \param name      Field name
  * \param type      Storage type, e.g. X_INT.
@@ -529,30 +548,22 @@ double smaxGetTime(const char *timestamp) {
  * @sa xSetField()
  */
 XField *smaxCreateField(const char *name, XType type, int ndim, const int *sizes, const void *value) {
-  const char *funcName = "smaxCreateField()";
+  static const char *fn = "smaxCreateField";
   int n;
   XField *f;
 
-  if(type != X_RAW && type != X_STRING) if(xStringElementSizeOf(type) < 1) {
-    smaxError(funcName, X_TYPE_INVALID);
-    return NULL;
-  }
+  if(type != X_RAW && type != X_STRING) if(xStringElementSizeOf(type) < 1) return x_trace_null(fn, NULL);
 
-  if(type == X_RAW || type == X_STRUCT) return xCreateField(name, type, ndim, sizes, value);
-
-  if(type != X_STRING) if(xStringElementSizeOf(type) < 1) {
-    xError(funcName, X_TYPE_INVALID);
-    return NULL;
+  if(type == X_RAW || type == X_STRUCT) {
+    f = xCreateField(name, type, ndim, sizes, value);
+    return f ? f : x_trace_null(fn, NULL);
   }
 
   n = xGetElementCount(ndim, sizes);
-  if(n < 1) {
-    xError(funcName, X_SIZE_INVALID);
-    return NULL;
-  }
+  if(n < 1) return x_trace_null(fn, NULL);
 
   f = xCreateField(name, type, ndim, sizes, NULL);
-  if(!f) return NULL;
+  if(!f) return x_trace_null(fn, NULL);
 
   f->value = smaxValuesToString(value, type, n, NULL, 0);
   f->isSerialized = TRUE;
@@ -564,7 +575,7 @@ XField *smaxCreateField(const char *name, XType type, int ndim, const int *sizes
  * Converts a standard xchange field (with a native value storage) to an SMA-X field with
  * serialized string value storage.
  *
- * @param f     Pointer to field to convert
+ * @param[in, out] f     Pointer to field to convert
  * @return      X_SUCCESS (0) if successful, or
  *              X_NULL if the input field or the serialized value is NULL.
  *
@@ -572,14 +583,17 @@ XField *smaxCreateField(const char *name, XType type, int ndim, const int *sizes
  * @sa x2smaxStruct()
  */
 int x2smaxField(XField *f) {
+  static const char *fn = "x2smaxField";
+
   void *value;
 
-  if(!f) return X_NULL;
+  if(!f) return x_error(X_NULL, EINVAL, fn, "field is NULL");
   if(!f->value) return X_SUCCESS;
   if(f->type == X_RAW) return X_SUCCESS;
   if(f->type == X_STRUCT) {
     f->isSerialized = TRUE;
-    return x2smaxStruct((XStructure *) f->value);
+    prop_error(fn, x2smaxStruct((XStructure *) f->value));
+    return X_SUCCESS;
   }
   if(f->isSerialized) return X_SUCCESS;
 
@@ -589,7 +603,7 @@ int x2smaxField(XField *f) {
 
   f->isSerialized = TRUE;
 
-  if(!f->value) return X_NULL;
+  if(!f->value) return x_trace(fn, NULL, X_NULL);
 
   return X_SUCCESS;
 }
@@ -608,29 +622,32 @@ int x2smaxField(XField *f) {
  * @sa smax2xStruct()
  */
 int smax2xField(XField *f) {
+  static const char *fn = "smax2xField";
+
   void *str;
   int pos = 0, result, count, eSize;
 
-  if(!f) return X_NULL;
+  if(!f) return x_error(X_NULL, EINVAL, fn, "field is NULL");
   if(!f->value) return X_SUCCESS;
   if(f->type == X_RAW) return X_SUCCESS;
   if(f->type == X_STRUCT) {
     f->isSerialized = FALSE;
-    return smax2xStruct((XStructure *) f->value);
+    prop_error(fn, smax2xStruct((XStructure *) f->value));
+    return X_SUCCESS;
   }
   if(!f->isSerialized) return X_SUCCESS;
 
   eSize = xElementSizeOf(f->type);
-  if(eSize <= 0) return X_TYPE_INVALID;
+  if(eSize <= 0) return x_trace(fn, NULL, X_TYPE_INVALID);
 
   count = xGetFieldCount(f);
-  if(count <= 0) return X_SIZE_INVALID;
+  if(count <= 0) return x_trace(fn, NULL, X_SIZE_INVALID);
 
   str = f->value;
   f->value = calloc(count, eSize);
   if(!f->value) {
     free(str);
-    return X_NULL;
+    return x_error(X_NULL, errno, fn, "calloc() error (%d x %d)", count, eSize);
   }
 
   result = smaxStringToValues(str, f->value, f->type, count, &pos);
@@ -638,7 +655,8 @@ int smax2xField(XField *f) {
 
   f->isSerialized = FALSE;
 
-  return result;
+  prop_error(fn, result);
+  return X_SUCCESS;
 }
 
 /**
@@ -654,17 +672,20 @@ int smax2xField(XField *f) {
  * @sa x2smaxField()
  */
 int x2smaxStruct(XStructure *s) {
+  static const char *fn = "x2smaxStruct";
+
   XField *f;
   int status = X_SUCCESS;
 
-  if(!s) return X_STRUCT_INVALID;
+  if(!s) return x_error(X_STRUCT_INVALID, EINVAL, fn, "input structure is NULL");
 
   for(f = s->firstField; f; f = f->next) {
     int res = x2smaxField(f);
     if(!status) status = res;
   }
 
-  return status;
+  prop_error(fn, status);
+  return X_SUCCESS;
 }
 
 /**
@@ -680,52 +701,20 @@ int x2smaxStruct(XStructure *s) {
  * @sa smax2xField()
  */
 int smax2xStruct(XStructure *s) {
+  static const char *fn = "smax2xStruct";
+
   XField *f;
   int status = X_SUCCESS;
 
-  if(!s) return X_STRUCT_INVALID;
+  if(!s) return x_error(X_STRUCT_INVALID, EINVAL, fn, "input structure is NULL");
 
   for(f = s->firstField; f; f = f->next) {
     int res = smax2xField(f);
     if(!status) status = res;
   }
 
+  prop_error(fn, status);
   return status;
-}
-
-
-/**
- * Splits the id into two strings (sharing the same input buffer) for SMA-X table and field.
- * The original input id is string terminated after the table name. And the pointer to the key
- * part that follows after the last separator is returned in the second (optional argument).
- *
- * \param[in,out] id        String containing an aggregate SMA-X ID (table:field), which will be terminated after the table part.
- * \param[out] pKey         Returned pointer to the second component after the separator within the same buffer. This is
- *                          not an independent pointer. Use smaxStringCopyOf() if you need an idependent string
- *                          on which free() can be called! The returned value pointed to may be NULL if the ID
- *                          could not be split. The argument may also be null, in which case the input string is
- *                          just terminated at the stem, without returning the second part.
- *
- * \return      X_SUCCESS (0)       if the ID was successfully split into two components.
- *              X_NULL              if the id argument is NULL.
- *              X_NAME_INVALID      if no separator was found
- *
- */
-int smaxSplitID(char *id, char **pKey) {
-  char *s;
-
-  if(id == NULL) return X_NULL;
-
-  // Default NULL return for the second component.
-  if(pKey) *pKey = NULL;
-
-  s = xLastSeparator(id);
-  if(s) *s = '\0';
-  else return X_NAME_INVALID;
-
-  if(pKey) *pKey = s + X_SEP_LENGTH;
-
-  return X_SUCCESS;
 }
 
 /**
@@ -737,13 +726,12 @@ int smaxSplitID(char *id, char **pKey) {
  *                  or another error returned by redisxCheckRESP().
  */
 int smaxGetServerTime(struct timespec *t) {
-  if(!smaxIsConnected()) return X_NO_INIT;
-  return redisxGetTime(smaxGetRedis(), t);
+  prop_error("smaxGetServerTime", redisxGetTime(smaxGetRedis(), t));
+  return X_SUCCESS;
 }
 
-
 /**
- * Serializes binary values into a string representation (for REDIS).
+ * Serializes binary values into a string representation (for Redis).
  *
  * \param[in]       value         Pointer to an array of values, or NULL to produce all zeroes.
  *                                If type is X_STRING value should be a pointer to a char** (array of string
@@ -767,6 +755,8 @@ int smaxGetServerTime(struct timespec *t) {
  *                      use.
  */
 char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf, int trylength) {
+  static const char *fn = "smaxValuedToString";
+
   int eSize=1, k, stringSize = 1;
   char *sValue, *next;
 
@@ -779,7 +769,10 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
   char **S = (char **) value;
 
   if(value == NULL) type = X_UNKNOWN;                   // Print zero(es) for null value.
-  if(type == X_STRUCT) return NULL;                     // structs are not serialized by this function.
+  if(type == X_STRUCT) {
+    x_error(0, EINVAL, fn, "structures not allowed");
+    return NULL;                     // structs are not serialized by this function.
+  }
   if(type == X_RAW) if(value) return *(char **) value;
 
   // Figure out how big the serialized string might be...
@@ -790,7 +783,7 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
   }
   else {
     eSize = xElementSizeOf(type);
-    if(eSize <= 0) return NULL;                         // Unsupported element type...
+    if(eSize <= 0) return x_trace_null(fn, NULL);       // Unsupported element type...
     stringSize = eCount * xStringElementSizeOf(type);
   }
 
@@ -798,7 +791,10 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
 
   // Use the supplied buffer if large enough, or dynamically allocate one.
   if(trybuf != NULL && stringSize <= trylength) sValue = trybuf;
-  else sValue = (char *) malloc(stringSize);
+  else {
+    sValue = (char *) malloc(stringSize);
+    x_check_alloc(sValue);
+  }
 
   // If we got this far with raw type, it's because it was a null value, so return an empty string...
   if(type == X_RAW) {
@@ -905,7 +901,7 @@ static __inline__ void CheckParseError(char **next, int *status) {
 /**
  * Deserializes a string to binary values.
  *
- * \param[in]   str           Serialized ASCII representation of the data (as stored by REDIS).
+ * \param[in]   str           Serialized ASCII representation of the data (as stored by Redis).
  *
  * \param[out]  value         Pointer to the buffer that will hold the binary values. The caller is responsible
  *                            for ensuring the buffer is sufficiently sized for holding the data for the
@@ -926,6 +922,8 @@ static __inline__ void CheckParseError(char **next, int *status) {
  *                             X_PARSE_ERROR        If the tokens could not be parsed in the format expected
  */
 int smaxStringToValues(const char *str, void *value, XType type, int eCount, int *pos) {
+  static const char *fn = "smaxStringToValues";
+
   char *next;
   int status = 0, eSize, k;
 
@@ -937,15 +935,19 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
   char *c = (char *) value;
   boolean *b = (boolean *) value;
 
-  if(value == NULL) return X_NULL;
-  if(eCount <= 0) return X_SIZE_INVALID;
+  if(value == NULL) return x_error(X_NULL, EINVAL, fn, "value is NULL");
+  if(eCount <= 0) return x_error(X_SIZE_INVALID, EINVAL, fn, "invalid count: %d", eCount);
 
-  if(type == X_RAW || type == X_STRUCT) return X_TYPE_INVALID;
+  if(type == X_RAW || type == X_STRUCT) return x_error(X_TYPE_INVALID, EINVAL, fn, "X_RAW or X_STRUCT not allowed");
 
-  if(type == X_STRING) return xUnpackStrings(str, strlen(str), eCount, (char **) value);
+  if(type == X_STRING) {
+    int n = smaxUnpackStrings(str, strlen(str), eCount, (char **) value);
+    prop_error(fn, n);
+    return n;
+  }
 
   eSize = xElementSizeOf(type);
-  if(eSize <= 0) return X_SIZE_INVALID;
+  if(eSize <= 0) return x_trace(fn, NULL, X_SIZE_INVALID);
 
   if(str == NULL) {
     xZero(value, type, eCount);
@@ -1020,7 +1022,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
           CheckParseError(&next, &status);
         }
         break;
-      default: return X_TYPE_INVALID;         // Unknown type...
+      default: return x_error(X_TYPE_INVALID, EINVAL, fn, "unsupported type: %d", type);         // Unknown type...
     }
 
     // Zero out the remaining elements...
@@ -1029,9 +1031,121 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
 
   *pos = next - str;
 
-  return status ? status : k;
+  prop_error(fn, status);
+
+  return k;
 }
 
+/**
+ * Returns the string type for a given XType argument as a constant expression. For examples X_LONG -> "int64".
+ *
+ * \param type      SMA-X type, e.g. X_FLOAT
+ *
+ * \return          Corresponding string type, e.g. "float". (Default is "string" -- since typically
+ *                  anything can be represented as strings.)
+ *
+ * \sa smaxTypeForString()
+ */
+char *smaxStringType(XType type) {
+  if(type < 0) return "string";         // X_CHAR(n), legacy fixed size strings.
+
+  switch(type) {
+    case X_BOOLEAN: return "boolean";
+    case X_BYTE:
+    case X_BYTE_HEX: return "int8";
+    case X_SHORT:
+    case X_SHORT_HEX: return "int16";
+    case X_INT:
+    case X_INT_HEX: return "int32";
+    case X_LONG:
+    case X_LONG_HEX: return "int64";
+    case X_FLOAT: return "float";
+    case X_DOUBLE: return "double";
+    case X_STRING: return "string";
+    case X_RAW: return "raw";
+    case X_STRUCT: return "struct";
+    case X_UNKNOWN:
+    default:
+      x_error(0, EINVAL, "smaxStringType", "invalid SMA-X type: %d", type);
+      return "unknown";
+  }
+}
+
+/**
+ * Returns the XType for a given case-sensitive type string. For example "float" -> X_FLOAT. The value "raw" will
+ * return X_RAW.
+ *
+ * \param type      String type, e.g. "struct".
+ *
+ * \return          Corresponding XType, e.g. X_STRUCT. (The default return value is X_RAW, since all Redis
+ *                  values can be represented as raw strings.)
+ *
+ * \sa smaxStringType()
+ */
+XType smaxTypeForString(const char *type) {
+  if(!type) return X_RAW;
+  if(!strcmp("int", type) || !strcmp("integer", type)) return X_INT;
+  if(!strcmp("boolean", type) || !strcmp("bool", type)) return X_BOOLEAN;
+  if(!strcmp("int8", type)) return X_BYTE;
+  if(!strcmp("int16", type)) return X_SHORT;
+  if(!strcmp("int32", type)) return X_INT;
+  if(!strcmp("int64", type)) return X_LONG;
+  if(!strcmp("float", type)) return X_FLOAT;
+  if(!strcmp("float32", type)) return X_FLOAT;
+  if(!strcmp("float64", type)) return X_DOUBLE;
+  if(!strcmp("double", type)) return X_DOUBLE;
+  if(!strcmp("string", type) || !strcmp("str", type)) return X_STRING;
+  if(!strcmp("struct", type)) return X_STRUCT;
+  if(!strcmp("raw", type)) return X_RAW;
+
+  return x_error(X_UNKNOWN, EINVAL, "smaxTypeForString", "invalid SMA-X type: '%s'", type);
+}
+
+/**
+ * Returns an array of dynamically allocated strings from a packed buffer of consecutive 0-terminated
+ * or '\\r'-separated string elements.
+ *
+ * \param[in]   data      Pointer to the packed string data buffer.
+ * \param[in]   len       length of packed string (excl. termination).
+ * \param[in]   count     Number of string elements expected. If fewer than that are found
+ *                        in the packed data, then the returned array of pointers will be
+ *                        padded with NULL.
+ * \param[out]  dst       An array of string pointers (of size 'count') which will point to
+ *                        dynamically allocated string (char*) elements. The array is assumed
+ *                        to be uninitialized, and elements will be allocated as necessary.
+ *
+ * \return                X_SUCCESS (0) if successful, or X_NULL if one of the argument
+ *                        pointers is NULL, or else X_INCOMPLETE if some of the components
+ *                        were too large to unpack (alloc error).
+ */
+int smaxUnpackStrings(const char *data, int len, int count, char **dst) {
+  static const char *fn = "smaxUnpackStrings";
+
+  int i, offset = 0;
+
+  if(!data) return x_error(X_NULL, EINVAL, fn, "input packed string 'data' is NULL");
+  if(!dst) return x_error(X_NULL, EINVAL, fn, "output unpacked string 'dst' is NULL");
+
+  // Make sure the data has proper string termination at its end, so we don't overrun...
+  //data[len] = '\0';
+
+  for(i=0; i<count && offset < len; i++) {
+    const char *from = &data[offset];
+    int l;
+
+    for(l=0; from[l] && offset + l < len; l++) if(from[l] == '\r') break;
+
+    dst[i] = (char *) malloc(l+1);
+    if(!dst[i]) return x_error(X_INCOMPLETE, errno, fn, "malloc() error (%d bytes)", (l+1));
+
+    memcpy(dst[i], from, l);
+    dst[i][l] = '\0'; // termination...
+
+    offset += l;
+  }
+
+  return X_SUCCESS;
+}
 
 #if !(__Lynx__ && __powerpc__)
 
@@ -1042,16 +1156,15 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
  * @return          The number of variables deleted from the SQL DB
  */
 int smaxDeletePattern(const char *pattern) {
-  char *metaPattern;
-  int n = redisxDeleteEntries(smaxGetRedis(), pattern);
+  static const char *fn = "smaxDeletePattern";
 
-  if(n < 0) return -1;
+  char *metaPattern;
+
+  int n = redisxDeleteEntries(smaxGetRedis(), pattern);
+  prop_error(fn, n);
 
   metaPattern = (char *) malloc(strlen(pattern) + 20);
-  if(!metaPattern) {
-    perror("ERROR! alloc meta name pattern");
-    exit(errno);
-  }
+  if(!metaPattern) return x_error(X_NULL, errno, fn, "malloc() error (%d bytes)", strlen(pattern) + 20);
 
   sprintf(metaPattern, "<*>" X_SEP "%s", pattern);
   redisxDeleteEntries(smaxGetRedis(), metaPattern);

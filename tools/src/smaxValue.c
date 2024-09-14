@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 
   if(showList) return printValue(id, NULL);
   else {
-    if(smaxSplitID(id, &key)) return -1;
+    if(xSplitID(id, &key)) return -1;
     return printValue(id, key);
   }
 }

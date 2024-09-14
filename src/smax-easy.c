@@ -16,12 +16,10 @@
 #include <math.h>
 #include <errno.h>
 
-#include "redisx.h"
-#include "smax.h"
+#include "smax-private.h"
 
 // Local prototypes ------------------------------------>
 static int WaitOn(const char *table, const char *key, int timeout, ...);
-
 
 /**
  * Returns a dynamically allocated buffer with the raw string value stored in SMA-X.
@@ -40,12 +38,20 @@ static int WaitOn(const char *table, const char *key, int timeout, ...);
  *
  */
 char *smaxPullRaw(const char *table, const char *key, XMeta *meta, int *status) {
-  char *ptr;
+  static const char *fn = "smaxPullRaw";
+
+  char *ptr = NULL;
+
+  if(!status) {
+    x_error(0, EINVAL, fn, "output 'status' parameter is NULL");
+    return NULL;
+  }
+
   *status = smaxPull(table, key, X_RAW, 1, &ptr, meta);
-  if(*status) smaxError("smaxPullRaw()", *status);
+  if(*status) x_trace_null(fn, NULL);
+
   return ptr;
 }
-
 
 /**
  * Returns a dynamically allocated XStrucure for the specified hashtable in SMA-X.
@@ -60,21 +66,22 @@ char *smaxPullRaw(const char *table, const char *key, XMeta *meta, int *status) 
  * @sa xDestroyStruct()
  */
 XStructure *smaxPullStruct(const char *id, XMeta *meta, int *status) {
-  static const char *funcName = "smaxPullStruct()";
+  static const char *fn = "smaxPullStruct";
   XStructure *s;
 
-  if(id == NULL) {
-    *status = smaxError(funcName, X_NAME_INVALID);
+  if(!status) {
+    x_error(0, EINVAL, fn, "output 'status' parameter is NULL");
     return NULL;
   }
 
   s = (XStructure *) calloc(1, sizeof(XStructure));
+  x_check_alloc(s);
+
   *status = smaxPull(id, NULL, X_STRUCT, 1, s, meta);
-  if(*status) smaxError(funcName, *status);
+  if(*status) x_trace_null(fn, NULL);
 
   return s;
 }
-
 
 /**
  * Returns a dynamically allocated buffer with the values stored in SMA-X cast to the specified type.
@@ -89,54 +96,57 @@ XStructure *smaxPullStruct(const char *id, XMeta *meta, int *status) {
  *
  */
 static void *smaxPullDynamic(const char *table, const char *key, XType type, XMeta *meta, int *n) {
-  static const char *funcName = "smaxPullType()";
+  static const char *fn = "smaxPullType";
 
   int eSize, pos;
   char *raw;
   XMeta m = X_META_INIT;
   void *array;
 
+  if(!n) {
+    x_error(0, EINVAL, fn, "output parameter 'n' is NULL");
+    return NULL;
+  }
+
   eSize = xElementSizeOf(type);
   if(eSize < 1) {
-    smaxError(funcName, X_TYPE_INVALID);
+    *n = x_error(X_TYPE_INVALID, EINVAL, fn, "invalid type: %d", type);
     return NULL;
   }
 
   *n = smaxPull(table, key, X_RAW, 1, &raw, &m);
-  if(raw == NULL) {
-    if(!*n) *n = X_NULL;
-    return NULL;
-  }
-
   if(*n) {
-    free(raw);
-    smaxError(funcName, *n);
-    return NULL;
+    if(raw) free(raw);
+    return x_trace_null(fn, NULL);
   }
+  if(!raw) return NULL;
 
   if(meta != NULL) *meta = m;
 
   *n = smaxGetMetaCount(&m);
   if(*n < 1) {
     free(raw);
+    x_error(0, ERANGE, fn, "invalid store count: %d", *n);
     return NULL;
   }
 
   array = calloc(*n, eSize);
+  if(!array) {
+    *n = x_error(0, errno, fn, "calloc() error (%d x %d)", *n, eSize);
+    free(raw);
+    return NULL;
+  }
 
   *n = smaxStringToValues(raw, array, type, *n, &pos);
-
   free(raw);
 
   if(*n < 0) {
     free(array);
-    smaxError(funcName, *n);
-    return NULL;
+    return x_trace_null(fn, NULL);
   }
 
   return array;
 }
-
 
 /**
  * Returns a dynamically allocated array of integers stored in an SMA-X variable.
@@ -153,7 +163,11 @@ static void *smaxPullDynamic(const char *table, const char *key, XType type, XMe
  * @sa smaxPullInt()
  */
 int *smaxPullInts(const char *table, const char *key, XMeta *meta, int *n) {
-  return (int *) smaxPullDynamic(table, key, X_INT, meta, n);
+  int stat;
+  int *ptr = (int *) smaxPullDynamic(table, key, X_INT, meta, &stat);
+  if(n) *n = stat;
+  if(stat < 0) x_trace_null("smaxPullInts", NULL);
+  return ptr;
 }
 
 /**
@@ -172,9 +186,12 @@ int *smaxPullInts(const char *table, const char *key, XMeta *meta, int *n) {
  *
  */
 long long *smaxPullLongs(const char *table, const char *key, XMeta *meta, int *n) {
-  return (long long *) smaxPullDynamic(table, key, X_INT, meta, n);
+  int stat;
+  long long *ptr = (long long *) smaxPullDynamic(table, key, X_INT, meta, &stat);
+  if(n) *n = stat;
+  if(stat < 0) x_trace_null("smaxPullLongs", NULL);
+  return ptr;
 }
-
 
 /**
  * Returns a dynamically allocated array of doubles stored in an SMA-X variable.
@@ -190,7 +207,11 @@ long long *smaxPullLongs(const char *table, const char *key, XMeta *meta, int *n
  * @sa smaxPullFloats()
  */
 double *smaxPullDoubles(const char *table, const char *key, XMeta *meta, int *n) {
-  return (double *) smaxPullDynamic(table, key, X_DOUBLE, meta, n);
+  int stat;
+  double *ptr = (double *) smaxPullDynamic(table, key, X_DOUBLE, meta, &stat);
+  if(n) *n = stat;
+  if(stat < 0) x_trace_null("smaxPullDoubles", NULL);
+  return ptr;
 }
 
 /**
@@ -210,9 +231,9 @@ char *smaxPullString(const char *table, const char *key) {
   int status;
 
   status = smaxPull(table, key, X_STRING, 1, &str, NULL);
-  if(status) {
+  if(status < 0) {
     if(str) free(str);
-    return NULL;
+    return x_trace_null("smaxPullString", NULL);
   }
 
   return str;
@@ -243,27 +264,41 @@ char *smaxPullString(const char *table, const char *key) {
  * @sa smaxPullRaw()
  */
 char **smaxPullStrings(const char *table, const char *key, XMeta *meta, int *n) {
+  static const char *fn = "smaxPullStrings";
+
   int i, offset = 0;
   char *str;
   XMeta m = X_META_INIT;
   char **array;
 
-  str = smaxPullRaw(table, key, &m, n);
-  if(str == NULL) return NULL;
-  if(*n < 0) {
-    free(str);
-    smaxError("smaxPullStrings()", *n);
+  if(!n) {
+    x_error(0, EINVAL, fn, "output parameter 'n' is NULL");
     return NULL;
   }
+
+  str = smaxPullRaw(table, key, &m, n);
+  if(*n < 0) {
+    free(str);
+    return x_trace_null(fn, NULL);
+  }
+
+  if(str == NULL) return NULL;
 
   if(meta != NULL) *meta = m;
 
   *n = smaxGetMetaCount(&m);
-  if(*n < 1) return NULL;
+  if(*n < 1) {
+    x_error(0, ERANGE, fn, "invalid store count: %d", *n);
+    return NULL;
+  }
 
   array = (char **) calloc(*n, sizeof(char *));
+  if(!array) {
+    x_error(0, errno, fn, "calloc() error (%d char*)", *n);
+    return NULL;
+  }
 
-  for(i=0; i<(*n); i++) {
+  for(i = 0; i < (*n); i++) {
     array[i] = &str[offset];
     offset += strlen(array[i]) + 1;
     if(offset > m.storeBytes) break;
@@ -291,7 +326,6 @@ int smaxPullInt(const char *table, const char *key, int defaultValue) {
   int status = smaxPull(table, key, X_INT, 1, &i, NULL);
   return status ? defaultValue : i;
 }
-
 
 /**
  * Returns a single integer value for a given SMA-X variable, or a default value if the
@@ -329,7 +363,6 @@ double smaxPullDouble(const char *table, const char *key) {
   return smaxPullDoubleDefault(table, key, NAN);
 }
 
-
 /**
  * Returns a single floating-point value for a given SMA-X variable, or a specified
  * default value if the SMA-X value could not be retrieved.
@@ -349,8 +382,6 @@ double smaxPullDoubleDefault(const char *table, const char *key, double defaultV
   return status ? defaultValue : d;
 }
 
-
-
 /**
  * Shares a single integer value to SMA-X.
  *
@@ -358,15 +389,15 @@ double smaxPullDoubleDefault(const char *table, const char *key, double defaultV
  * \param key       Variable name under which the data is stored.
  * \param value     Integer value.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * \sa smaxShareHex()
  * @sa smaxShareInts()
  */
 int smaxShareInt(const char *table, const char *key, long long value) {
-  return smaxShareLongs(table, key, &value, 1);
+  prop_error("smaxShareInt", smaxShareLongs(table, key, &value, 1));
+  return X_SUCCESS;
 }
-
 
 /**
  * Shares a single integer value to SMA-X in a hexadecimal representatin.
@@ -375,14 +406,14 @@ int smaxShareInt(const char *table, const char *key, long long value) {
  * \param key       The variable name under which the data is stored.
  * \param value     Integer value.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * \sa smaxShareInt()
  */
 int smaxShareHex(const char *table, const char *key, long long value) {
-  return smaxShare(table, key, &value, X_LONG_HEX, 1);
+  prop_error("smaxShareHex", smaxShare(table, key, &value, X_LONG_HEX, 1));
+  return X_SUCCESS;
 }
-
 
 /**
  * Shares a single boolean value to SMA-X. All non-zero values are mapped
@@ -392,12 +423,13 @@ int smaxShareHex(const char *table, const char *key, long long value) {
  * \param key       The variable name under which the data is stored.
  * \param value     A boolean value.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * \sa smaxShareBooleans()
  */
 int smaxShareBoolean(const char *table, const char *key, boolean value) {
-  return smaxShareBooleans(table, key, &value, 1);
+  prop_error("smaxShareBoolean", smaxShareBooleans(table, key, &value, 1));
+  return X_SUCCESS;
 }
 
 /**
@@ -407,13 +439,14 @@ int smaxShareBoolean(const char *table, const char *key, boolean value) {
  * \param key       The variable name under which the data is stored.
  * \param value     floating-point value.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareDoubles()
  * @sa smaxShareFloats()
  */
 int smaxShareDouble(const char *table, const char *key, double value) {
-  return smaxShareDoubles(table, key, &value, 1);
+  prop_error("smaxShareDouble", smaxShareDoubles(table, key, &value, 1));
+  return X_SUCCESS;
 }
 
 /**
@@ -423,14 +456,14 @@ int smaxShareDouble(const char *table, const char *key, double value) {
  * \param key       The variable name under which the data is stored.
  * \param sValue    Pointer to string.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareStrings()
  */
 int smaxShareString(const char *table, const char *key, const char *sValue) {
-  return smaxShare(table, key, &sValue, X_RAW, 1);
+  prop_error("smaxShareString", smaxShare(table, key, &sValue, X_RAW, 1));
+  return X_SUCCESS;
 }
-
 
 /**
  * Shares a binary sequence to SMA-X.
@@ -440,7 +473,7 @@ int smaxShareString(const char *table, const char *key, const char *sValue) {
  * \param values    pointer to the byte buffer.
  * \param n         Number of bytes in buffer to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareShorts()
  * @sa smaxShareInts()
@@ -448,7 +481,8 @@ int smaxShareString(const char *table, const char *key, const char *sValue) {
  * @sa smaxShareInt()
  */
 int smaxShareBytes(const char *table, const char *key, const char *values, int n) {
-  return smaxShare(table, key, values, X_BYTE, n);
+  prop_error("smaxShareBytes", smaxShare(table, key, values, X_BYTE, n));
+  return X_SUCCESS;
 }
 
 /**
@@ -459,7 +493,7 @@ int smaxShareBytes(const char *table, const char *key, const char *values, int n
  * \param values    Pointer to short[] array.
  * \param n         Number of elements in array to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS(0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareInt()
  * @sa smaxShareBytes()
@@ -468,9 +502,9 @@ int smaxShareBytes(const char *table, const char *key, const char *values, int n
  *
  */
 int smaxShareShorts(const char *table, const char *key, const short *values, int n) {
-  return smaxShare(table, key, values, X_SHORT, n);
+  prop_error("smaxShareShorts", smaxShare(table, key, values, X_SHORT, n));
+  return X_SUCCESS;
 }
-
 
 /**
  * Shares an array of wide integers to SMA-X.
@@ -480,7 +514,7 @@ int smaxShareShorts(const char *table, const char *key, const short *values, int
  * \param values    Pointer to long long[] array.
  * \param n         Number of elements in array to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareInts()
  * @sa smaxShareShorts()
@@ -488,9 +522,9 @@ int smaxShareShorts(const char *table, const char *key, const short *values, int
  * @sa smaxShareInt()
  */
 int smaxShareLongs(const char *table, const char *key, const long long *values, int n) {
-  return smaxShare(table, key, values, X_LONG, n);
+  prop_error("smaxShareLongs", smaxShare(table, key, values, X_LONG, n));
+  return X_SUCCESS;
 }
-
 
 /**
  * Shares an array of long integers to SMA-X.
@@ -500,7 +534,7 @@ int smaxShareLongs(const char *table, const char *key, const long long *values, 
  * \param values    Pointer to int[] array.
  * \param n         Number of elements in array to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareLongs()
  * @sa smaxShareShorts()
@@ -508,10 +542,9 @@ int smaxShareLongs(const char *table, const char *key, const long long *values, 
  * @sa smaxShareInt()
  */
 int smaxShareInts(const char *table, const char *key, const int *values, int n) {
-  return smaxShare(table, key, values, X_INT, n);
+  prop_error("smaxShareInts", smaxShare(table, key, values, X_INT, n));
+  return X_SUCCESS;
 }
-
-
 
 /**
  * Shares an array of boolean values to SMA-X. All non-zero values are mapped
@@ -522,14 +555,14 @@ int smaxShareInts(const char *table, const char *key, const int *values, int n) 
  * \param values    Pointer to boolean[] array.
  * \param n         Number of elements in array to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareBoolean()
  */
 int smaxShareBooleans(const char *table, const char *key, const boolean *values, int n) {
-  return smaxShare(table, key, values, X_BOOLEAN, n);
+  prop_error("smaxShareBooleans", smaxShare(table, key, values, X_BOOLEAN, n));
+  return X_SUCCESS;
 }
-
 
 /**
  * Shares an array of floats to SMA-X.
@@ -539,13 +572,14 @@ int smaxShareBooleans(const char *table, const char *key, const boolean *values,
  * \param values    Pointer to float[] array.
  * \param n         Number of elements in array to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareDouble()
  * @sa smaxShareDoubles()
  */
 int smaxShareFloats(const char *table, const char *key, const float *values, int n) {
-  return smaxShare(table, key, values, X_FLOAT, n);
+  prop_error("smaxShareFloats", smaxShare(table, key, values, X_FLOAT, n));
+  return X_SUCCESS;
 }
 
 /**
@@ -556,13 +590,14 @@ int smaxShareFloats(const char *table, const char *key, const float *values, int
  * \param values    Pointer to double[] array.
  * \param n         Number of elements in array to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareDouble()
  * @sa smaxShareFloats()
  */
 int smaxShareDoubles(const char *table, const char *key, const double *values, int n) {
-  return smaxShare(table, key, values, X_DOUBLE, n);
+  prop_error("smaxShareDoubles", smaxShare(table, key, values, X_DOUBLE, n));
+  return X_SUCCESS;
 }
 
 /**
@@ -573,17 +608,20 @@ int smaxShareDoubles(const char *table, const char *key, const double *values, i
  * \param sValues   Pointer to array of string pointers.
  * \param n         Number of elements in array to share.
  *
- * \return      X_SUCCESS, or else an appropriate error code from smaxShare().
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
  * @sa smaxShareString()
  */
 int smaxShareStrings(const char *table, const char *key, const char **sValues, int n) {
+  static const char *fn = "smaxShareStrings";
+
   char *buf;
   int i, *l, L = 0;
 
-  if(sValues == NULL) return X_NULL;
+  if(sValues == NULL) return x_error(X_NULL, EINVAL, fn, "input 'sValues' is NULL");
 
   l = (int *) calloc(n, sizeof(int));
+  if(!l) return x_error(X_NULL, errno, fn, "calloc() error (%d int)", n);
 
   for(i=0; i<n; i++) {
     if(sValues[i] == NULL) l[i] = 1;
@@ -593,6 +631,7 @@ int smaxShareStrings(const char *table, const char *key, const char **sValues, i
 
   if(L == 0) L = 1;
   buf = (char *) malloc(L);
+  if(!buf) return x_error(X_NULL, errno, fn, "malloc() error (%d bytes)", L);
 
   L = 0;
   for(i=0; i<n; i++) {
@@ -607,12 +646,14 @@ int smaxShareStrings(const char *table, const char *key, const char **sValues, i
 
   free(buf);
 
-  return L;
-}
+  prop_error(fn, L);
 
+  return X_SUCCESS;
+}
 
 /**
  * Creates a field for 1-D array of a given name and type using specified native values.
+ * It is like `xCreate1DField()` except that the field is created in serialized form.
  *
  * \param name      Field name
  * \param type      Storage type, e.g. X_INT.
@@ -624,12 +665,13 @@ int smaxShareStrings(const char *table, const char *key, const char **sValues, i
  * @sa xSetField()
  */
 XField *smaxCreate1DField(const char *name, XType type, int size, const void *value) {
-  return smaxCreateField(name, type, 1, &size, value);
+  XField *f = smaxCreateField(name, type, 1, &size, value);
+  return f ? f : x_trace_null("smaxCreate1DField", NULL);
 }
-
 
 /**
  * Creates a scalar field of a given name and type using the specified native value.
+ * It is like `xCreateScalarField()` except that the field is created in serialized form.
  *
  * \param name      Field name
  * \param type      Storage type, e.g. X_INT.
@@ -640,12 +682,13 @@ XField *smaxCreate1DField(const char *name, XType type, int size, const void *va
  * @sa xSetField()
  */
 XField *smaxCreateScalarField(const char *name, XType type, const void *value) {
-  return smaxCreate1DField(name, type, 1, value);
+  XField *f = smaxCreate1DField(name, type, 1, value);
+  return f ? f : x_trace_null("smaxCreateScalarField", NULL);
 }
-
 
 /**
  * Creates a field holding a single double-precision value.
+ * It is like `xCreateDoubleField()` except that the field is created in serialized form.
  *
  * \param name      Field name
  * \param value     Associated value
@@ -655,11 +698,13 @@ XField *smaxCreateScalarField(const char *name, XType type, const void *value) {
  * @sa xSetField()
  */
 XField *smaxCreateDoubleField(const char *name, double value) {
-  return smaxCreateScalarField(name, X_DOUBLE, &value);
+  XField *f = smaxCreateScalarField(name, X_DOUBLE, &value);
+  return f ? f : x_trace_null("smaxCreateDoubleField", NULL);
 }
 
 /**
  * Creates a field holding a single wide (64-bit) integer value.
+ * It is like `xCreateLongField()` except that the field is created in serialized form.
  *
  * \param name      Field name
  * \param value     Associated value
@@ -669,11 +714,13 @@ XField *smaxCreateDoubleField(const char *name, double value) {
  * @sa xSetField()
  */
 XField *smaxCreateLongField(const char *name, long long value) {
-  return smaxCreateScalarField(name, X_LONG, &value);
+  XField *f = smaxCreateScalarField(name, X_LONG, &value);
+  return f ? f : x_trace_null("smaxCreateLongField", NULL);
 }
 
 /**
  * Creates a field holding a single integer value.
+ *It is like `xCreateIntField()` except that the field is created in serialized form.
  *
  * \param name      Field name
  * \param value     Associated value
@@ -683,11 +730,13 @@ XField *smaxCreateLongField(const char *name, long long value) {
  * @sa xSetField()
  */
 XField *smaxCreateIntField(const char *name, int value) {
-  return smaxCreateScalarField(name, X_INT, &value);
+  XField *f = smaxCreateScalarField(name, X_INT, &value);
+  return f ? f : x_trace_null("smaxCreateLongField", NULL);
 }
 
 /**
  * Creates a field holding a single boolean value.
+ *It is like `xCreateBooleanField()` except that the field is created in serialized form.
  *
  * \param name      Field name
  * \param value     Associated value
@@ -697,11 +746,13 @@ XField *smaxCreateIntField(const char *name, int value) {
  * @sa xSetField()
  */
 XField *smaxCreateBooleanField(const char *name, boolean value) {
-  return smaxCreateScalarField(name, X_BOOLEAN, &value);
+  XField *f = smaxCreateScalarField(name, X_BOOLEAN, &value);
+  return f ? f : x_trace_null("smaxCreateBooleanField", NULL);
 }
 
 /**
  * Creates a field holding a single string value.
+ * It is like `xCreateStringField()` except that the field is created in serialized form.
  *
  * \param name      Field name
  * \param value     Associated value
@@ -709,9 +760,97 @@ XField *smaxCreateBooleanField(const char *name, boolean value) {
  * \return          A newly created field referencing the supplied string, or NULL if there was an error.
  */
 XField *smaxCreateStringField(const char *name, const char *value) {
-  return smaxCreateScalarField(name, X_STRING, &value);
+  XField *f = smaxCreateScalarField(name, X_STRING, &value);
+  return f ? f : x_trace_null("smaxCreateStringField", NULL);
 }
 
+
+/**
+ * Returns the first value in a structure's field as an integer, or the specified default
+ * value if there is no such field in the structure, or the content cannot be parse into an integer.
+ *
+ * @param s                 Pointer to the XStructure.
+ * @param name              Field name
+ * @param defaultValue      Value to return if no corresponding integer field value.
+ * @return                  The (first) field value as a long long, or the default value if there is no such field.
+ *
+ * @sa xGetField()
+ */
+boolean smaxGetBooleanField(const XStructure *s, const char *name, boolean defaultValue) {
+  boolean b;
+  const XField *f = xGetField(s, name);
+
+  if(!f) return defaultValue;
+
+  b = xParseBoolean(f->value, NULL);
+  if(b < 0) return defaultValue;
+  return b;
+}
+
+/**
+ * Returns the first value in a structure's field as an integer, or the specified default
+ * value if there is no such field in the structure, or the content cannot be parse into an integer.
+ *
+ * @param s                 Pointer to the XStructure.
+ * @param name              Field name
+ * @param defaultValue      Value to return if no corresponding integer field value.
+ * @return                  The (first) field value as a long long, or the default value if there is no such field.
+ *
+ * @sa xGetField()
+ */
+long long smaxGetLongField(const XStructure *s, const char *name, long long defaultValue) {
+  int i;
+  char *end;
+  const XField *f = xGetField(s, name);
+
+  if(!f) return defaultValue;
+
+  i = strtol(f->value, &end, 0);
+  if(end == f->value) return defaultValue;
+  if(errno == ERANGE) return defaultValue;
+  return i;
+}
+
+/**
+ * Returns the first value in a structure's field as a double precision float, or the specified
+ * default value if there is no such field in the structure, or the content cannot be parse into an double.
+ *
+ * @param s                 Pointer to the XStructure.
+ * @param name              Field name
+ * @param defaultValue      Value to return if no corresponding integer field value.
+ * @return                  The (first) field value as a double, or the specified default if there is no such field.
+ *
+ * @sa xGetField()
+ */
+double smaxGetDoubleField(const XStructure *s, const char *name, double defaultValue) {
+  double d;
+  char *end;
+  const XField *f = xGetField(s, name);
+
+  if(!f) return defaultValue;
+
+  d = strtod(f->value, &end);
+  if(end == f->value) return defaultValue;
+  if(errno == ERANGE) return defaultValue;
+  return d;
+}
+
+/**
+ * Returns the string value in a structure's field, or the specified default value if there is no
+ * such field in the structure.
+ *
+ * @param s                 Pointer to the XStructure.
+ * @param name              Field name
+ * @param defaultValue      Value to return if no corresponding integer field value.
+ * @return                  The field's string (raw) value, or the specified default if there is no such field.
+ *
+ * @sa xGetField()
+ */
+char *smaxGetRawField(const XStructure *s, const char *name, char *defaultValue) {
+  const XField *f = xGetField(s, name);
+  if(!f) return defaultValue;
+  return f->value;
+}
 
 /**
  * Gets the data of an SMA-X structure field as an array of values of the specified type and element count.
@@ -719,7 +858,7 @@ XField *smaxCreateStringField(const char *name, const char *value) {
  *
  * @param s             Pointer to SMA-X structure
  * @param name          Field name
- * @param dst           Array to return values in.
+ * @param[out] dst      Array to return values in.
  * @param type          Type of data.
  * @param count         Number of elements in return array. The field data will be truncated or padded as necessary.
  * @return              X_SUCCESS (0) if successful, or
@@ -730,21 +869,24 @@ XField *smaxCreateStringField(const char *name, const char *value) {
  *                      or else an error returned by smaxStringtoValues().
  */
 int smaxGetArrayField(const XStructure *s, const char *name, void *dst, XType type, int count) {
-  int i, pos;
-  const XField *f = xGetField(s, name);
+  static const char *fn = "smaxGetArrayField";
 
-  if(!s) return X_STRUCT_INVALID;
-  if(!dst) return X_NULL;
-  if(count < 1) return X_SIZE_INVALID;
+  int pos;
+  const XField *f;
 
+  if(!s) return x_error(X_STRUCT_INVALID, EINVAL, fn, "input structure is NULL");
+  if(!name) return x_error(X_NAME_INVALID, EINVAL, fn, "field name is NULL");
+  if(!name[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "field name is empty");
+  if(!dst) return x_error(X_NULL, EINVAL, fn, "output 'dst' buffer is NULL");
+  if(count < 1) return x_error(X_SIZE_INVALID, EINVAL, fn, "invalid count: %d", count);
+
+  f = xGetField(s, name);
   if(!f) return X_NAME_INVALID;
 
-  i = smaxStringToValues(f->value, dst, type, count, &pos);
-  if(i != X_SUCCESS) return i;
+  prop_error(fn, smaxStringToValues(f->value, dst, type, count, &pos));
 
   return X_SUCCESS;
 }
-
 
 /**
  * Waits for a specific pushed entry. There must be an active subscription that includes the specified
@@ -768,12 +910,16 @@ int smaxGetArrayField(const XStructure *s, const char *name, void *dst, XType ty
  * @sa smaxReleaseWaits()
  */
 int smaxWaitOnSubscribed(const char *table, const char *key, int timeout) {
-  if(table == NULL) return X_GROUP_INVALID;
-  if(key == NULL) return X_NAME_INVALID;
-  return WaitOn(table, key, timeout);
+  static const char *fn = "smaxWaitOnSubscribed";
+
+  if(table == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is NULL");
+  if(!table[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is empty");
+  if(key == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "key is NULL");
+  if(!key[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "key is empty");
+
+  prop_error(fn, WaitOn(table, key, timeout));
+  return X_SUCCESS;
 }
-
-
 
 /**
  * Waits for changes on a specific group. The must be an active subscription including that group, or else the
@@ -787,7 +933,7 @@ int smaxWaitOnSubscribed(const char *table, const char *key, int timeout) {
  *
  * \return      X_SUCCESS (0)       if a variable was updated on the host.
  *              X_NO_INIT           if the SMA-X sharing was not initialized via smaxConnect().
- *              X_HOST_INVALID      if the host (owner ID) is NULL.
+ *              X_GROUP_INVALID     if the table name to match is invalid.
  *              X_REL_PREMATURE     if smaxReleaseWaits() was called.
  *
  * \sa smaxSubscribe()
@@ -797,10 +943,14 @@ int smaxWaitOnSubscribed(const char *table, const char *key, int timeout) {
  * @sa smaxReleaseWaits()
  */
 int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int timeout) {
-  if(matchTable == NULL) return X_GROUP_INVALID;
-  return WaitOn(matchTable, NULL, timeout, changedKey);
-}
+  static const char *fn = "smaxWaitOnSubscrivedGroup";
 
+  if(matchTable == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "matchTable parameter is NULL");
+  if(!matchTable[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "matchTable parameter is empty");
+
+  prop_error(fn, WaitOn(matchTable, NULL, timeout, changedKey));
+  return X_SUCCESS;
+}
 
 /**
  * Waits for a specific pushed variable from any group/table. There must be an active subscription that includes the specified
@@ -824,26 +974,29 @@ int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int tim
  * @sa smaxReleaseWaits()
  */
 int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeout) {
-  if(matchKey == NULL) return X_NAME_INVALID;
-  return WaitOn(NULL, matchKey, timeout, changedTable);
+  static const char *fn = "smaxWaitOnSubscribedVar";
+
+  if(matchKey == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "matchKey parameter is NULL");
+  if(!matchKey[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "matchKey parameter is empty");
+
+  prop_error(fn, WaitOn(NULL, matchKey, timeout, changedTable));
+  return X_SUCCESS;
 }
-
-
 
 /**
  * Waits for an update from the specified SMA-X table (optional) and/or specified variable (optional). For example:
  * \code
- *  sma_wait_on("myTable", "myVar");
+ *  smax_wait_on("myTable", "myVar");
  * \endcode
  * will wait until "myVar" is changed in "myTable".
  * \code
  *  char *fromTable;
- *  sma_wait_on(NULL, "myVar", &fromTable);
+ *  smax_wait_on(NULL, "myVar", &fromTable);
  * \endcode
  * will wait until "myVar" is published to any SMA-X table. The triggering table name will be stored in the supplied 3rd argument.
  * \code
  *  char *changedKey;
- *  sma_wait_on("myTable", NULL, &changedKey);
+ *  smax_wait_on("myTable", NULL, &changedKey);
  * \endcode
  * will wait until any field is changed in "myTable". The triggering variable name will be store in the supplied 3rd argument.
  *
@@ -860,7 +1013,7 @@ int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeo
  * @sa smaxReleaseWaits()
  */
 static int WaitOn(const char *table, const char *key, int timeout, ...) {
-  const static char *funcName = "WaitOn";
+  static const char *fn = "WaitOn";
   char *gotTable, *gotKey;
   va_list args;
 
@@ -873,19 +1026,19 @@ static int WaitOn(const char *table, const char *key, int timeout, ...) {
     status = smaxWaitOnAnySubscribed(&gotTable, &gotKey, timeout);
     if(status) {
       va_end(args);
-      return status;
+      return x_trace(fn, NULL, status);
     }
 
     if(table != NULL) {
       if(!gotTable) {
-        smaxError(funcName, X_NULL);
+        xdprintf("WARNING! %s: got NULL table.\n", fn);
         continue;
       }
       if(strcmp(gotTable, table)) continue;
     }
     if(key != NULL) {
       if(!gotKey) {
-        smaxError(funcName, X_NULL);
+        xdprintf("WARNING! %s: got NULL key.\n", fn);
         continue;
       }
       if(strcmp(gotKey, key)) continue;
@@ -905,136 +1058,3 @@ static int WaitOn(const char *table, const char *key, int timeout, ...) {
     return X_SUCCESS;
   }
 }
-
-
-
-
-/**
- * Returns the first value in a structure's field as an integer, or the specified default
- * value if there is no such fiield in the structure, or the content cannot be parse into an integer.
- *
- * @param s                 Pointer to the XStructure.
- * @param name              Field name
- * @param defaultValue      Value to return if no corresponding integer field value.
- * @return                  The (first) field value as a long long, or the default value if there is no such field.
- *
- * @sa xGetField()
- */
-long long smaxGetLongField(const XStructure *s, const char *name, long long defaultValue) {
-  int i;
-  char *end;
-  const XField *f = xGetField(s, name);
-
-  if(!f) return defaultValue;
-
-  i = strtol(f->value, &end, 0);
-  if(end == f->value) return defaultValue;
-  if(errno == ERANGE) return defaultValue;
-  return i;
-}
-
-
-/**
- * Returns the first value in a structure's field as a double precision float, or the specified
- * default value if there is no such fiield in the structure, or the content cannot be parse into an double.
- *
- * @param s                 Pointer to the XStructure.
- * @param name              Field name
- * @param defaultValue      Value to return if no corresponding integer field value.
- * @return                  The (first) field value as a double, or the specified default if there is no such field.
- *
- * @sa xGetField
- */
-double smaxGetDoubleField(const XStructure *s, const char *name, double defaultValue) {
-  double d;
-  char *end;
-  const XField *f = xGetField(s, name);
-
-  if(!f) return defaultValue;
-
-  d = strtod(f->value, &end);
-  if(end == f->value) return defaultValue;
-  if(errno == ERANGE) return defaultValue;
-  return d;
-}
-
-
-/**
- * Returns the string value in a structure's field, or the specified default value if there is no
- * such fiield in the structure.
- *
- * @param s                 Pointer to the XStructure.
- * @param name              Field name
- * @param defaultValue      Value to return if no corresponding integer field value.
- * @return                  The field's string (raw) value, or the specified default if there is no such field.
- *
- * @sa xGetField()
- */
-char *smaxGetRawField(const XStructure *s, const char *name, char *defaultValue) {
-  const XField *f = xGetField(s, name);
-  if(!f) return defaultValue;
-  return f->value;
-}
-
-
-/**
- * Sets the a field in a structure to a scalar (single) value. If there was a prior field that is
- * replaced, then the pointer to the prior field is returned.
- *
- * @param s                 Pointer to the XStructure.
- * @param name              Field name
- * @param type              Data type, such as X_INT (see xchange.h).
- * @param value             Value to return if no corresponding integer field value.
- *
- * @return                  Pointer to the prior XField by or NULL if new or there was an error.
- *
- * @sa smaxSet1DField()
- * @sa smaxCreateField()
- * @sa xSetField()
- *
- */
-XField *smaxSetScalarField(XStructure *s, const char *name, XType type, const void *value) {
-  XField *f;
-
-  if(!s) return NULL;
-  if(!name) return NULL;
-  if(!name[0]) return NULL;
-
-  f = smaxCreateField(name, type, 0, NULL, value);
-  if(!f) return NULL;
-
-  return xSetField(s, f);
-}
-
-
-/**
- * Sets the a field in a structure to the contents of a 1D array. If there was a prior field that is
- * replaced, then the pointer to the prior field is returned.
- *
- * @param s                 Pointer to the XStructure.
- * @param name              Field name
- * @param type              Data type, such as X_INT (see xchange.h).
- * @param n                 Number of elements
- * @param value             Value to return if no corresponding integer field value.
- *
- * @return                  Pointer to the prior XField by or NULL if new or there was an error.
- *
- * @sa smaxSetScalarField()
- * @sa smaxCreateField()
- * @sa xSetField()
- *
- */
-XField *smaxSet1DField(XStructure *s, const char *name, XType type, int n, const void *value) {
-  XField *f;
-
-  if(!s) return NULL;
-  if(!name) return NULL;
-  if(!name[0]) return NULL;
-
-  f = smaxCreateField(name, type, 1, &n, value);
-  if(!f) return NULL;
-
-  return xSetField(s, f);
-}
-
-

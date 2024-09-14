@@ -113,7 +113,7 @@ int main(int argc, char *argv[]) {
   }
 
   table = xStringCopyOf(id);
-  status = smaxSplitID(table, &f.name);
+  status = xSplitID(table, &f.name);
   if(status) {
     fprintf(stderr, "ERROR! Invalid table:key argument: %s\n", id);
     exit(1);

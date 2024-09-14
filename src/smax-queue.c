@@ -16,8 +16,6 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include "redisx.h"
-#include "smax.h"
 #include "smax-private.h"
 
 /// \cond PRIVATE
@@ -28,14 +26,12 @@
 #define X_CALLBACK              111112
 /// \endcond
 
-
 // Queued (pipelined) pulls ------------------------------>
 typedef struct XQueue {
   void *first;                // Pointer to PullRequest list...
   void *last;                 // Pointer to the last PullRequest...
   int status;
 } XQueue;
-
 
 static pthread_mutex_t qLock = PTHREAD_MUTEX_INITIALIZER;
 static pthread_cond_t qComplete = PTHREAD_COND_INITIALIZER;
@@ -50,15 +46,13 @@ static void Sync();
 static void RemoveQueueHead();
 static void DiscardQueuedAsync();
 
-
 // The variables below should be accessed only after an exclusive lock on pipeline->channelLock
-// e.g. via lockChannel(PIPELINE_CHANNEL);
+// e.g. via lockChannel(REDISX_PIPELINE_CHANNEL);
 static XQueue queued;
 static int nQueued = 0;
 static int maxQueued = SMAX_DEFAULT_MAX_QUEUED;
 
 static boolean isQueueInitialized = FALSE;
-
 
 /**
  * Creates a synchronization point that can be waited upon until all elements queued prior to creation
@@ -72,11 +66,14 @@ static boolean isQueueInitialized = FALSE;
  */
 XSyncPoint *smaxCreateSyncPoint() {
   XSyncPoint *s = (XSyncPoint *) calloc(1, sizeof(XSyncPoint));
+  x_check_alloc(s);
 
   s->lock = (pthread_mutex_t *) calloc(1, sizeof(pthread_mutex_t));
+  x_check_alloc(s->lock);
   pthread_mutex_init(s->lock, NULL);
 
   s->isComplete = (pthread_cond_t *) calloc(1, sizeof(pthread_cond_t));
+  x_check_alloc(s->isComplete);
   pthread_cond_init(s->isComplete, NULL);
 
   if(queued.first == NULL) {
@@ -86,6 +83,8 @@ XSyncPoint *smaxCreateSyncPoint() {
   else {
     // Otherwise put the synchronization point onto the queue.
     PullRequest *req = (PullRequest *) calloc(1, sizeof(PullRequest));
+    x_check_alloc(req);
+
     req->type = X_SYNCPOINT;
     req->value = s;
 
@@ -98,7 +97,6 @@ XSyncPoint *smaxCreateSyncPoint() {
 
   return s;
 }
-
 
 /**
  * Destroys a synchronization point, releasing the memory space allocated to it.
@@ -122,7 +120,6 @@ void smaxDestroySyncPoint(XSyncPoint *s) {
   free(s);
 }
 
-
 /**
  * Adds a callback function to the queue to be called with the specified argument once all prior
  * requests in the queue have been fullfilled (retrieved from the database).
@@ -136,12 +133,14 @@ void smaxDestroySyncPoint(XSyncPoint *s) {
  * \param f         The callback function that takes a pointer argument
  * \param arg       Argument to call the specified function with.
  *
- * \return          X_SUCCESS (0)
+ * \return          X_SUCCESS (0) or else X_NULL if the function parameter is NULL.
  *
  * @sa smaxCreateSyncPoint()
  * @sa smaxQueue()
  */
-int smaxQueueCallback(void (*f)(char *), char *arg) {
+int smaxQueueCallback(void (*f)(void *), void *arg) {
+  if(!f) return x_error(X_NULL, EINVAL, "smaxQueueCallback", "function parameter is NULL");
+
   if(queued.first == NULL) {
     // If nothing is queued, just call back right away...
     f(arg);
@@ -149,9 +148,12 @@ int smaxQueueCallback(void (*f)(char *), char *arg) {
   else {
     // Otherwise, place the callback request onto the queue...
     PullRequest *req = (PullRequest *) calloc(1, sizeof(PullRequest));
+
+    x_check_alloc(req);
+
     req->type = X_CALLBACK;
     req->value = f;
-    req->key = arg;
+    req->key = (char *) arg;
 
     pthread_mutex_lock(&qLock);
     QueueAsync(req);
@@ -160,8 +162,6 @@ int smaxQueueCallback(void (*f)(char *), char *arg) {
 
   return X_SUCCESS;
 }
-
-
 
 /**
  * Start pipelined read operations. Pipelined reads are much faster but change the behavior slightly.
@@ -183,9 +183,6 @@ static void InitQueueAsync() {
   else fprintf(stderr, "WARNING! SMA-X : failed to set pipeline consumer.\n");
 }
 
-
-
-
 /**
  * Configures how many pull requests can be queued in when piped pulls are enabled. If the
  * queue reaches the specified limit, no new pull requests can be submitted until responses
@@ -196,7 +193,7 @@ static void InitQueueAsync() {
  * \return      TRUE if the argument was valid, and the queue size was set to it, otherwise FALSE
  */
 int smaxSetMaxPendingPulls(int n) {
-  if(n < 1) return X_FAILURE;
+  if(n < 1) return x_error(X_FAILURE, EINVAL, "smaxSetMaxPendingPulls", "invalid limit: %d", n);
   maxQueued = n;
   return X_SUCCESS;
 }
@@ -212,15 +209,13 @@ static void ResubmitQueueAsync() {
     if(p->type == X_SYNCPOINT) continue;
     if(p->type == X_CALLBACK) continue;
 
-    status = smaxRead(p, PIPELINE_CHANNEL);
+    status = smaxRead(p, REDISX_PIPELINE_CHANNEL);
     if(status) {
       //smaxZero(p->value, p->type, p->count);
       smaxError("xResubmitQueueAsync()", status);
     }
   }
 }
-
-
 
 /**
  * Waits for the queue to reach the specified sync point, up to an optional timeout limit.
@@ -230,7 +225,7 @@ static void ResubmitQueueAsync() {
  *                          The call will be guaranteed to return in the specified interval,
  *                          whether or not the pipelined reads all succeeded. The return value
  *                          can be used to check for errors or if the call timed out before
- *                          all data were collected. If X_TIMEDOUT is returned, sma_end_bulk_pulls()
+ *                          all data were collected. If X_TIMEDOUT is returned, smax_end_bulk_pulls()
  *                          may be called again to allow more time for the queued read operations
  *                          to complete.
  *                          0 or negative timeout values will cause the call to wait indefinitely
@@ -250,14 +245,14 @@ static void ResubmitQueueAsync() {
  * @sa smaxWaitQueueComplete()
  */
 int smaxSync(XSyncPoint *sync, int timeoutMillis) {
-  static const char *funcName = "smaxSync()";
+  static const char *fn = "smaxSync";
 
   struct timespec end;
   int status = 0;
 
-  if(sync == NULL) return smaxError(funcName, X_NULL);
-  if(sync->lock == NULL) return smaxError(funcName, X_NULL);
-  if(sync->isComplete == NULL) return smaxError(funcName, X_NULL);
+  if(sync == NULL) return x_error(X_NULL, EINVAL, fn, "synchronization point argument is NULL");
+  if(sync->lock == NULL) return x_error(X_NULL, EINVAL, fn, "sync->lock is NULL");
+  if(sync->isComplete == NULL) return x_error(X_NULL, EINVAL, fn, "sync->isComplete is NULL");
 
   if(timeoutMillis > 0) {
     clock_gettime(CLOCK_REALTIME, &end);
@@ -268,14 +263,14 @@ int smaxSync(XSyncPoint *sync, int timeoutMillis) {
 
   if(pthread_mutex_lock(sync->lock)) {
     xvprintf("SMA-X> Sync lock error.\n");
-    return smaxError(funcName, X_FAILURE);
+    return x_error(X_FAILURE, errno, fn, "mutex lock error");
   }
 
   // Check if there is anything to actually wait for...
   if(sync->status != X_INCOMPLETE && queued.first == NULL) {
     xvprintf("SMA-X> Already synchronized.\n");
     pthread_mutex_unlock(sync->lock);
-    return smaxError(funcName, sync->status);
+    return x_error(sync->status, EALREADY, fn, "already synched");
   }
 
   xvprintf("SMA-X> Waiting to reach synchronization...\n");
@@ -292,18 +287,16 @@ int smaxSync(XSyncPoint *sync, int timeoutMillis) {
   xvprintf("SMA-X> End wait for synchronization.\n");
 
   // If timeout with an incomplete sync, then return X_TIMEDOUT
-  if(status == ETIMEDOUT) return smaxError(funcName, X_TIMEDOUT);
+  if(status == ETIMEDOUT) return x_error(X_TIMEDOUT, status, fn, "timed out");
 
   // If the queue is in an erroneous state, then set the sync status to indicate potential issues.
   // (The error may not have occured at any point prior to the synchronization, and even prior to
   // the batch of pulls we care about...
-  if(queued.status) smaxError(funcName, queued.status);
+  if(queued.status) x_trace(fn, NULL, queued.status);
 
-  return smaxError(funcName, sync->status);
+  prop_error(fn, sync->status);
+  return X_SUCCESS;
 }
-
-
-
 
 /**
  * Waits until all queued pull requests have been retrieved from the database, or until the specified
@@ -313,7 +306,7 @@ int smaxSync(XSyncPoint *sync, int timeoutMillis) {
  *                          The call will be guaranteed to return in the specified interval,
  *                          whether or not the pipelined reads all succeeded. The return value
  *                          can be used to check for errors or if the call timed out before
- *                          all data were collected. If X_TIMEDOUT is returned, sma_end_bulk_pulls()
+ *                          all data were collected. If X_TIMEDOUT is returned, smax_end_bulk_pulls()
  *                          may be called again to allow more time for the queued read operations
  *                          to complete.
  *                          0 or negative timeout values will cause the call to wait indefinitely
@@ -335,11 +328,9 @@ int smaxWaitQueueComplete(int timeoutMillis) {
   sync.isComplete = &qComplete;
   sync.lock = &qLock;
 
-  return smaxSync(&sync, timeoutMillis);
+  prop_error("smaxWaitQueueComplete", smaxSync(&sync, timeoutMillis));
+  return X_SUCCESS;
 }
-
-
-
 
 /**
  * Wait until no more than the specified number of pending reads remain in the queue, or until the timeout limit is reached.
@@ -352,14 +343,14 @@ int smaxWaitQueueComplete(int timeoutMillis) {
  *                          X_NO_SERVICE   if the connection closed while waiting...
  */
 static int DrainQueueAsync(int maxRemaining, int timeoutMicros) {
-  static const char *funcName = "xDrainQueue()";
+  static const char *fn = "xDrainQueue";
   int totalSleep = 0;
 
   xvprintf("SMA-X> read queue full. Waiting to drain...\n");
   while(nQueued > maxRemaining) {
     int sleepMicros;
-    if(!redisxHasPipeline(smaxGetRedis())) return smaxError(funcName, X_NO_SERVICE);
-    if(timeoutMicros > 0) if(totalSleep > timeoutMicros) return smaxError(funcName, X_TIMEDOUT);
+    if(!redisxHasPipeline(smaxGetRedis())) return x_error(X_NO_SERVICE, ENOTCONN, fn, "no pipeline client");
+    if(timeoutMicros > 0) if(totalSleep > timeoutMicros) return x_error(X_TIMEDOUT, ETIMEDOUT, fn, "timed out");
     sleepMicros = 1 + nQueued - maxRemaining;
     totalSleep += sleepMicros;
     usleep(sleepMicros);
@@ -368,8 +359,6 @@ static int DrainQueueAsync(int maxRemaining, int timeoutMicros) {
 
   return X_SUCCESS;
 }
-
-
 
 /**
  * The listener function that processes pipelined responses in the background.
@@ -406,7 +395,6 @@ static void ProcessPipeResponseAsync(RESP *reply) {
   else smaxProcessPipedWritesAsync(reply);
 }
 
-
 /**
  * Processes timely synchronizations, whether callbacks, or synchronization points.
  *
@@ -441,10 +429,6 @@ static void Sync() {
   }
 }
 
-
-
-
-
 /**
  *  Discard all piped reads, setting values to zeroes.
  *
@@ -466,7 +450,6 @@ static void DiscardQueuedAsync() {
   pthread_cond_broadcast(&qComplete);
 }
 
-
 /**
  * Queues a pull requests for pipelined data retrieval. Because pipelined pulls are executed on
  * a separate Redis client from the one used for sharing values, e.g. via smaxShare(), there is
@@ -480,8 +463,8 @@ static void DiscardQueuedAsync() {
  * \param key       Variable name under which the data is stored.
  * \param type      SMA-X variable type, e.g. X_FLOAT or X_CHARS(40), of the buffer.
  * \param count     Number of points to retrieve into the buffer.
- * \param value     Pointer to the buffer to which the data is to be retrieved.
- * \param meta      Pointer to the corresponding metadata structure, or NULL.
+ * \param[out] value     Pointer to the buffer to which the data is to be retrieved.
+ * \param[out] meta      Pointer to the corresponding metadata structure, or NULL.
  *
  * \return      X_SUCCESS (0)       if successful
  *              X_NAME_INVALID      if the table and key are both NULL
@@ -495,13 +478,20 @@ static void DiscardQueuedAsync() {
  *
  */
 int smaxQueue(const char *table, const char *key, XType type, int count, void *value, XMeta *meta) {
+  static const char *fn = "smaxQueue";
+
   PullRequest *req, *last;
   int status;
 
-  if(table == NULL && key == NULL) return X_NAME_INVALID;
-  if(value == NULL) return X_NULL;
+  if(table == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is NULL");
+  if(!table[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is empty");
+  if(key == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "key is NULL");
+  if(!key[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "key is empty");
+  if(value == NULL) return x_error(X_NULL, EINVAL, fn, "outut value is NULL");
 
   req = (PullRequest *) calloc(1, sizeof(PullRequest));
+  x_check_alloc(req);
+
   req->group = xStringCopyOf(table);
   req->key = xStringCopyOf(key);
   req->value = value;
@@ -516,7 +506,7 @@ int smaxQueue(const char *table, const char *key, XType type, int count, void *v
       if(status != X_NO_SERVICE)
          fprintf(stderr, "ERROR! SMA-X : piped read timed out on %s:%s.\n", (req->group == NULL ? "" : req->group), req->key);
       free(req);
-      return smaxError("smaxQueue()", status);
+      return x_trace(fn, NULL, status);
     }
   }
 
@@ -526,7 +516,7 @@ int smaxQueue(const char *table, const char *key, XType type, int count, void *v
   QueueAsync(req);
 
   // Send the pull request to Redis for this queued entry
-  status = smaxRead(req, PIPELINE_CHANNEL);
+  status = smaxRead(req, REDISX_PIPELINE_CHANNEL);
 
   // If the pull request was not submitted to SMA-X, then undo the queuing...
   if(status) queued.last = last;
@@ -538,9 +528,10 @@ int smaxQueue(const char *table, const char *key, XType type, int count, void *v
     // smaxZero(req->value, req->type, req->count);
   }
 
-  return status;
-}
+  prop_error(fn, status);
 
+  return X_SUCCESS;
+}
 
 /**
  * Queues a pull request for pipelined retrieval. Apart from retrieving regular variables, the pull
@@ -566,7 +557,6 @@ static void QueueAsync(PullRequest *req) {
 
   nQueued++;
 }
-
 
 static void RemoveQueueHead() {
   PullRequest *req = NULL;

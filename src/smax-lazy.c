@@ -21,9 +21,9 @@
 #include <errno.h>
 #include <math.h>
 
-#include "redisx.h"
-#include "smax.h"
 #include "smax-private.h"
+
+/// \cond PRIVATE
 
 #define MAX_UNPULLED_LAZY_UPDATES       10      ///< Number of unprocessed updates, before unsubscribing from notifications...
 
@@ -44,6 +44,7 @@ typedef struct LazyMonitor {
   struct LazyMonitor *next;
 } LazyMonitor;
 
+/// \endcond
 
 static int nMonitors;                                           ///< Number of lazy variables monitored.
 
@@ -51,15 +52,13 @@ static LazyMonitor *monitorTable[SMAX_LOOKUP_SIZE];             ///< hashed moni
 static pthread_mutex_t monitorLock = PTHREAD_MUTEX_INITIALIZER; ///< Mutex for accessing monitor tables
 static pthread_mutex_t dataLock = PTHREAD_MUTEX_INITIALIZER;    ///< mutex for accessing monitor data/metadata
 
-
 static LazyMonitor *CreateMonitorAsync(const char *table, const char *key, XType type, boolean withMeta);
 static boolean DestroyMonitorAsync(LazyMonitor *m);
 static int GetChannelLookupIndex(const char *channel);
 static __inline__ int GetTableIndex(const LazyMonitor *m);
 static LazyMonitor *GetMonitorAsync(const char *table, const char *key);
 static LazyMonitor *GetSpecificMonitorAsync(const char *table, const char *key);
-static void ProcessLazyUpdates(const char *pattern, const char *channel, const char *msg, int length);
-
+static void ProcessLazyUpdates(const char *pattern, const char *channel, const char *msg, long length);
 
 /**
  * Decrements the number of concurrent user calls that currently need access to the specific
@@ -88,6 +87,8 @@ static void ReleaseAsync(LazyMonitor *m) {
  * @sa ReleaseAsync()
  */
 static int Release(LazyMonitor *m) {
+  if(!m) return x_error(X_NULL, EINVAL, "Release", "NULL argument");
+
   pthread_mutex_lock(&monitorLock);
   ReleaseAsync(m);
   pthread_mutex_unlock(&monitorLock);
@@ -131,7 +132,7 @@ static void ApplyUpdateAsync(LazyMonitor *update, LazyMonitor *m) {
  * @param arg       Pointer to the update, usually created by CreateStaging().
  *
  */
-static void ApplyUpdate(char *arg) {
+static void ApplyUpdate(void *arg) {
   LazyMonitor *update = (LazyMonitor *) arg;
   LazyMonitor *m;
 
@@ -163,10 +164,7 @@ static LazyMonitor *CreateStaging(const LazyMonitor *m) {
   // If we update in the background, create temporary storage in which
   // we can stage the update.
   s = (LazyMonitor *) calloc(1, sizeof(*s));
-  if(!s) {
-    perror("ERROR! smax-lazy::CreateStaging(): alloc");
-    exit(1);
-  }
+  x_check_alloc(s);
 
   // Copy table/key
   s->table = xStringCopyOf(m->table);
@@ -181,24 +179,25 @@ static LazyMonitor *CreateStaging(const LazyMonitor *m) {
   return s;
 }
 
-
 /**
  * Updates the monitored data in the cache, by pulling from SMA-X. The update is essentially atomic
  * as it happens with a single reassignment of a pointer.
  *
  * @param m     Pointer to a lazy monitor datum.
- * @return      X_SUCCESS (0) if successfull or else an error from smaxPull().
+ * @return      X_SUCCESS (0) if successfull or else an error (&lt;0) from smaxPull().
  */
 static int UpdateCachedAsync(LazyMonitor *m, boolean background) {
+  static const char *fn = "UpdateCachedAsync";
+
   LazyMonitor *staging;
   XType type;
   int status = X_SUCCESS;
   void *ptr;
 
-  if(!m) return X_NULL;
+  if(!m) return x_error(X_NULL, EINVAL, fn, "input parameter 'm' is NULL");
 
   staging = CreateStaging(m);
-  if(!staging) return X_NULL;
+  if(!staging) return x_trace(fn, NULL, X_NULL);
 
   if(m->key) {
     type = X_RAW;
@@ -209,9 +208,9 @@ static int UpdateCachedAsync(LazyMonitor *m, boolean background) {
     ptr = staging->data;
   }
 
-  if(background && smaxIsPipelined() && 0) {
+  if(background && smaxIsPipelined()) {
     status = smaxQueue(m->table, m->key, type, 1, ptr, staging->meta);
-    if(!status) smaxQueueCallback(ApplyUpdate, (char *) staging);
+    if(!status) smaxQueueCallback(ApplyUpdate, staging);
   }
   else {
     status = smaxPull(m->table, m->key, type, 1, ptr, staging->meta);
@@ -219,9 +218,9 @@ static int UpdateCachedAsync(LazyMonitor *m, boolean background) {
     DestroyMonitorAsync(staging);
   }
 
-  return status;
+  prop_error(fn, status);
+  return X_SUCCESS;
 }
-
 
 /**
  * Returns the currently cached value of a lazy monitor point into the supplied buffer as
@@ -236,11 +235,15 @@ static int UpdateCachedAsync(LazyMonitor *m, boolean background) {
  * @return      X_SUCCESS (0) if successfull, or else an error code from smaxStringToValues()
  */
 static int GetCachedAsync(const LazyMonitor *m, XType type, int count, void *value) {
+  static const char *fn = "GetCachedAsync";
+
   int n, status;
+
+  if(!m) return x_error(X_NULL, EINVAL, fn, "monitor point 'm' is NULL");
 
   if(!m->data) {
     if(m->meta) return m->meta->status;
-    return X_NULL;
+    return x_error(X_NULL, EINVAL, fn, "m->data is NULL");
   }
 
   switch(type) {
@@ -248,44 +251,52 @@ static int GetCachedAsync(const LazyMonitor *m, XType type, int count, void *val
       XStructure *tmp = xCopyOfStruct((XStructure *) m->data);
       XStructure *dst = (XStructure *) value;
 
-      if(!m->table) return X_TYPE_INVALID;
+      if(!m->table) return x_error(X_TYPE_INVALID, EINVAL, fn, "m->table is NULL");
       xClearStruct(dst);
       dst->firstField = tmp->firstField;
       free(tmp);
       break;
     }
 
-    case X_RAW:
-      if(!m->meta) return X_NULL;
+    case X_RAW: {
+      char *str;
+      if(!m->meta) return x_error(X_NULL, EINVAL, fn, "m->meta is NULL");
       if(!m->meta->storeBytes) return X_SUCCESS;
-      *(char **) value = malloc(m->meta->storeBytes);
-      memcpy(*(char **) value, m->data, m->meta->storeBytes);
+
+      str = (char *) malloc(m->meta->storeBytes);
+      if(!str) return x_error(X_NULL, errno, fn, "malloc() error (%d bytes)", m->meta->storeBytes);
+
+      memcpy(str, m->data, m->meta->storeBytes);
+      *(char **) value = str;
       break;
+    }
 
     case X_STRING:
-      if(!m->meta) return X_NULL;
-      if(m->meta->storeType != X_STRING) return X_TYPE_INVALID;
-      xUnpackStrings(m->data, m->meta->storeBytes, count, (char **) value);
+      if(!m->meta) return x_error(X_NULL, EINVAL, fn, "m->meta is NULL");
+      if(m->meta->storeType != X_STRING) return x_error(X_TYPE_INVALID, EINVAL, fn, "wring m->type (not X_STRING): %d", m->meta->storeType);
+      smaxUnpackStrings(m->data, m->meta->storeBytes, count, (char **) value);
       break;
 
     default:
       status = smaxStringToValues(m->data, value, type, count, &n);
-      if(status <= 0) return status;
+      if(status <= 0) return x_trace(fn, NULL, status);
   }
 
   return X_SUCCESS;
 }
 
-LazyMonitor *GetCreateMonitor(const char *table, const char *key, XType type, boolean withMeta) {
+static LazyMonitor *GetCreateMonitor(const char *table, const char *key, XType type, boolean withMeta) {
+  static const char *fn = "GetCreateMonitor";
+
   LazyMonitor *m;
   char *lazytab = (char *) table;
-
-  if(!table && !key) return NULL;
 
   if(type == X_STRUCT) {
     lazytab = xGetAggregateID(table, key);
     key = NULL;
   }
+
+  if(!lazytab) return x_trace_null(fn, NULL);
 
   pthread_mutex_lock(&monitorLock);
 
@@ -294,7 +305,7 @@ LazyMonitor *GetCreateMonitor(const char *table, const char *key, XType type, bo
 
   pthread_mutex_unlock(&monitorLock);
 
-  if(!m) return NULL;
+  if(!m) return x_trace_null(fn, NULL);
   if(withMeta && !m->meta) m->meta = smaxCreateMeta();
 
   if(lazytab != table) free(lazytab);
@@ -303,12 +314,15 @@ LazyMonitor *GetCreateMonitor(const char *table, const char *key, XType type, bo
 }
 
 static int FetchData(LazyMonitor *m, XType type, int count, void *value, XMeta *meta) {
+  static const char *fn = "FetchData";
+
   int status = X_SUCCESS;
 
   if(meta && !m->meta) {
     // Update monitor to include metadata and pull to set it.
     m->meta = (XMeta *) calloc(1, sizeof(XMeta));
-    if(m->meta) status = UpdateCachedAsync(m, FALSE);
+    x_check_alloc(m->meta);
+    status = UpdateCachedAsync(m, FALSE);
   }
   else if(!m->isCurrent && !m->isCached) status = UpdateCachedAsync(m, FALSE);
 
@@ -330,14 +344,32 @@ static int FetchData(LazyMonitor *m, XType type, int count, void *value, XMeta *
 
   Release(m);
 
-  return status;
+  prop_error(fn, status);
+  return X_SUCCESS;
 }
 
+/**
+ * Specify that a specific variable should be cached for minimum overhead lazy access. When a variable is lazy cached
+ * its local copy is automatically updated in the background so that accessing it is always nearly instantaneous.
+ * Lazy caching is a good choice for variables that change less frequently than they are polled typically. For
+ * variables that change frequently (ans used less frequently), lazy caching is not a great choice since it consumes
+ * network bandwidth even when the variable is not being accessed.
+ *
+ * Once a variable is lazy cached, it can be accessed instantaneously via smaxGetLazyCached() without any blocking
+ * network operations.
+ *
+ * @param table   The hash table name.
+ * @param key     The variable name under which the data is stored.
+ * @param type    The SMA-X variable type, e.g. X_FLOAT or X_CHARS(40), of the buffer.
+ * @return        X_SUCCESS (0) or X_NO_SERVICE.
+ *
+ * @sa smaxGetLazyCached()
+ */
 int smaxLazyCache(const char *table, const char *key, XType type) {
   LazyMonitor *m;
 
   m = GetCreateMonitor(table, key, type, TRUE);
-  if(!m) return X_NO_SERVICE;
+  if(!m) return x_trace("smaxLazyCache", NULL, X_NO_SERVICE);
 
   m->isCached = TRUE;
   UpdateCachedAsync(m, FALSE);
@@ -346,20 +378,38 @@ int smaxLazyCache(const char *table, const char *key, XType type) {
   return X_SUCCESS;
 }
 
-
+/**
+ * Retrieve a variable from the local cache (if available), or else pull from the SMA-X database. If local caching was not
+ * previously eanbled, it will be enabled with this call, so that subsequent calls will always return data from the locally
+ * updated cache with minimal overhead and effectively no latency.
+ *
+ * @param table   The hash table name.
+ * @param key     The variable name under which the data is stored.
+ * @param type    The SMA-X variable type, e.g. X_FLOAT or X_CHARS(40), of the buffer.
+ * @param count   The number of elements to retrieve
+ * @param value   Pointer to the native data buffer in which to restore values
+ * @param meta    Optional metadata pointer, or NULL if metadata is not required.
+ * @return        X_SUCCESS (0), or X_NO_SERVICE is SMA-X is not accessible, or another error (&lt;0)
+ *                from smax.h or xchange.h.
+ *
+ * @sa sa smaxLazyCache()
+ * @sa sa smaxLaxyPull()
+ */
 int smaxGetLazyCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta) {
+  static const char *fn = "smaxGetLazyCached";
+
   LazyMonitor *m;
   int status;
 
   m = GetCreateMonitor(table, key, type, meta != NULL);
-  if(!m) return X_NO_SERVICE;
+  if(!m) return x_trace(fn, NULL, X_NO_SERVICE);
 
   status = FetchData(m, type, count, value, meta);
   m->isCached = TRUE; // Set after the first non-mirrored fetch...
 
-  return status;
+  prop_error(fn, status);
+  return X_SUCCESS;
 }
-
 
 /**
  * Poll an infrequently changing variable without stressing out the network
@@ -378,7 +428,7 @@ int smaxGetLazyCached(const char *table, const char *key, XType type, int count,
  * \param value     Pointer to the buffer to which the data is to be retrieved.
  * \param meta      Pointer to metadata or NULL if no metadata is needed.
  *
- * \return          X_SUCCESS (0) on success, or else an error code like smaxPull().
+ * \return          X_SUCCESS (0) on success, or else an error code (&lt;0) of smaxPull().
  *
  * \sa smaxLazyEnd()
  * \sa smaxLazyFlush()
@@ -387,17 +437,18 @@ int smaxGetLazyCached(const char *table, const char *key, XType type, int count,
  *
  */
 int smaxLazyPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta) {
+  static const char *fn = "smaxLazyPull";
+
   LazyMonitor *m;
 
-  if(!value) return X_NULL;
-  if(!table && !key) return X_NAME_INVALID;
+  if(!value) return x_error(X_NULL, EINVAL, fn, "value is NULL");
 
   m = GetCreateMonitor(table, key, type, meta != NULL);
-  if(!m) return X_NO_SERVICE;
+  if(!m) return x_trace(fn, NULL, X_NO_SERVICE);
 
-  return FetchData(m, type, count, value, meta);
+  prop_error(fn, FetchData(m, type, count, value, meta));
+  return X_SUCCESS;
 }
-
 
 /**
  * Returns a single integer value for a given SMA-X variable, or a default value if the
@@ -437,7 +488,6 @@ double smaxLazyPullDouble(const char *table, const char *key) {
   return smaxLazyPullDoubleDefault(table, key, NAN);
 }
 
-
 /**
  * Returns a single double-precision value for a given SMA-X variable, or a default value if the
  * value could not be retrieved.
@@ -464,10 +514,11 @@ double smaxLazyPullDoubleDefault(const char *table, const char *key, double defa
  * @param key           The variable name under which the data is stored.
  * @param buf           Buffer to fill with stored data
  * @param n             Number of bytes to fill in buffer. The retrieved data will be truncated as necessary.
- * @return              X_SUCCESS (0) if successful, or the error code retubrned by smaxLazyPull().
+ * @return              X_SUCCESS (0) if successful, or the error code (&lt;0) returned by smaxLazyPull().
  */
 int smaxLazyPullChars(const char *table, const char *key, char *buf, int n) {
-  return smaxLazyPull(table, key, X_CHARS(n), 1, buf, NULL);
+  prop_error("smaxLazyPullChars", smaxLazyPull(table, key, X_CHARS(n), 1, buf, NULL));
+  return X_SUCCESS;
 }
 
 /**
@@ -488,7 +539,7 @@ char *smaxLazyPullString(const char *table, const char *key) {
   status = smaxLazyPull(table, key, X_STRING, 1, &str, NULL);
   if(status) {
     if(str) free(str);
-    return NULL;
+    return x_trace_null("smaxLazyPullString", NULL);
   }
 
   return str;
@@ -499,14 +550,14 @@ char *smaxLazyPullString(const char *table, const char *key) {
  *
  * @param[in]  id       Aggregate structure ID.
  * @param[out] s        Destination structure to populate with the retrieved fields
- * @return              X_SUCCESS (0) if successful, or the error code retubrned by smaxLazyPull().
+ * @return              X_SUCCESS (0) if successful, or the error code (&lt;0) returned by smaxLazyPull().
  *
  * @sa smaxPullStruct()
  * @sa xCreateStruct()
  */
 int smaxLazyPullStruct(const char *id, XStructure *s) {
-  if(!s) return X_STRUCT_INVALID;
-  return smaxLazyPull(id, NULL, X_STRUCT, 1, s, NULL);
+  prop_error("smaxLazyPullStruct", smaxLazyPull(id, NULL, X_STRUCT, 1, s, NULL));
+  return X_SUCCESS;
 }
 
 /**
@@ -533,12 +584,12 @@ static void RemoveMonitorAsync(LazyMonitor *m) {
   if(--nMonitors == 0) smaxRemoveSubscribers(ProcessLazyUpdates);
 }
 
-
 /**
  * Stops processing lazy updates in the background for a given variable.
  *
  * \param table     The hash table name.
  * \param key       The variable name under which the data is stored.
+ * \return          X_SUCCESS (0)
  *
  * \sa smaxLazyFlush()
  * @sa smaxLazyPull()
@@ -660,6 +711,8 @@ int smaxGetLazyUpdateCount(const char *table, const char *key) {
  * \sa Release()
  */
 static LazyMonitor *CreateMonitorAsync(const char *table, const char *key, XType type, boolean withMeta) {
+  static const char *fn = "CreateMonitorAsync";
+
   LazyMonitor *m;
   char *id;
   int i;
@@ -668,13 +721,13 @@ static LazyMonitor *CreateMonitorAsync(const char *table, const char *key, XType
   // so we need metadata for these no matter what...
   if(type == X_STRING || type == X_RAW) withMeta = TRUE;
 
-  if(smaxSubscribe(table, key) != X_SUCCESS) return NULL;
+  if(smaxSubscribe(table, key) != X_SUCCESS) return x_trace_null(fn, NULL);
 
   // For structs subscribe to leaf updates also
-  if(!key) if(smaxSubscribe(table, "*") != X_SUCCESS) return NULL;
+  if(!key) if(smaxSubscribe(table, "*") != X_SUCCESS) return x_trace_null(fn, NULL);
 
   m = (LazyMonitor *) calloc(1, sizeof(LazyMonitor));
-  if(!m) return NULL;
+  x_check_alloc(m);
 
   m->users = 1;
   m->table = xStringCopyOf(table);
@@ -682,12 +735,14 @@ static LazyMonitor *CreateMonitorAsync(const char *table, const char *key, XType
 
   if(withMeta) {
     m->meta = calloc(1, sizeof(XMeta));
-    if(m->meta) m->meta->storeType = type;
+    x_check_alloc(m->meta);
+    m->meta->storeType = type;
   }
 
   id = xGetAggregateID(table, key);
   m->channel = calloc(1, sizeof(SMAX_UPDATES) + strlen(id));
   if(!m->channel) {
+    x_error(0, errno, fn, "calloc() error (%d bytes)", sizeof(SMAX_UPDATES) + strlen(id));
     free(m);
     return NULL;
   }
@@ -713,7 +768,6 @@ static LazyMonitor *CreateMonitorAsync(const char *table, const char *key, XType
 
   return m;
 }
-
 
 /**
  * Attempts to destroy (deallocate) a monitor point structure. It should be called only if the monitor point
@@ -752,8 +806,6 @@ static boolean DestroyMonitorAsync(LazyMonitor *m) {
   return TRUE;
 }
 
-
-
 /**
  * Returns the hash lookup index for a given update channel. It is the same index as what xGetHashLookupIndex()
  * would return for the variable that has been updated in the given notification channel
@@ -788,7 +840,6 @@ static __inline__ int GetLookupIndex(const char *table, const char *key) {
 static __inline__ int GetTableIndex(const LazyMonitor *m) {
   return GetLookupIndex(m->table, m->key);
 }
-
 
 /**
  * Returns the monitor point for a given variable, or NULL if the variable is not currently monitored.
@@ -844,7 +895,6 @@ static LazyMonitor *GetMonitorAsync(const char *table, const char *key) {
   return m;
 }
 
-
 // ---------------------------------------------------------------------------
 // Handling of PUB/SUB update notifications:
 // ---------------------------------------------------------------------------
@@ -857,7 +907,7 @@ static LazyMonitor *GetMonitorAsync(const char *table, const char *key) {
  * \sa smaxAddSubscriber()
  *
  */
-static void ProcessLazyUpdates(const char *pattern, const char *channel, const char *msg, int length) {
+static void ProcessLazyUpdates(const char *pattern, const char *channel, const char *msg, long length) {
   LazyMonitor *m;
   char *id;
   boolean checkParents = TRUE;
@@ -893,7 +943,7 @@ static void ProcessLazyUpdates(const char *pattern, const char *channel, const c
         RemoveMonitorAsync(m);
         DestroyMonitorAsync(m);
       }
-      else if(m->isCached) UpdateCachedAsync(m, TRUE);                  // queue for a background update.
+      else if(m->isCached) UpdateCachedAsync(m, TRUE);  // queue for a background update.
 
       // We found the match and dealt with it. Done with this particular ID.
       break;
@@ -904,7 +954,7 @@ static void ProcessLazyUpdates(const char *pattern, const char *channel, const c
     if(!checkParents) break;
 
     // If there is no parent structure, we are done checking.
-    if(smaxSplitID(id, NULL) != X_SUCCESS) break;
+    if(xSplitID(id, NULL) != X_SUCCESS) break;
   }
 
   pthread_mutex_unlock(&monitorLock);

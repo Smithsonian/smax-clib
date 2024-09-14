@@ -18,7 +18,6 @@
  *
  *      \sa smaxSetResilient()
  *      \sa smaxIsResilient()
- *
  */
 
 
@@ -26,11 +25,9 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <string.h>
+#include <errno.h>
 
-#include "smax.h"
 #include "smax-private.h"
-#include "redisx.h"
-
 
 typedef struct PushRequest {
   char *group;
@@ -38,10 +35,8 @@ typedef struct PushRequest {
   struct PushRequest *next;
 } PushRequest;
 
-
 static PushRequest *table[SMAX_LOOKUP_SIZE];
 static pthread_mutex_t tableLock = PTHREAD_MUTEX_INITIALIZER;
-
 
 static void SendStoredPushRequests();
 static void UpdatePushRequest(const char *table, const XField *field);
@@ -110,7 +105,6 @@ void smaxSetResilientExit(boolean value) {
   exitAfterSync = value ? TRUE : FALSE;
 }
 
-
 /**
  * \cond PROTECTED
  *
@@ -130,26 +124,34 @@ void smaxSetResilientExit(boolean value) {
  *                  X_NAME_INVALID  if the field's name is NULL or empty string.
  */
 int smaxStorePush(const char *group, const XField *field) {
-  if(field == NULL) return X_NULL;
-  if(group == NULL && field->name == NULL) return X_NULL;
-  if(field->name == NULL) return X_NAME_INVALID;
-  if(*field->name == '\0') return X_NAME_INVALID;
+  static const char *fn = "smaxStorePush";
+
+  if(field == NULL) return x_error(X_NULL, EINVAL, fn, "field is NULL");
 
   if(field->type == X_STRUCT) {
-    const XStructure *s = (XStructure *) field->value;
-    XField *f;
-    char *id = xGetAggregateID(group, field->name);
 
-    for(f = s->firstField; f != NULL; f = f->next) smaxStorePush(id, f);
+    const XStructure *s = (XStructure *) field->value;
+    const XField *f;
+    char *id;
+    int status = X_SUCCESS;
+
+    id = xGetAggregateID(group, field->name);
+    if(!id) return x_trace(fn, NULL, X_NULL);
+
+    for(f = s->firstField; f != NULL; f = f->next) if(smaxStorePush(id, f) != X_SUCCESS) {
+      status = X_INCOMPLETE;
+      break;
+    }
 
     free(id);
+
+    prop_error(fn, status);
   }
   else UpdatePushRequest(group, field);
 
   return X_SUCCESS;
 }
 /// \endcond
-
 
 /**
  * Sends all previously undelivered and stored push requests to Redis, and exists the program with X_FAILURE (-1),
@@ -202,10 +204,8 @@ static void SendStoredPushRequests() {
   pthread_mutex_unlock(&tableLock);
 }
 
-
 /**
  * IMPORTANT: Do not call with structure...
- *
  *
  */
 static void UpdatePushRequest(const char *group, const XField *field) {
@@ -219,8 +219,11 @@ static void UpdatePushRequest(const char *group, const XField *field) {
 
   if(req == NULL) {
     req = (PushRequest *) calloc(1, sizeof(PushRequest));
+    x_check_alloc(req);
+
     req->group = xStringCopyOf(group);
     req->field = (XField *) calloc(1, sizeof(XField));
+    x_check_alloc(req->field);
 
     if(table[idx] == NULL) table[idx] = req;
     else {
