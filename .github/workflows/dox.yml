@@ -52,35 +52,32 @@ jobs:
         repository: Smithsonian/smax-clib
         path: smax-clib
 
-#    - name: Check out xchange dependency
-#      uses: actions/checkout@v4
-#      with:
-#        repository: Smithsonian/xchange
-#        path: xchange
+    - name: Check out xchange dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/xchange
+        path: xchange
         
-#    - name: Check out RedisX dependency
-#      uses: actions/checkout@v4
-#      with:
-#        repository: Smithsonian/redisx
-#        path: redisx
+    - name: Check out RedisX dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/redisx
+        path: redisx
         
-#    - name: Generate docs
-#      run: make -C xchange local-dox 
-
-#    - name: Generate docs
-#      run: make -C redisx local-dox  
+    - name: Generate docs
+      run: make -C xchange local-dox 
 
     - name: Generate docs
-      run: make -C smax-clib local-dox  
+      run: make -C redisx local-dox  
 
-#    - name: Generate headless README for smax-clib
-#      run: make -C smax-clib README-orig.md
-#
-#    - name: Generate smax-clib apidocs
-#      uses: mattnotmitt/doxygen-action@v1.9.8
-#      with:
-#        additional-packages: font-roboto
-#        working-directory: ./smax-clib
+    - name: Generate headless README for smax-clib
+      run: make -C smax-clib README-smax.md
+
+    - name: Generate smax-clib apidocs
+      uses: mattnotmitt/doxygen-action@v1.9.8
+      with:
+        additional-packages: font-roboto
+        working-directory: ./smax-clib
 
     - name: Checkout gh-pages
       uses: actions/checkout@v4
@@ -95,7 +92,7 @@ jobs:
       run: |
         echo '<img src="/smax-clib/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">' > site/doc/README.md
         echo '<br clear="all">' >> site/doc/README.md
-        cat smax-clib/README-orig.md >> site/doc/README.md
+        cat smax-clib/README-smax.md >> site/doc/README.md
 
     - name: Copy CHANGELOG
       run: cp smax-clib/CHANGELOG.md site/doc/
