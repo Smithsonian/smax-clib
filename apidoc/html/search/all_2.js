@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['basics_0',['The basics',['../index.html#autotoc_md17',1,'']]],
-  ['building_20the_20sma_20x_20c_20library_1',['Building the SMA-X C library',['../index.html#autotoc_md9',1,'']]]
+  ['changelog_2',['Changelog',['../md_CHANGELOG.html',1,'']]],
+  ['contributing_20to_20redisx_3',['Contributing to RedisX',['../md_CONTRIBUTING.html',1,'']]]
 ];

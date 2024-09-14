@@ -1,4 +1,4 @@
-.TH "src/smax-util.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-util.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -131,7 +131,7 @@ X_SUCCESS (0) if successful, or X_NULL if the input field or the deserialized va
 .PP
 
 .PP
-References \fBsmax2xStruct()\fP, and \fBsmaxStringToValues()\fP\&.
+References smax2xStruct(), and smaxStringToValues()\&.
 .SS "int smax2xStruct (XStructure * s)"
 Converts an SMA-X structure with serialized string value storage to a standard xchange structure with a native value storage\&.
 .PP
@@ -154,9 +154,9 @@ X_SUCCESS (0) if successful, or X_STRUCT_INVALID if the structure is NULL, or ha
 .PP
 
 .PP
-References \fBsmax2xField()\fP\&.
-.SS "XField * smaxCreateField (const char * name, XType type, int ndim, const int * sizes, const void * value)"
-Creates a generic field of a given name and type and dimensions using the specified native values\&. It is like \fRxCreateField()\fP except that the field is created in serialized form for SMA-X\&.
+References smax2xField()\&.
+.SS "XField* smaxCreateField (const char * name, XType type, int ndim, const int * sizes, const void * value)"
+Creates a generic field of a given name and type and dimensions using the specified native values\&. It is like \fCxCreateField()\fP except that the field is created in serialized form for SMA-X\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -183,8 +183,8 @@ xSetField()
 .PP
 
 .PP
-References \fBsmaxValuesToString()\fP\&.
-.SS "\fBXMeta\fP * smaxCreateMeta ()"
+References smaxValuesToString()\&.
+.SS "\fBXMeta\fP* smaxCreateMeta ()"
 Creates a new SMA-X metadata object with defaults\&. Effectively the same as calling calloc() followed by xResetMeta()\&.
 .PP
 \fBReturns\fP
@@ -199,7 +199,7 @@ Pointer to a new metadata object initialized to defaults\&.
 .PP
 
 .PP
-References \fBsmaxResetMeta()\fP\&.
+References smaxResetMeta()\&.
 .SS "int smaxDeletePattern (const char * pattern)"
 Deletes variables and metadata from SMA-X\&.
 .PP
@@ -215,7 +215,7 @@ The number of variables deleted from the SQL DB
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "int smaxError (const char * func, int errorCode)"
 Prints a descriptive error message to stderr, and returns the error code\&.
 .PP
@@ -233,8 +233,8 @@ Same error code as specified on input\&.
 .PP
 
 .PP
-References \fBsmaxErrorDescription()\fP\&.
-.SS "const char * smaxErrorDescription (int code)"
+References smaxErrorDescription()\&.
+.SS "const char* smaxErrorDescription (int code)"
 Returns a string description for one of the RM error codes\&.
 .PP
 \fBParameters\fP
@@ -258,8 +258,8 @@ the total number of elements represented by the metadata
 .PP
 
 .PP
-References \fBXMeta::storeDim\fP, and \fBXMeta::storeSizes\fP\&.
-.SS "char * smaxGetScriptSHA1 (const char * scriptName, int * status)"
+References XMeta::storeDim, and XMeta::storeSizes\&.
+.SS "char* smaxGetScriptSHA1 (const char * scriptName, int * status)"
 Gets the SHA1 script ID for the currently loaded script with the specified name\&.
 .PP
 \fBParameters\fP
@@ -275,8 +275,6 @@ String buffer with the SHA1 key or NULL if it could not be retrieved\&. (The cal
 .RE
 .PP
 
-.PP
-References \fBSMAX_SCRIPTS\fP, and \fBsmaxGetRedis()\fP\&.
 .SS "int smaxGetServerTime (struct timespec * t)"
 Returns the current time on the Redis server instance\&.
 .PP
@@ -292,7 +290,7 @@ X_SUCCESS (0) if successful, or X_NO_INIT if not connected to SMA-X, or X_NULL i
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "double smaxGetTime (const char * timestamp)"
 Returns the a sub-second precision UNIX time value for the given SMA-X timestamp
 .PP
@@ -308,7 +306,7 @@ Corresponding UNIX time with sub-second precision, or NAN if the input could not
 .PP
 
 .PP
-References \fBsmaxParseTime()\fP\&.
+References smaxParseTime()\&.
 .SS "int smaxParseTime (const char * timestamp, time_t * secs, long * nanosecs)"
 Parses a timestamp into broken-down UNIX time\&.
 .PP
@@ -323,7 +321,7 @@ Parses a timestamp into broken-down UNIX time\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS(0) if the timestamp was successfully parsed\&. X_NULL if there was no timestamp (empty or invalid string), or the \fRsecs\fP argument is NULL\&. X_PARSE_ERROR if the seconds could not be parsed\&. 1 if there was an error parsing the nanosec part\&. X_NULL if the secs arhument is NULL 
+X_SUCCESS(0) if the timestamp was successfully parsed\&. X_NULL if there was no timestamp (empty or invalid string), or the \fCsecs\fP argument is NULL\&. X_PARSE_ERROR if the seconds could not be parsed\&. 1 if there was an error parsing the nanosec part\&. X_NULL if the secs arhument is NULL 
 .RE
 .PP
 
@@ -342,7 +340,7 @@ Set metadata to their default values\&. After resetting the supplied metadata wi
 .PP
 
 .PP
-References \fBX_META_INIT\fP\&.
+References X_META_INIT\&.
 .SS "int smaxScriptError (const char * name, int status)"
 SMA-X error handler for when the LUA scripts do not execute\&. It prints a message to stderr, then depending on whether SMA-X is in resilient mode, it will try to reconnect to SMA-X in the background, or else exits the program with X_NO_SERVICE\&. You must not call this function with a locked config mutex (via smaxConfigLock())\&. Instead use the async version of this function after smaxConfigLock()\&.
 .PP
@@ -362,7 +360,7 @@ SMA-X error handler for when the LUA scripts do not execute\&. It prints a messa
 .PP
 
 .PP
-References \fBsmaxScriptErrorAsync()\fP\&.
+References smaxScriptErrorAsync()\&.
 .SS "int smaxScriptErrorAsync (const char * name, int status)"
 Same as \fBsmaxScriptError()\fP, but can be used after smaxConfigLock()\&.
 .PP
@@ -382,7 +380,7 @@ Same as \fBsmaxScriptError()\fP, but can be used after smaxConfigLock()\&.
 .PP
 
 .PP
-References \fBsmaxErrorDescription()\fP, \fBsmaxIsConnected()\fP, and \fBsmaxIsResilient()\fP\&.
+References smaxIsConnected()\&.
 .SS "void smaxSetOrigin (\fBXMeta\fP * m, const char * origin)"
 Sets the 'origin' field of an SMA-X metadata to the specified value, truncating as necessary to fit into the allotted fixed storage\&.
 .PP
@@ -395,7 +393,7 @@ Sets the 'origin' field of an SMA-X metadata to the specified value, truncating 
 .PP
 
 .PP
-References \fBXMeta::origin\fP, and \fBSMAX_ORIGIN_LENGTH\fP\&.
+References XMeta::origin, and SMAX_ORIGIN_LENGTH\&.
 .SS "int smaxStringToValues (const char * str, void * value, XType type, int eCount, int * pos)"
 Deserializes a string to binary values\&.
 .PP
@@ -417,9 +415,9 @@ Deserializes a string to binary values\&.
 Number of elements successfully parsed, or a negative error code: 
 .PP
 .nf
-                        X_NULL               If the value or str argument is NULL\&.
-                        X_TYPE_INVALID       If the type is not supported\&.
-                        X_SIZE_INVALID       If size is invalid (e\&.g\&. X_RAW, X_STRUCT)
+                        X_NULL               If the value or str argument is NULL.
+                        X_TYPE_INVALID       If the type is not supported.
+                        X_SIZE_INVALID       If size is invalid (e.g. X_RAW, X_STRUCT)
                         X_PARSE_ERROR        If the tokens could not be parsed in the format expected
 
 .fi
@@ -429,8 +427,8 @@ Number of elements successfully parsed, or a negative error code:
 .PP
 
 .PP
-References \fBsmaxUnpackStrings()\fP\&.
-.SS "char * smaxStringType (XType type)"
+References smaxUnpackStrings()\&.
+.SS "char* smaxStringType (XType type)"
 Returns the string type for a given XType argument as a constant expression\&. For examples X_LONG -> 'int64'\&.
 .PP
 \fBParameters\fP
@@ -459,12 +457,12 @@ Prints the current time into the supplied buffer with subsecond precision\&.
 .PP
 \fBReturns\fP
 .RS 4
-Number of characters printed, not including the terminating '\\0', or else an error code (<0) if the \fRbuf\fP argument is NULL\&. 
+Number of characters printed, not including the terminating '\\0', or else an error code (<0) if the \fCbuf\fP argument is NULL\&. 
 .RE
 .PP
 
 .PP
-References \fBsmaxTimeToString()\fP\&.
+References smaxTimeToString()\&.
 .SS "__inline__ int smaxTimeToString (const struct timespec * time, char * buf)"
 
 .PP
@@ -479,7 +477,7 @@ References \fBsmaxTimeToString()\fP\&.
 .PP
 \fBReturns\fP
 .RS 4
-Number of characters printed, not including the terminating '\\0', or else an error code (<0) if the \fRbuf\fP argument is NULL\&. 
+Number of characters printed, not including the terminating '\\0', or else an error code (<0) if the \fCbuf\fP argument is NULL\&. 
 .RE
 .PP
 
@@ -503,8 +501,6 @@ redisxSetTrasmitErrorHandler()
 .RE
 .PP
 
-.PP
-References \fBsmaxGetRedis()\fP, and \fBsmaxIsResilient()\fP\&.
 .SS "XType smaxTypeForString (const char * type)"
 Returns the XType for a given case-sensitive type string\&. For example 'float' -> X_FLOAT\&. The value 'raw' will return X_RAW\&.
 .PP
@@ -544,7 +540,7 @@ X_SUCCESS (0) if successful, or X_NULL if one of the argument pointers is NULL, 
 .RE
 .PP
 
-.SS "char * smaxValuesToString (const void * value, XType type, int eCount, char * trybuf, int trylength)"
+.SS "char* smaxValuesToString (const void * value, XType type, int eCount, char * trybuf, int trylength)"
 Serializes binary values into a string representation (for Redis)\&.
 .PP
 \fBParameters\fP
@@ -588,7 +584,7 @@ X_SUCCESS (0) if successful, or X_NULL if the input field or the serialized valu
 .PP
 
 .PP
-References \fBsmaxValuesToString()\fP, and \fBx2smaxStruct()\fP\&.
+References smaxValuesToString(), and x2smaxStruct()\&.
 .SS "int x2smaxStruct (XStructure * s)"
 Converts a standard xchange structure (with a native value storage) to an SMA-X structure with serialized string value storage\&.
 .PP
@@ -611,7 +607,7 @@ X_SUCCESS (0) if successful, or X_STRUCT_INVALID if the structure is NULL, or ha
 .PP
 
 .PP
-References \fBx2smaxField()\fP\&.
+References x2smaxField()\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

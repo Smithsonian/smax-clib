@@ -1,21 +1,5 @@
-![Build Status](https://github.com/Smithsonian/smax-clib/actions/workflows/build.yml/badge.svg)
-![Static Analysis](https://github.com/Smithsonian/smax-clib/actions/workflows/check.yml/badge.svg)
-<a href="https://smithsonian.github.io/smax-clib/apidoc/html/files.html">
- ![API documentation](https://github.com/Smithsonian/smax-clib/actions/workflows/dox.yml/badge.svg)
-</a>
-<a href="https://smithsonian.github.io/smax-clib/index.html">
- ![Project page](https://github.com/Smithsonian/smax-clib/actions/workflows/pages/pages-build-deployment/badge.svg)
-</a>
-
-<picture>
-  <source srcset="resources/CfA-logo-dark.png" alt="CfA logo" media="(prefers-color-scheme: dark)"/>
-  <source srcset="resources/CfA-logo.png" alt="CfA logo" media="(prefers-color-scheme: light)"/>
-  <img src="resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right"/>
-</picture>
+<img src="/smax-clib/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
-
-# SMA-X: SMA information exchange
-
 Author: Attila Kovacs
 
 Last Updated: 14 September 2024
@@ -49,6 +33,14 @@ SMA-X consists of a set of server-side [LUA](https://lua.org/) scripts that run 
 of its forks / clones such as [Valkey](https://valkey.io) or [Dragonfly](https://dragonfly.io)); a set of libraries to 
 interface client applications; and a set of command-line tools build with them. Currently we provide client libraries 
 for C/C++ and Python 3. We may provide Java and/or Rust client libraries too in the future.
+
+There are no official releases of __smax-clib__ yet. An initial 1.0.0 release is expected early/mid 2025. 
+Before then the API may undergo slight changes and tweaks. Use the repository as is at your own risk for now.
+
+Some related links:
+
+ - [API documentation](https://smithsonian.github.io/smax-clib/apidoc/html/files.html)
+ - [Project page](https://smithsonian.github.io/smax-clib) on github.io
 
 
 ------------------------------------------------------------------------------
@@ -121,7 +113,7 @@ to use a specific host and/or an alternative Redis port number to use instead.
 Also, while SMA-X will normally run on database index 0, you can also specify a different database number to use. E.g.:
 
 ```c
-    smaxSetDB(3);
+  smaxSetDB(3);
 ```
 
 (Note, you can switch the database later also, but beware that if you have an active subscription client open, you cannot
@@ -131,7 +123,7 @@ You can also set up the authentication credentials for using the SMA-X database 
 
 ```c
   smaxSetUser("johndoe");
-  smaxSetPassword("mySecretPassword);
+  smaxSetPassword(mySecretPassword);
 ```
 
 And finally, you can select the option to automatically try reconnect to the SMA-X server in case of lost connection or
@@ -569,7 +561,7 @@ be limited by the performance of the Redis server itself (or the network bandwid
 such, instead of thousand of queries per second, you can pull 2-3 orders of magnitude more in a given time, with hudreds 
 of thousands to even millions of pull per second this way.
 
-<a name="lazy-syncronization"></a>
+<a name="lazy-synchronization"></a>
 ### Synchronization points and waiting
 
 After you have submitted a batch of pull request to the queue, you can create a synchronization point as:

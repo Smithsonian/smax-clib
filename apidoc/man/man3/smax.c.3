@@ -1,4 +1,4 @@
-.TH "src/smax.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -152,7 +152,6 @@ Jan 26, 2018
 Attila Kovacs
 .RE
 .PP
-.PP
 There is also extra functionality, for configuring, performance tweaking, verbosity control, and some convenience methods (e\&.g\&. data serialization/deserialization)\&. 
 .SH "Function Documentation"
 .PP 
@@ -180,7 +179,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "int smaxAddDisconnectHook (void(*)(void) cleanupCall)"
 Add a callback function for when SMA-X is disconnected\&. It's a wrapper to redisxAddDisconnectHook()\&.
 .PP
@@ -203,7 +202,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "int smaxAddSubscriber (const char * idStem, RedisSubscriberCall f)"
 Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id)\&. The function should itself check that the channel receiving notification is indeed what it expectes before acting on it, as the callback routine will be invoked for any update inside the specified table, unless the table argument refers to a specific aggregate ID of a single variable\&. This call only registers the callback routine for SMA-X update notifications for variables that begin with the specified stem\&. You will still have to subscrive to any relevant variables with \fBsmaxSubscribe()\fP to enable delivering update notifications for the variables of your choice\&.
 .PP
@@ -226,7 +225,7 @@ X_SUCCESS if successful, or else an approriate error code by redisxAddSubscriber
 .PP
 
 .PP
-References \fBSMAX_UPDATES_ROOT\fP, and \fBsmaxGetRedis()\fP\&.
+References SMAX_UPDATES_ROOT, and smaxGetRedis()\&.
 .SS "int smaxConnect ()"
 Initializes the SMA-X sharing library in this runtime instance\&.
 .PP
@@ -252,9 +251,9 @@ X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sh
 .PP
 
 .PP
-References \fBSMAX_DEFAULT_HOSTNAME\fP, \fBsmaxAddConnectHook()\fP, \fBsmaxAddDisconnectHook()\fP, \fBsmaxAddSubscriber()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxIsConnected()\fP, \fBsmaxLazyFlush()\fP, \fBsmaxReleaseWaits()\fP, \fBsmaxSetPipelineConsumer()\fP, \fBsmaxSetResilient()\fP, and \fBsmaxTransmitErrorHandler()\fP\&.
+References smaxGetProgramID(), and smaxIsConnected()\&.
 .SS "int smaxConnectTo (const char * server)"
-Initializes the SMA-X sharing library in this runtime instance with the specified Redis server\&. SMA-X is initialized in resilient mode, so that we'll automatically attempt to reconnect to the Redis server if the connection is severed (once it was established)\&. If that is not the desired behavior, you should call \fRsmaxSetResilient(FALSE)\fP after connecting\&.
+Initializes the SMA-X sharing library in this runtime instance with the specified Redis server\&. SMA-X is initialized in resilient mode, so that we'll automatically attempt to reconnect to the Redis server if the connection is severed (once it was established)\&. If that is not the desired behavior, you should call \fCsmaxSetResilient(FALSE)\fP after connecting\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -280,8 +279,6 @@ X_SUCCESS If the library was successfully initialized X_NO_SERVICE If the there 
 .RE
 .PP
 
-.PP
-References \fBsmaxConnect()\fP, and \fBsmaxSetServer()\fP\&.
 .SS "int smaxDisconnect ()"
 Disables the SMA-X sharing capability, closing underlying network connections\&.
 .PP
@@ -303,8 +300,8 @@ X_SUCCESS (0) if the sharing was properly ended\&. X_NO_INIT if SMA-X was has no
 .PP
 
 .PP
-References \fBsmaxIsConnected()\fP\&.
-.SS "char * smaxGetHostName ()"
+References smaxIsConnected()\&.
+.SS "char* smaxGetHostName ()"
 Returns the host name on which this program is running\&. It returns a reference to the same static variable every time\&. As such you should never call free() on the returned value\&. Note, that only the leading part of the host name is returned, so for a host that is registered as 'somenode\&.somedomain' only 'somenode' is returned\&.
 .PP
 \fBReturns\fP
@@ -318,7 +315,7 @@ The host name string (leading part only)\&.
 .RE
 .PP
 
-.SS "char ** smaxGetKeys (const char * table, int * n)"
+.SS "char** smaxGetKeys (const char * table, int * n)"
 Returns a snapshot of the key names stored in a given Redis hash table, ot NULL if there was an error\&.
 .PP
 \fBParameters\fP
@@ -341,7 +338,7 @@ An array of pointers to the names of Redis keys\&.
 .RE
 .PP
 
-.SS "char * smaxGetProgramID ()"
+.SS "char* smaxGetProgramID ()"
 Returns the SMA-X program ID\&.
 .PP
 \fBReturns\fP
@@ -350,9 +347,7 @@ The SMA-X program ID as <hostname>:<programname>, e\&.g\&. 'hal9000:statusServer
 .RE
 .PP
 
-.PP
-References \fBsmaxGetHostName()\fP\&.
-.SS "Redis * smaxGetRedis ()"
+.SS "Redis* smaxGetRedis ()"
 Returns the Redis connection information for SMA-X
 .PP
 \fBReturns\fP
@@ -489,8 +484,6 @@ or the error returned by redisxReconnect()\&.
 .RE
 .PP
 
-.PP
-References \fBSMAX_RECONNECT_RETRY_SECONDS\fP\&.
 .SS "int smaxReleaseWaits ()"
 Unblocks all smax_wait*() calls, which will return X_REL_PREMATURE, as a result\&.
 .PP
@@ -505,8 +498,6 @@ X_SUCCESS (0)
 .RE
 .PP
 
-.PP
-References \fBRELEASEID\fP\&.
 .SS "int smaxRemoveConnectHook (void(*)(void) setupCall)"
 Remove a post-connection callback function\&. It's a wrapper to redisxRemoveConnectHook()\&.
 .PP
@@ -531,7 +522,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "int smaxRemoveDisconnectHook (void(*)(void) cleanupCall)"
 Remove a post-cdisconnect callback function\&. It's a wrapper to redisxRemiveDisconnectHook()\&.
 .PP
@@ -554,7 +545,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "int smaxRemoveSubscribers (RedisSubscriberCall f)"
 Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages\&. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the Redis server\&. You should therefore also call \fBsmaxUnsubscribe()\fP as appropriate to stop notifications for variables that no longer have associated callbacks\&.
 .PP
@@ -575,7 +566,7 @@ X_SUCCESS (0) if successful, or else an error (<0) returned by redisxRemoveSubsc
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "int smaxSetAuth (const char * username, const char * password)"
 Sets the SMA-X database authentication parameters (if any) before connecting to the SMA-X server\&.
 .PP
@@ -600,7 +591,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References \fBsmaxIsConnected()\fP\&.
+References smaxIsConnected()\&.
 .SS "int smaxSetDB (int idx)"
 Sets a non-default Redis database index to use for SMA-X before connecting to the SMA-X server\&.
 .PP
@@ -623,7 +614,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References \fBsmaxIsConnected()\fP\&.
+References smaxIsConnected()\&.
 .SS "void smaxSetHostName (const char * name)"
 Changes the host name to the user-specified value instead of the default (leading component of the value returned by gethostname())\&. Subsequent calls to \fBsmaxGetHostName()\fP will return the newly set value\&. An argument of NULL resets to the default\&.
 .PP
@@ -660,7 +651,7 @@ X_SUCCESS (0) if successful, or else an error by redisxSetPipelineConsumer()
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP\&.
+References smaxGetRedis()\&.
 .SS "int smaxSetPipelined (boolean isEnabled)"
 Enable or disable pipelined write operations (enabled by default)\&. When pipelining, share calls will return as soon as the request is sent to the Redis server, without waiting for a response\&. Instead, responses are consumed asynchronously by a dedicated thread, which will report errors to stderr\&. Pipelined writes can have a significant performance advantage over handshaking at the cost of one extra socket connection to Redis (dedicated to pipelining) and the extra thread consuming responses\&.
 .PP
@@ -686,8 +677,6 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .RE
 .PP
 
-.PP
-References \fBsmaxIsConnected()\fP\&.
 .SS "int smaxSetServer (const char * host, int port)"
 Configures the SMA-X server before connecting\&.
 .PP
@@ -714,7 +703,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References \fBsmaxIsConnected()\fP\&.
+References smaxIsConnected()\&.
 .SS "int smaxSetTcpBuf (int size)"
 Set the size of the TCP/IP buffers (send and receive) for future client connections\&.
 .PP
@@ -730,7 +719,7 @@ Set the size of the TCP/IP buffers (send and receive) for future client connecti
 .PP
 
 .PP
-References \fBsmaxIsConnected()\fP\&.
+References smaxIsConnected()\&.
 .SS "void smaxSetVerbose (boolean value)"
 Enable or disable verbose reporting of all SMA-X operations (and possibly some details of them)\&. Reporting is done on the standard output (stdout)\&. It may be useful when debugging programs that use the SMA-X interface\&. Verbose reporting is DISABLED by default\&.
 .PP
@@ -778,10 +767,8 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
-.PP
-References \fBsmaxShareArray()\fP\&.
 .SS "int smaxShareArray (const char * table, const char * key, const void * ptr, XType type, int ndim, const int * sizes)"
-Share a multidimensional array, such as an \fRint[][][]\fP, or \fRfloat[][]\fP, in a single atomic transaction\&.
+Share a multidimensional array, such as an \fCint[][][]\fP, or \fCfloat[][]\fP, in a single atomic transaction\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -789,11 +776,11 @@ Share a multidimensional array, such as an \fRint[][][]\fP, or \fRfloat[][]\fP, 
 .br
 \fIkey\fP Variable name under which the data is stored\&. 
 .br
-\fIptr\fP Pointer to the data buffer, such as an \fRint[][][]\fP or \fRfloat[][]\fP\&. 
+\fIptr\fP Pointer to the data buffer, such as an \fCint[][][]\fP or \fCfloat[][]\fP\&. 
 .br
 \fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
 .br
-\fIndim\fP Dimensionality of the data (0 <= \fRndim\fP <= X_MAX_DIMS)\&. 
+\fIndim\fP Dimensionality of the data (0 <= \fCndim\fP <= X_MAX_DIMS)\&. 
 .br
 \fIsizes\fP An array of ints containing the sizes along each dimension\&.
 .RE
@@ -809,8 +796,6 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
-.PP
-References \fBsmaxShareField()\fP, and \fBsmaxValuesToString()\fP\&.
 .SS "int smaxShareField (const char * table, const XField * f)"
 Share a field object, which may contain any SMA-X data type\&.
 .PP
@@ -840,8 +825,6 @@ xGetField()
 .RE
 .PP
 
-.PP
-References \fBsmaxShareStruct()\fP\&.
 .SS "int smaxShareStruct (const char * id, const XStructure * s)"
 Share a structure, and all its data including recursive sub-structures, in a single atromic transaction\&.
 .PP
@@ -867,8 +850,6 @@ xCreateStruct()
 .RE
 .PP
 
-.PP
-References \fBsmaxCreateField()\fP\&.
 .SS "int smaxSubscribe (const char * table, const char * key)"
 Subscribes to a specific key(s) in specific group(s)\&. Both the group and key names may contain Redis subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. The subscription only enables receiving update notifications from Redis for the specified variable or variables\&. After subscribing, you can either wait on the subscribed variables to change, or add callback functions to process subscribed variables changes, via \fBsmaxAddSubscriber()\fP\&.
 .PP
@@ -952,8 +933,6 @@ X_SUCCESS (0) if a variable was pushed on a host\&. X_NO_INIT if the SMA-X shari
 .RE
 .PP
 
-.PP
-References \fBRELEASEID\fP, and \fBsmaxIsConnected()\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

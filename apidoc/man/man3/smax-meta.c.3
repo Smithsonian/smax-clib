@@ -1,4 +1,4 @@
-.TH "src/smax-meta.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-meta.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -72,7 +72,7 @@ Attila Kovacs
 
 .SH "Function Documentation"
 .PP 
-.SS "\fBXCoordinateSystem\fP * smaxCreateCoordinateSystem (int nAxis)"
+.SS "\fBXCoordinateSystem\fP* smaxCreateCoordinateSystem (int nAxis)"
 Creates a coordinate system with the desired dimension, and standard Cartesian coordinates with no labels, or units specified (NULL)\&.
 .PP
 \fBParameters\fP
@@ -92,7 +92,7 @@ Pointer to the new coordinate system structure, or NULL if the coordiate system 
 .PP
 
 .PP
-References \fBXCoordinateSystem::axis\fP, \fBXCoordinateSystem::nAxis\fP, and \fBXCoordinateAxis::step\fP\&.
+References XCoordinateSystem::axis, XCoordinateSystem::nAxis, and XCoordinateAxis::step\&.
 .SS "void smaxDestroyCoordinateSystem (\fBXCoordinateSystem\fP * coords)"
 Deallocates a coordinate system structure\&.
 .PP
@@ -108,8 +108,8 @@ Deallocates a coordinate system structure\&.
 .PP
 
 .PP
-References \fBXCoordinateSystem::axis\fP\&.
-.SS "\fBXCoordinateAxis\fP * smaxGetCoordinateAxis (const char * id, int n)"
+References XCoordinateSystem::axis\&.
+.SS "\fBXCoordinateAxis\fP* smaxGetCoordinateAxis (const char * id, int n)"
 Returns the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
 \fBParameters\fP
@@ -131,8 +131,8 @@ Pointer to a newly allocated \fBXCoordinateAxis\fP structure or NULL if the axis
 .PP
 
 .PP
-References \fBXCoordinateAxis::name\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, and \fBXCoordinateAxis::unit\fP\&.
-.SS "\fBXCoordinateSystem\fP * smaxGetCoordinateSystem (const char * table, const char * key)"
+References XCoordinateAxis::name, XCoordinateAxis::refIndex, XCoordinateAxis::refValue, smaxGetRedis(), XCoordinateAxis::step, and XCoordinateAxis::unit\&.
+.SS "\fBXCoordinateSystem\fP* smaxGetCoordinateSystem (const char * table, const char * key)"
 Returns the coordinate system, if any, associated to a given SMA-X variable\&.
 .PP
 \fBParameters\fP
@@ -155,9 +155,7 @@ A newly allocated coordinate system structure, or NULL\&.
 .RE
 .PP
 
-.PP
-References \fBXCoordinateSystem::axis\fP, \fBMETA_COORDS\fP, \fBXCoordinateSystem::nAxis\fP, and \fBsmaxGetCoordinateAxis()\fP\&.
-.SS "char * smaxGetDescription (const char * table, const char * key)"
+.SS "char* smaxGetDescription (const char * table, const char * key)"
 Returns a concise description of a variable\&.
 .PP
 \fBParameters\fP
@@ -178,9 +176,7 @@ Variable description or NULL or empty string if the variable has no description 
 .RE
 .PP
 
-.PP
-References \fBMETA_DESCRIPTION\fP, and \fBsmaxPullMeta()\fP\&.
-.SS "char * smaxGetUnits (const char * table, const char * key)"
+.SS "char* smaxGetUnits (const char * table, const char * key)"
 Returns the physical unit name, if any, for the given variable\&.
 .PP
 \fBParameters\fP
@@ -201,9 +197,7 @@ Unit name (e\&.g\&. 'W / Hz'), or NULL or empty string if the variable has no de
 .RE
 .PP
 
-.PP
-References \fBMETA_UNIT\fP, and \fBsmaxPullMeta()\fP\&.
-.SS "char * smaxPullMeta (const char * meta, const char * table, const char * key, int * status)"
+.SS "char* smaxPullMeta (const char * meta, const char * table, const char * key, int * status)"
 Retrieves a metadata string value for a given variable from the database
 .PP
 \fBParameters\fP
@@ -228,8 +222,6 @@ setPushMeta()
 .RE
 .PP
 
-.PP
-References \fBsmaxGetRedis()\fP\&.
 .SS "double smaxPullTime (const char * table, const char * key)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
@@ -251,8 +243,6 @@ setPushMeta()
 .RE
 .PP
 
-.PP
-References \fBSMAX_TIMESTAMPS\fP, and \fBsmaxPullMeta()\fP\&.
 .SS "XType smaxPullTypeDimension (const char * table, const char * key, int * ndim, int * sizes)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
@@ -278,8 +268,6 @@ setPushMeta()
 .RE
 .PP
 
-.PP
-References \fBSMAX_DIMS\fP, \fBSMAX_TYPES\fP, \fBsmaxPullMeta()\fP, and \fBsmaxTypeForString()\fP\&.
 .SS "int smaxPushMeta (const char * meta, const char * table, const char * key, const char * value)"
 Adds/updates metadata associated with an SMA-X variable\&. The data will be pushed via the Redis pipeline channel\&.
 .PP
@@ -305,8 +293,6 @@ X_SUCCESS (0) if the metadata was successfully retrieved X_INCOMPLETE if the mea
 .RE
 .PP
 
-.PP
-References \fBsmaxGetProgramID()\fP, and \fBsmaxGetRedis()\fP\&.
 .SS "int smaxSetCoordinateAxis (const char * id, int n, const \fBXCoordinateAxis\fP * axis)"
 Defines the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
@@ -331,7 +317,7 @@ X_SUCCESS (0) if the coordinate axis was successfully set in the database\&. or 
 .PP
 
 .PP
-References \fBXCoordinateAxis::name\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, and \fBXCoordinateAxis::unit\fP\&.
+References XCoordinateAxis::name, XCoordinateAxis::refIndex, XCoordinateAxis::refValue, smaxGetRedis(), XCoordinateAxis::step, and XCoordinateAxis::unit\&.
 .SS "int smaxSetCoordinateSystem (const char * table, const char * key, const \fBXCoordinateSystem\fP * coords)"
 Sets the coordinate system metadata for data in the database\&.
 .PP
@@ -357,8 +343,6 @@ X_SUCCESS (0) if the coordinate system was successfully sent to SMA-X or else th
 .RE
 .PP
 
-.PP
-References \fBXCoordinateSystem::axis\fP, \fBMETA_COORDS\fP, \fBXCoordinateSystem::nAxis\fP, and \fBsmaxSetCoordinateAxis()\fP\&.
 .SS "int smaxSetDescription (const char * table, const char * key, const char * description)"
 Sets the static description for a given SMA-X variable\&.
 .PP
@@ -382,8 +366,6 @@ X_SUCCESS (0) If successful or else the return value of \fBsmaxPushMeta()\fP
 .RE
 .PP
 
-.PP
-References \fBMETA_DESCRIPTION\fP, and \fBsmaxPushMeta()\fP\&.
 .SS "int smaxSetUnits (const char * table, const char * key, const char * unit)"
 Sets the physical unit name for a given SMA-X variable\&.
 .PP
@@ -407,8 +389,6 @@ X_SUCCESS (0) If successful or else the return value of \fBsmaxPushMeta()\fP
 .RE
 .PP
 
-.PP
-References \fBMETA_UNIT\fP, and \fBsmaxPushMeta()\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

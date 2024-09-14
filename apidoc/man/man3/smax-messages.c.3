@@ -1,4 +1,4 @@
-.TH "src/smax-messages.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-messages.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -94,7 +94,7 @@ Serial ID number (> 0) of the message processor, or X_NULL\&.
 .PP
 
 .PP
-References \fBsmaxAddMessageProcessor()\fP\&.
+References smaxAddMessageProcessor()\&.
 .SS "int smaxAddMessageProcessor (const char * host, const char * prog, const char * type, void(*)(\fBXMessage\fP *) f)"
 Adds a message processor function for a specific host (or all hosts), a specific program (or all programs), and a specific message type (or all message types)\&.
 .PP
@@ -121,7 +121,7 @@ Serial ID number (> 0) of the message processor, or X_NULL if callback function 
 .PP
 
 .PP
-References \fBMESSAGES_PREFIX\fP, \fBsmaxGetRedis()\fP, and \fBsmaxRemoveMessageProcessor()\fP\&.
+References MESSAGES_PREFIX\&.
 .SS "int smaxRemoveMessageProcessor (int id)"
 Stops a running message processor\&.
 .PP
@@ -141,8 +141,6 @@ X_SUCCESS (0) if successful, or X_NULL if no message processor is running by tha
 .RE
 .PP
 
-.PP
-References \fBsmaxGetRedis()\fP\&.
 .SS "int smaxSendDebug (const char * msg)"
 Broadcast a debugging message via SMA-X (e\&.g\&. program traces)\&.
 .PP
@@ -157,8 +155,6 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
-.PP
-References \fBSMAX_MSG_DEBUG\fP\&.
 .SS "int smaxSendDetail (const char * msg)"
 Broadcast non-essential verbose informational detail via SMA-X\&.
 .PP
@@ -173,8 +169,6 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
-.PP
-References \fBSMAX_MSG_DETAIL\fP\&.
 .SS "int smaxSendError (const char * msg)"
 Broadcast an error message via SMA-X\&. Errors should be used for an issues that impair program functionality\&.
 .PP
@@ -196,8 +190,6 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
-.PP
-References \fBSMAX_MSG_ERROR\fP\&.
 .SS "int smaxSendInfo (const char * msg)"
 Broadcast an informational message via SMA-X\&. These should be confirmations or essential information reported back to users\&. Non-essential information should be sent with sendDetail() instead\&.
 .PP
@@ -219,8 +211,6 @@ sendStatus()
 .RE
 .PP
 
-.PP
-References \fBSMAX_MSG_INFO\fP\&.
 .SS "int smaxSendProgress (double fraction, const char * msg)"
 Broadcast a progress update over SMA-X\&.
 .PP
@@ -237,8 +227,6 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
-.PP
-References \fBSMAX_MSG_DETAIL\fP\&.
 .SS "int smaxSendStatus (const char * msg)"
 Broadcast a program status update via SMA-X\&.
 .PP
@@ -258,8 +246,6 @@ sendInfo()
 .RE
 .PP
 
-.PP
-References \fBSMAX_MSG_STATUS\fP\&.
 .SS "int smaxSendWarning (const char * msg)"
 Broadcast a warning message via SMA-X\&. Warnings should be used for any potentially problematic issues that nonetheless do not impair program functionality\&.
 .PP
@@ -281,8 +267,6 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
-.PP
-References \fBSMAX_MSG_WARNING\fP\&.
 .SS "void smaxSetMessageSenderID (const char * id)"
 Sets the sender ID for outgoing program messages\&. By default the sender ID is <host>:<program> for the program that calls this function, but it can be modified to use some other SMA-X style hierarchical ID also\&.
 .PP

@@ -1,4 +1,4 @@
-.TH "src/smax-queue.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-queue.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -51,7 +51,7 @@ Attila Kovacs
 
 .SH "Function Documentation"
 .PP 
-.SS "\fBXSyncPoint\fP * smaxCreateSyncPoint ()"
+.SS "\fBXSyncPoint\fP* smaxCreateSyncPoint ()"
 Creates a synchronization point that can be waited upon until all elements queued prior to creation are processed (retrieved from the database\&.
 .PP
 \fBReturns\fP
@@ -70,7 +70,7 @@ Pointer to a newly created synchronization point that can be waited upon\&.
 .PP
 
 .PP
-References \fBXSyncPoint::isComplete\fP, \fBXSyncPoint::lock\fP, and \fBXSyncPoint::status\fP\&.
+References XSyncPoint::isComplete, and XSyncPoint::lock\&.
 .SS "void smaxDestroySyncPoint (\fBXSyncPoint\fP * s)"
 Destroys a synchronization point, releasing the memory space allocated to it\&.
 .PP
@@ -81,7 +81,7 @@ Destroys a synchronization point, releasing the memory space allocated to it\&.
 .PP
 
 .PP
-References \fBXSyncPoint::isComplete\fP, and \fBXSyncPoint::lock\fP\&.
+References XSyncPoint::isComplete, and XSyncPoint::lock\&.
 .SS "int smaxQueue (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
 Queues a pull requests for pipelined data retrieval\&. Because pipelined pulls are executed on a separate Redis client from the one used for sharing values, e\&.g\&. via \fBsmaxShare()\fP, there is no guarantee as to the order of this pull operation and previously initiated shares from the same thread\&. This would only be an issue if you are trying to use queued read to read back a value you have just shared -- which is not really a good use case anyway, as it generates network traffic for not real reason\&. But, if you must read back a value you have shared, you probably should use a regular \fBsmaxPull()\fP call to ensure ordering\&.
 .PP
@@ -117,8 +117,6 @@ X_SUCCESS (0) if successful X_NAME_INVALID if the table and key are both NULL X_
 .RE
 .PP
 
-.PP
-References \fBSMAX_PIPE_READ_TIMEOUT_MILLIS\fP\&.
 .SS "int smaxQueueCallback (void(*)(void *) f, void * arg)"
 Adds a callback function to the queue to be called with the specified argument once all prior requests in the queue have been fullfilled (retrieved from the database)\&.
 .PP
@@ -184,7 +182,7 @@ or the first pull error encountered in the queue since the current batch began\&
 .PP
 
 .PP
-References \fBXSyncPoint::isComplete\fP, \fBXSyncPoint::lock\fP, and \fBXSyncPoint::status\fP\&.
+References XSyncPoint::isComplete, XSyncPoint::lock, and XSyncPoint::status\&.
 .SS "int smaxWaitQueueComplete (int timeoutMillis)"
 Waits until all queued pull requests have been retrieved from the database, or until the specified timeout it reached\&.
 .PP
@@ -204,8 +202,6 @@ X_SUCCESS (0) if all reads have completed successfully, or the first read error 
 .RE
 .PP
 
-.PP
-References \fBXSyncPoint::isComplete\fP, \fBXSyncPoint::lock\fP, \fBsmaxSync()\fP, and \fBXSyncPoint::status\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

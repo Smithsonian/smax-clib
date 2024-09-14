@@ -10,6 +10,6 @@ var smax_lazy_8c =
     [ "smaxLazyPullDouble", "smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561", null ],
     [ "smaxLazyPullDoubleDefault", "smax-lazy_8c.html#ac823bc3c1ee1bdbc4c330366fc246c8e", null ],
     [ "smaxLazyPullLong", "smax-lazy_8c.html#a03e3bb5c838dc621f8c0ba5fb6fe5f87", null ],
-    [ "smaxLazyPullString", "smax-lazy_8c.html#a38d33bcbf9f2f73adbaf040996279859", null ],
+    [ "smaxLazyPullString", "smax-lazy_8c.html#a3867625495cac33ddb728d49a978124e", null ],
     [ "smaxLazyPullStruct", "smax-lazy_8c.html#af96429709d1b029a8db74cb7407f9ffb", null ]
 ];

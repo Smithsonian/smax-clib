@@ -1,4 +1,4 @@
-.TH "src/smax-resilient.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-resilient.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -35,7 +35,6 @@ Aug 14, 2019
 .RS 4
 Attila Kovacs
 .RE
-.PP
 .PP
 This way, push requests are guaranteed to make it to the database sooner or later as long as the calling program keeps running\&.
 .PP
@@ -81,8 +80,6 @@ Enables the resiliency feature of the library, which keeps track of local change
 .RE
 .PP
 
-.PP
-References \fBsmaxAddConnectHook()\fP, and \fBsmaxRemoveConnectHook()\fP\&.
 .SS "void smaxSetResilientExit (boolean value)"
 Sets whether the program should exit in resilient mode, after having pushed all local updates\&. The default is to exit since the reconnecting in resilient mode does not by itself re-establish existing subscriptions\&. However, when subscriptions aren't used, or if they are set up as a connect hook, the user may want the program to simply continue\&. This is possible by passing FALSE (0) as the argument to this call\&. This setting only takes effect when resilient mode is enabled\&. Otherwise, the exit policy is set by the RedisX library\&.
 .PP

@@ -1,10 +1,10 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
-<tagfile doxygen_version="1.10.0" doxygen_gitid="GIT-NOTFOUND">
+<tagfile doxygen_version="1.9.1">
   <compound kind="file">
     <name>smax-private.h</name>
-    <path>include/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/include/</path>
     <filename>smax-private_8h.html</filename>
-    <includes id="smax_8h" name="smax.h" local="yes" import="no" module="no" objc="no">smax.h</includes>
+    <includes id="smax_8h" name="smax.h" local="yes" imported="no">smax.h</includes>
     <member kind="define">
       <type>#define</type>
       <name>__XCHANGE_INTERNAL_API__</name>
@@ -22,7 +22,7 @@
   </compound>
   <compound kind="file">
     <name>smax.h</name>
-    <path>include/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/include/</path>
     <filename>smax_8h.html</filename>
     <class kind="struct">XCoordinateAxis</class>
     <class kind="struct">XCoordinateSystem</class>
@@ -76,6 +76,20 @@
       <name>SMAX_DIMS</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a59b5959fb0859d4dbe98408f2cc2f1d0</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SMAX_MAJOR_VERSION</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a3051c515b4c1f07fcce01e31f5f45246</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SMAX_MINOR_VERSION</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a9c270b06dbd9e1e74b48d2a79aa27181</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -143,6 +157,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>SMAX_PATCHLEVEL</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>ab144bc11dc26e6c6351b8134f60dc23c</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>SMAX_PIPE_READ_TIMEOUT_MILLIS</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a38eb97e64eaf65a5273fa6d6ff765a93</anchor>
@@ -160,6 +181,13 @@
       <name>SMAX_RECONNECT_RETRY_SECONDS</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a3e9baa458ae59eb26923d6ce863bf700</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SMAX_RELEASE_STRING</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>aad744859d63c95706ad84435b46efdc1</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -209,6 +237,13 @@
       <name>SMAX_UPDATES_ROOT</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>abfefd74fb72fc51e4577d1fa5fa832f4</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>SMAX_VERSION_STRING</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>ae03823c71a349f98a176d1eb1af7a583</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -292,77 +327,77 @@
       <type>XField *</type>
       <name>smaxCreate1DField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>afba357d35d2a1f13d0cf06f5ff708a99</anchor>
+      <anchor>ac9783f900e7f6d2b89f5c862565aa171</anchor>
       <arglist>(const char *name, XType type, int size, const void *value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateBooleanField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a13e357c3f20c0799fba6bc6c2a16c520</anchor>
+      <anchor>acdd5066183f70e584c5bcfb1cfb7a213</anchor>
       <arglist>(const char *name, boolean value)</arglist>
     </member>
     <member kind="function">
       <type>XCoordinateSystem *</type>
       <name>smaxCreateCoordinateSystem</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a1d977e7e9eb45f9ce6cc338fdde9bd8f</anchor>
+      <anchor>a821422681314ab3164cc0c9ca90365de</anchor>
       <arglist>(int nAxis)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateDoubleField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>afa9c9ec0f47236c0c560eee724b809d6</anchor>
+      <anchor>a6209dfed60a1cbc7d3a4fb0b03627071</anchor>
       <arglist>(const char *name, double value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a9871356984c4794a9f9caa3870dc6794</anchor>
+      <anchor>a04131255314b01965e980cee0b8848ad</anchor>
       <arglist>(const char *name, XType type, int ndim, const int *sizes, const void *value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateIntField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>afcb9ce5f154eef8eccdb0930ec4d613d</anchor>
+      <anchor>afcdb35e5ead77beffbc38fb25e78cfb3</anchor>
       <arglist>(const char *name, int value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateLongField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a23b55eae1ce68356073ea5b191f915e5</anchor>
+      <anchor>a0815a08d789185c18326b773fb67efd1</anchor>
       <arglist>(const char *name, long long value)</arglist>
     </member>
     <member kind="function">
       <type>XMeta *</type>
       <name>smaxCreateMeta</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a48decaf10195b2f21fa77d8ea9b94fff</anchor>
+      <anchor>a7dcb524bdb4c07bb5afb50bffd37d8fd</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateScalarField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a61a3760159e6867cdb55b5995435633c</anchor>
+      <anchor>a4f47038712ed5ff42f1fdcbd9f267750</anchor>
       <arglist>(const char *name, XType type, const void *value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateStringField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>aa5c7661e29f4f1ba62f457c7138f2654</anchor>
+      <anchor>a14ffff153d42d083daf49fd4fb9017db</anchor>
       <arglist>(const char *name, const char *value)</arglist>
     </member>
     <member kind="function">
       <type>XSyncPoint *</type>
       <name>smaxCreateSyncPoint</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a30e2e1eb462ed2274a55016830b9abc1</anchor>
+      <anchor>ae68cb43ec0685e01b01d74f8469ebda2</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -404,7 +439,7 @@
       <type>const char *</type>
       <name>smaxErrorDescription</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a51856e0dc0261f8e44c8635d31d6193c</anchor>
+      <anchor>a5f1cdda2a22d12bae96874b9055b44b6</anchor>
       <arglist>(int code)</arglist>
     </member>
     <member kind="function">
@@ -425,21 +460,21 @@
       <type>XCoordinateAxis *</type>
       <name>smaxGetCoordinateAxis</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a349dc6fe14a2031d679e29804d82d570</anchor>
+      <anchor>a707975fd25bdd4c692cef991e93c0ca0</anchor>
       <arglist>(const char *id, int n)</arglist>
     </member>
     <member kind="function">
       <type>XCoordinateSystem *</type>
       <name>smaxGetCoordinateSystem</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a2920bd71f9d340422e0b1b0db4bb3201</anchor>
+      <anchor>aedeafcd2c69bae16e92e86f091566df0</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxGetDescription</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>ad7ef601ffd5fbcae7b2c05be6f6bc302</anchor>
+      <anchor>af02ec63b73ce480b78940573f3ba3b05</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
@@ -453,14 +488,14 @@
       <type>char *</type>
       <name>smaxGetHostName</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>ac704fea3e664905af780d2566e3c74b6</anchor>
+      <anchor>a07c66bc16325546bb3d13f510294e3db</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>char **</type>
       <name>smaxGetKeys</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a2544d1fa602e812004e1d68500024ae0</anchor>
+      <anchor>a92b8d01fa3277a90141571a4c85b7f20</anchor>
       <arglist>(const char *table, int *n)</arglist>
     </member>
     <member kind="function">
@@ -495,28 +530,28 @@
       <type>char *</type>
       <name>smaxGetProgramID</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>abc07a7599e0bac1be15bbcb6b63d4710</anchor>
+      <anchor>a10c2b6a8f27a2d777c153813c8cba780</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxGetRawField</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>ada517cdb7737bb38695e2a343123583b</anchor>
+      <anchor>a90df50aaf07a86771a87ffbd54bc8602</anchor>
       <arglist>(const XStructure *s, const char *name, char *defaultValue)</arglist>
     </member>
     <member kind="function">
       <type>Redis *</type>
       <name>smaxGetRedis</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a533fbe770158afe876a3dafa78ba2195</anchor>
+      <anchor>a9f3c5c9c095dcc96de6c0fc4c3e93541</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxGetScriptSHA1</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a8ef420555c1ddbbcd9f4213f65b4ca66</anchor>
+      <anchor>af885a8f7162bcaf2cbd6002e7a1b90e4</anchor>
       <arglist>(const char *scriptName, int *status)</arglist>
     </member>
     <member kind="function">
@@ -537,7 +572,7 @@
       <type>char *</type>
       <name>smaxGetUnits</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>aa27e3adeb67f2328a162c80bad433f02</anchor>
+      <anchor>a4073f51402880ea93a99fc59b7e03fd7</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
@@ -635,7 +670,7 @@
       <type>char *</type>
       <name>smaxLazyPullString</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a38d33bcbf9f2f73adbaf040996279859</anchor>
+      <anchor>a3867625495cac33ddb728d49a978124e</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
@@ -677,7 +712,7 @@
       <type>double *</type>
       <name>smaxPullDoubles</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a6e5df36b7eee3944b1ef07edb7f9647d</anchor>
+      <anchor>af4162d00c5917ea1846b224221fd88dd</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
@@ -691,7 +726,7 @@
       <type>int *</type>
       <name>smaxPullInts</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a8cdf0e4d01eaa160b8c96593ce32f4ff</anchor>
+      <anchor>ae086c65c64814991dcea9a064088f988</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
@@ -705,42 +740,42 @@
       <type>long long *</type>
       <name>smaxPullLongs</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a843fa579fa26190335aeebb87be63203</anchor>
+      <anchor>aab87f656c52890907aa1c782bd4f6102</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxPullMeta</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a0d29e7a895c1d5fdc6258ff7426b3521</anchor>
+      <anchor>a84b2769a0e0f01cd04af79fef48dc0e0</anchor>
       <arglist>(const char *meta, const char *table, const char *key, int *status)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxPullRaw</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a0de71a90fdf235a8aee084543591244f</anchor>
+      <anchor>ac0d26c2c35c4952d725dd167f45f7320</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *status)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxPullString</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a41bdf6bb7bcb3f0d3cb1c0657f8da1c5</anchor>
+      <anchor>ad341c8c7f517d9b24e7f5f186542bd73</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
       <type>char **</type>
       <name>smaxPullStrings</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>abc833f0d89e672507e0baeb146e8776b</anchor>
+      <anchor>a2737efffb18ba0e25d73b024cb2984ce</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
       <type>XStructure *</type>
       <name>smaxPullStruct</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>ae6d8bf54e6ca203ea25a066d6e439ae5</anchor>
+      <anchor>a9e431270f37e6a7ce7758e37a8995eff</anchor>
       <arglist>(const char *name, XMeta *meta, int *status)</arglist>
     </member>
     <member kind="function">
@@ -1125,7 +1160,7 @@
       <type>char *</type>
       <name>smaxStringType</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a8d9d92ad8825d4adad4d6288a5681351</anchor>
+      <anchor>a4052450b4c2f857354e4f0f0abc9bd17</anchor>
       <arglist>(XType type)</arglist>
     </member>
     <member kind="function">
@@ -1181,7 +1216,7 @@
       <type>char *</type>
       <name>smaxValuesToString</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>ae67f864946fbcd880e7b5c98b2f876c5</anchor>
+      <anchor>a44f04f23cc24fdbe8e7d2022dab5f8ba</anchor>
       <arglist>(const void *value, XType type, int count, char *trybuf, int trylength)</arglist>
     </member>
     <member kind="function">
@@ -1236,56 +1271,56 @@
   </compound>
   <compound kind="file">
     <name>smax-easy.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax-easy_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreate1DField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>afba357d35d2a1f13d0cf06f5ff708a99</anchor>
+      <anchor>ac9783f900e7f6d2b89f5c862565aa171</anchor>
       <arglist>(const char *name, XType type, int size, const void *value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateBooleanField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a13e357c3f20c0799fba6bc6c2a16c520</anchor>
+      <anchor>acdd5066183f70e584c5bcfb1cfb7a213</anchor>
       <arglist>(const char *name, boolean value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateDoubleField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>afa9c9ec0f47236c0c560eee724b809d6</anchor>
+      <anchor>a6209dfed60a1cbc7d3a4fb0b03627071</anchor>
       <arglist>(const char *name, double value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateIntField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>afcb9ce5f154eef8eccdb0930ec4d613d</anchor>
+      <anchor>afcdb35e5ead77beffbc38fb25e78cfb3</anchor>
       <arglist>(const char *name, int value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateLongField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a23b55eae1ce68356073ea5b191f915e5</anchor>
+      <anchor>a0815a08d789185c18326b773fb67efd1</anchor>
       <arglist>(const char *name, long long value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateScalarField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a61a3760159e6867cdb55b5995435633c</anchor>
+      <anchor>a4f47038712ed5ff42f1fdcbd9f267750</anchor>
       <arglist>(const char *name, XType type, const void *value)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
       <name>smaxCreateStringField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>aa5c7661e29f4f1ba62f457c7138f2654</anchor>
+      <anchor>a14ffff153d42d083daf49fd4fb9017db</anchor>
       <arglist>(const char *name, const char *value)</arglist>
     </member>
     <member kind="function">
@@ -1320,7 +1355,7 @@
       <type>char *</type>
       <name>smaxGetRawField</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>ada517cdb7737bb38695e2a343123583b</anchor>
+      <anchor>a90df50aaf07a86771a87ffbd54bc8602</anchor>
       <arglist>(const XStructure *s, const char *name, char *defaultValue)</arglist>
     </member>
     <member kind="function">
@@ -1341,7 +1376,7 @@
       <type>double *</type>
       <name>smaxPullDoubles</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a6e5df36b7eee3944b1ef07edb7f9647d</anchor>
+      <anchor>af4162d00c5917ea1846b224221fd88dd</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
@@ -1355,7 +1390,7 @@
       <type>int *</type>
       <name>smaxPullInts</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a8cdf0e4d01eaa160b8c96593ce32f4ff</anchor>
+      <anchor>ae086c65c64814991dcea9a064088f988</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
@@ -1369,35 +1404,35 @@
       <type>long long *</type>
       <name>smaxPullLongs</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a843fa579fa26190335aeebb87be63203</anchor>
+      <anchor>aab87f656c52890907aa1c782bd4f6102</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxPullRaw</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a0de71a90fdf235a8aee084543591244f</anchor>
+      <anchor>ac0d26c2c35c4952d725dd167f45f7320</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *status)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxPullString</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a41bdf6bb7bcb3f0d3cb1c0657f8da1c5</anchor>
+      <anchor>ad341c8c7f517d9b24e7f5f186542bd73</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
       <type>char **</type>
       <name>smaxPullStrings</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>abc833f0d89e672507e0baeb146e8776b</anchor>
+      <anchor>a2737efffb18ba0e25d73b024cb2984ce</anchor>
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
       <type>XStructure *</type>
       <name>smaxPullStruct</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a30a2212f19ab2cbf60ea348110475948</anchor>
+      <anchor>adcc325dd16cb3f9eb754244a6b34f196</anchor>
       <arglist>(const char *id, XMeta *meta, int *status)</arglist>
     </member>
     <member kind="function">
@@ -1515,9 +1550,9 @@
   </compound>
   <compound kind="file">
     <name>smax-lazy.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax-lazy_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="function">
       <type>int</type>
       <name>smaxGetLazyCached</name>
@@ -1592,7 +1627,7 @@
       <type>char *</type>
       <name>smaxLazyPullString</name>
       <anchorfile>smax-lazy_8c.html</anchorfile>
-      <anchor>a38d33bcbf9f2f73adbaf040996279859</anchor>
+      <anchor>a3867625495cac33ddb728d49a978124e</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
@@ -1605,9 +1640,9 @@
   </compound>
   <compound kind="file">
     <name>smax-messages.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax-messages_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="define">
       <type>#define</type>
       <name>MESSAGES_ID</name>
@@ -1702,14 +1737,14 @@
   </compound>
   <compound kind="file">
     <name>smax-meta.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax-meta_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="function">
       <type>XCoordinateSystem *</type>
       <name>smaxCreateCoordinateSystem</name>
       <anchorfile>smax-meta_8c.html</anchorfile>
-      <anchor>a1d977e7e9eb45f9ce6cc338fdde9bd8f</anchor>
+      <anchor>a821422681314ab3164cc0c9ca90365de</anchor>
       <arglist>(int nAxis)</arglist>
     </member>
     <member kind="function">
@@ -1723,35 +1758,35 @@
       <type>XCoordinateAxis *</type>
       <name>smaxGetCoordinateAxis</name>
       <anchorfile>smax-meta_8c.html</anchorfile>
-      <anchor>a349dc6fe14a2031d679e29804d82d570</anchor>
+      <anchor>a707975fd25bdd4c692cef991e93c0ca0</anchor>
       <arglist>(const char *id, int n)</arglist>
     </member>
     <member kind="function">
       <type>XCoordinateSystem *</type>
       <name>smaxGetCoordinateSystem</name>
       <anchorfile>smax-meta_8c.html</anchorfile>
-      <anchor>a2920bd71f9d340422e0b1b0db4bb3201</anchor>
+      <anchor>aedeafcd2c69bae16e92e86f091566df0</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxGetDescription</name>
       <anchorfile>smax-meta_8c.html</anchorfile>
-      <anchor>ad7ef601ffd5fbcae7b2c05be6f6bc302</anchor>
+      <anchor>af02ec63b73ce480b78940573f3ba3b05</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxGetUnits</name>
       <anchorfile>smax-meta_8c.html</anchorfile>
-      <anchor>aa27e3adeb67f2328a162c80bad433f02</anchor>
+      <anchor>a4073f51402880ea93a99fc59b7e03fd7</anchor>
       <arglist>(const char *table, const char *key)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxPullMeta</name>
       <anchorfile>smax-meta_8c.html</anchorfile>
-      <anchor>a0d29e7a895c1d5fdc6258ff7426b3521</anchor>
+      <anchor>a84b2769a0e0f01cd04af79fef48dc0e0</anchor>
       <arglist>(const char *meta, const char *table, const char *key, int *status)</arglist>
     </member>
     <member kind="function">
@@ -1806,14 +1841,14 @@
   </compound>
   <compound kind="file">
     <name>smax-queue.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax-queue_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="function">
       <type>XSyncPoint *</type>
       <name>smaxCreateSyncPoint</name>
       <anchorfile>smax-queue_8c.html</anchorfile>
-      <anchor>a30e2e1eb462ed2274a55016830b9abc1</anchor>
+      <anchor>ae68cb43ec0685e01b01d74f8469ebda2</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -1861,9 +1896,9 @@
   </compound>
   <compound kind="file">
     <name>smax-resilient.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax-resilient_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="function">
       <type>boolean</type>
       <name>smaxIsResilient</name>
@@ -1888,9 +1923,9 @@
   </compound>
   <compound kind="file">
     <name>smax-util.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax-util_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="function">
       <type>int</type>
       <name>smax2xField</name>
@@ -1909,14 +1944,14 @@
       <type>XField *</type>
       <name>smaxCreateField</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a9871356984c4794a9f9caa3870dc6794</anchor>
+      <anchor>a04131255314b01965e980cee0b8848ad</anchor>
       <arglist>(const char *name, XType type, int ndim, const int *sizes, const void *value)</arglist>
     </member>
     <member kind="function">
       <type>XMeta *</type>
       <name>smaxCreateMeta</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a48decaf10195b2f21fa77d8ea9b94fff</anchor>
+      <anchor>a7dcb524bdb4c07bb5afb50bffd37d8fd</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -1937,7 +1972,7 @@
       <type>const char *</type>
       <name>smaxErrorDescription</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a51856e0dc0261f8e44c8635d31d6193c</anchor>
+      <anchor>a5f1cdda2a22d12bae96874b9055b44b6</anchor>
       <arglist>(int code)</arglist>
     </member>
     <member kind="function">
@@ -1951,7 +1986,7 @@
       <type>char *</type>
       <name>smaxGetScriptSHA1</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a8ef420555c1ddbbcd9f4213f65b4ca66</anchor>
+      <anchor>af885a8f7162bcaf2cbd6002e7a1b90e4</anchor>
       <arglist>(const char *scriptName, int *status)</arglist>
     </member>
     <member kind="function">
@@ -2014,7 +2049,7 @@
       <type>char *</type>
       <name>smaxStringType</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a8d9d92ad8825d4adad4d6288a5681351</anchor>
+      <anchor>a4052450b4c2f857354e4f0f0abc9bd17</anchor>
       <arglist>(XType type)</arglist>
     </member>
     <member kind="function">
@@ -2056,7 +2091,7 @@
       <type>char *</type>
       <name>smaxValuesToString</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a4a80ebd309352379d3691f264282d96b</anchor>
+      <anchor>aabe2cdd633f9c8f2464badfa90d31eba</anchor>
       <arglist>(const void *value, XType type, int eCount, char *trybuf, int trylength)</arglist>
     </member>
     <member kind="function">
@@ -2076,9 +2111,9 @@
   </compound>
   <compound kind="file">
     <name>smax.c</name>
-    <path>src/</path>
+    <path>/home/runner/work/smax-clib/smax-clib/smax-clib/src/</path>
     <filename>smax_8c.html</filename>
-    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" imported="no">smax-private.h</includes>
     <member kind="function">
       <type>int</type>
       <name>smaxAddConnectHook</name>
@@ -2125,28 +2160,28 @@
       <type>char *</type>
       <name>smaxGetHostName</name>
       <anchorfile>smax_8c.html</anchorfile>
-      <anchor>ac704fea3e664905af780d2566e3c74b6</anchor>
+      <anchor>a07c66bc16325546bb3d13f510294e3db</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>char **</type>
       <name>smaxGetKeys</name>
       <anchorfile>smax_8c.html</anchorfile>
-      <anchor>a2544d1fa602e812004e1d68500024ae0</anchor>
+      <anchor>a92b8d01fa3277a90141571a4c85b7f20</anchor>
       <arglist>(const char *table, int *n)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
       <name>smaxGetProgramID</name>
       <anchorfile>smax_8c.html</anchorfile>
-      <anchor>abc07a7599e0bac1be15bbcb6b63d4710</anchor>
+      <anchor>a10c2b6a8f27a2d777c153813c8cba780</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>Redis *</type>
       <name>smaxGetRedis</name>
       <anchorfile>smax_8c.html</anchorfile>
-      <anchor>a533fbe770158afe876a3dafa78ba2195</anchor>
+      <anchor>a9f3c5c9c095dcc96de6c0fc4c3e93541</anchor>
       <arglist>()</arglist>
     </member>
     <member kind="function">
@@ -2546,31 +2581,8 @@
   </compound>
   <compound kind="page">
     <name>index</name>
-    <title>smax-clib</title>
+    <title></title>
     <filename>index.html</filename>
-    <docanchor file="index.html">md_README-orig</docanchor>
-    <docanchor file="index.html">introduction</docanchor>
-    <docanchor file="index.html">prerequisites</docanchor>
-    <docanchor file="index.html">building</docanchor>
-    <docanchor file="index.html">configuration</docanchor>
-    <docanchor file="index.html">connecting</docanchor>
-    <docanchor file="index.html">connection-hooks</docanchor>
-    <docanchor file="index.html">sharing-and-pulling</docanchor>
-    <docanchor file="index.html">basics</docanchor>
-    <docanchor file="index.html">metadata</docanchor>
-    <docanchor file="index.html">flexible-types-and-sizes</docanchor>
-    <docanchor file="index.html">scalars</docanchor>
-    <docanchor file="index.html">arrays</docanchor>
-    <docanchor file="index.html">structures</docanchor>
-    <docanchor file="index.html">lazy-pulling</docanchor>
-    <docanchor file="index.html">pipelined-pulls</docanchor>
-    <docanchor file="index.html">lazy-synchronization</docanchor>
-    <docanchor file="index.html">lazy-callbacks</docanchor>
-    <docanchor file="index.html">lazy-finish</docanchor>
-    <docanchor file="index.html">notifications</docanchor>
-    <docanchor file="index.html">optional-metadata</docanchor>
-    <docanchor file="index.html">error-handling</docanchor>
-    <docanchor file="index.html">debug-support</docanchor>
-    <docanchor file="index.html">future-plans</docanchor>
+    <docanchor file="index.html">md_README_orig</docanchor>
   </compound>
 </tagfile>

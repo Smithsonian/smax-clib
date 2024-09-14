@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['get_5fstruct_0',['GET_STRUCT',['../smax_8c.html#abc25cf33d9f3d6262a6fe3ffd94a85ae',1,'smax.c']]]
+  ['messages_5fid_11',['MESSAGES_ID',['../smax-messages_8c.html#a7b2e3f4ba6d955bd23ae56f2a2d9a3e3',1,'smax-messages.c']]],
+  ['messages_5fprefix_12',['MESSAGES_PREFIX',['../smax-messages_8c.html#a309d33601440402f7f3fb5175864b62b',1,'smax-messages.c']]],
+  ['meta_5fcoords_13',['META_COORDS',['../smax_8h.html#a6306140d9f65104bc6e0bfd63cbbc2f1',1,'smax.h']]],
+  ['meta_5fdescription_14',['META_DESCRIPTION',['../smax_8h.html#a3cd80ac3dbca64268a52d6bc8b273d82',1,'smax.h']]],
+  ['meta_5funit_15',['META_UNIT',['../smax_8h.html#aa1f2f2081a2949053cf74cd4ad47a8d2',1,'smax.h']]]
 ];
