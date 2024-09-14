@@ -23,7 +23,8 @@ jobs:
     - name: Check out smax-clib
       uses: actions/checkout@v4
       with:
-      	path: smax-clib
+        repository: Smithsonian/smax-clib
+        path: smax-clib
       
     - name: Check out xchange dependency
       uses: actions/checkout@v4
