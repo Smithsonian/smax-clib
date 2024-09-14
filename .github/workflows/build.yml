@@ -1,0 +1,53 @@
+name: Build
+
+on: 
+  push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/build.yml'
+
+jobs:
+
+  build:
+    name: Build library
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+      XCHANGE: ../xchange
+      REDISX: ../redisx
+    steps:
+    - name: Check out smax-clib
+      uses: actions/checkout@v4
+      with:
+      	path: smax-clib
+      
+    - name: Check out xchange dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/xchange
+        path: xchange
+    
+    - name: Check out RedisX dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/redisx
+        path: redisx
+    
+    - name: Build static library	
+      run: make -C smax-clib static
+      
+    - name: Build xchange dependency
+      run: make -C xchange shared
+      
+    - name: Build xchange dependency
+      run: make -C redisx shared
+      
+    - name: Build shared library
+      run: make -C smax-clib shared   
+
+      
+   

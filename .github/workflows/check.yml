@@ -1,0 +1,43 @@
+name: Static Analysis
+
+on:
+  push:
+    paths:
+      - 'src/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/check.yml'
+
+jobs:
+
+  cppcheck:
+    name: Check source code
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+      XCHANGE: xchange
+      REDISX: redisx
+    steps:
+    
+    - name: Check out smax-clib
+      uses: actions/checkout@v4
+    
+    - name: Check out xchange dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/xchange
+        path: xchange
+    
+    - name: Check out RedisX dependency
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/redisx
+        path: redisx
+    
+    - name: install package dependencies
+      run: sudo apt-get install -y cppcheck
+    
+    - name: Run cppcheck
+      run: make check
