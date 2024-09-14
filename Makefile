@@ -1,69 +1,124 @@
-# Build SMAX libs with the local recipes
-SMAX_MAKE = 1
+# ===============================================================================
+# WARNING! You should leave this Makefile alone probably
+#          To configure the build, you can edit config.mk, or else you export the 
+#          equivalent shell variables prior to invoking 'make' to adjust the
+#          build configuration. 
+# ===============================================================================
 
-# Load the common Makefile definitions...
-include $(GLOBALINC)/setup.mk
+include config.mk
 
-# The SMA-X library core objects.
-SMAX_CORE_OBJS = $(LIB)/smax.o $(LIB)/smax-util.o $(LIB)/smax-resilient.o \
-  $(LIB)/smax-lazy.o
+# ===============================================================================
+# Specific build targets and recipes below...
+# ===============================================================================
 
-ifeq ($(PLATFORM),lynx-ppc)
-  SMAX_CORE_OBJS += $(OBJ)/procname.o
+# The version of the shared .so libraries
+SO_VERSION := 1
+
+# Check if there is a doxygen we can run
+ifndef DOXYGEN
+  DOXYGEN := $(shell which doxygen)
+else
+  $(shell test -f $(DOXYGEN))
 endif
 
-# The full SMA-X library objects
-SMAX_EXTENSION_OBJS = $(LIB)/smax-queue.o $(LIB)/smax-easy.o $(LIB)/smax-meta.o \
-  $(LIB)/smax-messages.o $(LIB)/smax-buffers.o
-
-ifeq ($(OSNAME),Linux)
-	LDFLAGS += -lrt
+# If there is doxygen, build the API documentation also by default
+ifeq ($(.SHELLSTATUS),0)
+  DOC_TARGETS += local-dox
+else
+  $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
-LDFLAGS += -lm $(NETFLAGS) $(THREADS)
 
-# Top level make targets
-# Build deps for libraries
-$(LIB)/smax.a : $(SMAX_CORE_OBJS) $(SMAX_EXTENSION_OBJS)
+# Link against thread lib
+LDFLAGS += -pthread
 
-lib: $(LIB)/smax.a
+# Build everything...
+.PHONY: all
+all: shared static $(DOC_TARGETS) check
 
-all: lib tools
+# Shared libraries (versioned and unversioned)
+.PHONY: shared
+shared: $(LIB)/libsmax.so
 
-distclean: purge-smax
+# Legacy static libraries (locally built)
+.PHONY: static
+static: $(LIB)/libsmax.a
 
-.PHONY: purge-smax
-purge-smax: 
-	@rm -f $(SMAX_LIB) $(LIB)/smax.o $(LIB)/smax-*.o
-
-.PHONY: tools
-tools: 
-	@make -C tools
-
+# Run regression tests
 .PHONY: test
-test: 
-	@make -C tests
+test:
+	make -C test
 
-.PHONY: tools-clean
-tools-clean: 
-	@make -s -C tools clean
+# Remove intermediates
+.PHONY: clean
+clean:
+	rm -f $(OBJECTS) README-orig.md gmon.out
 
-.PHONY: test-clean
-test-clean: 
-	@make -s -C tests clean
-
-.PHONY: tools-distclean
-tools-distclean: 
-	@make -s -C tools distclean
-
-.PHONY: test-distclean
-test-distclean: 
-	@make -s -C tests distclean
-
-clean: tools-clean test-clean
-
-# Finally, the standard generic rules and targets...
-include $(GLOBALINC)/recipes.mk
+# Remove all generated files
+.PHONY: distclean
+distclean: clean
+	rm -f Doxyfile.local $(LIB)/libsmax.so* $(LIB)/libsmax.a
 
 
+# ----------------------------------------------------------------------------
+# The nitty-gritty stuff below
+# ----------------------------------------------------------------------------
 
+SOURCES = $(SRC)/smax.c $(SRC)/smax-easy.c $(SRC)/smax-lazy.c $(SRC)/smax-queue.c \
+          $(SRC)/smax-meta.c $(SRC)/smax-messages.c $(SRC)/smax-resilient.c $(SRC)/smax-util.c
+
+# Generate a list of object (obj/*.o) files from the input sources
+OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
+OBJECTS := $(subst .c,.o,$(OBJECTS))
+
+$(LIB)/libsmax.so: $(LIB)/libsmax.so.$(SO_VERSION)
+
+# Shared library
+$(LIB)/libsmax.so.$(SO_VERSION): $(SOURCES)
+
+# Static library
+$(LIB)/libsmax.a: $(OBJECTS) | $(LIB) Makefile
+
+README-orig.md: README.md
+	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
+
+dox: README-orig.md
+
+.INTERMEDIATE: Doxyfile.local
+Doxyfile.local: Doxyfile Makefile
+	sed "s:resources/header.html::g" $< > $@
+	sed -i "s:^TAGFILES.*$$:TAGFILES = :g" $@
+
+# Local documentation without specialized headers. The resulting HTML documents do not have
+# Google Search or Analytics tracking info.
+.PHONY: local-dox
+local-dox: README-orig.md Doxyfile.local
+	doxygen Doxyfile.local
+
+# Built-in help screen for `make help`
+.PHONY: help
+help:
+	@echo
+	@echo "Syntax: make [target]"
+	@echo
+	@echo "The following targets are available:"
+	@echo
+	@echo "  shared        Builds the shared 'libsmax.so' (linked to versioned)."
+	@echo "  static        Builds the static 'lib/libsmax.a' library."
+	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
+	@echo "  check         Performs static analysis with 'cppcheck'."
+	@echo "  all           All of the above."
+	@echo "  clean         Removes intermediate products."
+	@echo "  distclean     Deletes all generated files."
+	@echo
+
+# This Makefile depends on the config and build snipplets.
+Makefile: config.mk build.mk
+
+# ===============================================================================
+# Generic targets and recipes below...
+# ===============================================================================
+
+include build.mk
+
+	
