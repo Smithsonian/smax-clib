@@ -47,7 +47,5 @@ jobs:
       run: make -C redisx shared
       
     - name: Build shared library
-      run: make -C smax-clib shared   
+      run: make -C smax-clib shared
 
-      
-   
