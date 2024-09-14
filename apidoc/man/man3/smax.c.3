@@ -1,8 +1,8 @@
-.TH "src/smax.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
-src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the base layer for the software reflective memory (RM) emulation, and DSM replacement\&. It works by communicating TCP/IP messages to a central Redis server\&.  
+src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the base layer for the software reflective memory (RM) emulation, and DSM replacement\&. It works by communicating TCP/IP messages to a central \fBRedis\fP server\&.  
 
 .SH SYNOPSIS
 .br
@@ -17,7 +17,7 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .RI "int \fBsmaxAddDisconnectHook\fP (void(*cleanupCall)(void))"
 .br
 .ti -1c
-.RI "int \fBsmaxAddSubscriber\fP (const char *idStem, RedisSubscriberCall f)"
+.RI "int \fBsmaxAddSubscriber\fP (const char *idStem, \fBRedisSubscriberCall\fP f)"
 .br
 .ti -1c
 .RI "int \fBsmaxConnect\fP ()"
@@ -38,22 +38,22 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .RI "char * \fBsmaxGetProgramID\fP ()"
 .br
 .ti -1c
-.RI "Redis * \fBsmaxGetRedis\fP ()"
+.RI "\fBRedis\fP * \fBsmaxGetRedis\fP ()"
 .br
 .ti -1c
 .RI "int \fBsmaxIsConnected\fP ()"
 .br
 .ti -1c
-.RI "boolean \fBsmaxIsPipelined\fP ()"
+.RI "\fBboolean\fP \fBsmaxIsPipelined\fP ()"
 .br
 .ti -1c
-.RI "boolean \fBsmaxIsVerbose\fP ()"
+.RI "\fBboolean\fP \fBsmaxIsVerbose\fP ()"
 .br
 .ti -1c
 .RI "int \fBsmaxKeyCount\fP (const char *table)"
 .br
 .ti -1c
-.RI "int \fBsmaxPull\fP (const char *table, const char *key, XType type, int count, void *value, \fBXMeta\fP *meta)"
+.RI "int \fBsmaxPull\fP (const char *table, const char *key, \fBXType\fP type, int count, void *value, \fBXMeta\fP *meta)"
 .br
 .ti -1c
 .RI "int \fBsmaxReconnect\fP ()"
@@ -68,7 +68,7 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .RI "int \fBsmaxRemoveDisconnectHook\fP (void(*cleanupCall)(void))"
 .br
 .ti -1c
-.RI "int \fBsmaxRemoveSubscribers\fP (RedisSubscriberCall f)"
+.RI "int \fBsmaxRemoveSubscribers\fP (\fBRedisSubscriberCall\fP f)"
 .br
 .ti -1c
 .RI "int \fBsmaxSetAuth\fP (const char *username, const char *password)"
@@ -80,10 +80,10 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .RI "void \fBsmaxSetHostName\fP (const char *name)"
 .br
 .ti -1c
-.RI "int \fBsmaxSetPipelineConsumer\fP (void(*f)(RESP *))"
+.RI "int \fBsmaxSetPipelineConsumer\fP (void(*f)(\fBRESP\fP *))"
 .br
 .ti -1c
-.RI "int \fBsmaxSetPipelined\fP (boolean isEnabled)"
+.RI "int \fBsmaxSetPipelined\fP (\fBboolean\fP isEnabled)"
 .br
 .ti -1c
 .RI "int \fBsmaxSetServer\fP (const char *host, int port)"
@@ -92,19 +92,19 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .RI "int \fBsmaxSetTcpBuf\fP (int size)"
 .br
 .ti -1c
-.RI "void \fBsmaxSetVerbose\fP (boolean value)"
+.RI "void \fBsmaxSetVerbose\fP (\fBboolean\fP value)"
 .br
 .ti -1c
-.RI "int \fBsmaxShare\fP (const char *table, const char *key, const void *value, XType type, int count)"
+.RI "int \fBsmaxShare\fP (const char *table, const char *key, const void *value, \fBXType\fP type, int count)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareArray\fP (const char *table, const char *key, const void *ptr, XType type, int ndim, const int *sizes)"
+.RI "int \fBsmaxShareArray\fP (const char *table, const char *key, const void *ptr, \fBXType\fP type, int ndim, const int *sizes)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareField\fP (const char *table, const XField *f)"
+.RI "int \fBsmaxShareField\fP (const char *table, const \fBXField\fP *f)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareStruct\fP (const char *id, const XStructure *s)"
+.RI "int \fBsmaxShareStruct\fP (const char *id, const \fBXStructure\fP *s)"
 .br
 .ti -1c
 .RI "int \fBsmaxSubscribe\fP (const char *table, const char *key)"
@@ -138,7 +138,7 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .in -1c
 .SH "Detailed Description"
 .PP 
-SMA-X is a software implementation for SMA shared data, and is the base layer for the software reflective memory (RM) emulation, and DSM replacement\&. It works by communicating TCP/IP messages to a central Redis server\&. 
+SMA-X is a software implementation for SMA shared data, and is the base layer for the software reflective memory (RM) emulation, and DSM replacement\&. It works by communicating TCP/IP messages to a central \fBRedis\fP server\&. 
 
 
 .PP
@@ -152,11 +152,12 @@ Jan 26, 2018
 Attila Kovacs
 .RE
 .PP
+.PP
 There is also extra functionality, for configuring, performance tweaking, verbosity control, and some convenience methods (e\&.g\&. data serialization/deserialization)\&. 
 .SH "Function Documentation"
 .PP 
 .SS "int smaxAddConnectHook (void(*)(void) setupCall)"
-Add a callback function for when SMA-X is connected\&. It's a wrapper to redisxAddConnectHook()\&.
+Add a callback function for when SMA-X is connected\&. It's a wrapper to \fBredisxAddConnectHook()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -165,7 +166,7 @@ Add a callback function for when SMA-X is connected\&. It's a wrapper to redisxA
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -179,9 +180,9 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxAddConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddDisconnectHook (void(*)(void) cleanupCall)"
-Add a callback function for when SMA-X is disconnected\&. It's a wrapper to redisxAddDisconnectHook()\&.
+Add a callback function for when SMA-X is disconnected\&. It's a wrapper to \fBredisxAddDisconnectHook()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -190,7 +191,7 @@ Add a callback function for when SMA-X is disconnected\&. It's a wrapper to redi
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -202,8 +203,8 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
-.SS "int smaxAddSubscriber (const char * idStem, RedisSubscriberCall f)"
+References \fBredisxAddDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxAddSubscriber (const char * idStem, \fBRedisSubscriberCall\fP f)"
 Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id)\&. The function should itself check that the channel receiving notification is indeed what it expectes before acting on it, as the callback routine will be invoked for any update inside the specified table, unless the table argument refers to a specific aggregate ID of a single variable\&. This call only registers the callback routine for SMA-X update notifications for variables that begin with the specified stem\&. You will still have to subscrive to any relevant variables with \fBsmaxSubscribe()\fP to enable delivering update notifications for the variables of your choice\&.
 .PP
 \fBParameters\fP
@@ -215,7 +216,7 @@ Add a subcriber (callback) function to process incoming PUB/SUB messages for a g
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS if successful, or else an approriate error code by redisxAddSubscriber()
+X_SUCCESS if successful, or else an approriate error code by \fBredisxAddSubscriber()\fP
 .RE
 .PP
 \fBSee also\fP
@@ -225,13 +226,13 @@ X_SUCCESS if successful, or else an approriate error code by redisxAddSubscriber
 .PP
 
 .PP
-References SMAX_UPDATES_ROOT, and smaxGetRedis()\&.
+References \fBredisxAddSubscriber()\fP, \fBSMAX_UPDATES_ROOT\fP, \fBsmaxGetRedis()\fP, \fBX_SUCCESS\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxConnect ()"
 Initializes the SMA-X sharing library in this runtime instance\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sharing was already open\&. X_NO_SERVICE If the there was an issue establishing the necessary network connection(s)\&. X_NAME_INVALID If the redis server name lookup failed\&. X_NULL If the Redis IP address is NULL
+X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sharing was already open\&. X_NO_SERVICE If the there was an issue establishing the necessary network connection(s)\&. X_NAME_INVALID If the redis server name lookup failed\&. X_NULL If the \fBRedis\fP IP address is NULL
 .RE
 .PP
 \fBSee also\fP
@@ -251,13 +252,13 @@ X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sh
 .PP
 
 .PP
-References smaxGetProgramID(), and smaxIsConnected()\&.
+References \fBFALSE\fP, \fBredisxConnect()\fP, \fBredisxInit()\fP, \fBredisxSelectDB()\fP, \fBredisxSetPassword()\fP, \fBredisxSetPort()\fP, \fBredisxSetTcpBuf()\fP, \fBredisxSetTransmitErrorHandler()\fP, \fBredisxSetUser()\fP, \fBSMAX_DEFAULT_HOSTNAME\fP, \fBsmaxAddConnectHook()\fP, \fBsmaxAddDisconnectHook()\fP, \fBsmaxAddSubscriber()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxIsConnected()\fP, \fBsmaxLazyFlush()\fP, \fBsmaxReleaseWaits()\fP, \fBsmaxSetPipelineConsumer()\fP, \fBsmaxSetResilient()\fP, \fBsmaxTransmitErrorHandler()\fP, \fBTRUE\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxConnectTo (const char * server)"
-Initializes the SMA-X sharing library in this runtime instance with the specified Redis server\&. SMA-X is initialized in resilient mode, so that we'll automatically attempt to reconnect to the Redis server if the connection is severed (once it was established)\&. If that is not the desired behavior, you should call \fCsmaxSetResilient(FALSE)\fP after connecting\&.
+Initializes the SMA-X sharing library in this runtime instance with the specified \fBRedis\fP server\&. SMA-X is initialized in resilient mode, so that we'll automatically attempt to reconnect to the \fBRedis\fP server if the connection is severed (once it was established)\&. If that is not the desired behavior, you should call \fCsmaxSetResilient(FALSE)\fP after connecting\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIserver\fP SMA-X Redis server name or IP address, e\&.g\&. '127\&.0\&.0\&.1'\&.
+\fIserver\fP SMA-X \fBRedis\fP server name or IP address, e\&.g\&. '127\&.0\&.0\&.1'\&.
 .RE
 .PP
 \fBReturns\fP
@@ -279,6 +280,8 @@ X_SUCCESS If the library was successfully initialized X_NO_SERVICE If the there 
 .RE
 .PP
 
+.PP
+References \fBsmaxConnect()\fP, \fBsmaxSetServer()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxDisconnect ()"
 Disables the SMA-X sharing capability, closing underlying network connections\&.
 .PP
@@ -300,8 +303,8 @@ X_SUCCESS (0) if the sharing was properly ended\&. X_NO_INIT if SMA-X was has no
 .PP
 
 .PP
-References smaxIsConnected()\&.
-.SS "char* smaxGetHostName ()"
+References \fBredisxDisconnect()\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, and \fBxvprintf\fP\&.
+.SS "char * smaxGetHostName ()"
 Returns the host name on which this program is running\&. It returns a reference to the same static variable every time\&. As such you should never call free() on the returned value\&. Note, that only the leading part of the host name is returned, so for a host that is registered as 'somenode\&.somedomain' only 'somenode' is returned\&.
 .PP
 \fBReturns\fP
@@ -315,21 +318,23 @@ The host name string (leading part only)\&.
 .RE
 .PP
 
-.SS "char** smaxGetKeys (const char * table, int * n)"
-Returns a snapshot of the key names stored in a given Redis hash table, ot NULL if there was an error\&.
+.PP
+References \fBxStringCopyOf()\fP\&.
+.SS "char ** smaxGetKeys (const char * table, int * n)"
+Returns a snapshot of the key names stored in a given \fBRedis\fP hash table, ot NULL if there was an error\&.
 .PP
 \fBParameters\fP
 .RS 4
 \fItable\fP Host name or owner ID whose variable to count\&. 
 .br
-\fIn\fP Pointer to which the number of keys (>=0) or an error (<0) is returned\&. An error returned by redisxGetKeys(), or else:
+\fIn\fP Pointer to which the number of keys (>=0) or an error (<0) is returned\&. An error returned by \fBredisxGetKeys()\fP, or else:
 .RE
 .PP
 X_NO_INIT if the SMA-X sharing was not initialized, e\&.g\&. via \fBsmaxConnect()\fP\&. X_GROUP_INVALID if the table name is invalid\&. X_NULL if the output 'n' pointer is NULL\&.
 .PP
 \fBReturns\fP
 .RS 4
-An array of pointers to the names of Redis keys\&.
+An array of pointers to the names of \fBRedis\fP keys\&.
 .RE
 .PP
 \fBSee also\fP
@@ -338,7 +343,9 @@ An array of pointers to the names of Redis keys\&.
 .RE
 .PP
 
-.SS "char* smaxGetProgramID ()"
+.PP
+References \fBredisxGetKeys()\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxvprintf\fP\&.
+.SS "char * smaxGetProgramID ()"
 Returns the SMA-X program ID\&.
 .PP
 \fBReturns\fP
@@ -347,12 +354,14 @@ The SMA-X program ID as <hostname>:<programname>, e\&.g\&. 'hal9000:statusServer
 .RE
 .PP
 
-.SS "Redis* smaxGetRedis ()"
-Returns the Redis connection information for SMA-X
+.PP
+References \fBsmaxGetHostName()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "\fBRedis\fP * smaxGetRedis ()"
+Returns the \fBRedis\fP connection information for SMA-X
 .PP
 \fBReturns\fP
 .RS 4
-The structure containing the Redis connection data\&.
+The structure containing the \fBRedis\fP connection data\&.
 .RE
 .PP
 \fBSee also\fP
@@ -380,7 +389,9 @@ Checks whether SMA-X sharing is currently open (by a preceding call to \fBsmaxCo
 .RE
 .PP
 
-.SS "boolean smaxIsPipelined ()"
+.PP
+References \fBredisxIsConnected()\fP\&.
+.SS "\fBboolean\fP smaxIsPipelined ()"
 Check if SMA-X is configured with pipeline mode enabled\&.
 .PP
 \fBReturns\fP
@@ -394,7 +405,7 @@ TRUE (1) if the pipeline is enabled, or else FALSE (0)
 .RE
 .PP
 
-.SS "boolean smaxIsVerbose ()"
+.SS "\fBboolean\fP smaxIsVerbose ()"
 Checks id verbose reporting is enabled\&.
 .PP
 \fBReturns\fP
@@ -408,6 +419,8 @@ TRUE if verbose reporting is enabled, otherwise FALSE\&.
 .RE
 .PP
 
+.PP
+References \fBredisxIsVerbose()\fP\&.
 .SS "int smaxKeyCount (const char * table)"
 Retrieve the current number of variables stored on host (or owner ID)\&.
 .PP
@@ -418,7 +431,7 @@ Retrieve the current number of variables stored on host (or owner ID)\&.
 .PP
 \fBReturns\fP
 .RS 4
-The number of keys (fields) in the specified table (>= 0), or an error code (<0), such as: X_NO_INIT if the SMA-X sharing was not initialized, e\&.g\&. via smaConnect()\&. X_GROUP_INVALID if the table name is invalid\&. or one of the errors (<0) returned by redisxRequest()\&.
+The number of keys (fields) in the specified table (>= 0), or an error code (<0), such as: X_NO_INIT if the SMA-X sharing was not initialized, e\&.g\&. via smaConnect()\&. X_GROUP_INVALID if the table name is invalid\&. or one of the errors (<0) returned by \fBredisxRequest()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -427,8 +440,10 @@ The number of keys (fields) in the specified table (>= 0), or an error code (<0)
 .RE
 .PP
 
-.SS "int smaxPull (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
-Pull data from the specified hash table\&. This calls data via the interactive client to Redis\&.
+.PP
+References \fBRESP::n\fP, \fBredisxCheckRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_INT\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
+.SS "int smaxPull (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
+Pull data from the specified hash table\&. This calls data via the interactive client to \fBRedis\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -436,7 +451,7 @@ Pull data from the specified hash table\&. This calls data via the interactive c
 .br
 \fIkey\fP Variable name under which the data is stored\&. 
 .br
-\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIcount\fP Number of points to retrieve into the buffer\&. 
 .br
@@ -447,7 +462,7 @@ Pull data from the specified hash table\&. This calls data via the interactive c
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the 'table' argument is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if an essential argument is NULL or contains NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the 'table' argument is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if an essential argument is NULL or contains NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -458,15 +473,17 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
+.PP
+References \fBREDISX_INTERACTIVE_CHANNEL\fP, \fBX_NULL\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, \fBxGetAggregateID()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxReconnect ()"
-Reconnects to the SMA-X server\&. It will try connecting repeatedly at regular intervals until the connection is made\&. If resilient mode is enabled, then locally accumulated shares will be sent to the Redis server upon reconnection\&. However, subscriptions are not automatically re-established\&. The caller is responsible for reinstate any necessary subscriptions after the reconnection or via an approproate connection hook\&.
+Reconnects to the SMA-X server\&. It will try connecting repeatedly at regular intervals until the connection is made\&. If resilient mode is enabled, then locally accumulated shares will be sent to the \fBRedis\fP server upon reconnection\&. However, subscriptions are not automatically re-established\&. The caller is responsible for reinstate any necessary subscriptions after the reconnection or via an approproate connection hook\&.
 .PP
 \fBReturns\fP
 .RS 4
 X_SUCCESS (0) if successful X_NO_INIT if SMA-X was never initialized\&.
 .RE
 .PP
-or the error returned by redisxReconnect()\&.
+or the error returned by \fBredisxReconnect()\fP\&.
 .PP
 \fBSee also\fP
 .RS 4
@@ -484,6 +501,8 @@ or the error returned by redisxReconnect()\&.
 .RE
 .PP
 
+.PP
+References \fBredisxReconnect()\fP, \fBSMAX_RECONNECT_RETRY_SECONDS\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, and \fBxvprintf\fP\&.
 .SS "int smaxReleaseWaits ()"
 Unblocks all smax_wait*() calls, which will return X_REL_PREMATURE, as a result\&.
 .PP
@@ -498,8 +517,10 @@ X_SUCCESS (0)
 .RE
 .PP
 
+.PP
+References \fBRELEASEID\fP, \fBX_SUCCESS\fP, and \fBxvprintf\fP\&.
 .SS "int smaxRemoveConnectHook (void(*)(void) setupCall)"
-Remove a post-connection callback function\&. It's a wrapper to redisxRemoveConnectHook()\&.
+Remove a post-connection callback function\&. It's a wrapper to \fBredisxRemoveConnectHook()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -508,7 +529,7 @@ Remove a post-connection callback function\&. It's a wrapper to redisxRemoveConn
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -522,7 +543,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxRemoveConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveDisconnectHook (void(*)(void) cleanupCall)"
 Remove a post-cdisconnect callback function\&. It's a wrapper to redisxRemiveDisconnectHook()\&.
 .PP
@@ -533,7 +554,7 @@ Remove a post-cdisconnect callback function\&. It's a wrapper to redisxRemiveDis
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -545,9 +566,9 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
-.SS "int smaxRemoveSubscribers (RedisSubscriberCall f)"
-Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages\&. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the Redis server\&. You should therefore also call \fBsmaxUnsubscribe()\fP as appropriate to stop notifications for variables that no longer have associated callbacks\&.
+References \fBredisxRemoveDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxRemoveSubscribers (\fBRedisSubscriberCall\fP f)"
+Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages\&. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the \fBRedis\fP server\&. You should therefore also call \fBsmaxUnsubscribe()\fP as appropriate to stop notifications for variables that no longer have associated callbacks\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -566,15 +587,15 @@ X_SUCCESS (0) if successful, or else an error (<0) returned by redisxRemoveSubsc
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxRemoveSubscribers()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetAuth (const char * username, const char * password)"
 Sets the SMA-X database authentication parameters (if any) before connecting to the SMA-X server\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIusername\fP Redis ACL user name (if any), or NULL for no user-based authentication 
+\fIusername\fP \fBRedis\fP ACL user name (if any), or NULL for no user-based authentication 
 .br
-\fIpassword\fP Redis database password (if any), or NULL if the database is not password protected 
+\fIpassword\fP \fBRedis\fP database password (if any), or NULL if the database is not password protected 
 .RE
 .PP
 \fBReturns\fP
@@ -591,13 +612,13 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxSetDB (int idx)"
-Sets a non-default Redis database index to use for SMA-X before connecting to the SMA-X server\&.
+Sets a non-default \fBRedis\fP database index to use for SMA-X before connecting to the SMA-X server\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIidx\fP The Redis database index to use (if not the default one) 
+\fIidx\fP The \fBRedis\fP database index to use (if not the default one) 
 .RE
 .PP
 \fBReturns\fP
@@ -614,7 +635,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
 .SS "void smaxSetHostName (const char * name)"
 Changes the host name to the user-specified value instead of the default (leading component of the value returned by gethostname())\&. Subsequent calls to \fBsmaxGetHostName()\fP will return the newly set value\&. An argument of NULL resets to the default\&.
 .PP
@@ -629,17 +650,19 @@ Changes the host name to the user-specified value instead of the default (leadin
 .RE
 .PP
 
-.SS "int smaxSetPipelineConsumer (void(*)(RESP *) f)"
-Change the pipeline response consumer function (from it's default or other previous consumer)\&. It is a wrapper for redisxSetPipelineConsumer()\&.
+.PP
+References \fBxStringCopyOf()\fP\&.
+.SS "int smaxSetPipelineConsumer (void(*)(\fBRESP\fP *) f)"
+Change the pipeline response consumer function (from it's default or other previous consumer)\&. It is a wrapper for \fBredisxSetPipelineConsumer()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIf\fP The function to process ALL pipeline responses from Redis\&. 
+\fIf\fP The function to process ALL pipeline responses from \fBRedis\fP\&. 
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or else an error by redisxSetPipelineConsumer()
+X_SUCCESS (0) if successful, or else an error by \fBredisxSetPipelineConsumer()\fP
 .RE
 .PP
 \fBSee also\fP
@@ -651,9 +674,9 @@ X_SUCCESS (0) if successful, or else an error by redisxSetPipelineConsumer()
 .PP
 
 .PP
-References smaxGetRedis()\&.
-.SS "int smaxSetPipelined (boolean isEnabled)"
-Enable or disable pipelined write operations (enabled by default)\&. When pipelining, share calls will return as soon as the request is sent to the Redis server, without waiting for a response\&. Instead, responses are consumed asynchronously by a dedicated thread, which will report errors to stderr\&. Pipelined writes can have a significant performance advantage over handshaking at the cost of one extra socket connection to Redis (dedicated to pipelining) and the extra thread consuming responses\&.
+References \fBredisxSetPipelineConsumer()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxSetPipelined (\fBboolean\fP isEnabled)"
+Enable or disable pipelined write operations (enabled by default)\&. When pipelining, share calls will return as soon as the request is sent to the \fBRedis\fP server, without waiting for a response\&. Instead, responses are consumed asynchronously by a dedicated thread, which will report errors to stderr\&. Pipelined writes can have a significant performance advantage over handshaking at the cost of one extra socket connection to \fBRedis\fP (dedicated to pipelining) and the extra thread consuming responses\&.
 .PP
 The default state of pipelined writes might vary by platform (e\&.g\&. enabled on Linux, disabled on LynxOS)\&.
 .PP
@@ -677,6 +700,8 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .RE
 .PP
 
+.PP
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetServer (const char * host, int port)"
 Configures the SMA-X server before connecting\&.
 .PP
@@ -684,7 +709,7 @@ Configures the SMA-X server before connecting\&.
 .RS 4
 \fIhost\fP The SMA-X REdis server host name or IP address\&. 
 .br
-\fIport\fP The Redis port number on the SMA-X server, or &lt=0 to use the default 
+\fIport\fP The \fBRedis\fP port number on the SMA-X server, or &lt=0 to use the default 
 .RE
 .PP
 \fBReturns\fP
@@ -703,7 +728,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBREDISX_TCP_PORT\fP, \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxSetTcpBuf (int size)"
 Set the size of the TCP/IP buffers (send and receive) for future client connections\&.
 .PP
@@ -719,8 +744,8 @@ Set the size of the TCP/IP buffers (send and receive) for future client connecti
 .PP
 
 .PP
-References smaxIsConnected()\&.
-.SS "void smaxSetVerbose (boolean value)"
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
+.SS "void smaxSetVerbose (\fBboolean\fP value)"
 Enable or disable verbose reporting of all SMA-X operations (and possibly some details of them)\&. Reporting is done on the standard output (stdout)\&. It may be useful when debugging programs that use the SMA-X interface\&. Verbose reporting is DISABLED by default\&.
 .PP
 \fBParameters\fP
@@ -734,8 +759,10 @@ Enable or disable verbose reporting of all SMA-X operations (and possibly some d
 .RE
 .PP
 
-.SS "int smaxShare (const char * table, const char * key, const void * value, XType type, int count)"
-Share the data into a Redis hash table over the interactive Redis client\&. It's a fire-and-forget type implementation, which sends the data to Redis, without waiting for confirmation of its arrival\&. The choice improves the efficiency and throughput, and minimizes execution time, of the call, but it also means that a pipelined pull request in quick succession, e\&.g\&. via \fBsmaxQueue()\fP, may return a value on the pipeline client \fIbefore\fP this call is fully executed on the interactive Redis client\&.
+.PP
+References \fBredisxSetVerbose()\fP\&.
+.SS "int smaxShare (const char * table, const char * key, const void * value, \fBXType\fP type, int count)"
+Share the data into a \fBRedis\fP hash table over the interactive \fBRedis\fP client\&. It's a fire-and-forget type implementation, which sends the data to \fBRedis\fP, without waiting for confirmation of its arrival\&. The choice improves the efficiency and throughput, and minimizes execution time, of the call, but it also means that a pipelined pull request in quick succession, e\&.g\&. via \fBsmaxQueue()\fP, may return a value on the pipeline client \fIbefore\fP this call is fully executed on the interactive \fBRedis\fP client\&.
 .PP
 (It is generally unlikely that you will follow this share call with a pipelined pull of the same variable\&. It would not only create superflous network traffic for no good reason, but it also would have unpredictable results\&. So, don't\&.)
 .PP
@@ -747,14 +774,14 @@ Share the data into a Redis hash table over the interactive Redis client\&. It's
 .br
 \fIvalue\fP Pointer to the buffer whose data is to be shared\&. 
 .br
-\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIcount\fP Number of 1D elements\&.
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if count < 1 or count > X_MAX_ELEMENTS X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if count < 1 or count > X_MAX_ELEMENTS X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -767,7 +794,9 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
-.SS "int smaxShareArray (const char * table, const char * key, const void * ptr, XType type, int ndim, const int * sizes)"
+.PP
+References \fBsmaxShareArray()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxShareArray (const char * table, const char * key, const void * ptr, \fBXType\fP type, int ndim, const int * sizes)"
 Share a multidimensional array, such as an \fCint[][][]\fP, or \fCfloat[][]\fP, in a single atomic transaction\&.
 .PP
 \fBParameters\fP
@@ -778,7 +807,7 @@ Share a multidimensional array, such as an \fCint[][][]\fP, or \fCfloat[][]\fP, 
 .br
 \fIptr\fP Pointer to the data buffer, such as an \fCint[][][]\fP or \fCfloat[][]\fP\&. 
 .br
-\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIndim\fP Dimensionality of the data (0 <= \fCndim\fP <= X_MAX_DIMS)\&. 
 .br
@@ -787,7 +816,7 @@ Share a multidimensional array, such as an \fCint[][][]\fP, or \fCfloat[][]\fP, 
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -796,19 +825,21 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
-.SS "int smaxShareField (const char * table, const XField * f)"
+.PP
+References \fBXField::isSerialized\fP, \fBXField::name\fP, \fBXField::ndim\fP, \fBREDISX_CMDBUF_SIZE\fP, \fBXField::sizes\fP, \fBsmaxShareField()\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx_error()\fP, \fBX_MAX_ELEMENTS\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SIZE_INVALID\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetElementCount()\fP\&.
+.SS "int smaxShareField (const char * table, const \fBXField\fP * f)"
 Share a field object, which may contain any SMA-X data type\&.
 .PP
 \fBParameters\fP
 .RS 4
 \fItable\fP Hash table in which to write entry\&. 
 .br
-\fIf\fP Pointer for XField holding the data to share\&.
+\fIf\fP Pointer for \fBXField\fP holding the data to share\&.
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -819,13 +850,15 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .PP
 \fBsmaxShareStruct()\fP 
 .PP
-xSetField() 
+\fBxSetField()\fP 
 .PP
-xGetField() 
+\fBxGetField()\fP 
 .RE
 .PP
 
-.SS "int smaxShareStruct (const char * id, const XStructure * s)"
+.PP
+References \fBXField::name\fP, \fBsmaxShareStruct()\fP, \fBXField::type\fP, \fBXField::value\fP, \fBX_NO_SERVICE\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "int smaxShareStruct (const char * id, const \fBXStructure\fP * s)"
 Share a structure, and all its data including recursive sub-structures, in a single atromic transaction\&.
 .PP
 \fBParameters\fP
@@ -837,7 +870,7 @@ Share a structure, and all its data including recursive sub-structures, in a sin
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&. 
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&. 
 .RE
 .PP
 \fBSee also\fP
@@ -846,12 +879,14 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .PP
 \fBsmaxShareField()\fP 
 .PP
-xCreateStruct() 
+\fBxCreateStruct()\fP 
 .RE
 .PP
 
+.PP
+References \fBsmaxCreateField()\fP, \fBX_NO_SERVICE\fP, \fBX_STRUCT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSubscribe (const char * table, const char * key)"
-Subscribes to a specific key(s) in specific group(s)\&. Both the group and key names may contain Redis subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. The subscription only enables receiving update notifications from Redis for the specified variable or variables\&. After subscribing, you can either wait on the subscribed variables to change, or add callback functions to process subscribed variables changes, via \fBsmaxAddSubscriber()\fP\&.
+Subscribes to a specific key(s) in specific group(s)\&. Both the group and key names may contain \fBRedis\fP subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. The subscription only enables receiving update notifications from \fBRedis\fP for the specified variable or variables\&. After subscribing, you can either wait on the subscribed variables to change, or add callback functions to process subscribed variables changes, via \fBsmaxAddSubscriber()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -862,7 +897,7 @@ Subscribes to a specific key(s) in specific group(s)\&. Both the group and key n
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS if successfully subscribed to the Redis distribution channel\&. X_NO_SERVICE if there is no active connection to the Redis server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
+X_SUCCESS if successfully subscribed to the \fBRedis\fP distribution channel\&. X_NO_SERVICE if there is no active connection to the \fBRedis\fP server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
 .RE
 .PP
 \fBSee also\fP
@@ -881,8 +916,10 @@ X_SUCCESS if successfully subscribed to the Redis distribution channel\&. X_NO_S
 .RE
 .PP
 
+.PP
+References \fBredisxSubscribe()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxUnsubscribe (const char * table, const char * key)"
-Unsubscribes from a specific key(s) in specific group(s)\&. Both the group and key names may contain Redis subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. Unsubscribing will only stops the delivery of update notifications for the affected varuiables, but does not deactivate the associated callbacks for these added via \fBsmaxAddSubscriber()\fP\&. Therefore you should also call smaxRemovesubscribers() as appropriate to deactivate actions that can no longer get triggered by updates\&.
+Unsubscribes from a specific key(s) in specific group(s)\&. Both the group and key names may contain \fBRedis\fP subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. Unsubscribing will only stops the delivery of update notifications for the affected varuiables, but does not deactivate the associated callbacks for these added via \fBsmaxAddSubscriber()\fP\&. Therefore you should also call smaxRemovesubscribers() as appropriate to deactivate actions that can no longer get triggered by updates\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -893,7 +930,7 @@ Unsubscribes from a specific key(s) in specific group(s)\&. Both the group and k
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS if successfully unsubscribed to the Redis distribution channel\&. X_NO_SERVICE if there is no active connection to the Redis server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
+X_SUCCESS if successfully unsubscribed to the \fBRedis\fP distribution channel\&. X_NO_SERVICE if there is no active connection to the \fBRedis\fP server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
 .RE
 .PP
 \fBSee also\fP
@@ -904,6 +941,8 @@ X_SUCCESS if successfully unsubscribed to the Redis distribution channel\&. X_NO
 .RE
 .PP
 
+.PP
+References \fBredisxUnsubscribe()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxWaitOnAnySubscribed (char ** changedTable, char ** changedKey, int timeout)"
 Waits until any variable was pushed on any host, returning both the host and variable name for the updated value\&. The variable must be already subscribed to with \fBsmaxSubscribe()\fP, or else the wait will not receive update notifications\&.
 .PP
@@ -933,6 +972,8 @@ X_SUCCESS (0) if a variable was pushed on a host\&. X_NO_INIT if the SMA-X shari
 .RE
 .PP
 
+.PP
+References \fBRELEASEID\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_INTERRUPTED\fP, \fBX_NAME_INVALID\fP, \fBX_NO_SERVICE\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBxdprintf\fP, \fBxLastSeparator()\fP, \fBxStringCopyOf()\fP, and \fBxvprintf\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

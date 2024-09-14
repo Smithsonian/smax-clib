@@ -1,4 +1,4 @@
-.TH "include/smax.h" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "include/smax.h" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -36,31 +36,31 @@ include/smax.h
 .ti -1c
 .RI "#define \fBMETA_COORDS\fP   '<coords>'"
 .br
-.RI "Redis hash table in which data coordinates system descriptions are stored\&. "
+.RI "\fBRedis\fP hash table in which data coordinates system descriptions are stored\&. "
 .ti -1c
 .RI "#define \fBMETA_DESCRIPTION\fP   '<descriptions>'"
 .br
-.RI "Redis hash table in which variable descriptions are stored\&. "
+.RI "\fBRedis\fP hash table in which variable descriptions are stored\&. "
 .ti -1c
 .RI "#define \fBMETA_UNIT\fP   '<units>'"
 .br
-.RI "Redis hash table in which data physical unit names are stored\&. "
+.RI "\fBRedis\fP hash table in which data physical unit names are stored\&. "
 .ti -1c
 .RI "#define \fBSMAX_DEFAULT_HOSTNAME\fP   'smax'"
 .br
-.RI "Host name of Redis server used for SMA-X\&. "
+.RI "Host name of \fBRedis\fP server used for SMA-X\&. "
 .ti -1c
 .RI "#define \fBSMAX_DEFAULT_MAX_QUEUED\fP   1024"
 .br
 .RI "Maximum number of pull requests allowed to be queued at once\&. "
 .ti -1c
-.RI "#define \fBSMAX_DEFAULT_PIPELINE_ENABLED\fP   TRUE"
+.RI "#define \fBSMAX_DEFAULT_PIPELINE_ENABLED\fP   \fBTRUE\fP"
 .br
 .RI "Whether pipelining is enabled by default\&. "
 .ti -1c
 .RI "#define \fBSMAX_DIMS\fP   '<dims>'"
 .br
-.RI "Redis meta table where variable dimensions are stored\&. "
+.RI "\fBRedis\fP meta table where variable dimensions are stored\&. "
 .ti -1c
 .RI "#define \fBSMAX_MAJOR_VERSION\fP   0"
 .br
@@ -104,7 +104,7 @@ include/smax.h
 .ti -1c
 .RI "#define \fBSMAX_ORIGINS\fP   '<origins>'"
 .br
-.RI "Redis meta table where variable origins are stored\&. "
+.RI "\fBRedis\fP meta table where variable origins are stored\&. "
 .ti -1c
 .RI "#define \fBSMAX_PATCHLEVEL\fP   0"
 .br
@@ -116,7 +116,7 @@ include/smax.h
 .ti -1c
 .RI "#define \fBSMAX_READS\fP   '<reads>'"
 .br
-.RI "Redis meta table where the number of times a variable has been read is stored\&. "
+.RI "\fBRedis\fP meta table where the number of times a variable has been read is stored\&. "
 .ti -1c
 .RI "#define \fBSMAX_RECONNECT_RETRY_SECONDS\fP   3"
 .br
@@ -126,23 +126,23 @@ include/smax.h
 .br
 .RI "Additional release information in version, e\&.g\&. '-1', or '-rc1'\&. "
 .ti -1c
-.RI "#define \fBSMAX_RESTORE_QUEUE_ON_RECONNECT\fP   TRUE"
+.RI "#define \fBSMAX_RESTORE_QUEUE_ON_RECONNECT\fP   \fBTRUE\fP"
 .br
 .RI "Whether read queues are restored if SMA-X is disconnected/reconnected\&. "
 .ti -1c
 .RI "#define \fBSMAX_SCRIPTS\fP   'scripts'"
 .br
-.RI "Redis table in which the built-in LUA script hashes are stored\&. "
+.RI "\fBRedis\fP table in which the built-in LUA script hashes are stored\&. "
 .ti -1c
 .RI "#define \fBSMAX_TIMESTAMPS\fP   '<timestamps>'"
 .br
-.RI "Redis meta table where variable timestamps are stored\&. "
+.RI "\fBRedis\fP meta table where variable timestamps are stored\&. "
 .ti -1c
 .RI "#define \fBSMAX_TYPES\fP"
 .br
-.RI "Redis meta table where variable types are stored\&. "
+.RI "\fBRedis\fP meta table where variable types are stored\&. "
 .ti -1c
-.RI "#define \fBSMAX_UPDATES\fP   \fBSMAX_UPDATES_ROOT\fP X_SEP"
+.RI "#define \fBSMAX_UPDATES\fP   \fBSMAX_UPDATES_ROOT\fP \fBX_SEP\fP"
 .br
 .RI "PUB/SUB message channel heade for hash table updates\&. "
 .ti -1c
@@ -159,19 +159,19 @@ include/smax.h
 .ti -1c
 .RI "#define \fBSMAX_WRITES\fP   '<writes>'"
 .br
-.RI "Redis meta table where the number of times a variable has been written is stored\&. "
+.RI "\fBRedis\fP meta table where the number of times a variable has been written is stored\&. "
 .ti -1c
-.RI "#define \fBX_META_INIT\fP   { 0, X_UNKNOWN, \-1, {0}, \-1 }"
+.RI "#define \fBX_META_INIT\fP   { 0, \fBX_UNKNOWN\fP, \-1, {0}, \-1 }"
 .br
 .in -1c
 .SS "Functions"
 
 .in +1c
 .ti -1c
-.RI "int \fBsmax2xField\fP (XField *f)"
+.RI "int \fBsmax2xField\fP (\fBXField\fP *f)"
 .br
 .ti -1c
-.RI "int \fBsmax2xStruct\fP (XStructure *s)"
+.RI "int \fBsmax2xStruct\fP (\fBXStructure\fP *s)"
 .br
 .ti -1c
 .RI "int \fBsmaxAddConnectHook\fP (void(*setupCall)(void))"
@@ -186,7 +186,7 @@ include/smax.h
 .RI "int \fBsmaxAddMessageProcessor\fP (const char *host, const char *prog, const char *type, void(*f)(\fBXMessage\fP *))"
 .br
 .ti -1c
-.RI "int \fBsmaxAddSubscriber\fP (const char *stem, RedisSubscriberCall f)"
+.RI "int \fBsmaxAddSubscriber\fP (const char *stem, \fBRedisSubscriberCall\fP f)"
 .br
 .ti -1c
 .RI "int \fBsmaxConnect\fP ()"
@@ -195,34 +195,34 @@ include/smax.h
 .RI "int \fBsmaxConnectTo\fP (const char *server)"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreate1DField\fP (const char *name, XType type, int size, const void *value)"
+.RI "\fBXField\fP * \fBsmaxCreate1DField\fP (const char *name, \fBXType\fP type, int size, const void *value)"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreateBooleanField\fP (const char *name, boolean value)"
+.RI "\fBXField\fP * \fBsmaxCreateBooleanField\fP (const char *name, \fBboolean\fP value)"
 .br
 .ti -1c
 .RI "\fBXCoordinateSystem\fP * \fBsmaxCreateCoordinateSystem\fP (int nAxis)"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreateDoubleField\fP (const char *name, double value)"
+.RI "\fBXField\fP * \fBsmaxCreateDoubleField\fP (const char *name, double value)"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreateField\fP (const char *name, XType type, int ndim, const int *sizes, const void *value)"
+.RI "\fBXField\fP * \fBsmaxCreateField\fP (const char *name, \fBXType\fP type, int ndim, const int *sizes, const void *value)"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreateIntField\fP (const char *name, int value)"
+.RI "\fBXField\fP * \fBsmaxCreateIntField\fP (const char *name, int value)"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreateLongField\fP (const char *name, long long value)"
+.RI "\fBXField\fP * \fBsmaxCreateLongField\fP (const char *name, long long value)"
 .br
 .ti -1c
 .RI "\fBXMeta\fP * \fBsmaxCreateMeta\fP ()"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreateScalarField\fP (const char *name, XType type, const void *value)"
+.RI "\fBXField\fP * \fBsmaxCreateScalarField\fP (const char *name, \fBXType\fP type, const void *value)"
 .br
 .ti -1c
-.RI "XField * \fBsmaxCreateStringField\fP (const char *name, const char *value)"
+.RI "\fBXField\fP * \fBsmaxCreateStringField\fP (const char *name, const char *value)"
 .br
 .ti -1c
 .RI "\fBXSyncPoint\fP * \fBsmaxCreateSyncPoint\fP ()"
@@ -246,10 +246,10 @@ include/smax.h
 .RI "const char * \fBsmaxErrorDescription\fP (int code)"
 .br
 .ti -1c
-.RI "int \fBsmaxGetArrayField\fP (const XStructure *s, const char *name, void *dst, XType type, int count)"
+.RI "int \fBsmaxGetArrayField\fP (const \fBXStructure\fP *s, const char *name, void *dst, \fBXType\fP type, int count)"
 .br
 .ti -1c
-.RI "boolean \fBsmaxGetBooleanField\fP (const XStructure *s, const char *name, boolean defaultValue)"
+.RI "\fBboolean\fP \fBsmaxGetBooleanField\fP (const \fBXStructure\fP *s, const char *name, \fBboolean\fP defaultValue)"
 .br
 .ti -1c
 .RI "\fBXCoordinateAxis\fP * \fBsmaxGetCoordinateAxis\fP (const char *id, int n)"
@@ -261,7 +261,7 @@ include/smax.h
 .RI "char * \fBsmaxGetDescription\fP (const char *table, const char *key)"
 .br
 .ti -1c
-.RI "double \fBsmaxGetDoubleField\fP (const XStructure *s, const char *name, double defaultValue)"
+.RI "double \fBsmaxGetDoubleField\fP (const \fBXStructure\fP *s, const char *name, double defaultValue)"
 .br
 .ti -1c
 .RI "char * \fBsmaxGetHostName\fP ()"
@@ -270,13 +270,13 @@ include/smax.h
 .RI "char ** \fBsmaxGetKeys\fP (const char *table, int *n)"
 .br
 .ti -1c
-.RI "int \fBsmaxGetLazyCached\fP (const char *table, const char *key, XType type, int count, void *value, \fBXMeta\fP *meta)"
+.RI "int \fBsmaxGetLazyCached\fP (const char *table, const char *key, \fBXType\fP type, int count, void *value, \fBXMeta\fP *meta)"
 .br
 .ti -1c
 .RI "int \fBsmaxGetLazyUpdateCount\fP (const char *table, const char *key)"
 .br
 .ti -1c
-.RI "long long \fBsmaxGetLongField\fP (const XStructure *s, const char *name, long long defaultValue)"
+.RI "long long \fBsmaxGetLongField\fP (const \fBXStructure\fP *s, const char *name, long long defaultValue)"
 .br
 .ti -1c
 .RI "int \fBsmaxGetMetaCount\fP (const \fBXMeta\fP *m)"
@@ -285,10 +285,10 @@ include/smax.h
 .RI "char * \fBsmaxGetProgramID\fP ()"
 .br
 .ti -1c
-.RI "char * \fBsmaxGetRawField\fP (const XStructure *s, const char *name, char *defaultValue)"
+.RI "char * \fBsmaxGetRawField\fP (const \fBXStructure\fP *s, const char *name, char *defaultValue)"
 .br
 .ti -1c
-.RI "Redis * \fBsmaxGetRedis\fP ()"
+.RI "\fBRedis\fP * \fBsmaxGetRedis\fP ()"
 .br
 .ti -1c
 .RI "char * \fBsmaxGetScriptSHA1\fP (const char *scriptName, int *status)"
@@ -306,19 +306,19 @@ include/smax.h
 .RI "int \fBsmaxIsConnected\fP ()"
 .br
 .ti -1c
-.RI "boolean \fBsmaxIsPipelined\fP ()"
+.RI "\fBboolean\fP \fBsmaxIsPipelined\fP ()"
 .br
 .ti -1c
-.RI "boolean \fBsmaxIsResilient\fP ()"
+.RI "\fBboolean\fP \fBsmaxIsResilient\fP ()"
 .br
 .ti -1c
-.RI "boolean \fBsmaxIsVerbose\fP ()"
+.RI "\fBboolean\fP \fBsmaxIsVerbose\fP ()"
 .br
 .ti -1c
 .RI "int \fBsmaxKeyCount\fP (const char *table)"
 .br
 .ti -1c
-.RI "int \fBsmaxLazyCache\fP (const char *table, const char *key, XType type)"
+.RI "int \fBsmaxLazyCache\fP (const char *table, const char *key, \fBXType\fP type)"
 .br
 .ti -1c
 .RI "int \fBsmaxLazyEnd\fP (const char *table, const char *key)"
@@ -327,7 +327,7 @@ include/smax.h
 .RI "int \fBsmaxLazyFlush\fP ()"
 .br
 .ti -1c
-.RI "int \fBsmaxLazyPull\fP (const char *table, const char *key, XType type, int count, void *value, \fBXMeta\fP *meta)"
+.RI "int \fBsmaxLazyPull\fP (const char *table, const char *key, \fBXType\fP type, int count, void *value, \fBXMeta\fP *meta)"
 .br
 .ti -1c
 .RI "int \fBsmaxLazyPullChars\fP (const char *table, const char *key, char *buf, int n)"
@@ -345,13 +345,13 @@ include/smax.h
 .RI "char * \fBsmaxLazyPullString\fP (const char *table, const char *key)"
 .br
 .ti -1c
-.RI "int \fBsmaxLazyPullStruct\fP (const char *id, XStructure *s)"
+.RI "int \fBsmaxLazyPullStruct\fP (const char *id, \fBXStructure\fP *s)"
 .br
 .ti -1c
 .RI "int \fBsmaxParseTime\fP (const char *timestamp, time_t *secs, long *nanosecs)"
 .br
 .ti -1c
-.RI "int \fBsmaxPull\fP (const char *table, const char *key, XType type, int count, void *value, \fBXMeta\fP *meta)"
+.RI "int \fBsmaxPull\fP (const char *table, const char *key, \fBXType\fP type, int count, void *value, \fBXMeta\fP *meta)"
 .br
 .ti -1c
 .RI "double \fBsmaxPullDouble\fP (const char *table, const char *key)"
@@ -387,19 +387,19 @@ include/smax.h
 .RI "char ** \fBsmaxPullStrings\fP (const char *table, const char *key, \fBXMeta\fP *meta, int *n)"
 .br
 .ti -1c
-.RI "XStructure * \fBsmaxPullStruct\fP (const char *name, \fBXMeta\fP *meta, int *status)"
+.RI "\fBXStructure\fP * \fBsmaxPullStruct\fP (const char *name, \fBXMeta\fP *meta, int *status)"
 .br
 .ti -1c
 .RI "double \fBsmaxPullTime\fP (const char *table, const char *key)"
 .br
 .ti -1c
-.RI "XType \fBsmaxPullTypeDimension\fP (const char *table, const char *key, int *ndim, int *sizes)"
+.RI "\fBXType\fP \fBsmaxPullTypeDimension\fP (const char *table, const char *key, int *ndim, int *sizes)"
 .br
 .ti -1c
 .RI "int \fBsmaxPushMeta\fP (const char *meta, const char *table, const char *key, const char *value)"
 .br
 .ti -1c
-.RI "int \fBsmaxQueue\fP (const char *table, const char *key, XType type, int count, void *value, \fBXMeta\fP *meta)"
+.RI "int \fBsmaxQueue\fP (const char *table, const char *key, \fBXType\fP type, int count, void *value, \fBXMeta\fP *meta)"
 .br
 .ti -1c
 .RI "int \fBsmaxQueueCallback\fP (void(*f)(void *), void *arg)"
@@ -420,7 +420,7 @@ include/smax.h
 .RI "int \fBsmaxRemoveMessageProcessor\fP (int id)"
 .br
 .ti -1c
-.RI "int \fBsmaxRemoveSubscribers\fP (RedisSubscriberCall f)"
+.RI "int \fBsmaxRemoveSubscribers\fP (\fBRedisSubscriberCall\fP f)"
 .br
 .ti -1c
 .RI "void \fBsmaxResetMeta\fP (\fBXMeta\fP *m)"
@@ -474,16 +474,16 @@ include/smax.h
 .RI "void \fBsmaxSetOrigin\fP (\fBXMeta\fP *m, const char *origin)"
 .br
 .ti -1c
-.RI "int \fBsmaxSetPipelineConsumer\fP (void(*f)(RESP *))"
+.RI "int \fBsmaxSetPipelineConsumer\fP (void(*f)(\fBRESP\fP *))"
 .br
 .ti -1c
-.RI "int \fBsmaxSetPipelined\fP (boolean isEnabled)"
+.RI "int \fBsmaxSetPipelined\fP (\fBboolean\fP isEnabled)"
 .br
 .ti -1c
-.RI "void \fBsmaxSetResilient\fP (boolean value)"
+.RI "void \fBsmaxSetResilient\fP (\fBboolean\fP value)"
 .br
 .ti -1c
-.RI "void \fBsmaxSetResilientExit\fP (boolean value)"
+.RI "void \fBsmaxSetResilientExit\fP (\fBboolean\fP value)"
 .br
 .ti -1c
 .RI "int \fBsmaxSetServer\fP (const char *host, int port)"
@@ -495,19 +495,19 @@ include/smax.h
 .RI "int \fBsmaxSetUnits\fP (const char *table, const char *key, const char *unit)"
 .br
 .ti -1c
-.RI "void \fBsmaxSetVerbose\fP (boolean value)"
+.RI "void \fBsmaxSetVerbose\fP (\fBboolean\fP value)"
 .br
 .ti -1c
-.RI "int \fBsmaxShare\fP (const char *table, const char *key, const void *value, XType type, int count)"
+.RI "int \fBsmaxShare\fP (const char *table, const char *key, const void *value, \fBXType\fP type, int count)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareArray\fP (const char *table, const char *key, const void *value, XType type, int ndim, const int *sizes)"
+.RI "int \fBsmaxShareArray\fP (const char *table, const char *key, const void *value, \fBXType\fP type, int ndim, const int *sizes)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareBoolean\fP (const char *table, const char *key, boolean value)"
+.RI "int \fBsmaxShareBoolean\fP (const char *table, const char *key, \fBboolean\fP value)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareBooleans\fP (const char *table, const char *key, const boolean *values, int n)"
+.RI "int \fBsmaxShareBooleans\fP (const char *table, const char *key, const \fBboolean\fP *values, int n)"
 .br
 .ti -1c
 .RI "int \fBsmaxShareBytes\fP (const char *table, const char *key, const char *values, int n)"
@@ -519,7 +519,7 @@ include/smax.h
 .RI "int \fBsmaxShareDoubles\fP (const char *table, const char *key, const double *values, int n)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareField\fP (const char *table, const XField *f)"
+.RI "int \fBsmaxShareField\fP (const char *table, const \fBXField\fP *f)"
 .br
 .ti -1c
 .RI "int \fBsmaxShareFloats\fP (const char *table, const char *key, const float *values, int n)"
@@ -546,13 +546,13 @@ include/smax.h
 .RI "int \fBsmaxShareStrings\fP (const char *table, const char *key, const char **sValues, int n)"
 .br
 .ti -1c
-.RI "int \fBsmaxShareStruct\fP (const char *id, const XStructure *s)"
+.RI "int \fBsmaxShareStruct\fP (const char *id, const \fBXStructure\fP *s)"
 .br
 .ti -1c
-.RI "int \fBsmaxStringToValues\fP (const char *str, void *value, XType type, int count, int *parsed)"
+.RI "int \fBsmaxStringToValues\fP (const char *str, void *value, \fBXType\fP type, int count, int *parsed)"
 .br
 .ti -1c
-.RI "char * \fBsmaxStringType\fP (XType type)"
+.RI "char * \fBsmaxStringType\fP (\fBXType\fP type)"
 .br
 .ti -1c
 .RI "int \fBsmaxSubscribe\fP (const char *table, const char *key)"
@@ -568,7 +568,7 @@ include/smax.h
 .br
 .RI "*/ "
 .ti -1c
-.RI "XType \fBsmaxTypeForString\fP (const char *type)"
+.RI "\fBXType\fP \fBsmaxTypeForString\fP (const char *type)"
 .br
 .ti -1c
 .RI "int \fBsmaxUnpackStrings\fP (const char *data, int len, int count, char **dst)"
@@ -577,7 +577,7 @@ include/smax.h
 .RI "int \fBsmaxUnsubscribe\fP (const char *table, const char *key)"
 .br
 .ti -1c
-.RI "char * \fBsmaxValuesToString\fP (const void *value, XType type, int count, char *trybuf, int trylength)"
+.RI "char * \fBsmaxValuesToString\fP (const void *value, \fBXType\fP type, int count, char *trybuf, int trylength)"
 .br
 .ti -1c
 .RI "int \fBsmaxWaitOnAnySubscribed\fP (char **changedTable, char **changedKey, int timeout)"
@@ -595,10 +595,10 @@ include/smax.h
 .RI "int \fBsmaxWaitQueueComplete\fP (int timeoutMillis)"
 .br
 .ti -1c
-.RI "int \fBx2smaxField\fP (XField *f)"
+.RI "int \fBx2smaxField\fP (\fBXField\fP *f)"
 .br
 .ti -1c
-.RI "int \fBx2smaxStruct\fP (XStructure *s)"
+.RI "int \fBx2smaxStruct\fP (\fBXStructure\fP *s)"
 .br
 .in -1c
 .SH "Detailed Description"
@@ -621,14 +621,14 @@ Attila Kovacs
 .SS "#define SMAX_TYPES"
 
 .PP
-Redis meta table where variable types are stored\&. Character arrays a treated somewhat differently, with the element size bundled in the type, to allow variable length strings to be properly parsed into them without overflow\&.\&.\&. 
+\fBRedis\fP meta table where variable types are stored\&. Character arrays a treated somewhat differently, with the element size bundled in the type, to allow variable length strings to be properly parsed into them without overflow\&.\&.\&. 
 .SS "#define SMAX_VERSION_STRING"
 The version string for this library 
-.SS "#define X_META_INIT   { 0, X_UNKNOWN, \-1, {0}, \-1 }"
+.SS "#define X_META_INIT   { 0, \fBX_UNKNOWN\fP, \-1, {0}, \-1 }"
 Default initialized for SMA-X medatadata structure\&. You should always initialize local metadata with this\&. 
 .SH "Function Documentation"
 .PP 
-.SS "int smax2xField (XField * f)"
+.SS "int smax2xField (\fBXField\fP * f)"
 Converts SMA-X field with serialized string value storage to a standard xchange field with a native value storage\&.
 .PP
 \fBParameters\fP
@@ -650,8 +650,8 @@ X_SUCCESS (0) if successful, or X_NULL if the input field or the deserialized va
 .PP
 
 .PP
-References smax2xStruct(), and smaxStringToValues()\&.
-.SS "int smax2xStruct (XStructure * s)"
+References \fBFALSE\fP, \fBXField::isSerialized\fP, \fBsmax2xStruct()\fP, \fBsmaxStringToValues()\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx_error()\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SIZE_INVALID\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, \fBX_TYPE_INVALID\fP, \fBxElementSizeOf()\fP, and \fBxGetFieldCount()\fP\&.
+.SS "int smax2xStruct (\fBXStructure\fP * s)"
 Converts an SMA-X structure with serialized string value storage to a standard xchange structure with a native value storage\&.
 .PP
 \fBParameters\fP
@@ -673,9 +673,9 @@ X_SUCCESS (0) if successful, or X_STRUCT_INVALID if the structure is NULL, or ha
 .PP
 
 .PP
-References smax2xField()\&.
+References \fBXStructure::firstField\fP, \fBXField::next\fP, \fBsmax2xField()\fP, \fBx_error()\fP, \fBX_STRUCT_INVALID\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddConnectHook (void(*)(void) setupCall)"
-Add a callback function for when SMA-X is connected\&. It's a wrapper to redisxAddConnectHook()\&.
+Add a callback function for when SMA-X is connected\&. It's a wrapper to \fBredisxAddConnectHook()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -684,7 +684,7 @@ Add a callback function for when SMA-X is connected\&. It's a wrapper to redisxA
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -698,7 +698,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxAddConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddDefaultMessageProcessor (const char * host, const char * prog, const char * type)"
 Report messages to stdout/stderr in default formats\&.
 .PP
@@ -718,9 +718,9 @@ Serial ID number (> 0) of the message processor, or X_NULL\&.
 .PP
 
 .PP
-References smaxAddMessageProcessor()\&.
+References \fBsmaxAddMessageProcessor()\fP\&.
 .SS "int smaxAddDisconnectHook (void(*)(void) cleanupCall)"
-Add a callback function for when SMA-X is disconnected\&. It's a wrapper to redisxAddDisconnectHook()\&.
+Add a callback function for when SMA-X is disconnected\&. It's a wrapper to \fBredisxAddDisconnectHook()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -729,7 +729,7 @@ Add a callback function for when SMA-X is disconnected\&. It's a wrapper to redi
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -741,7 +741,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxAddDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddMessageProcessor (const char * host, const char * prog, const char * type, void(*)(\fBXMessage\fP *) f)"
 Adds a message processor function for a specific host (or all hosts), a specific program (or all programs), and a specific message type (or all message types)\&.
 .PP
@@ -768,8 +768,8 @@ Serial ID number (> 0) of the message processor, or X_NULL if callback function 
 .PP
 
 .PP
-References MESSAGES_PREFIX\&.
-.SS "int smaxAddSubscriber (const char * idStem, RedisSubscriberCall f)"
+References \fBMESSAGES_PREFIX\fP, \fBredisxAddSubscriber()\fP, \fBredisxSubscribe()\fP, \fBsmaxGetRedis()\fP, \fBsmaxRemoveMessageProcessor()\fP, \fBx_error()\fP, \fBX_NULL\fP, \fBX_SEP\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxStringCopyOf()\fP\&.
+.SS "int smaxAddSubscriber (const char * idStem, \fBRedisSubscriberCall\fP f)"
 Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id)\&. The function should itself check that the channel receiving notification is indeed what it expectes before acting on it, as the callback routine will be invoked for any update inside the specified table, unless the table argument refers to a specific aggregate ID of a single variable\&. This call only registers the callback routine for SMA-X update notifications for variables that begin with the specified stem\&. You will still have to subscrive to any relevant variables with \fBsmaxSubscribe()\fP to enable delivering update notifications for the variables of your choice\&.
 .PP
 \fBParameters\fP
@@ -781,7 +781,7 @@ Add a subcriber (callback) function to process incoming PUB/SUB messages for a g
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS if successful, or else an approriate error code by redisxAddSubscriber()
+X_SUCCESS if successful, or else an approriate error code by \fBredisxAddSubscriber()\fP
 .RE
 .PP
 \fBSee also\fP
@@ -791,13 +791,13 @@ X_SUCCESS if successful, or else an approriate error code by redisxAddSubscriber
 .PP
 
 .PP
-References SMAX_UPDATES_ROOT, and smaxGetRedis()\&.
+References \fBredisxAddSubscriber()\fP, \fBSMAX_UPDATES_ROOT\fP, \fBsmaxGetRedis()\fP, \fBX_SUCCESS\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxConnect ()"
 Initializes the SMA-X sharing library in this runtime instance\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sharing was already open\&. X_NO_SERVICE If the there was an issue establishing the necessary network connection(s)\&. X_NAME_INVALID If the redis server name lookup failed\&. X_NULL If the Redis IP address is NULL
+X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sharing was already open\&. X_NO_SERVICE If the there was an issue establishing the necessary network connection(s)\&. X_NAME_INVALID If the redis server name lookup failed\&. X_NULL If the \fBRedis\fP IP address is NULL
 .RE
 .PP
 \fBSee also\fP
@@ -817,13 +817,13 @@ X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sh
 .PP
 
 .PP
-References smaxGetProgramID(), and smaxIsConnected()\&.
+References \fBFALSE\fP, \fBredisxConnect()\fP, \fBredisxInit()\fP, \fBredisxSelectDB()\fP, \fBredisxSetPassword()\fP, \fBredisxSetPort()\fP, \fBredisxSetTcpBuf()\fP, \fBredisxSetTransmitErrorHandler()\fP, \fBredisxSetUser()\fP, \fBSMAX_DEFAULT_HOSTNAME\fP, \fBsmaxAddConnectHook()\fP, \fBsmaxAddDisconnectHook()\fP, \fBsmaxAddSubscriber()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxIsConnected()\fP, \fBsmaxLazyFlush()\fP, \fBsmaxReleaseWaits()\fP, \fBsmaxSetPipelineConsumer()\fP, \fBsmaxSetResilient()\fP, \fBsmaxTransmitErrorHandler()\fP, \fBTRUE\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxConnectTo (const char * server)"
-Initializes the SMA-X sharing library in this runtime instance with the specified Redis server\&. SMA-X is initialized in resilient mode, so that we'll automatically attempt to reconnect to the Redis server if the connection is severed (once it was established)\&. If that is not the desired behavior, you should call \fCsmaxSetResilient(FALSE)\fP after connecting\&.
+Initializes the SMA-X sharing library in this runtime instance with the specified \fBRedis\fP server\&. SMA-X is initialized in resilient mode, so that we'll automatically attempt to reconnect to the \fBRedis\fP server if the connection is severed (once it was established)\&. If that is not the desired behavior, you should call \fCsmaxSetResilient(FALSE)\fP after connecting\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIserver\fP SMA-X Redis server name or IP address, e\&.g\&. '127\&.0\&.0\&.1'\&.
+\fIserver\fP SMA-X \fBRedis\fP server name or IP address, e\&.g\&. '127\&.0\&.0\&.1'\&.
 .RE
 .PP
 \fBReturns\fP
@@ -845,8 +845,10 @@ X_SUCCESS If the library was successfully initialized X_NO_SERVICE If the there 
 .RE
 .PP
 
-.SS "XField* smaxCreate1DField (const char * name, XType type, int size, const void * value)"
-Creates a field for 1-D array of a given name and type using specified native values\&. It is like \fCxCreate1DField()\fP except that the field is created in serialized form\&.
+.PP
+References \fBsmaxConnect()\fP, \fBsmaxSetServer()\fP, and \fBX_SUCCESS\fP\&.
+.SS "\fBXField\fP * smaxCreate1DField (const char * name, \fBXType\fP type, int size, const void * value)"
+Creates a field for 1-D array of a given name and type using specified native values\&. It is like \fC\fBxCreate1DField()\fP\fP except that the field is created in serialized form\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -866,14 +868,14 @@ A newly created field with the supplied data, or NULL if there was an error\&.
 .PP
 \fBSee also\fP
 .RS 4
-xSetField() 
+\fBxSetField()\fP 
 .RE
 .PP
 
 .PP
-References smaxCreateField()\&.
-.SS "XField* smaxCreateBooleanField (const char * name, boolean value)"
-Creates a field holding a single boolean value\&. It is like \fCxCreateBooleanField()\fP except that the field is created in serialized form\&.
+References \fBsmaxCreateField()\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXField\fP * smaxCreateBooleanField (const char * name, \fBboolean\fP value)"
+Creates a field holding a single boolean value\&. It is like \fC\fBxCreateBooleanField()\fP\fP except that the field is created in serialized form\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -889,13 +891,13 @@ A newly created field with the supplied data, or NULL if there was an error\&.
 .PP
 \fBSee also\fP
 .RS 4
-xSetField() 
+\fBxSetField()\fP 
 .RE
 .PP
 
 .PP
-References smaxCreateScalarField()\&.
-.SS "\fBXCoordinateSystem\fP* smaxCreateCoordinateSystem (int nAxis)"
+References \fBsmaxCreateScalarField()\fP, \fBX_BOOLEAN\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXCoordinateSystem\fP * smaxCreateCoordinateSystem (int nAxis)"
 Creates a coordinate system with the desired dimension, and standard Cartesian coordinates with no labels, or units specified (NULL)\&.
 .PP
 \fBParameters\fP
@@ -915,9 +917,9 @@ Pointer to the new coordinate system structure, or NULL if the coordiate system 
 .PP
 
 .PP
-References XCoordinateSystem::axis, XCoordinateSystem::nAxis, and XCoordinateAxis::step\&.
-.SS "XField* smaxCreateDoubleField (const char * name, double value)"
-Creates a field holding a single double-precision value\&. It is like \fCxCreateDoubleField()\fP except that the field is created in serialized form\&.
+References \fBXCoordinateSystem::axis\fP, \fBXCoordinateSystem::nAxis\fP, \fBXCoordinateAxis::step\fP, \fBx_error()\fP, and \fBX_MAX_DIMS\fP\&.
+.SS "\fBXField\fP * smaxCreateDoubleField (const char * name, double value)"
+Creates a field holding a single double-precision value\&. It is like \fC\fBxCreateDoubleField()\fP\fP except that the field is created in serialized form\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -933,14 +935,14 @@ A newly created field with the supplied data, or NULL if there was an error\&.
 .PP
 \fBSee also\fP
 .RS 4
-xSetField() 
+\fBxSetField()\fP 
 .RE
 .PP
 
 .PP
-References smaxCreateScalarField()\&.
-.SS "XField* smaxCreateField (const char * name, XType type, int ndim, const int * sizes, const void * value)"
-Creates a generic field of a given name and type and dimensions using the specified native values\&. It is like \fCxCreateField()\fP except that the field is created in serialized form for SMA-X\&.
+References \fBsmaxCreateScalarField()\fP, \fBX_DOUBLE\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXField\fP * smaxCreateField (const char * name, \fBXType\fP type, int ndim, const int * sizes, const void * value)"
+Creates a generic field of a given name and type and dimensions using the specified native values\&. It is like \fC\fBxCreateField()\fP\fP except that the field is created in serialized form for SMA-X\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -962,14 +964,14 @@ A newly created field with the supplied data, or NULL if there was an error\&.
 .PP
 \fBSee also\fP
 .RS 4
-xSetField() 
+\fBxSetField()\fP 
 .RE
 .PP
 
 .PP
-References smaxValuesToString()\&.
-.SS "XField* smaxCreateIntField (const char * name, int value)"
-Creates a field holding a single integer value\&. It is like \fCxCreateIntField()\fP except that the field is created in serialized form\&.
+References \fBXField::isSerialized\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::value\fP, \fBX_RAW\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, \fBx_trace_null()\fP, \fBxCreateField()\fP, \fBxGetElementCount()\fP, and \fBxStringElementSizeOf()\fP\&.
+.SS "\fBXField\fP * smaxCreateIntField (const char * name, int value)"
+Creates a field holding a single integer value\&. It is like \fC\fBxCreateIntField()\fP\fP except that the field is created in serialized form\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -985,14 +987,14 @@ A newly created field with the supplied data, or NULL if there was an error\&.
 .PP
 \fBSee also\fP
 .RS 4
-xSetField() 
+\fBxSetField()\fP 
 .RE
 .PP
 
 .PP
-References smaxCreateScalarField()\&.
-.SS "XField* smaxCreateLongField (const char * name, long long value)"
-Creates a field holding a single wide (64-bit) integer value\&. It is like \fCxCreateLongField()\fP except that the field is created in serialized form\&.
+References \fBsmaxCreateScalarField()\fP, \fBX_INT\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXField\fP * smaxCreateLongField (const char * name, long long value)"
+Creates a field holding a single wide (64-bit) integer value\&. It is like \fC\fBxCreateLongField()\fP\fP except that the field is created in serialized form\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -1008,13 +1010,13 @@ A newly created field with the supplied data, or NULL if there was an error\&.
 .PP
 \fBSee also\fP
 .RS 4
-xSetField() 
+\fBxSetField()\fP 
 .RE
 .PP
 
 .PP
-References smaxCreateScalarField()\&.
-.SS "\fBXMeta\fP* smaxCreateMeta ()"
+References \fBsmaxCreateScalarField()\fP, \fBX_LONG\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXMeta\fP * smaxCreateMeta ()"
 Creates a new SMA-X metadata object with defaults\&. Effectively the same as calling calloc() followed by xResetMeta()\&.
 .PP
 \fBReturns\fP
@@ -1029,9 +1031,9 @@ Pointer to a new metadata object initialized to defaults\&.
 .PP
 
 .PP
-References smaxResetMeta()\&.
-.SS "XField* smaxCreateScalarField (const char * name, XType type, const void * value)"
-Creates a scalar field of a given name and type using the specified native value\&. It is like \fCxCreateScalarField()\fP except that the field is created in serialized form\&.
+References \fBsmaxResetMeta()\fP\&.
+.SS "\fBXField\fP * smaxCreateScalarField (const char * name, \fBXType\fP type, const void * value)"
+Creates a scalar field of a given name and type using the specified native value\&. It is like \fC\fBxCreateScalarField()\fP\fP except that the field is created in serialized form\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -1049,14 +1051,14 @@ A newly created scalar field with the supplied data, or NULL if there was an err
 .PP
 \fBSee also\fP
 .RS 4
-xSetField() 
+\fBxSetField()\fP 
 .RE
 .PP
 
 .PP
-References smaxCreate1DField()\&.
-.SS "XField* smaxCreateStringField (const char * name, const char * value)"
-Creates a field holding a single string value\&. It is like \fCxCreateStringField()\fP except that the field is created in serialized form\&.
+References \fBsmaxCreate1DField()\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXField\fP * smaxCreateStringField (const char * name, const char * value)"
+Creates a field holding a single string value\&. It is like \fC\fBxCreateStringField()\fP\fP except that the field is created in serialized form\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -1072,8 +1074,8 @@ A newly created field referencing the supplied string, or NULL if there was an e
 .PP
 
 .PP
-References smaxCreateScalarField()\&.
-.SS "\fBXSyncPoint\fP* smaxCreateSyncPoint ()"
+References \fBsmaxCreateScalarField()\fP, \fBX_STRING\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXSyncPoint\fP * smaxCreateSyncPoint ()"
 Creates a synchronization point that can be waited upon until all elements queued prior to creation are processed (retrieved from the database\&.
 .PP
 \fBReturns\fP
@@ -1092,7 +1094,7 @@ Pointer to a newly created synchronization point that can be waited upon\&.
 .PP
 
 .PP
-References XSyncPoint::isComplete, and XSyncPoint::lock\&.
+References \fBXSyncPoint::isComplete\fP, \fBXSyncPoint::lock\fP, \fBXSyncPoint::status\fP, \fBX_INCOMPLETE\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxDeletePattern (const char * pattern)"
 Deletes variables and metadata from SMA-X\&.
 .PP
@@ -1108,7 +1110,7 @@ The number of variables deleted from the SQL DB
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_NULL\fP, and \fBX_SEP\fP\&.
 .SS "void smaxDestroyCoordinateSystem (\fBXCoordinateSystem\fP * coords)"
 Deallocates a coordinate system structure\&.
 .PP
@@ -1124,7 +1126,7 @@ Deallocates a coordinate system structure\&.
 .PP
 
 .PP
-References XCoordinateSystem::axis\&.
+References \fBXCoordinateSystem::axis\fP\&.
 .SS "void smaxDestroySyncPoint (\fBXSyncPoint\fP * s)"
 Destroys a synchronization point, releasing the memory space allocated to it\&.
 .PP
@@ -1135,7 +1137,7 @@ Destroys a synchronization point, releasing the memory space allocated to it\&.
 .PP
 
 .PP
-References XSyncPoint::isComplete, and XSyncPoint::lock\&.
+References \fBXSyncPoint::isComplete\fP, and \fBXSyncPoint::lock\fP\&.
 .SS "int smaxDisconnect ()"
 Disables the SMA-X sharing capability, closing underlying network connections\&.
 .PP
@@ -1157,7 +1159,7 @@ X_SUCCESS (0) if the sharing was properly ended\&. X_NO_INIT if SMA-X was has no
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBredisxDisconnect()\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, and \fBxvprintf\fP\&.
 .SS "int smaxError (const char * func, int errorCode)"
 Prints a descriptive error message to stderr, and returns the error code\&.
 .PP
@@ -1175,17 +1177,19 @@ Same error code as specified on input\&.
 .PP
 
 .PP
-References smaxErrorDescription()\&.
-.SS "const char* smaxErrorDescription (int code)"
+References \fBredisxError()\fP, \fBsmaxErrorDescription()\fP, \fBX_NO_SERVICE\fP, and \fBxDebug\fP\&.
+.SS "const char * smaxErrorDescription (int code)"
 Returns a string description for one of the RM error codes\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIcode\fP One of the error codes defined in 'xchange\&.h' or in '\fBsmax\&.h\fP' (e\&.g\&. X_NO_PIPELINE) 
+\fIcode\fP One of the error codes defined in '\fBxchange\&.h\fP' or in '\fBsmax\&.h\fP' (e\&.g\&. X_NO_PIPELINE) 
 .RE
 .PP
 
-.SS "int smaxGetArrayField (const XStructure * s, const char * name, void * dst, XType type, int count)"
+.PP
+References \fBredisxErrorDescription()\fP\&.
+.SS "int smaxGetArrayField (const \fBXStructure\fP * s, const char * name, void * dst, \fBXType\fP type, int count)"
 Gets the data of an SMA-X structure field as an array of values of the specified type and element count\&. The field's data will be truncated or padded with zeroes to provide the requested element count always\&.
 .PP
 \fBParameters\fP
@@ -1208,13 +1212,13 @@ X_SUCCESS (0) if successful, or X_STRUCT_INVALID if the input structure is NULL,
 .PP
 
 .PP
-References smaxStringToValues()\&.
-.SS "boolean smaxGetBooleanField (const XStructure * s, const char * name, boolean defaultValue)"
+References \fBsmaxStringToValues()\fP, \fBXField::value\fP, \fBx_error()\fP, \fBX_NAME_INVALID\fP, \fBX_NULL\fP, \fBX_SIZE_INVALID\fP, \fBX_STRUCT_INVALID\fP, \fBX_SUCCESS\fP, and \fBxGetField()\fP\&.
+.SS "\fBboolean\fP smaxGetBooleanField (const \fBXStructure\fP * s, const char * name, \fBboolean\fP defaultValue)"
 Returns the first value in a structure's field as an integer, or the specified default value if there is no such field in the structure, or the content cannot be parse into an integer\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIs\fP Pointer to the XStructure\&. 
+\fIs\fP Pointer to the \fBXStructure\fP\&. 
 .br
 \fIname\fP Field name 
 .br
@@ -1228,11 +1232,13 @@ The (first) field value as a long long, or the default value if there is no such
 .PP
 \fBSee also\fP
 .RS 4
-xGetField() 
+\fBxGetField()\fP 
 .RE
 .PP
 
-.SS "\fBXCoordinateAxis\fP* smaxGetCoordinateAxis (const char * id, int n)"
+.PP
+References \fBXField::value\fP, \fBxGetField()\fP, and \fBxParseBoolean()\fP\&.
+.SS "\fBXCoordinateAxis\fP * smaxGetCoordinateAxis (const char * id, int n)"
 Returns the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
 \fBParameters\fP
@@ -1254,8 +1260,8 @@ Pointer to a newly allocated \fBXCoordinateAxis\fP structure or NULL if the axis
 .PP
 
 .PP
-References XCoordinateAxis::name, XCoordinateAxis::refIndex, XCoordinateAxis::refValue, smaxGetRedis(), XCoordinateAxis::step, and XCoordinateAxis::unit\&.
-.SS "\fBXCoordinateSystem\fP* smaxGetCoordinateSystem (const char * table, const char * key)"
+References \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxGetTable()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "\fBXCoordinateSystem\fP * smaxGetCoordinateSystem (const char * table, const char * key)"
 Returns the coordinate system, if any, associated to a given SMA-X variable\&.
 .PP
 \fBParameters\fP
@@ -1278,7 +1284,9 @@ A newly allocated coordinate system structure, or NULL\&.
 .RE
 .PP
 
-.SS "char* smaxGetDescription (const char * table, const char * key)"
+.PP
+References \fBXCoordinateSystem::axis\fP, \fBMETA_COORDS\fP, \fBXCoordinateSystem::nAxis\fP, \fBsmaxGetCoordinateAxis()\fP, \fBX_MAX_DIMS\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "char * smaxGetDescription (const char * table, const char * key)"
 Returns a concise description of a variable\&.
 .PP
 \fBParameters\fP
@@ -1299,12 +1307,14 @@ Variable description or NULL or empty string if the variable has no description 
 .RE
 .PP
 
-.SS "double smaxGetDoubleField (const XStructure * s, const char * name, double defaultValue)"
+.PP
+References \fBMETA_DESCRIPTION\fP, \fBsmaxPullMeta()\fP, \fBX_SUCCESS\fP, and \fBx_trace_null()\fP\&.
+.SS "double smaxGetDoubleField (const \fBXStructure\fP * s, const char * name, double defaultValue)"
 Returns the first value in a structure's field as a double precision float, or the specified default value if there is no such field in the structure, or the content cannot be parse into an double\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIs\fP Pointer to the XStructure\&. 
+\fIs\fP Pointer to the \fBXStructure\fP\&. 
 .br
 \fIname\fP Field name 
 .br
@@ -1318,11 +1328,13 @@ The (first) field value as a double, or the specified default if there is no suc
 .PP
 \fBSee also\fP
 .RS 4
-xGetField() 
+\fBxGetField()\fP 
 .RE
 .PP
 
-.SS "char* smaxGetHostName ()"
+.PP
+References \fBXField::value\fP, and \fBxGetField()\fP\&.
+.SS "char * smaxGetHostName ()"
 Returns the host name on which this program is running\&. It returns a reference to the same static variable every time\&. As such you should never call free() on the returned value\&. Note, that only the leading part of the host name is returned, so for a host that is registered as 'somenode\&.somedomain' only 'somenode' is returned\&.
 .PP
 \fBReturns\fP
@@ -1336,21 +1348,23 @@ The host name string (leading part only)\&.
 .RE
 .PP
 
-.SS "char** smaxGetKeys (const char * table, int * n)"
-Returns a snapshot of the key names stored in a given Redis hash table, ot NULL if there was an error\&.
+.PP
+References \fBxStringCopyOf()\fP\&.
+.SS "char ** smaxGetKeys (const char * table, int * n)"
+Returns a snapshot of the key names stored in a given \fBRedis\fP hash table, ot NULL if there was an error\&.
 .PP
 \fBParameters\fP
 .RS 4
 \fItable\fP Host name or owner ID whose variable to count\&. 
 .br
-\fIn\fP Pointer to which the number of keys (>=0) or an error (<0) is returned\&. An error returned by redisxGetKeys(), or else:
+\fIn\fP Pointer to which the number of keys (>=0) or an error (<0) is returned\&. An error returned by \fBredisxGetKeys()\fP, or else:
 .RE
 .PP
 X_NO_INIT if the SMA-X sharing was not initialized, e\&.g\&. via \fBsmaxConnect()\fP\&. X_GROUP_INVALID if the table name is invalid\&. X_NULL if the output 'n' pointer is NULL\&.
 .PP
 \fBReturns\fP
 .RS 4
-An array of pointers to the names of Redis keys\&.
+An array of pointers to the names of \fBRedis\fP keys\&.
 .RE
 .PP
 \fBSee also\fP
@@ -1359,7 +1373,9 @@ An array of pointers to the names of Redis keys\&.
 .RE
 .PP
 
-.SS "int smaxGetLazyCached (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
+.PP
+References \fBredisxGetKeys()\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxvprintf\fP\&.
+.SS "int smaxGetLazyCached (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
 Retrieve a variable from the local cache (if available), or else pull from the SMA-X database\&. If local caching was not previously eanbled, it will be enabled with this call, so that subsequent calls will always return data from the locally updated cache with minimal overhead and effectively no latency\&.
 .PP
 \fBParameters\fP
@@ -1368,7 +1384,7 @@ Retrieve a variable from the local cache (if available), or else pull from the S
 .br
 \fIkey\fP The variable name under which the data is stored\&. 
 .br
-\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIcount\fP The number of elements to retrieve 
 .br
@@ -1379,7 +1395,7 @@ Retrieve a variable from the local cache (if available), or else pull from the S
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0), or X_NO_SERVICE is SMA-X is not accessible, or another error (<0) from \fBsmax\&.h\fP or xchange\&.h\&.
+X_SUCCESS (0), or X_NO_SERVICE is SMA-X is not accessible, or another error (<0) from \fBsmax\&.h\fP or \fBxchange\&.h\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -1390,6 +1406,8 @@ sa smaxLaxyPull()
 .RE
 .PP
 
+.PP
+References \fBTRUE\fP, \fBX_NO_SERVICE\fP, \fBX_SUCCESS\fP, and \fBx_trace()\fP\&.
 .SS "int smaxGetLazyUpdateCount (const char * table, const char * key)"
 Returns the actual number of times a variable has been updated from SMA-X\&. It may be useful information when deciding if lazy pulling is appropriate (it is if the number of pull requests exceeds the actual number of transfers significantly)\&.
 .PP
@@ -1406,12 +1424,12 @@ The number of times a variable has been updated, or -1 if the variable is not be
 .RE
 .PP
 
-.SS "long long smaxGetLongField (const XStructure * s, const char * name, long long defaultValue)"
+.SS "long long smaxGetLongField (const \fBXStructure\fP * s, const char * name, long long defaultValue)"
 Returns the first value in a structure's field as an integer, or the specified default value if there is no such field in the structure, or the content cannot be parse into an integer\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIs\fP Pointer to the XStructure\&. 
+\fIs\fP Pointer to the \fBXStructure\fP\&. 
 .br
 \fIname\fP Field name 
 .br
@@ -1425,10 +1443,12 @@ The (first) field value as a long long, or the default value if there is no such
 .PP
 \fBSee also\fP
 .RS 4
-xGetField() 
+\fBxGetField()\fP 
 .RE
 .PP
 
+.PP
+References \fBXField::value\fP, and \fBxGetField()\fP\&.
 .SS "int smaxGetMetaCount (const \fBXMeta\fP * m)"
 Returns the number of elements stored from a metadata\&.
 .PP
@@ -1444,8 +1464,8 @@ the total number of elements represented by the metadata
 .PP
 
 .PP
-References XMeta::storeDim, and XMeta::storeSizes\&.
-.SS "char* smaxGetProgramID ()"
+References \fBXMeta::storeDim\fP, \fBXMeta::storeSizes\fP, and \fBxGetElementCount()\fP\&.
+.SS "char * smaxGetProgramID ()"
 Returns the SMA-X program ID\&.
 .PP
 \fBReturns\fP
@@ -1454,12 +1474,14 @@ The SMA-X program ID as <hostname>:<programname>, e\&.g\&. 'hal9000:statusServer
 .RE
 .PP
 
-.SS "char* smaxGetRawField (const XStructure * s, const char * name, char * defaultValue)"
+.PP
+References \fBsmaxGetHostName()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "char * smaxGetRawField (const \fBXStructure\fP * s, const char * name, char * defaultValue)"
 Returns the string value in a structure's field, or the specified default value if there is no such field in the structure\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIs\fP Pointer to the XStructure\&. 
+\fIs\fP Pointer to the \fBXStructure\fP\&. 
 .br
 \fIname\fP Field name 
 .br
@@ -1473,16 +1495,18 @@ The field's string (raw) value, or the specified default if there is no such fie
 .PP
 \fBSee also\fP
 .RS 4
-xGetField() 
+\fBxGetField()\fP 
 .RE
 .PP
 
-.SS "Redis* smaxGetRedis ()"
-Returns the Redis connection information for SMA-X
+.PP
+References \fBXField::value\fP, and \fBxGetField()\fP\&.
+.SS "\fBRedis\fP * smaxGetRedis ()"
+Returns the \fBRedis\fP connection information for SMA-X
 .PP
 \fBReturns\fP
 .RS 4
-The structure containing the Redis connection data\&.
+The structure containing the \fBRedis\fP connection data\&.
 .RE
 .PP
 \fBSee also\fP
@@ -1495,7 +1519,7 @@ The structure containing the Redis connection data\&.
 .RE
 .PP
 
-.SS "char* smaxGetScriptSHA1 (const char * scriptName, int * status)"
+.SS "char * smaxGetScriptSHA1 (const char * scriptName, int * status)"
 Gets the SHA1 script ID for the currently loaded script with the specified name\&.
 .PP
 \fBParameters\fP
@@ -1511,8 +1535,10 @@ String buffer with the SHA1 key or NULL if it could not be retrieved\&. (The cal
 .RE
 .PP
 
+.PP
+References \fBredisxCheckDestroyRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_BULK_STRING\fP, \fBSMAX_SCRIPTS\fP, \fBsmaxGetRedis()\fP, \fBRESP::value\fP, \fBx_error()\fP, \fBX_NAME_INVALID\fP, and \fBx_trace_null()\fP\&.
 .SS "int smaxGetServerTime (struct timespec * t)"
-Returns the current time on the Redis server instance\&.
+Returns the current time on the \fBRedis\fP server instance\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -1521,12 +1547,12 @@ Returns the current time on the Redis server instance\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if not connected to SMA-X, or X_NULL if either argument is NULL, or X_PARSE_ERROR if could not parse the response, or another error returned by redisxCheckRESP()\&. 
+X_SUCCESS (0) if successful, or X_NO_INIT if not connected to SMA-X, or X_NULL if either argument is NULL, or X_PARSE_ERROR if could not parse the response, or another error returned by \fBredisxCheckRESP()\fP\&. 
 .RE
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxGetTime()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "double smaxGetTime (const char * timestamp)"
 Returns the a sub-second precision UNIX time value for the given SMA-X timestamp
 .PP
@@ -1542,8 +1568,8 @@ Corresponding UNIX time with sub-second precision, or NAN if the input could not
 .PP
 
 .PP
-References smaxParseTime()\&.
-.SS "char* smaxGetUnits (const char * table, const char * key)"
+References \fBNAN\fP, \fBsmaxParseTime()\fP, \fBx_error()\fP, \fBX_NULL\fP, and \fBx_trace()\fP\&.
+.SS "char * smaxGetUnits (const char * table, const char * key)"
 Returns the physical unit name, if any, for the given variable\&.
 .PP
 \fBParameters\fP
@@ -1564,6 +1590,8 @@ Unit name (e\&.g\&. 'W / Hz'), or NULL or empty string if the variable has no de
 .RE
 .PP
 
+.PP
+References \fBMETA_UNIT\fP, \fBsmaxPullMeta()\fP, \fBX_SUCCESS\fP, and \fBx_trace_null()\fP\&.
 .SS "int smaxIsConnected ()"
 Checks whether SMA-X sharing is currently open (by a preceding call to \fBsmaxConnect()\fP call\&.
 .PP
@@ -1579,7 +1607,9 @@ Checks whether SMA-X sharing is currently open (by a preceding call to \fBsmaxCo
 .RE
 .PP
 
-.SS "boolean smaxIsPipelined ()"
+.PP
+References \fBredisxIsConnected()\fP\&.
+.SS "\fBboolean\fP smaxIsPipelined ()"
 Check if SMA-X is configured with pipeline mode enabled\&.
 .PP
 \fBReturns\fP
@@ -1593,7 +1623,7 @@ TRUE (1) if the pipeline is enabled, or else FALSE (0)
 .RE
 .PP
 
-.SS "boolean smaxIsResilient ()"
+.SS "\fBboolean\fP smaxIsResilient ()"
 Checks whether the resiliency feature has been enabled\&.
 .PP
 \fBReturns\fP
@@ -1607,7 +1637,7 @@ TRUE if enabled, otherwise FALSE\&.
 .RE
 .PP
 
-.SS "boolean smaxIsVerbose ()"
+.SS "\fBboolean\fP smaxIsVerbose ()"
 Checks id verbose reporting is enabled\&.
 .PP
 \fBReturns\fP
@@ -1621,6 +1651,8 @@ TRUE if verbose reporting is enabled, otherwise FALSE\&.
 .RE
 .PP
 
+.PP
+References \fBredisxIsVerbose()\fP\&.
 .SS "int smaxKeyCount (const char * table)"
 Retrieve the current number of variables stored on host (or owner ID)\&.
 .PP
@@ -1631,7 +1663,7 @@ Retrieve the current number of variables stored on host (or owner ID)\&.
 .PP
 \fBReturns\fP
 .RS 4
-The number of keys (fields) in the specified table (>= 0), or an error code (<0), such as: X_NO_INIT if the SMA-X sharing was not initialized, e\&.g\&. via smaConnect()\&. X_GROUP_INVALID if the table name is invalid\&. or one of the errors (<0) returned by redisxRequest()\&.
+The number of keys (fields) in the specified table (>= 0), or an error code (<0), such as: X_NO_INIT if the SMA-X sharing was not initialized, e\&.g\&. via smaConnect()\&. X_GROUP_INVALID if the table name is invalid\&. or one of the errors (<0) returned by \fBredisxRequest()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -1640,7 +1672,9 @@ The number of keys (fields) in the specified table (>= 0), or an error code (<0)
 .RE
 .PP
 
-.SS "int smaxLazyCache (const char * table, const char * key, XType type)"
+.PP
+References \fBRESP::n\fP, \fBredisxCheckRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_INT\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
+.SS "int smaxLazyCache (const char * table, const char * key, \fBXType\fP type)"
 Specify that a specific variable should be cached for minimum overhead lazy access\&. When a variable is lazy cached its local copy is automatically updated in the background so that accessing it is always nearly instantaneous\&. Lazy caching is a good choice for variables that change less frequently than they are polled typically\&. For variables that change frequently (ans used less frequently), lazy caching is not a great choice since it consumes network bandwidth even when the variable is not being accessed\&.
 .PP
 Once a variable is lazy cached, it can be accessed instantaneously via \fBsmaxGetLazyCached()\fP without any blocking network operations\&.
@@ -1651,7 +1685,7 @@ Once a variable is lazy cached, it can be accessed instantaneously via \fBsmaxGe
 .br
 \fIkey\fP The variable name under which the data is stored\&. 
 .br
-\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .RE
 .PP
 \fBReturns\fP
@@ -1665,6 +1699,8 @@ X_SUCCESS (0) or X_NO_SERVICE\&.
 .RE
 .PP
 
+.PP
+References \fBFALSE\fP, \fBTRUE\fP, \fBX_NO_SERVICE\fP, \fBX_SUCCESS\fP, and \fBx_trace()\fP\&.
 .SS "int smaxLazyEnd (const char * table, const char * key)"
 Stops processing lazy updates in the background for a given variable\&.
 .PP
@@ -1688,6 +1724,8 @@ X_SUCCESS (0)
 .RE
 .PP
 
+.PP
+References \fBX_SUCCESS\fP\&.
 .SS "int smaxLazyFlush ()"
 Discards caches for all lazy variables (i\&.e\&. stops all subscriptions to variable updates, at least until the next \fBsmaxLazyPull()\fP call)\&. Generally speaking, it's a good idea to call this routine when one is done using a set of lazy variables for the time being, but want to avoid the tedium of calling \fBsmaxLazyEnd()\fP individually for each of them\&. Note however, that after flushing the lazy caches, the fist lazy call following for each variable will inevitably result in a real SMA-X pull\&. So use it carefully!
 .PP
@@ -1704,7 +1742,9 @@ Number of monitor points flushed\&.
 .RE
 .PP
 
-.SS "int smaxLazyPull (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
+.PP
+References \fBsmaxRemoveSubscribers()\fP\&.
+.SS "int smaxLazyPull (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
 Poll an infrequently changing variable without stressing out the network or the SMA-X database\&. The first lazy pull for a variable will fetch its value from SMA-X and subscribe to update notifications\&. Subsequent \fBsmaxLazyPull()\fP calls to the same variable will retrieve its value from a local cache (without contacting SMA-X) as long as it is unchanged\&.
 .PP
 Note, after you are done using a variable that has been lazy pulled, you should call \fBsmaxLazyEnd()\fP to signal that it no longer requires to be cached and updated in the background, or call \fBsmaxLazyFlush()\fP to flush all lazy caches for all lazy variables (if that is what you want)\&.
@@ -1715,7 +1755,7 @@ Note, after you are done using a variable that has been lazy pulled, you should 
 .br
 \fIkey\fP The variable name under which the data is stored\&. 
 .br
-\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP The SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIcount\fP The number of points to retrieve into the buffer\&. 
 .br
@@ -1741,6 +1781,8 @@ X_SUCCESS (0) on success, or else an error code (<0) of \fBsmaxPull()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBx_error()\fP, \fBX_NO_SERVICE\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, and \fBx_trace()\fP\&.
 .SS "int smaxLazyPullChars (const char * table, const char * key, char * buf, int n)"
 Lazy pulls a string value into the specified string buffer\&.
 .PP
@@ -1761,6 +1803,8 @@ X_SUCCESS (0) if successful, or the error code (<0) returned by \fBsmaxLazyPull(
 .RE
 .PP
 
+.PP
+References \fBsmaxLazyPull()\fP, \fBX_CHARS\fP, and \fBX_SUCCESS\fP\&.
 .SS "double smaxLazyPullDouble (const char * table, const char * key)"
 Returns a single double-precision value for a given SMA-X variable, or NAN if the value could not be retrieved\&.
 .PP
@@ -1784,6 +1828,8 @@ The floating-point value stored in SMA-X, or NaN if the value could not be retri
 .RE
 .PP
 
+.PP
+References \fBNAN\fP, and \fBsmaxLazyPullDoubleDefault()\fP\&.
 .SS "double smaxLazyPullDoubleDefault (const char * table, const char * key, double defaultValue)"
 Returns a single double-precision value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
 .PP
@@ -1809,6 +1855,8 @@ The floating-point value stored in SMA-X, or the specified default if the value 
 .RE
 .PP
 
+.PP
+References \fBsmaxLazyPull()\fP, and \fBX_DOUBLE\fP\&.
 .SS "long long smaxLazyPullLong (const char * table, const char * key, long long defaultValue)"
 Returns a single integer value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
 .PP
@@ -1832,7 +1880,9 @@ The long integer value stored in SMA-X, or the specified default if the value co
 .RE
 .PP
 
-.SS "char* smaxLazyPullString (const char * table, const char * key)"
+.PP
+References \fBsmaxLazyPull()\fP, and \fBX_LONG\fP\&.
+.SS "char * smaxLazyPullString (const char * table, const char * key)"
 Returns a single string value for a given SMA-X variable, or a NULL if the value could not be retrieved\&.
 .PP
 \fBParameters\fP
@@ -1853,7 +1903,9 @@ Pointer to the string value stored in SMA-X, or NULL if the value could not be r
 .RE
 .PP
 
-.SS "int smaxLazyPullStruct (const char * id, XStructure * s)"
+.PP
+References \fBsmaxLazyPull()\fP, \fBX_STRING\fP, and \fBx_trace_null()\fP\&.
+.SS "int smaxLazyPullStruct (const char * id, \fBXStructure\fP * s)"
 Lazy pulls data into a structure, discarding any prior data that the structure might contain\&.
 .PP
 \fBParameters\fP
@@ -1872,12 +1924,12 @@ X_SUCCESS (0) if successful, or the error code (<0) returned by \fBsmaxLazyPull(
 .RS 4
 \fBsmaxPullStruct()\fP 
 .PP
-xCreateStruct() 
+\fBxCreateStruct()\fP 
 .RE
 .PP
 
 .PP
-References smaxLazyPull()\&.
+References \fBsmaxLazyPull()\fP, \fBX_STRUCT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxParseTime (const char * timestamp, time_t * secs, long * nanosecs)"
 Parses a timestamp into broken-down UNIX time\&.
 .PP
@@ -1892,12 +1944,14 @@ Parses a timestamp into broken-down UNIX time\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS(0) if the timestamp was successfully parsed\&. X_NULL if there was no timestamp (empty or invalid string), or the \fCsecs\fP argument is NULL\&. X_PARSE_ERROR if the seconds could not be parsed\&. 1 if there was an error parsing the nanosec part\&. X_NULL if the secs arhument is NULL 
+\fBX_SUCCESS(0)\fP if the timestamp was successfully parsed\&. X_NULL if there was no timestamp (empty or invalid string), or the \fCsecs\fP argument is NULL\&. X_PARSE_ERROR if the seconds could not be parsed\&. 1 if there was an error parsing the nanosec part\&. X_NULL if the secs arhument is NULL 
 .RE
 .PP
 
-.SS "int smaxPull (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
-Pull data from the specified hash table\&. This calls data via the interactive client to Redis\&.
+.PP
+References \fBx_error()\fP, \fBX_NULL\fP, \fBX_PARSE_ERROR\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxPull (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
+Pull data from the specified hash table\&. This calls data via the interactive client to \fBRedis\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -1905,7 +1959,7 @@ Pull data from the specified hash table\&. This calls data via the interactive c
 .br
 \fIkey\fP Variable name under which the data is stored\&. 
 .br
-\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIcount\fP Number of points to retrieve into the buffer\&. 
 .br
@@ -1916,7 +1970,7 @@ Pull data from the specified hash table\&. This calls data via the interactive c
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the 'table' argument is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if an essential argument is NULL or contains NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the 'table' argument is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if an essential argument is NULL or contains NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -1927,6 +1981,8 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
+.PP
+References \fBREDISX_INTERACTIVE_CHANNEL\fP, \fBX_NULL\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, \fBxGetAggregateID()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "double smaxPullDouble (const char * table, const char * key)"
 Returns a single floating-point value for a given SMA-X variable, or a NAN if the value could not be retrieved\&.
 .PP
@@ -1950,6 +2006,8 @@ The floating-point value stored in SMA-X, or NAN if the value could not be retri
 .RE
 .PP
 
+.PP
+References \fBNAN\fP, and \fBsmaxPullDoubleDefault()\fP\&.
 .SS "double smaxPullDoubleDefault (const char * table, const char * key, double defaultValue)"
 Returns a single floating-point value for a given SMA-X variable, or a specified default value if the SMA-X value could not be retrieved\&.
 .PP
@@ -1975,7 +2033,9 @@ The floating-point value stored in SMA-X, or the specified default if the value 
 .RE
 .PP
 
-.SS "double* smaxPullDoubles (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+.PP
+References \fBsmaxPull()\fP, and \fBX_DOUBLE\fP\&.
+.SS "double * smaxPullDoubles (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
 Returns a dynamically allocated array of doubles stored in an SMA-X variable\&.
 .PP
 \fBParameters\fP
@@ -2002,6 +2062,8 @@ smaxPullFloats()
 .RE
 .PP
 
+.PP
+References \fBX_DOUBLE\fP, and \fBx_trace_null()\fP\&.
 .SS "int smaxPullInt (const char * table, const char * key, int defaultValue)"
 Returns a single integer value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
 .PP
@@ -2029,7 +2091,9 @@ smaPullLong()
 .RE
 .PP
 
-.SS "int* smaxPullInts (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+.PP
+References \fBsmaxPull()\fP, and \fBX_INT\fP\&.
+.SS "int * smaxPullInts (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
 Returns a dynamically allocated array of integers stored in an SMA-X variable\&.
 .PP
 \fBParameters\fP
@@ -2058,6 +2122,8 @@ smaxPullShorts()
 .RE
 .PP
 
+.PP
+References \fBX_INT\fP, and \fBx_trace_null()\fP\&.
 .SS "long long smaxPullLong (const char * table, const char * key, long long defaultValue)"
 Returns a single integer value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
 .PP
@@ -2085,7 +2151,9 @@ The integer value stored in SMA-X, or the specified default if the value could n
 .RE
 .PP
 
-.SS "long long* smaxPullLongs (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+.PP
+References \fBsmaxPull()\fP, and \fBX_LONG\fP\&.
+.SS "long long * smaxPullLongs (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
 Returns a dynamically allocated array of long long (int64) integers stored in an SMA-X variable\&.
 .PP
 \fBParameters\fP
@@ -2114,7 +2182,9 @@ smaxPullShorts()
 .RE
 .PP
 
-.SS "char* smaxPullMeta (const char * meta, const char * table, const char * key, int * status)"
+.PP
+References \fBX_INT\fP, and \fBx_trace_null()\fP\&.
+.SS "char * smaxPullMeta (const char * meta, const char * table, const char * key, int * status)"
 Retrieves a metadata string value for a given variable from the database
 .PP
 \fBParameters\fP
@@ -2139,7 +2209,9 @@ setPushMeta()
 .RE
 .PP
 
-.SS "char* smaxPullRaw (const char * table, const char * key, \fBXMeta\fP * meta, int * status)"
+.PP
+References \fBredisxGetStringValue()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "char * smaxPullRaw (const char * table, const char * key, \fBXMeta\fP * meta, int * status)"
 Returns a dynamically allocated buffer with the raw string value stored in SMA-X\&. This call can also be used to get single string values from SMA-X, since for single string the stored raw value is simply the string itself\&. However, to properly retrieve string arrays, you want to use \fBsmaxPullStrings()\fP instead\&.
 .PP
 \fBParameters\fP
@@ -2164,7 +2236,9 @@ Pointer to C array containing the elements of the specified type, or NULL\&.
 .RE
 .PP
 
-.SS "char* smaxPullString (const char * table, const char * key)"
+.PP
+References \fBsmaxPull()\fP, \fBx_error()\fP, \fBX_RAW\fP, and \fBx_trace_null()\fP\&.
+.SS "char * smaxPullString (const char * table, const char * key)"
 Returns a single string value for a given SMA-X variable, or a NULL if the value could not be retrieved\&.
 .PP
 \fBParameters\fP
@@ -2187,7 +2261,9 @@ Pouinter to the string value stored in SMA-X, or NULL if the value could not be 
 .RE
 .PP
 
-.SS "char** smaxPullStrings (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
+.PP
+References \fBsmaxPull()\fP, \fBX_STRING\fP, and \fBx_trace_null()\fP\&.
+.SS "char ** smaxPullStrings (const char * table, const char * key, \fBXMeta\fP * meta, int * n)"
 Returns an array of pointers to individuals strings inside the retrieved contiguous data buffer\&. Thus, to discard the returned data after use, you must first discard the underlying buffer (as pointed by the first element) before discarding the array of pointers themselves\&. E\&.g\&.:
 .PP
 \fC char **array = smaxPullStrings('mygroup', 'myfield', &meta); \&.\&.\&. if(array != NULL) { free(array[0]); // discards the underlying contiguous buffer free(array); // discards the array of pointers\&. } \fP
@@ -2216,7 +2292,9 @@ Pointer to a an array of strings (char *) containing *n elements, or NULL\&.
 .RE
 .PP
 
-.SS "XStructure* smaxPullStruct (const char * id, \fBXMeta\fP * meta, int * status)"
+.PP
+References \fBsmaxGetMetaCount()\fP, \fBsmaxPullRaw()\fP, \fBXMeta::storeBytes\fP, \fBx_error()\fP, \fBX_META_INIT\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXStructure\fP * smaxPullStruct (const char * id, \fBXMeta\fP * meta, int * status)"
 Returns a dynamically allocated XStrucure for the specified hashtable in SMA-X\&.
 .PP
 \fBParameters\fP
@@ -2230,19 +2308,19 @@ Returns a dynamically allocated XStrucure for the specified hashtable in SMA-X\&
 .PP
 \fBReturns\fP
 .RS 4
-Pointer to an XStructure, or NULL\&.
+Pointer to an \fBXStructure\fP, or NULL\&.
 .RE
 .PP
 \fBSee also\fP
 .RS 4
 \fBsmaxLazyPullStruct()\fP 
 .PP
-xDestroyStruct() 
+\fBxDestroyStruct()\fP 
 .RE
 .PP
 
 .PP
-References smaxPull()\&.
+References \fBsmaxPull()\fP, \fBx_error()\fP, \fBX_STRUCT\fP, and \fBx_trace_null()\fP\&.
 .SS "double smaxPullTime (const char * table, const char * key)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
@@ -2264,7 +2342,9 @@ setPushMeta()
 .RE
 .PP
 
-.SS "XType smaxPullTypeDimension (const char * table, const char * key, int * ndim, int * sizes)"
+.PP
+References \fBNAN\fP, \fBSMAX_TIMESTAMPS\fP, \fBsmaxPullMeta()\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXType\fP smaxPullTypeDimension (const char * table, const char * key, int * ndim, int * sizes)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
 \fBParameters\fP
@@ -2289,8 +2369,10 @@ setPushMeta()
 .RE
 .PP
 
+.PP
+References \fBSMAX_DIMS\fP, \fBSMAX_TYPES\fP, \fBsmaxPullMeta()\fP, \fBsmaxTypeForString()\fP, \fBx_trace()\fP, \fBX_UNKNOWN\fP, and \fBxParseDims()\fP\&.
 .SS "int smaxPushMeta (const char * meta, const char * table, const char * key, const char * value)"
-Adds/updates metadata associated with an SMA-X variable\&. The data will be pushed via the Redis pipeline channel\&.
+Adds/updates metadata associated with an SMA-X variable\&. The data will be pushed via the \fBRedis\fP pipeline channel\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -2305,17 +2387,19 @@ Adds/updates metadata associated with an SMA-X variable\&. The data will be push
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if the metadata was successfully retrieved X_INCOMPLETE if the meatdata was successfully written but an update notification was not sent or else the return value of redisxSetValue()
+X_SUCCESS (0) if the metadata was successfully retrieved X_INCOMPLETE if the meatdata was successfully written but an update notification was not sent or else the return value of \fBredisxSetValue()\fP
 .RE
 .PP
 \fBSee also\fP
 .RS 4
-\fBsmaxPullMeta()\fP, redisxSetValue() 
+\fBsmaxPullMeta()\fP, \fBredisxSetValue()\fP 
 .RE
 .PP
 
-.SS "int smaxQueue (const char * table, const char * key, XType type, int count, void * value, \fBXMeta\fP * meta)"
-Queues a pull requests for pipelined data retrieval\&. Because pipelined pulls are executed on a separate Redis client from the one used for sharing values, e\&.g\&. via \fBsmaxShare()\fP, there is no guarantee as to the order of this pull operation and previously initiated shares from the same thread\&. This would only be an issue if you are trying to use queued read to read back a value you have just shared -- which is not really a good use case anyway, as it generates network traffic for not real reason\&. But, if you must read back a value you have shared, you probably should use a regular \fBsmaxPull()\fP call to ensure ordering\&.
+.PP
+References \fBFALSE\fP, \fBredisxNotify()\fP, \fBredisxSetValue()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "int smaxQueue (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
+Queues a pull requests for pipelined data retrieval\&. Because pipelined pulls are executed on a separate \fBRedis\fP client from the one used for sharing values, e\&.g\&. via \fBsmaxShare()\fP, there is no guarantee as to the order of this pull operation and previously initiated shares from the same thread\&. This would only be an issue if you are trying to use queued read to read back a value you have just shared -- which is not really a good use case anyway, as it generates network traffic for not real reason\&. But, if you must read back a value you have shared, you probably should use a regular \fBsmaxPull()\fP call to ensure ordering\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -2323,7 +2407,7 @@ Queues a pull requests for pipelined data retrieval\&. Because pipelined pulls a
 .br
 \fIkey\fP Variable name under which the data is stored\&. 
 .br
-\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIcount\fP Number of points to retrieve into the buffer\&. 
 .br
@@ -2349,6 +2433,8 @@ X_SUCCESS (0) if successful X_NAME_INVALID if the table and key are both NULL X_
 .RE
 .PP
 
+.PP
+References \fBREDISX_PIPELINE_CHANNEL\fP, \fBSMAX_PIPE_READ_TIMEOUT_MILLIS\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NAME_INVALID\fP, \fBX_NO_SERVICE\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxQueueCallback (void(*)(void *) f, void * arg)"
 Adds a callback function to the queue to be called with the specified argument once all prior requests in the queue have been fullfilled (retrieved from the database)\&.
 .PP
@@ -2374,15 +2460,17 @@ X_SUCCESS (0) or else X_NULL if the function parameter is NULL\&.
 .RE
 .PP
 
+.PP
+References \fBx_error()\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxReconnect ()"
-Reconnects to the SMA-X server\&. It will try connecting repeatedly at regular intervals until the connection is made\&. If resilient mode is enabled, then locally accumulated shares will be sent to the Redis server upon reconnection\&. However, subscriptions are not automatically re-established\&. The caller is responsible for reinstate any necessary subscriptions after the reconnection or via an approproate connection hook\&.
+Reconnects to the SMA-X server\&. It will try connecting repeatedly at regular intervals until the connection is made\&. If resilient mode is enabled, then locally accumulated shares will be sent to the \fBRedis\fP server upon reconnection\&. However, subscriptions are not automatically re-established\&. The caller is responsible for reinstate any necessary subscriptions after the reconnection or via an approproate connection hook\&.
 .PP
 \fBReturns\fP
 .RS 4
 X_SUCCESS (0) if successful X_NO_INIT if SMA-X was never initialized\&.
 .RE
 .PP
-or the error returned by redisxReconnect()\&.
+or the error returned by \fBredisxReconnect()\fP\&.
 .PP
 \fBSee also\fP
 .RS 4
@@ -2400,6 +2488,8 @@ or the error returned by redisxReconnect()\&.
 .RE
 .PP
 
+.PP
+References \fBredisxReconnect()\fP, \fBSMAX_RECONNECT_RETRY_SECONDS\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, and \fBxvprintf\fP\&.
 .SS "int smaxReleaseWaits ()"
 Unblocks all smax_wait*() calls, which will return X_REL_PREMATURE, as a result\&.
 .PP
@@ -2414,8 +2504,10 @@ X_SUCCESS (0)
 .RE
 .PP
 
+.PP
+References \fBRELEASEID\fP, \fBX_SUCCESS\fP, and \fBxvprintf\fP\&.
 .SS "int smaxRemoveConnectHook (void(*)(void) setupCall)"
-Remove a post-connection callback function\&. It's a wrapper to redisxRemoveConnectHook()\&.
+Remove a post-connection callback function\&. It's a wrapper to \fBredisxRemoveConnectHook()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -2424,7 +2516,7 @@ Remove a post-connection callback function\&. It's a wrapper to redisxRemoveConn
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -2438,7 +2530,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxRemoveConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveDisconnectHook (void(*)(void) cleanupCall)"
 Remove a post-cdisconnect callback function\&. It's a wrapper to redisxRemiveDisconnectHook()\&.
 .PP
@@ -2449,7 +2541,7 @@ Remove a post-cdisconnect callback function\&. It's a wrapper to redisxRemiveDis
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
+X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -2461,7 +2553,7 @@ X_SUCCESS (0) or an error code (<0) from redisxAddConnectHook()\&.
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxRemoveDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveMessageProcessor (int id)"
 Stops a running message processor\&.
 .PP
@@ -2481,8 +2573,10 @@ X_SUCCESS (0) if successful, or X_NULL if no message processor is running by tha
 .RE
 .PP
 
-.SS "int smaxRemoveSubscribers (RedisSubscriberCall f)"
-Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages\&. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the Redis server\&. You should therefore also call \fBsmaxUnsubscribe()\fP as appropriate to stop notifications for variables that no longer have associated callbacks\&.
+.PP
+References \fBredisxRemoveSubscribers()\fP, \fBredisxUnsubscribe()\fP, \fBsmaxGetRedis()\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxRemoveSubscribers (\fBRedisSubscriberCall\fP f)"
+Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages\&. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the \fBRedis\fP server\&. You should therefore also call \fBsmaxUnsubscribe()\fP as appropriate to stop notifications for variables that no longer have associated callbacks\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -2501,7 +2595,7 @@ X_SUCCESS (0) if successful, or else an error (<0) returned by redisxRemoveSubsc
 .PP
 
 .PP
-References smaxGetRedis()\&.
+References \fBredisxRemoveSubscribers()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
 .SS "void smaxResetMeta (\fBXMeta\fP * m)"
 Set metadata to their default values\&. After resetting the supplied metadata will have exactly the same content as if it were initialized with the X_META_INIT macro\&.
 .PP
@@ -2517,7 +2611,7 @@ Set metadata to their default values\&. After resetting the supplied metadata wi
 .PP
 
 .PP
-References X_META_INIT\&.
+References \fBX_META_INIT\fP\&.
 .SS "int smaxSendDebug (const char * msg)"
 Broadcast a debugging message via SMA-X (e\&.g\&. program traces)\&.
 .PP
@@ -2532,6 +2626,8 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
+.PP
+References \fBSMAX_MSG_DEBUG\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSendDetail (const char * msg)"
 Broadcast non-essential verbose informational detail via SMA-X\&.
 .PP
@@ -2546,6 +2642,8 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
+.PP
+References \fBSMAX_MSG_DETAIL\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSendError (const char * msg)"
 Broadcast an error message via SMA-X\&. Errors should be used for an issues that impair program functionality\&.
 .PP
@@ -2567,6 +2665,8 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
+.PP
+References \fBSMAX_MSG_ERROR\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSendInfo (const char * msg)"
 Broadcast an informational message via SMA-X\&. These should be confirmations or essential information reported back to users\&. Non-essential information should be sent with sendDetail() instead\&.
 .PP
@@ -2588,6 +2688,8 @@ sendStatus()
 .RE
 .PP
 
+.PP
+References \fBSMAX_MSG_INFO\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSendProgress (double fraction, const char * msg)"
 Broadcast a progress update over SMA-X\&.
 .PP
@@ -2604,6 +2706,8 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
+.PP
+References \fBSMAX_MSG_DETAIL\fP, \fBx_error()\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSendStatus (const char * msg)"
 Broadcast a program status update via SMA-X\&.
 .PP
@@ -2623,6 +2727,8 @@ sendInfo()
 .RE
 .PP
 
+.PP
+References \fBSMAX_MSG_STATUS\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSendWarning (const char * msg)"
 Broadcast a warning message via SMA-X\&. Warnings should be used for any potentially problematic issues that nonetheless do not impair program functionality\&.
 .PP
@@ -2644,14 +2750,16 @@ X_SUCCESS (0), or else an X error\&.
 .RE
 .PP
 
+.PP
+References \fBSMAX_MSG_WARNING\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetAuth (const char * username, const char * password)"
 Sets the SMA-X database authentication parameters (if any) before connecting to the SMA-X server\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIusername\fP Redis ACL user name (if any), or NULL for no user-based authentication 
+\fIusername\fP \fBRedis\fP ACL user name (if any), or NULL for no user-based authentication 
 .br
-\fIpassword\fP Redis database password (if any), or NULL if the database is not password protected 
+\fIpassword\fP \fBRedis\fP database password (if any), or NULL if the database is not password protected 
 .RE
 .PP
 \fBReturns\fP
@@ -2668,7 +2776,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxSetCoordinateAxis (const char * id, int n, const \fBXCoordinateAxis\fP * axis)"
 Defines the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
@@ -2683,17 +2791,17 @@ Defines the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if the coordinate axis was successfully set in the database\&. or else the return value of redisxMultiSet()\&.
+X_SUCCESS (0) if the coordinate axis was successfully set in the database\&. or else the return value of \fBredisxMultiSet()\fP\&.
 .RE
 .PP
 \fBSee also\fP
 .RS 4
-\fBsmaxSetCoordinateAxis()\fP, redisxMultiSet() 
+\fBsmaxSetCoordinateAxis()\fP, \fBredisxMultiSet()\fP 
 .RE
 .PP
 
 .PP
-References XCoordinateAxis::name, XCoordinateAxis::refIndex, XCoordinateAxis::refValue, smaxGetRedis(), XCoordinateAxis::step, and XCoordinateAxis::unit\&.
+References \fBFALSE\fP, \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxMultiSet()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBX_FAILURE\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxSetCoordinateSystem (const char * table, const char * key, const \fBXCoordinateSystem\fP * coords)"
 Sets the coordinate system metadata for data in the database\&.
 .PP
@@ -2719,12 +2827,14 @@ X_SUCCESS (0) if the coordinate system was successfully sent to SMA-X or else th
 .RE
 .PP
 
+.PP
+References \fBXCoordinateSystem::axis\fP, \fBMETA_COORDS\fP, \fBXCoordinateSystem::nAxis\fP, \fBsmaxSetCoordinateAxis()\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxSetDB (int idx)"
-Sets a non-default Redis database index to use for SMA-X before connecting to the SMA-X server\&.
+Sets a non-default \fBRedis\fP database index to use for SMA-X before connecting to the SMA-X server\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIidx\fP The Redis database index to use (if not the default one) 
+\fIidx\fP The \fBRedis\fP database index to use (if not the default one) 
 .RE
 .PP
 \fBReturns\fP
@@ -2741,7 +2851,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetDescription (const char * table, const char * key, const char * description)"
 Sets the static description for a given SMA-X variable\&.
 .PP
@@ -2765,6 +2875,8 @@ X_SUCCESS (0) If successful or else the return value of \fBsmaxPushMeta()\fP
 .RE
 .PP
 
+.PP
+References \fBMETA_DESCRIPTION\fP, \fBsmaxPushMeta()\fP, and \fBX_SUCCESS\fP\&.
 .SS "void smaxSetHostName (const char * name)"
 Changes the host name to the user-specified value instead of the default (leading component of the value returned by gethostname())\&. Subsequent calls to \fBsmaxGetHostName()\fP will return the newly set value\&. An argument of NULL resets to the default\&.
 .PP
@@ -2779,6 +2891,8 @@ Changes the host name to the user-specified value instead of the default (leadin
 .RE
 .PP
 
+.PP
+References \fBxStringCopyOf()\fP\&.
 .SS "int smaxSetMaxPendingPulls (int n)"
 Configures how many pull requests can be queued in when piped pulls are enabled\&. If the queue reaches the specified limit, no new pull requests can be submitted until responses arrive, draining the queue somewhat\&.
 .PP
@@ -2793,6 +2907,8 @@ TRUE if the argument was valid, and the queue size was set to it, otherwise FALS
 .RE
 .PP
 
+.PP
+References \fBx_error()\fP, \fBX_FAILURE\fP, and \fBX_SUCCESS\fP\&.
 .SS "void smaxSetMessageSenderID (const char * id)"
 Sets the sender ID for outgoing program messages\&. By default the sender ID is <host>:<program> for the program that calls this function, but it can be modified to use some other SMA-X style hierarchical ID also\&.
 .PP
@@ -2802,6 +2918,8 @@ Sets the sender ID for outgoing program messages\&. By default the sender ID is 
 .RE
 .PP
 
+.PP
+References \fBxStringCopyOf()\fP\&.
 .SS "void smaxSetOrigin (\fBXMeta\fP * m, const char * origin)"
 Sets the 'origin' field of an SMA-X metadata to the specified value, truncating as necessary to fit into the allotted fixed storage\&.
 .PP
@@ -2814,18 +2932,18 @@ Sets the 'origin' field of an SMA-X metadata to the specified value, truncating 
 .PP
 
 .PP
-References XMeta::origin, and SMAX_ORIGIN_LENGTH\&.
-.SS "int smaxSetPipelineConsumer (void(*)(RESP *) f)"
-Change the pipeline response consumer function (from it's default or other previous consumer)\&. It is a wrapper for redisxSetPipelineConsumer()\&.
+References \fBXMeta::origin\fP, and \fBSMAX_ORIGIN_LENGTH\fP\&.
+.SS "int smaxSetPipelineConsumer (void(*)(\fBRESP\fP *) f)"
+Change the pipeline response consumer function (from it's default or other previous consumer)\&. It is a wrapper for \fBredisxSetPipelineConsumer()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIf\fP The function to process ALL pipeline responses from Redis\&. 
+\fIf\fP The function to process ALL pipeline responses from \fBRedis\fP\&. 
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or else an error by redisxSetPipelineConsumer()
+X_SUCCESS (0) if successful, or else an error by \fBredisxSetPipelineConsumer()\fP
 .RE
 .PP
 \fBSee also\fP
@@ -2837,9 +2955,9 @@ X_SUCCESS (0) if successful, or else an error by redisxSetPipelineConsumer()
 .PP
 
 .PP
-References smaxGetRedis()\&.
-.SS "int smaxSetPipelined (boolean isEnabled)"
-Enable or disable pipelined write operations (enabled by default)\&. When pipelining, share calls will return as soon as the request is sent to the Redis server, without waiting for a response\&. Instead, responses are consumed asynchronously by a dedicated thread, which will report errors to stderr\&. Pipelined writes can have a significant performance advantage over handshaking at the cost of one extra socket connection to Redis (dedicated to pipelining) and the extra thread consuming responses\&.
+References \fBredisxSetPipelineConsumer()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxSetPipelined (\fBboolean\fP isEnabled)"
+Enable or disable pipelined write operations (enabled by default)\&. When pipelining, share calls will return as soon as the request is sent to the \fBRedis\fP server, without waiting for a response\&. Instead, responses are consumed asynchronously by a dedicated thread, which will report errors to stderr\&. Pipelined writes can have a significant performance advantage over handshaking at the cost of one extra socket connection to \fBRedis\fP (dedicated to pipelining) and the extra thread consuming responses\&.
 .PP
 The default state of pipelined writes might vary by platform (e\&.g\&. enabled on Linux, disabled on LynxOS)\&.
 .PP
@@ -2863,7 +2981,9 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .RE
 .PP
 
-.SS "void smaxSetResilient (boolean value)"
+.PP
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
+.SS "void smaxSetResilient (\fBboolean\fP value)"
 Enables the resiliency feature of the library, which keeps track of local changes destined to the database when the database is not reachable, and sending all locally stored updates once the database comes online again\&. However, after sending all pending updates to the remote server, the program may exit (default behavior), unless \fBsmaxSetResilientExit()\fP is set to FALSE (0), so that it can be restarted in a fresh state, setting up subscriptions and scripts again as necessary\&.
 .PP
 \fBParameters\fP
@@ -2879,7 +2999,9 @@ Enables the resiliency feature of the library, which keeps track of local change
 .RE
 .PP
 
-.SS "void smaxSetResilientExit (boolean value)"
+.PP
+References \fBFALSE\fP, \fBsmaxAddConnectHook()\fP, \fBsmaxRemoveConnectHook()\fP, \fBTRUE\fP, and \fBxvprintf\fP\&.
+.SS "void smaxSetResilientExit (\fBboolean\fP value)"
 Sets whether the program should exit in resilient mode, after having pushed all local updates\&. The default is to exit since the reconnecting in resilient mode does not by itself re-establish existing subscriptions\&. However, when subscriptions aren't used, or if they are set up as a connect hook, the user may want the program to simply continue\&. This is possible by passing FALSE (0) as the argument to this call\&. This setting only takes effect when resilient mode is enabled\&. Otherwise, the exit policy is set by the RedisX library\&.
 .PP
 \fBParameters\fP
@@ -2895,6 +3017,8 @@ Sets whether the program should exit in resilient mode, after having pushed all 
 .RE
 .PP
 
+.PP
+References \fBFALSE\fP, and \fBTRUE\fP\&.
 .SS "int smaxSetServer (const char * host, int port)"
 Configures the SMA-X server before connecting\&.
 .PP
@@ -2902,7 +3026,7 @@ Configures the SMA-X server before connecting\&.
 .RS 4
 \fIhost\fP The SMA-X REdis server host name or IP address\&. 
 .br
-\fIport\fP The Redis port number on the SMA-X server, or &lt=0 to use the default 
+\fIport\fP The \fBRedis\fP port number on the SMA-X server, or &lt=0 to use the default 
 .RE
 .PP
 \fBReturns\fP
@@ -2921,7 +3045,7 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBREDISX_TCP_PORT\fP, \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxSetTcpBuf (int size)"
 Set the size of the TCP/IP buffers (send and receive) for future client connections\&.
 .PP
@@ -2937,7 +3061,7 @@ Set the size of the TCP/IP buffers (send and receive) for future client connecti
 .PP
 
 .PP
-References smaxIsConnected()\&.
+References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetUnits (const char * table, const char * key, const char * unit)"
 Sets the physical unit name for a given SMA-X variable\&.
 .PP
@@ -2961,7 +3085,9 @@ X_SUCCESS (0) If successful or else the return value of \fBsmaxPushMeta()\fP
 .RE
 .PP
 
-.SS "void smaxSetVerbose (boolean value)"
+.PP
+References \fBMETA_UNIT\fP, \fBsmaxPushMeta()\fP, and \fBX_SUCCESS\fP\&.
+.SS "void smaxSetVerbose (\fBboolean\fP value)"
 Enable or disable verbose reporting of all SMA-X operations (and possibly some details of them)\&. Reporting is done on the standard output (stdout)\&. It may be useful when debugging programs that use the SMA-X interface\&. Verbose reporting is DISABLED by default\&.
 .PP
 \fBParameters\fP
@@ -2975,8 +3101,10 @@ Enable or disable verbose reporting of all SMA-X operations (and possibly some d
 .RE
 .PP
 
-.SS "int smaxShare (const char * table, const char * key, const void * value, XType type, int count)"
-Share the data into a Redis hash table over the interactive Redis client\&. It's a fire-and-forget type implementation, which sends the data to Redis, without waiting for confirmation of its arrival\&. The choice improves the efficiency and throughput, and minimizes execution time, of the call, but it also means that a pipelined pull request in quick succession, e\&.g\&. via \fBsmaxQueue()\fP, may return a value on the pipeline client \fIbefore\fP this call is fully executed on the interactive Redis client\&.
+.PP
+References \fBredisxSetVerbose()\fP\&.
+.SS "int smaxShare (const char * table, const char * key, const void * value, \fBXType\fP type, int count)"
+Share the data into a \fBRedis\fP hash table over the interactive \fBRedis\fP client\&. It's a fire-and-forget type implementation, which sends the data to \fBRedis\fP, without waiting for confirmation of its arrival\&. The choice improves the efficiency and throughput, and minimizes execution time, of the call, but it also means that a pipelined pull request in quick succession, e\&.g\&. via \fBsmaxQueue()\fP, may return a value on the pipeline client \fIbefore\fP this call is fully executed on the interactive \fBRedis\fP client\&.
 .PP
 (It is generally unlikely that you will follow this share call with a pipelined pull of the same variable\&. It would not only create superflous network traffic for no good reason, but it also would have unpredictable results\&. So, don't\&.)
 .PP
@@ -2988,14 +3116,14 @@ Share the data into a Redis hash table over the interactive Redis client\&. It's
 .br
 \fIvalue\fP Pointer to the buffer whose data is to be shared\&. 
 .br
-\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIcount\fP Number of 1D elements\&.
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if count < 1 or count > X_MAX_ELEMENTS X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if count < 1 or count > X_MAX_ELEMENTS X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -3008,7 +3136,9 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
-.SS "int smaxShareArray (const char * table, const char * key, const void * ptr, XType type, int ndim, const int * sizes)"
+.PP
+References \fBsmaxShareArray()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxShareArray (const char * table, const char * key, const void * ptr, \fBXType\fP type, int ndim, const int * sizes)"
 Share a multidimensional array, such as an \fCint[][][]\fP, or \fCfloat[][]\fP, in a single atomic transaction\&.
 .PP
 \fBParameters\fP
@@ -3019,7 +3149,7 @@ Share a multidimensional array, such as an \fCint[][][]\fP, or \fCfloat[][]\fP, 
 .br
 \fIptr\fP Pointer to the data buffer, such as an \fCint[][][]\fP or \fCfloat[][]\fP\&. 
 .br
-\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or X_CHARS(40), of the buffer\&. 
+\fItype\fP SMA-X variable type, e\&.g\&. X_FLOAT or \fBX_CHARS(40)\fP, of the buffer\&. 
 .br
 \fIndim\fP Dimensionality of the data (0 <= \fCndim\fP <= X_MAX_DIMS)\&. 
 .br
@@ -3028,7 +3158,7 @@ Share a multidimensional array, such as an \fCint[][][]\fP, or \fCfloat[][]\fP, 
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -3037,7 +3167,9 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .RE
 .PP
 
-.SS "int smaxShareBoolean (const char * table, const char * key, boolean value)"
+.PP
+References \fBXField::isSerialized\fP, \fBXField::name\fP, \fBXField::ndim\fP, \fBREDISX_CMDBUF_SIZE\fP, \fBXField::sizes\fP, \fBsmaxShareField()\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx_error()\fP, \fBX_MAX_ELEMENTS\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SIZE_INVALID\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetElementCount()\fP\&.
+.SS "int smaxShareBoolean (const char * table, const char * key, \fBboolean\fP value)"
 Shares a single boolean value to SMA-X\&. All non-zero values are mapped to '1'\&.
 .PP
 \fBParameters\fP
@@ -3060,7 +3192,9 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
-.SS "int smaxShareBooleans (const char * table, const char * key, const boolean * values, int n)"
+.PP
+References \fBsmaxShareBooleans()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxShareBooleans (const char * table, const char * key, const \fBboolean\fP * values, int n)"
 Shares an array of boolean values to SMA-X\&. All non-zero values are mapped to '1'\&.
 .PP
 \fBParameters\fP
@@ -3085,6 +3219,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_BOOLEAN\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareBytes (const char * table, const char * key, const char * values, int n)"
 Shares a binary sequence to SMA-X\&.
 .PP
@@ -3116,6 +3252,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_BYTE\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareDouble (const char * table, const char * key, double value)"
 Shares a single floating point value to SMA-X\&.
 .PP
@@ -3141,6 +3279,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShareDoubles()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareDoubles (const char * table, const char * key, const double * values, int n)"
 Shares an array of doubles to SMA-X\&.
 .PP
@@ -3168,19 +3308,21 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
-.SS "int smaxShareField (const char * table, const XField * f)"
+.PP
+References \fBsmaxShare()\fP, \fBX_DOUBLE\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxShareField (const char * table, const \fBXField\fP * f)"
 Share a field object, which may contain any SMA-X data type\&.
 .PP
 \fBParameters\fP
 .RS 4
 \fItable\fP Hash table in which to write entry\&. 
 .br
-\fIf\fP Pointer for XField holding the data to share\&.
+\fIf\fP Pointer for \fBXField\fP holding the data to share\&.
 .RE
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&.
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_SIZE_INVALID if ndim or sizes are invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&.
 .RE
 .PP
 \fBSee also\fP
@@ -3191,12 +3333,14 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .PP
 \fBsmaxShareStruct()\fP 
 .PP
-xSetField() 
+\fBxSetField()\fP 
 .PP
-xGetField() 
+\fBxGetField()\fP 
 .RE
 .PP
 
+.PP
+References \fBXField::name\fP, \fBsmaxShareStruct()\fP, \fBXField::type\fP, \fBXField::value\fP, \fBX_NO_SERVICE\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxShareFloats (const char * table, const char * key, const float * values, int n)"
 Shares an array of floats to SMA-X\&.
 .PP
@@ -3224,6 +3368,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_FLOAT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareHex (const char * table, const char * key, long long value)"
 Shares a single integer value to SMA-X in a hexadecimal representatin\&.
 .PP
@@ -3247,6 +3393,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_LONG_HEX\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareInt (const char * table, const char * key, long long value)"
 Shares a single integer value to SMA-X\&.
 .PP
@@ -3272,6 +3420,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShareLongs()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareInts (const char * table, const char * key, const int * values, int n)"
 Shares an array of long integers to SMA-X\&.
 .PP
@@ -3303,6 +3453,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_INT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareLongs (const char * table, const char * key, const long long * values, int n)"
 Shares an array of wide integers to SMA-X\&.
 .PP
@@ -3334,6 +3486,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_LONG\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareShorts (const char * table, const char * key, const short * values, int n)"
 Shares an array of shorts to SMA-X\&.
 .PP
@@ -3350,7 +3504,7 @@ Shares an array of shorts to SMA-X\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS(0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
+\fBX_SUCCESS(0)\fP, or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 \fBSee also\fP
@@ -3365,6 +3519,8 @@ X_SUCCESS(0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_SHORT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareString (const char * table, const char * key, const char * sValue)"
 Shares a single string value to SMA-X\&.
 .PP
@@ -3388,6 +3544,8 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
+.PP
+References \fBsmaxShare()\fP, \fBX_RAW\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareStrings (const char * table, const char * key, const char ** sValues, int n)"
 Shares an array of strings to SMA-X\&.
 .PP
@@ -3413,7 +3571,9 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .RE
 .PP
 
-.SS "int smaxShareStruct (const char * id, const XStructure * s)"
+.PP
+References \fBsmaxShare()\fP, \fBx_error()\fP, \fBX_NULL\fP, \fBX_RAW\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxShareStruct (const char * id, const \fBXStructure\fP * s)"
 Share a structure, and all its data including recursive sub-structures, in a single atromic transaction\&.
 .PP
 \fBParameters\fP
@@ -3425,7 +3585,7 @@ Share a structure, and all its data including recursive sub-structures, in a sin
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the Redis server\&. X_FAILURE if there was an underlying failure\&. 
+X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized\&. X_GROUP_INVALID if the table name is invalid\&. X_NAME_INVALID if the 'key' argument is invalid\&. X_NULL if the 'value' argument is NULL\&. X_NO_SERVICE if there was no connection to the \fBRedis\fP server\&. X_FAILURE if there was an underlying failure\&. 
 .RE
 .PP
 \fBSee also\fP
@@ -3434,16 +3594,18 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .PP
 \fBsmaxShareField()\fP 
 .PP
-xCreateStruct() 
+\fBxCreateStruct()\fP 
 .RE
 .PP
 
-.SS "int smaxStringToValues (const char * str, void * value, XType type, int eCount, int * pos)"
+.PP
+References \fBsmaxCreateField()\fP, \fBX_NO_SERVICE\fP, \fBX_STRUCT\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxStringToValues (const char * str, void * value, \fBXType\fP type, int eCount, int * pos)"
 Deserializes a string to binary values\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fIstr\fP Serialized ASCII representation of the data (as stored by Redis)\&.
+\fIstr\fP Serialized ASCII representation of the data (as stored by \fBRedis\fP)\&.
 .br
 \fIvalue\fP Pointer to the buffer that will hold the binary values\&. The caller is responsible for ensuring the buffer is sufficiently sized for holding the data for the given variable\&.
 .br
@@ -3459,9 +3621,9 @@ Deserializes a string to binary values\&.
 Number of elements successfully parsed, or a negative error code: 
 .PP
 .nf
-                        X_NULL               If the value or str argument is NULL.
-                        X_TYPE_INVALID       If the type is not supported.
-                        X_SIZE_INVALID       If size is invalid (e.g. X_RAW, X_STRUCT)
+                        X_NULL               If the value or str argument is NULL\&.
+                        X_TYPE_INVALID       If the type is not supported\&.
+                        X_SIZE_INVALID       If size is invalid (e\&.g\&. X_RAW, X_STRUCT)
                         X_PARSE_ERROR        If the tokens could not be parsed in the format expected
 
 .fi
@@ -3471,8 +3633,8 @@ Number of elements successfully parsed, or a negative error code:
 .PP
 
 .PP
-References smaxUnpackStrings()\&.
-.SS "char* smaxStringType (XType type)"
+References \fBsmaxUnpackStrings()\fP, \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_BYTE_HEX\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_INT_HEX\fP, \fBX_LONG\fP, \fBX_LONG_HEX\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_SHORT_HEX\fP, \fBX_SIZE_INVALID\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, \fBx_trace()\fP, \fBX_TYPE_INVALID\fP, \fBxElementSizeOf()\fP, \fBxIsCharSequence()\fP, \fBxParseBoolean()\fP, \fBxParseDouble()\fP, and \fBxZero()\fP\&.
+.SS "char * smaxStringType (\fBXType\fP type)"
 Returns the string type for a given XType argument as a constant expression\&. For examples X_LONG -> 'int64'\&.
 .PP
 \fBParameters\fP
@@ -3491,8 +3653,10 @@ Corresponding string type, e\&.g\&. 'float'\&. (Default is 'string' -- since typ
 .RE
 .PP
 
+.PP
+References \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_BYTE_HEX\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_INT_HEX\fP, \fBX_LONG\fP, \fBX_LONG_HEX\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_SHORT_HEX\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, and \fBX_UNKNOWN\fP\&.
 .SS "int smaxSubscribe (const char * table, const char * key)"
-Subscribes to a specific key(s) in specific group(s)\&. Both the group and key names may contain Redis subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. The subscription only enables receiving update notifications from Redis for the specified variable or variables\&. After subscribing, you can either wait on the subscribed variables to change, or add callback functions to process subscribed variables changes, via \fBsmaxAddSubscriber()\fP\&.
+Subscribes to a specific key(s) in specific group(s)\&. Both the group and key names may contain \fBRedis\fP subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. The subscription only enables receiving update notifications from \fBRedis\fP for the specified variable or variables\&. After subscribing, you can either wait on the subscribed variables to change, or add callback functions to process subscribed variables changes, via \fBsmaxAddSubscriber()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -3503,7 +3667,7 @@ Subscribes to a specific key(s) in specific group(s)\&. Both the group and key n
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS if successfully subscribed to the Redis distribution channel\&. X_NO_SERVICE if there is no active connection to the Redis server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
+X_SUCCESS if successfully subscribed to the \fBRedis\fP distribution channel\&. X_NO_SERVICE if there is no active connection to the \fBRedis\fP server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
 .RE
 .PP
 \fBSee also\fP
@@ -3522,6 +3686,8 @@ X_SUCCESS if successfully subscribed to the Redis distribution channel\&. X_NO_S
 .RE
 .PP
 
+.PP
+References \fBredisxSubscribe()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSync (\fBXSyncPoint\fP * sync, int timeoutMillis)"
 Waits for the queue to reach the specified sync point, up to an optional timeout limit\&.
 .PP
@@ -3548,7 +3714,7 @@ or the first pull error encountered in the queue since the current batch began\&
 .PP
 
 .PP
-References XSyncPoint::isComplete, XSyncPoint::lock, and XSyncPoint::status\&.
+References \fBXSyncPoint::isComplete\fP, \fBXSyncPoint::lock\fP, \fBXSyncPoint::status\fP, \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_INCOMPLETE\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBX_TIMEDOUT\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxTimestamp (char * buf)"
 Prints the current time into the supplied buffer with subsecond precision\&.
 .PP
@@ -3564,7 +3730,7 @@ Number of characters printed, not including the terminating '\\0', or else an er
 .PP
 
 .PP
-References smaxTimeToString()\&.
+References \fBsmaxTimeToString()\fP\&.
 .SS "int smaxTimeToString (const struct timespec * time, char * buf)"
 
 .PP
@@ -3583,7 +3749,9 @@ Number of characters printed, not including the terminating '\\0', or else an er
 .RE
 .PP
 
-.SS "XType smaxTypeForString (const char * type)"
+.PP
+References \fBx_error()\fP, and \fBX_NULL\fP\&.
+.SS "\fBXType\fP smaxTypeForString (const char * type)"
 Returns the XType for a given case-sensitive type string\&. For example 'float' -> X_FLOAT\&. The value 'raw' will return X_RAW\&.
 .PP
 \fBParameters\fP
@@ -3593,7 +3761,7 @@ Returns the XType for a given case-sensitive type string\&. For example 'float' 
 .PP
 \fBReturns\fP
 .RS 4
-Corresponding XType, e\&.g\&. X_STRUCT\&. (The default return value is X_RAW, since all Redis values can be represented as raw strings\&.)
+Corresponding XType, e\&.g\&. X_STRUCT\&. (The default return value is X_RAW, since all \fBRedis\fP values can be represented as raw strings\&.)
 .RE
 .PP
 \fBSee also\fP
@@ -3602,6 +3770,8 @@ Corresponding XType, e\&.g\&. X_STRUCT\&. (The default return value is X_RAW, si
 .RE
 .PP
 
+.PP
+References \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_LONG\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, and \fBX_UNKNOWN\fP\&.
 .SS "int smaxUnpackStrings (const char * data, int len, int count, char ** dst)"
 Returns an array of dynamically allocated strings from a packed buffer of consecutive 0-terminated or '\\r'-separated string elements\&.
 .PP
@@ -3622,8 +3792,10 @@ X_SUCCESS (0) if successful, or X_NULL if one of the argument pointers is NULL, 
 .RE
 .PP
 
+.PP
+References \fBx_error()\fP, \fBX_INCOMPLETE\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxUnsubscribe (const char * table, const char * key)"
-Unsubscribes from a specific key(s) in specific group(s)\&. Both the group and key names may contain Redis subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. Unsubscribing will only stops the delivery of update notifications for the affected varuiables, but does not deactivate the associated callbacks for these added via \fBsmaxAddSubscriber()\fP\&. Therefore you should also call smaxRemovesubscribers() as appropriate to deactivate actions that can no longer get triggered by updates\&.
+Unsubscribes from a specific key(s) in specific group(s)\&. Both the group and key names may contain \fBRedis\fP subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. Unsubscribing will only stops the delivery of update notifications for the affected varuiables, but does not deactivate the associated callbacks for these added via \fBsmaxAddSubscriber()\fP\&. Therefore you should also call smaxRemovesubscribers() as appropriate to deactivate actions that can no longer get triggered by updates\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -3634,7 +3806,7 @@ Unsubscribes from a specific key(s) in specific group(s)\&. Both the group and k
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS if successfully unsubscribed to the Redis distribution channel\&. X_NO_SERVICE if there is no active connection to the Redis server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
+X_SUCCESS if successfully unsubscribed to the \fBRedis\fP distribution channel\&. X_NO_SERVICE if there is no active connection to the \fBRedis\fP server\&. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized\&.
 .RE
 .PP
 \fBSee also\fP
@@ -3645,8 +3817,10 @@ X_SUCCESS if successfully unsubscribed to the Redis distribution channel\&. X_NO
 .RE
 .PP
 
-.SS "char* smaxValuesToString (const void * value, XType type, int eCount, char * trybuf, int trylength)"
-Serializes binary values into a string representation (for Redis)\&.
+.PP
+References \fBredisxUnsubscribe()\fP, and \fBX_SUCCESS\fP\&.
+.SS "char * smaxValuesToString (const void * value, \fBXType\fP type, int eCount, char * trybuf, int trylength)"
+Serializes binary values into a string representation (for \fBRedis\fP)\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -3667,6 +3841,8 @@ The pointer to the string buffer holding the ASCII values\&. It may be the suppl
 .RE
 .PP
 
+.PP
+References \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_BYTE_HEX\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_INT_HEX\fP, \fBX_LONG\fP, \fBX_LONG_HEX\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_SHORT_HEX\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, \fBx_trace_null()\fP, \fBX_UNKNOWN\fP, \fBxElementSizeOf()\fP, \fBxIsCharSequence()\fP, \fBxPrintDouble()\fP, \fBxPrintFloat()\fP, and \fBxStringElementSizeOf()\fP\&.
 .SS "int smaxWaitOnAnySubscribed (char ** changedTable, char ** changedKey, int timeout)"
 Waits until any variable was pushed on any host, returning both the host and variable name for the updated value\&. The variable must be already subscribed to with \fBsmaxSubscribe()\fP, or else the wait will not receive update notifications\&.
 .PP
@@ -3696,6 +3872,8 @@ X_SUCCESS (0) if a variable was pushed on a host\&. X_NO_INIT if the SMA-X shari
 .RE
 .PP
 
+.PP
+References \fBRELEASEID\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_INTERRUPTED\fP, \fBX_NAME_INVALID\fP, \fBX_NO_SERVICE\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBxdprintf\fP, \fBxLastSeparator()\fP, \fBxStringCopyOf()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxWaitOnSubscribed (const char * table, const char * key, int timeout)"
 Waits for a specific pushed entry\&. There must be an active subscription that includes the specified group & variable, or else the call will block indefinitely\&.
 .PP
@@ -3729,6 +3907,8 @@ X_SUCCESS (0) if the variable was updated on some host (or owner)\&. X_NO_INIT i
 .RE
 .PP
 
+.PP
+References \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NAME_INVALID\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxWaitOnSubscribedGroup (const char * matchTable, char ** changedKey, int timeout)"
 Waits for changes on a specific group\&. The must be an active subscription including that group, or else the call will block indefinitely\&.
 .PP
@@ -3760,6 +3940,8 @@ X_SUCCESS (0) if a variable was updated on the host\&. X_NO_INIT if the SMA-X sh
 .RE
 .PP
 
+.PP
+References \fBx_error()\fP, \fBX_GROUP_INVALID\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxWaitOnSubscribedVar (const char * matchKey, char ** changedTable, int timeout)"
 Waits for a specific pushed variable from any group/table\&. There must be an active subscription that includes the specified variable in one or more groups/tables, or else the call will block indefinitely\&.
 .PP
@@ -3791,6 +3973,8 @@ X_SUCCESS (0) if the variable was updated on some host (or owner)\&. X_NO_INIT i
 .RE
 .PP
 
+.PP
+References \fBx_error()\fP, \fBX_NAME_INVALID\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxWaitQueueComplete (int timeoutMillis)"
 Waits until all queued pull requests have been retrieved from the database, or until the specified timeout it reached\&.
 .PP
@@ -3810,7 +3994,9 @@ X_SUCCESS (0) if all reads have completed successfully, or the first read error 
 .RE
 .PP
 
-.SS "int x2smaxField (XField * f)"
+.PP
+References \fBXSyncPoint::isComplete\fP, \fBXSyncPoint::lock\fP, \fBsmaxSync()\fP, \fBXSyncPoint::status\fP, \fBX_INCOMPLETE\fP, and \fBX_SUCCESS\fP\&.
+.SS "int x2smaxField (\fBXField\fP * f)"
 Converts a standard xchange field (with a native value storage) to an SMA-X field with serialized string value storage\&.
 .PP
 \fBParameters\fP
@@ -3832,8 +4018,8 @@ X_SUCCESS (0) if successful, or X_NULL if the input field or the serialized valu
 .PP
 
 .PP
-References smaxValuesToString(), and x2smaxStruct()\&.
-.SS "int x2smaxStruct (XStructure * s)"
+References \fBXField::isSerialized\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx2smaxStruct()\fP, \fBx_error()\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetFieldCount()\fP\&.
+.SS "int x2smaxStruct (\fBXStructure\fP * s)"
 Converts a standard xchange structure (with a native value storage) to an SMA-X structure with serialized string value storage\&.
 .PP
 \fBParameters\fP
@@ -3855,7 +4041,7 @@ X_SUCCESS (0) if successful, or X_STRUCT_INVALID if the structure is NULL, or ha
 .PP
 
 .PP
-References x2smaxField()\&.
+References \fBXStructure::firstField\fP, \fBXField::next\fP, \fBx2smaxField()\fP, \fBx_error()\fP, \fBX_STRUCT_INVALID\fP, and \fBX_SUCCESS\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

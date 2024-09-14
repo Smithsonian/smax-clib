@@ -1,4 +1,4 @@
-.TH "XMeta" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "XMeta" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -7,6 +7,8 @@ XMeta \- SMA-X standard metadata\&.
 .SH SYNOPSIS
 .br
 .PP
+.PP
+\fC#include <smax\&.h>\fP
 .SS "Data Fields"
 
 .in +1c
@@ -31,11 +33,11 @@ XMeta \- SMA-X standard metadata\&.
 .br
 .RI "Dimensionality of the data as stored\&. "
 .ti -1c
-.RI "int \fBstoreSizes\fP [X_MAX_DIMS]"
+.RI "int \fBstoreSizes\fP [\fBX_MAX_DIMS\fP]"
 .br
 .RI "Sizes along each dimension of the data as stored\&. "
 .ti -1c
-.RI "XType \fBstoreType\fP"
+.RI "\fBXType\fP \fBstoreType\fP"
 .br
 .RI "Type of variable as stored\&. "
 .ti -1c

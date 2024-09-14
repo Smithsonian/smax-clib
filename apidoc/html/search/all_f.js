@@ -1,11 +1,15 @@
 var searchData=
 [
-  ['x2smaxfield_218',['x2smaxField',['../smax-util_8c.html#a76bd110891905fe4bdae6628547c50d1',1,'x2smaxField(XField *f):&#160;smax-util.c'],['../smax_8h.html#a76bd110891905fe4bdae6628547c50d1',1,'x2smaxField(XField *f):&#160;smax-util.c']]],
-  ['x2smaxstruct_219',['x2smaxStruct',['../smax-util_8c.html#a65cc6cdad09f861b968e2d492abed977',1,'x2smaxStruct(XStructure *s):&#160;smax-util.c'],['../smax_8h.html#a65cc6cdad09f861b968e2d492abed977',1,'x2smaxStruct(XStructure *s):&#160;smax-util.c']]],
-  ['x_5fmeta_5finit_220',['X_META_INIT',['../smax_8h.html#a793fead1eb30470e219192befc88b3c9',1,'smax.h']]],
-  ['xcoordinateaxis_221',['XCoordinateAxis',['../structXCoordinateAxis.html',1,'']]],
-  ['xcoordinatesystem_222',['XCoordinateSystem',['../structXCoordinateSystem.html',1,'']]],
-  ['xmessage_223',['XMessage',['../structXMessage.html',1,'']]],
-  ['xmeta_224',['XMeta',['../structXMeta.html',1,'']]],
-  ['xsyncpoint_225',['XSyncPoint',['../structXSyncPoint.html',1,'']]]
+  ['parent_0',['parent',['../../../xchange/apidoc/html/structXStructure.html#a82ba053944ce97d83d41c05f68ec4f3d',1,'XStructure']]],
+  ['physical_20units_1',['Physical units',['../index.html#autotoc_md39',1,'']]],
+  ['pipeline_2',['pipeline',['../../../redisx/apidoc/html/structRedis.html#a59d367a240bf9c00366465d842402de8',1,'Redis']]],
+  ['pipelined_20pulling_20high_20volume_20queries_3',['Pipelined pulling (high volume queries)',['../index.html#autotoc_md26',1,'']]],
+  ['plans_4',['Future plans',['../index.html#autotoc_md46',1,'']]],
+  ['points_20and_20waiting_5',['Synchronization points and waiting',['../index.html#autotoc_md27',1,'']]],
+  ['prerequisites_6',['Prerequisites',['../index.html#autotoc_md7',1,'']]],
+  ['priv_7',['priv',['../../../xchange/apidoc/html/structXLookupTable.html#a8b6505c37d4ff95854b8b00527e4d9fa',1,'XLookupTable']]],
+  ['prog_8',['prog',['../structXMessage.html#acc6113e98e7cd24d9dcfa520749a5d3f',1,'XMessage']]],
+  ['pulling_20data_9',['Sharing and pulling data',['../index.html#autotoc_md16',1,'']]],
+  ['pulling_20high_20frequency_20queries_10',['Lazy pulling (high-frequency queries)',['../index.html#autotoc_md24',1,'']]],
+  ['pulling_20high_20volume_20queries_11',['Pipelined pulling (high volume queries)',['../index.html#autotoc_md26',1,'']]]
 ];

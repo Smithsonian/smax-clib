@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['xcoordinateaxis_226',['XCoordinateAxis',['../structXCoordinateAxis.html',1,'']]],
-  ['xcoordinatesystem_227',['XCoordinateSystem',['../structXCoordinateSystem.html',1,'']]],
-  ['xmessage_228',['XMessage',['../structXMessage.html',1,'']]],
-  ['xmeta_229',['XMeta',['../structXMeta.html',1,'']]],
-  ['xsyncpoint_230',['XSyncPoint',['../structXSyncPoint.html',1,'']]]
+  ['redis_0',['Redis',['../../../redisx/apidoc/html/structRedis.html',1,'']]],
+  ['redisclient_1',['RedisClient',['../../../redisx/apidoc/html/structRedisClient.html',1,'']]],
+  ['redisentry_2',['RedisEntry',['../../../redisx/apidoc/html/structRedisEntry.html',1,'']]],
+  ['resp_3',['RESP',['../../../redisx/apidoc/html/structRESP.html',1,'']]]
 ];

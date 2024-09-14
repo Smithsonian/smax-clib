@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['refindex_400',['refIndex',['../structXCoordinateAxis.html#ad191af99a874bc633c0834d247427ea8',1,'XCoordinateAxis']]],
-  ['refvalue_401',['refValue',['../structXCoordinateAxis.html#ad56f22fc3fbf9639a29ed9f174c67ec2',1,'XCoordinateAxis']]]
+  ['origin_0',['origin',['../structXMeta.html#a124de75960ce49e7d4dcbdad9237e128',1,'XMeta']]]
 ];

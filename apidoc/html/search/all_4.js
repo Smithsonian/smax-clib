@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['hget_5fwith_5fmeta_5',['HGET_WITH_META',['../smax_8c.html#ac5e36a13b5d67f497b15ab44b5a315af',1,'smax.c']]],
-  ['hmset_5fwith_5fmeta_6',['HMSET_WITH_META',['../smax_8c.html#a561e3c013e65d6b0703bf1e574d7b821',1,'smax.c']]],
-  ['host_7',['host',['../structXMessage.html#a1c2046dcb30a629d6d9f45ff8f403f12',1,'XMessage']]],
-  ['hset_5fwith_5fmeta_8',['HSET_WITH_META',['../smax_8c.html#a6d21bc913aebbf4a95c6c4f6f18da3b4',1,'smax.c']]]
+  ['data_0',['Sharing and pulling data',['../index.html#autotoc_md16',1,'']]],
+  ['debug_20support_1',['Debug support',['../index.html#autotoc_md44',1,'']]],
+  ['descriptions_2',['Descriptions',['../index.html#autotoc_md37',1,'']]],
+  ['disconnecting_20from_20sma_20x_3',['Connecting to / disconnecting from SMA-X',['../index.html#autotoc_md13',1,'']]],
+  ['disconnection_20hooks_4',['Connection / disconnection hooks',['../index.html#autotoc_md14',1,'']]]
 ];

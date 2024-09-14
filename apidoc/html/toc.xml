@@ -165,42 +165,42 @@
           <topic label="smaxAddSubscriber" href="smax_8h.html#a1714cac6dfa55917edecd0028e6da64c"/>
           <topic label="smaxConnect" href="smax_8h.html#a146fb2ed8512919dc91ecad6d08c74d1"/>
           <topic label="smaxConnectTo" href="smax_8h.html#ad960c22b119ff2493a319945a9dd55a5"/>
-          <topic label="smaxCreate1DField" href="smax_8h.html#ac9783f900e7f6d2b89f5c862565aa171"/>
-          <topic label="smaxCreateBooleanField" href="smax_8h.html#acdd5066183f70e584c5bcfb1cfb7a213"/>
-          <topic label="smaxCreateCoordinateSystem" href="smax_8h.html#a821422681314ab3164cc0c9ca90365de"/>
-          <topic label="smaxCreateDoubleField" href="smax_8h.html#a6209dfed60a1cbc7d3a4fb0b03627071"/>
-          <topic label="smaxCreateField" href="smax_8h.html#a04131255314b01965e980cee0b8848ad"/>
-          <topic label="smaxCreateIntField" href="smax_8h.html#afcdb35e5ead77beffbc38fb25e78cfb3"/>
-          <topic label="smaxCreateLongField" href="smax_8h.html#a0815a08d789185c18326b773fb67efd1"/>
-          <topic label="smaxCreateMeta" href="smax_8h.html#a7dcb524bdb4c07bb5afb50bffd37d8fd"/>
-          <topic label="smaxCreateScalarField" href="smax_8h.html#a4f47038712ed5ff42f1fdcbd9f267750"/>
-          <topic label="smaxCreateStringField" href="smax_8h.html#a14ffff153d42d083daf49fd4fb9017db"/>
-          <topic label="smaxCreateSyncPoint" href="smax_8h.html#ae68cb43ec0685e01b01d74f8469ebda2"/>
+          <topic label="smaxCreate1DField" href="smax_8h.html#afba357d35d2a1f13d0cf06f5ff708a99"/>
+          <topic label="smaxCreateBooleanField" href="smax_8h.html#a13e357c3f20c0799fba6bc6c2a16c520"/>
+          <topic label="smaxCreateCoordinateSystem" href="smax_8h.html#a1d977e7e9eb45f9ce6cc338fdde9bd8f"/>
+          <topic label="smaxCreateDoubleField" href="smax_8h.html#afa9c9ec0f47236c0c560eee724b809d6"/>
+          <topic label="smaxCreateField" href="smax_8h.html#a9871356984c4794a9f9caa3870dc6794"/>
+          <topic label="smaxCreateIntField" href="smax_8h.html#afcb9ce5f154eef8eccdb0930ec4d613d"/>
+          <topic label="smaxCreateLongField" href="smax_8h.html#a23b55eae1ce68356073ea5b191f915e5"/>
+          <topic label="smaxCreateMeta" href="smax_8h.html#a48decaf10195b2f21fa77d8ea9b94fff"/>
+          <topic label="smaxCreateScalarField" href="smax_8h.html#a61a3760159e6867cdb55b5995435633c"/>
+          <topic label="smaxCreateStringField" href="smax_8h.html#aa5c7661e29f4f1ba62f457c7138f2654"/>
+          <topic label="smaxCreateSyncPoint" href="smax_8h.html#a30e2e1eb462ed2274a55016830b9abc1"/>
           <topic label="smaxDeletePattern" href="smax_8h.html#a6c116311d61874554f98332831ad872b"/>
           <topic label="smaxDestroyCoordinateSystem" href="smax_8h.html#a92cf6cd3b3f123e21a1cee437f87126d"/>
           <topic label="smaxDestroySyncPoint" href="smax_8h.html#a97ace8424abf924b8ae0397ae83177f2"/>
           <topic label="smaxDisconnect" href="smax_8h.html#a9d1e6ffa837d3582a8165e326cc44bea"/>
           <topic label="smaxError" href="smax_8h.html#aefcb16af3690ffe9c77224af6b394869"/>
-          <topic label="smaxErrorDescription" href="smax_8h.html#a5f1cdda2a22d12bae96874b9055b44b6"/>
+          <topic label="smaxErrorDescription" href="smax_8h.html#a51856e0dc0261f8e44c8635d31d6193c"/>
           <topic label="smaxGetArrayField" href="smax_8h.html#a10525c664231e85f3cd9a592915b8919"/>
           <topic label="smaxGetBooleanField" href="smax_8h.html#a555c133ddd7aee3cf481f9e5e15e3d43"/>
-          <topic label="smaxGetCoordinateAxis" href="smax_8h.html#a707975fd25bdd4c692cef991e93c0ca0"/>
-          <topic label="smaxGetCoordinateSystem" href="smax_8h.html#aedeafcd2c69bae16e92e86f091566df0"/>
-          <topic label="smaxGetDescription" href="smax_8h.html#af02ec63b73ce480b78940573f3ba3b05"/>
+          <topic label="smaxGetCoordinateAxis" href="smax_8h.html#a349dc6fe14a2031d679e29804d82d570"/>
+          <topic label="smaxGetCoordinateSystem" href="smax_8h.html#a2920bd71f9d340422e0b1b0db4bb3201"/>
+          <topic label="smaxGetDescription" href="smax_8h.html#ad7ef601ffd5fbcae7b2c05be6f6bc302"/>
           <topic label="smaxGetDoubleField" href="smax_8h.html#ab7c45d4512c22c24153763aa9e227b68"/>
-          <topic label="smaxGetHostName" href="smax_8h.html#a07c66bc16325546bb3d13f510294e3db"/>
-          <topic label="smaxGetKeys" href="smax_8h.html#a92b8d01fa3277a90141571a4c85b7f20"/>
+          <topic label="smaxGetHostName" href="smax_8h.html#ac704fea3e664905af780d2566e3c74b6"/>
+          <topic label="smaxGetKeys" href="smax_8h.html#a2544d1fa602e812004e1d68500024ae0"/>
           <topic label="smaxGetLazyCached" href="smax_8h.html#a42c08f13c70400dc1225d4097342ded0"/>
           <topic label="smaxGetLazyUpdateCount" href="smax_8h.html#aeca4aa02259278b240e4131f7edea816"/>
           <topic label="smaxGetLongField" href="smax_8h.html#a8035211bd1fe17551a1517560b2547c4"/>
           <topic label="smaxGetMetaCount" href="smax_8h.html#ac6d47a508669e4ee215cb72c5366fc52"/>
-          <topic label="smaxGetProgramID" href="smax_8h.html#a10c2b6a8f27a2d777c153813c8cba780"/>
-          <topic label="smaxGetRawField" href="smax_8h.html#a90df50aaf07a86771a87ffbd54bc8602"/>
-          <topic label="smaxGetRedis" href="smax_8h.html#a9f3c5c9c095dcc96de6c0fc4c3e93541"/>
-          <topic label="smaxGetScriptSHA1" href="smax_8h.html#af885a8f7162bcaf2cbd6002e7a1b90e4"/>
+          <topic label="smaxGetProgramID" href="smax_8h.html#abc07a7599e0bac1be15bbcb6b63d4710"/>
+          <topic label="smaxGetRawField" href="smax_8h.html#ada517cdb7737bb38695e2a343123583b"/>
+          <topic label="smaxGetRedis" href="smax_8h.html#a533fbe770158afe876a3dafa78ba2195"/>
+          <topic label="smaxGetScriptSHA1" href="smax_8h.html#a8ef420555c1ddbbcd9f4213f65b4ca66"/>
           <topic label="smaxGetServerTime" href="smax_8h.html#ae6941b762acbd37c60b012d4157681a8"/>
           <topic label="smaxGetTime" href="smax_8h.html#a2a71d93de952060be0154dd5f0d78496"/>
-          <topic label="smaxGetUnits" href="smax_8h.html#a4073f51402880ea93a99fc59b7e03fd7"/>
+          <topic label="smaxGetUnits" href="smax_8h.html#aa27e3adeb67f2328a162c80bad433f02"/>
           <topic label="smaxIsConnected" href="smax_8h.html#a95cbb68e3eb751219ab3363c93a4840b"/>
           <topic label="smaxIsPipelined" href="smax_8h.html#af6f57a699b784fc67534cff0abd9573b"/>
           <topic label="smaxIsResilient" href="smax_8h.html#a5f5e00f0fd063ac8e36827c852131358"/>
@@ -214,22 +214,22 @@
           <topic label="smaxLazyPullDouble" href="smax_8h.html#a31ed83292a29d69e1c9635b21aae7561"/>
           <topic label="smaxLazyPullDoubleDefault" href="smax_8h.html#ac823bc3c1ee1bdbc4c330366fc246c8e"/>
           <topic label="smaxLazyPullLong" href="smax_8h.html#a03e3bb5c838dc621f8c0ba5fb6fe5f87"/>
-          <topic label="smaxLazyPullString" href="smax_8h.html#a3867625495cac33ddb728d49a978124e"/>
+          <topic label="smaxLazyPullString" href="smax_8h.html#a38d33bcbf9f2f73adbaf040996279859"/>
           <topic label="smaxLazyPullStruct" href="smax_8h.html#af96429709d1b029a8db74cb7407f9ffb"/>
           <topic label="smaxParseTime" href="smax_8h.html#a2c3c82ba5e7844e9f1b70fb4d51716ef"/>
           <topic label="smaxPull" href="smax_8h.html#afb7eec789669c3d3f416857d3615ace6"/>
           <topic label="smaxPullDouble" href="smax_8h.html#aa143c2385f210cdd772f014939e1411e"/>
           <topic label="smaxPullDoubleDefault" href="smax_8h.html#a1d30cb3f0a48b567657975a104a1088f"/>
-          <topic label="smaxPullDoubles" href="smax_8h.html#af4162d00c5917ea1846b224221fd88dd"/>
+          <topic label="smaxPullDoubles" href="smax_8h.html#a6e5df36b7eee3944b1ef07edb7f9647d"/>
           <topic label="smaxPullInt" href="smax_8h.html#a42685e249ca24359b0f3f2a04a99b16b"/>
-          <topic label="smaxPullInts" href="smax_8h.html#ae086c65c64814991dcea9a064088f988"/>
+          <topic label="smaxPullInts" href="smax_8h.html#a8cdf0e4d01eaa160b8c96593ce32f4ff"/>
           <topic label="smaxPullLong" href="smax_8h.html#aebedc01880d4253e74b8bde565de00d5"/>
-          <topic label="smaxPullLongs" href="smax_8h.html#aab87f656c52890907aa1c782bd4f6102"/>
-          <topic label="smaxPullMeta" href="smax_8h.html#a84b2769a0e0f01cd04af79fef48dc0e0"/>
-          <topic label="smaxPullRaw" href="smax_8h.html#ac0d26c2c35c4952d725dd167f45f7320"/>
-          <topic label="smaxPullString" href="smax_8h.html#ad341c8c7f517d9b24e7f5f186542bd73"/>
-          <topic label="smaxPullStrings" href="smax_8h.html#a2737efffb18ba0e25d73b024cb2984ce"/>
-          <topic label="smaxPullStruct" href="smax_8h.html#a9e431270f37e6a7ce7758e37a8995eff"/>
+          <topic label="smaxPullLongs" href="smax_8h.html#a843fa579fa26190335aeebb87be63203"/>
+          <topic label="smaxPullMeta" href="smax_8h.html#a0d29e7a895c1d5fdc6258ff7426b3521"/>
+          <topic label="smaxPullRaw" href="smax_8h.html#a0de71a90fdf235a8aee084543591244f"/>
+          <topic label="smaxPullString" href="smax_8h.html#a41bdf6bb7bcb3f0d3cb1c0657f8da1c5"/>
+          <topic label="smaxPullStrings" href="smax_8h.html#abc833f0d89e672507e0baeb146e8776b"/>
+          <topic label="smaxPullStruct" href="smax_8h.html#ae6d8bf54e6ca203ea25a066d6e439ae5"/>
           <topic label="smaxPullTime" href="smax_8h.html#a6deedf594f19417bfa11b8f2cef360c4"/>
           <topic label="smaxPullTypeDimension" href="smax_8h.html#ab989b724600841b16125977bcb44ffcc"/>
           <topic label="smaxPushMeta" href="smax_8h.html#aaf4c866eb1cb30dfd70e04604f1aa6cf"/>
@@ -284,7 +284,7 @@
           <topic label="smaxShareStrings" href="smax_8h.html#a63c421116ca043f2d0899b83d8aa91f9"/>
           <topic label="smaxShareStruct" href="smax_8h.html#ab6a1590c953abc1c37fed841cd3a903a"/>
           <topic label="smaxStringToValues" href="smax_8h.html#af57aab7c00cf249480b8fda660dc0256"/>
-          <topic label="smaxStringType" href="smax_8h.html#a4052450b4c2f857354e4f0f0abc9bd17"/>
+          <topic label="smaxStringType" href="smax_8h.html#a8d9d92ad8825d4adad4d6288a5681351"/>
           <topic label="smaxSubscribe" href="smax_8h.html#a53614ba57a594135c13b64a2d89eaa43"/>
           <topic label="smaxSync" href="smax_8h.html#a90a901b9e649c77d29379b8fc31cbefc"/>
           <topic label="smaxTimestamp" href="smax_8h.html#ae56da599747b207813a710efc07dd47d"/>
@@ -292,7 +292,7 @@
           <topic label="smaxTypeForString" href="smax_8h.html#af6a70e896526629e2130009882a1bff8"/>
           <topic label="smaxUnpackStrings" href="smax_8h.html#a5665cd4f5087ab7a07239c30bc561173"/>
           <topic label="smaxUnsubscribe" href="smax_8h.html#af3a5d7bc565ab7de0ac1dd8fafc93f14"/>
-          <topic label="smaxValuesToString" href="smax_8h.html#a44f04f23cc24fdbe8e7d2022dab5f8ba"/>
+          <topic label="smaxValuesToString" href="smax_8h.html#ae67f864946fbcd880e7b5c98b2f876c5"/>
           <topic label="smaxWaitOnAnySubscribed" href="smax_8h.html#a89db98657eab826392d6099d21fff14c"/>
           <topic label="smaxWaitOnSubscribed" href="smax_8h.html#a0e116b41cf8cfbca058dba8476b5d573"/>
           <topic label="smaxWaitOnSubscribedGroup" href="smax_8h.html#af6cae99a805bf84e98390e0bea2470b7"/>
@@ -304,29 +304,29 @@
       </topic>
       <topic label="src" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">
         <topic label="smax-easy.c" href="smax-easy_8c.html">
-          <topic label="smaxCreate1DField" href="smax-easy_8c.html#ac9783f900e7f6d2b89f5c862565aa171"/>
-          <topic label="smaxCreateBooleanField" href="smax-easy_8c.html#acdd5066183f70e584c5bcfb1cfb7a213"/>
-          <topic label="smaxCreateDoubleField" href="smax-easy_8c.html#a6209dfed60a1cbc7d3a4fb0b03627071"/>
-          <topic label="smaxCreateIntField" href="smax-easy_8c.html#afcdb35e5ead77beffbc38fb25e78cfb3"/>
-          <topic label="smaxCreateLongField" href="smax-easy_8c.html#a0815a08d789185c18326b773fb67efd1"/>
-          <topic label="smaxCreateScalarField" href="smax-easy_8c.html#a4f47038712ed5ff42f1fdcbd9f267750"/>
-          <topic label="smaxCreateStringField" href="smax-easy_8c.html#a14ffff153d42d083daf49fd4fb9017db"/>
+          <topic label="smaxCreate1DField" href="smax-easy_8c.html#afba357d35d2a1f13d0cf06f5ff708a99"/>
+          <topic label="smaxCreateBooleanField" href="smax-easy_8c.html#a13e357c3f20c0799fba6bc6c2a16c520"/>
+          <topic label="smaxCreateDoubleField" href="smax-easy_8c.html#afa9c9ec0f47236c0c560eee724b809d6"/>
+          <topic label="smaxCreateIntField" href="smax-easy_8c.html#afcb9ce5f154eef8eccdb0930ec4d613d"/>
+          <topic label="smaxCreateLongField" href="smax-easy_8c.html#a23b55eae1ce68356073ea5b191f915e5"/>
+          <topic label="smaxCreateScalarField" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c"/>
+          <topic label="smaxCreateStringField" href="smax-easy_8c.html#aa5c7661e29f4f1ba62f457c7138f2654"/>
           <topic label="smaxGetArrayField" href="smax-easy_8c.html#a10525c664231e85f3cd9a592915b8919"/>
           <topic label="smaxGetBooleanField" href="smax-easy_8c.html#a555c133ddd7aee3cf481f9e5e15e3d43"/>
           <topic label="smaxGetDoubleField" href="smax-easy_8c.html#ab7c45d4512c22c24153763aa9e227b68"/>
           <topic label="smaxGetLongField" href="smax-easy_8c.html#a8035211bd1fe17551a1517560b2547c4"/>
-          <topic label="smaxGetRawField" href="smax-easy_8c.html#a90df50aaf07a86771a87ffbd54bc8602"/>
+          <topic label="smaxGetRawField" href="smax-easy_8c.html#ada517cdb7737bb38695e2a343123583b"/>
           <topic label="smaxPullDouble" href="smax-easy_8c.html#aa143c2385f210cdd772f014939e1411e"/>
           <topic label="smaxPullDoubleDefault" href="smax-easy_8c.html#a1d30cb3f0a48b567657975a104a1088f"/>
-          <topic label="smaxPullDoubles" href="smax-easy_8c.html#af4162d00c5917ea1846b224221fd88dd"/>
+          <topic label="smaxPullDoubles" href="smax-easy_8c.html#a6e5df36b7eee3944b1ef07edb7f9647d"/>
           <topic label="smaxPullInt" href="smax-easy_8c.html#a42685e249ca24359b0f3f2a04a99b16b"/>
-          <topic label="smaxPullInts" href="smax-easy_8c.html#ae086c65c64814991dcea9a064088f988"/>
+          <topic label="smaxPullInts" href="smax-easy_8c.html#a8cdf0e4d01eaa160b8c96593ce32f4ff"/>
           <topic label="smaxPullLong" href="smax-easy_8c.html#aebedc01880d4253e74b8bde565de00d5"/>
-          <topic label="smaxPullLongs" href="smax-easy_8c.html#aab87f656c52890907aa1c782bd4f6102"/>
-          <topic label="smaxPullRaw" href="smax-easy_8c.html#ac0d26c2c35c4952d725dd167f45f7320"/>
-          <topic label="smaxPullString" href="smax-easy_8c.html#ad341c8c7f517d9b24e7f5f186542bd73"/>
-          <topic label="smaxPullStrings" href="smax-easy_8c.html#a2737efffb18ba0e25d73b024cb2984ce"/>
-          <topic label="smaxPullStruct" href="smax-easy_8c.html#adcc325dd16cb3f9eb754244a6b34f196"/>
+          <topic label="smaxPullLongs" href="smax-easy_8c.html#a843fa579fa26190335aeebb87be63203"/>
+          <topic label="smaxPullRaw" href="smax-easy_8c.html#a0de71a90fdf235a8aee084543591244f"/>
+          <topic label="smaxPullString" href="smax-easy_8c.html#a41bdf6bb7bcb3f0d3cb1c0657f8da1c5"/>
+          <topic label="smaxPullStrings" href="smax-easy_8c.html#abc833f0d89e672507e0baeb146e8776b"/>
+          <topic label="smaxPullStruct" href="smax-easy_8c.html#a30a2212f19ab2cbf60ea348110475948"/>
           <topic label="smaxShareBoolean" href="smax-easy_8c.html#a294640494c2d892dfb4944cd9da7729a"/>
           <topic label="smaxShareBooleans" href="smax-easy_8c.html#ad4ddc1226e77667c74dd0c3e0cff56a0"/>
           <topic label="smaxShareBytes" href="smax-easy_8c.html#a9274e66d69bf41bbe291bbadbb619acc"/>
@@ -355,7 +355,7 @@
           <topic label="smaxLazyPullDouble" href="smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561"/>
           <topic label="smaxLazyPullDoubleDefault" href="smax-lazy_8c.html#ac823bc3c1ee1bdbc4c330366fc246c8e"/>
           <topic label="smaxLazyPullLong" href="smax-lazy_8c.html#a03e3bb5c838dc621f8c0ba5fb6fe5f87"/>
-          <topic label="smaxLazyPullString" href="smax-lazy_8c.html#a3867625495cac33ddb728d49a978124e"/>
+          <topic label="smaxLazyPullString" href="smax-lazy_8c.html#a38d33bcbf9f2f73adbaf040996279859"/>
           <topic label="smaxLazyPullStruct" href="smax-lazy_8c.html#af96429709d1b029a8db74cb7407f9ffb"/>
         </topic>
         <topic label="smax-messages.c" href="smax-messages_8c.html">
@@ -374,13 +374,13 @@
           <topic label="smaxSetMessageSenderID" href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3"/>
         </topic>
         <topic label="smax-meta.c" href="smax-meta_8c.html">
-          <topic label="smaxCreateCoordinateSystem" href="smax-meta_8c.html#a821422681314ab3164cc0c9ca90365de"/>
+          <topic label="smaxCreateCoordinateSystem" href="smax-meta_8c.html#a1d977e7e9eb45f9ce6cc338fdde9bd8f"/>
           <topic label="smaxDestroyCoordinateSystem" href="smax-meta_8c.html#a92cf6cd3b3f123e21a1cee437f87126d"/>
-          <topic label="smaxGetCoordinateAxis" href="smax-meta_8c.html#a707975fd25bdd4c692cef991e93c0ca0"/>
-          <topic label="smaxGetCoordinateSystem" href="smax-meta_8c.html#aedeafcd2c69bae16e92e86f091566df0"/>
-          <topic label="smaxGetDescription" href="smax-meta_8c.html#af02ec63b73ce480b78940573f3ba3b05"/>
-          <topic label="smaxGetUnits" href="smax-meta_8c.html#a4073f51402880ea93a99fc59b7e03fd7"/>
-          <topic label="smaxPullMeta" href="smax-meta_8c.html#a84b2769a0e0f01cd04af79fef48dc0e0"/>
+          <topic label="smaxGetCoordinateAxis" href="smax-meta_8c.html#a349dc6fe14a2031d679e29804d82d570"/>
+          <topic label="smaxGetCoordinateSystem" href="smax-meta_8c.html#a2920bd71f9d340422e0b1b0db4bb3201"/>
+          <topic label="smaxGetDescription" href="smax-meta_8c.html#ad7ef601ffd5fbcae7b2c05be6f6bc302"/>
+          <topic label="smaxGetUnits" href="smax-meta_8c.html#aa27e3adeb67f2328a162c80bad433f02"/>
+          <topic label="smaxPullMeta" href="smax-meta_8c.html#a0d29e7a895c1d5fdc6258ff7426b3521"/>
           <topic label="smaxPullTime" href="smax-meta_8c.html#a6deedf594f19417bfa11b8f2cef360c4"/>
           <topic label="smaxPullTypeDimension" href="smax-meta_8c.html#ab989b724600841b16125977bcb44ffcc"/>
           <topic label="smaxPushMeta" href="smax-meta_8c.html#aaf4c866eb1cb30dfd70e04604f1aa6cf"/>
@@ -390,7 +390,7 @@
           <topic label="smaxSetUnits" href="smax-meta_8c.html#a23e6627339f6bf58e87150aa9ff0c964"/>
         </topic>
         <topic label="smax-queue.c" href="smax-queue_8c.html">
-          <topic label="smaxCreateSyncPoint" href="smax-queue_8c.html#ae68cb43ec0685e01b01d74f8469ebda2"/>
+          <topic label="smaxCreateSyncPoint" href="smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1"/>
           <topic label="smaxDestroySyncPoint" href="smax-queue_8c.html#a012860edbebf45f24b1b08c02a37847b"/>
           <topic label="smaxQueue" href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d"/>
           <topic label="smaxQueueCallback" href="smax-queue_8c.html#a06781e13ee30b0530ba3ed2e4436b449"/>
@@ -406,13 +406,13 @@
         <topic label="smax-util.c" href="smax-util_8c.html">
           <topic label="smax2xField" href="smax-util_8c.html#abfe751f22aa718133911ffdee848f64a"/>
           <topic label="smax2xStruct" href="smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c"/>
-          <topic label="smaxCreateField" href="smax-util_8c.html#a04131255314b01965e980cee0b8848ad"/>
-          <topic label="smaxCreateMeta" href="smax-util_8c.html#a7dcb524bdb4c07bb5afb50bffd37d8fd"/>
+          <topic label="smaxCreateField" href="smax-util_8c.html#a9871356984c4794a9f9caa3870dc6794"/>
+          <topic label="smaxCreateMeta" href="smax-util_8c.html#a48decaf10195b2f21fa77d8ea9b94fff"/>
           <topic label="smaxDeletePattern" href="smax-util_8c.html#a6c116311d61874554f98332831ad872b"/>
           <topic label="smaxError" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869"/>
-          <topic label="smaxErrorDescription" href="smax-util_8c.html#a5f1cdda2a22d12bae96874b9055b44b6"/>
+          <topic label="smaxErrorDescription" href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c"/>
           <topic label="smaxGetMetaCount" href="smax-util_8c.html#ac6d47a508669e4ee215cb72c5366fc52"/>
-          <topic label="smaxGetScriptSHA1" href="smax-util_8c.html#af885a8f7162bcaf2cbd6002e7a1b90e4"/>
+          <topic label="smaxGetScriptSHA1" href="smax-util_8c.html#a8ef420555c1ddbbcd9f4213f65b4ca66"/>
           <topic label="smaxGetServerTime" href="smax-util_8c.html#ae6941b762acbd37c60b012d4157681a8"/>
           <topic label="smaxGetTime" href="smax-util_8c.html#a2a71d93de952060be0154dd5f0d78496"/>
           <topic label="smaxParseTime" href="smax-util_8c.html#a2c3c82ba5e7844e9f1b70fb4d51716ef"/>
@@ -421,13 +421,13 @@
           <topic label="smaxScriptErrorAsync" href="smax-util_8c.html#af3acc2100069feec3a52475cdb24d479"/>
           <topic label="smaxSetOrigin" href="smax-util_8c.html#a9802443ba0d569c3614f5dcf8b0cfc4b"/>
           <topic label="smaxStringToValues" href="smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1"/>
-          <topic label="smaxStringType" href="smax-util_8c.html#a4052450b4c2f857354e4f0f0abc9bd17"/>
+          <topic label="smaxStringType" href="smax-util_8c.html#a8d9d92ad8825d4adad4d6288a5681351"/>
           <topic label="smaxTimestamp" href="smax-util_8c.html#ae56da599747b207813a710efc07dd47d"/>
           <topic label="smaxTimeToString" href="smax-util_8c.html#a1c29c7229e7006aea4fc3eb6d4b4ee0e"/>
           <topic label="smaxTransmitErrorHandler" href="smax-util_8c.html#a164a9c0f870cf0a1fa4f7e66f25452e5"/>
           <topic label="smaxTypeForString" href="smax-util_8c.html#af6a70e896526629e2130009882a1bff8"/>
           <topic label="smaxUnpackStrings" href="smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173"/>
-          <topic label="smaxValuesToString" href="smax-util_8c.html#aabe2cdd633f9c8f2464badfa90d31eba"/>
+          <topic label="smaxValuesToString" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b"/>
           <topic label="x2smaxField" href="smax-util_8c.html#a76bd110891905fe4bdae6628547c50d1"/>
           <topic label="x2smaxStruct" href="smax-util_8c.html#a65cc6cdad09f861b968e2d492abed977"/>
         </topic>
@@ -438,10 +438,10 @@
           <topic label="smaxConnect" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1"/>
           <topic label="smaxConnectTo" href="smax_8c.html#ad960c22b119ff2493a319945a9dd55a5"/>
           <topic label="smaxDisconnect" href="smax_8c.html#a9d1e6ffa837d3582a8165e326cc44bea"/>
-          <topic label="smaxGetHostName" href="smax_8c.html#a07c66bc16325546bb3d13f510294e3db"/>
-          <topic label="smaxGetKeys" href="smax_8c.html#a92b8d01fa3277a90141571a4c85b7f20"/>
-          <topic label="smaxGetProgramID" href="smax_8c.html#a10c2b6a8f27a2d777c153813c8cba780"/>
-          <topic label="smaxGetRedis" href="smax_8c.html#a9f3c5c9c095dcc96de6c0fc4c3e93541"/>
+          <topic label="smaxGetHostName" href="smax_8c.html#ac704fea3e664905af780d2566e3c74b6"/>
+          <topic label="smaxGetKeys" href="smax_8c.html#a2544d1fa602e812004e1d68500024ae0"/>
+          <topic label="smaxGetProgramID" href="smax_8c.html#abc07a7599e0bac1be15bbcb6b63d4710"/>
+          <topic label="smaxGetRedis" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195"/>
           <topic label="smaxIsConnected" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b"/>
           <topic label="smaxIsPipelined" href="smax_8c.html#af6f57a699b784fc67534cff0abd9573b"/>
           <topic label="smaxIsVerbose" href="smax_8c.html#a980232c82ed7ebf5425c60db65f828c0"/>

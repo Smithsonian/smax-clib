@@ -1,4 +1,4 @@
-.TH "src/smax-meta.c" 3 "Sat Sep 14 2024" "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-meta.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -35,7 +35,7 @@ src/smax-meta.c \- A set of utility functions for manipulating optional static m
 .RI "double \fBsmaxPullTime\fP (const char *table, const char *key)"
 .br
 .ti -1c
-.RI "XType \fBsmaxPullTypeDimension\fP (const char *table, const char *key, int *ndim, int *sizes)"
+.RI "\fBXType\fP \fBsmaxPullTypeDimension\fP (const char *table, const char *key, int *ndim, int *sizes)"
 .br
 .ti -1c
 .RI "int \fBsmaxPushMeta\fP (const char *meta, const char *table, const char *key, const char *value)"
@@ -72,7 +72,7 @@ Attila Kovacs
 
 .SH "Function Documentation"
 .PP 
-.SS "\fBXCoordinateSystem\fP* smaxCreateCoordinateSystem (int nAxis)"
+.SS "\fBXCoordinateSystem\fP * smaxCreateCoordinateSystem (int nAxis)"
 Creates a coordinate system with the desired dimension, and standard Cartesian coordinates with no labels, or units specified (NULL)\&.
 .PP
 \fBParameters\fP
@@ -92,7 +92,7 @@ Pointer to the new coordinate system structure, or NULL if the coordiate system 
 .PP
 
 .PP
-References XCoordinateSystem::axis, XCoordinateSystem::nAxis, and XCoordinateAxis::step\&.
+References \fBXCoordinateSystem::axis\fP, \fBXCoordinateSystem::nAxis\fP, \fBXCoordinateAxis::step\fP, \fBx_error()\fP, and \fBX_MAX_DIMS\fP\&.
 .SS "void smaxDestroyCoordinateSystem (\fBXCoordinateSystem\fP * coords)"
 Deallocates a coordinate system structure\&.
 .PP
@@ -108,8 +108,8 @@ Deallocates a coordinate system structure\&.
 .PP
 
 .PP
-References XCoordinateSystem::axis\&.
-.SS "\fBXCoordinateAxis\fP* smaxGetCoordinateAxis (const char * id, int n)"
+References \fBXCoordinateSystem::axis\fP\&.
+.SS "\fBXCoordinateAxis\fP * smaxGetCoordinateAxis (const char * id, int n)"
 Returns the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
 \fBParameters\fP
@@ -131,8 +131,8 @@ Pointer to a newly allocated \fBXCoordinateAxis\fP structure or NULL if the axis
 .PP
 
 .PP
-References XCoordinateAxis::name, XCoordinateAxis::refIndex, XCoordinateAxis::refValue, smaxGetRedis(), XCoordinateAxis::step, and XCoordinateAxis::unit\&.
-.SS "\fBXCoordinateSystem\fP* smaxGetCoordinateSystem (const char * table, const char * key)"
+References \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxGetTable()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "\fBXCoordinateSystem\fP * smaxGetCoordinateSystem (const char * table, const char * key)"
 Returns the coordinate system, if any, associated to a given SMA-X variable\&.
 .PP
 \fBParameters\fP
@@ -155,7 +155,9 @@ A newly allocated coordinate system structure, or NULL\&.
 .RE
 .PP
 
-.SS "char* smaxGetDescription (const char * table, const char * key)"
+.PP
+References \fBXCoordinateSystem::axis\fP, \fBMETA_COORDS\fP, \fBXCoordinateSystem::nAxis\fP, \fBsmaxGetCoordinateAxis()\fP, \fBX_MAX_DIMS\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+.SS "char * smaxGetDescription (const char * table, const char * key)"
 Returns a concise description of a variable\&.
 .PP
 \fBParameters\fP
@@ -176,7 +178,9 @@ Variable description or NULL or empty string if the variable has no description 
 .RE
 .PP
 
-.SS "char* smaxGetUnits (const char * table, const char * key)"
+.PP
+References \fBMETA_DESCRIPTION\fP, \fBsmaxPullMeta()\fP, \fBX_SUCCESS\fP, and \fBx_trace_null()\fP\&.
+.SS "char * smaxGetUnits (const char * table, const char * key)"
 Returns the physical unit name, if any, for the given variable\&.
 .PP
 \fBParameters\fP
@@ -197,7 +201,9 @@ Unit name (e\&.g\&. 'W / Hz'), or NULL or empty string if the variable has no de
 .RE
 .PP
 
-.SS "char* smaxPullMeta (const char * meta, const char * table, const char * key, int * status)"
+.PP
+References \fBMETA_UNIT\fP, \fBsmaxPullMeta()\fP, \fBX_SUCCESS\fP, and \fBx_trace_null()\fP\&.
+.SS "char * smaxPullMeta (const char * meta, const char * table, const char * key, int * status)"
 Retrieves a metadata string value for a given variable from the database
 .PP
 \fBParameters\fP
@@ -222,6 +228,8 @@ setPushMeta()
 .RE
 .PP
 
+.PP
+References \fBredisxGetStringValue()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "double smaxPullTime (const char * table, const char * key)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
@@ -243,7 +251,9 @@ setPushMeta()
 .RE
 .PP
 
-.SS "XType smaxPullTypeDimension (const char * table, const char * key, int * ndim, int * sizes)"
+.PP
+References \fBNAN\fP, \fBSMAX_TIMESTAMPS\fP, \fBsmaxPullMeta()\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXType\fP smaxPullTypeDimension (const char * table, const char * key, int * ndim, int * sizes)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
 \fBParameters\fP
@@ -268,8 +278,10 @@ setPushMeta()
 .RE
 .PP
 
+.PP
+References \fBSMAX_DIMS\fP, \fBSMAX_TYPES\fP, \fBsmaxPullMeta()\fP, \fBsmaxTypeForString()\fP, \fBx_trace()\fP, \fBX_UNKNOWN\fP, and \fBxParseDims()\fP\&.
 .SS "int smaxPushMeta (const char * meta, const char * table, const char * key, const char * value)"
-Adds/updates metadata associated with an SMA-X variable\&. The data will be pushed via the Redis pipeline channel\&.
+Adds/updates metadata associated with an SMA-X variable\&. The data will be pushed via the \fBRedis\fP pipeline channel\&.
 .PP
 \fBParameters\fP
 .RS 4
@@ -284,15 +296,17 @@ Adds/updates metadata associated with an SMA-X variable\&. The data will be push
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if the metadata was successfully retrieved X_INCOMPLETE if the meatdata was successfully written but an update notification was not sent or else the return value of redisxSetValue()
+X_SUCCESS (0) if the metadata was successfully retrieved X_INCOMPLETE if the meatdata was successfully written but an update notification was not sent or else the return value of \fBredisxSetValue()\fP
 .RE
 .PP
 \fBSee also\fP
 .RS 4
-\fBsmaxPullMeta()\fP, redisxSetValue() 
+\fBsmaxPullMeta()\fP, \fBredisxSetValue()\fP 
 .RE
 .PP
 
+.PP
+References \fBFALSE\fP, \fBredisxNotify()\fP, \fBredisxSetValue()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxSetCoordinateAxis (const char * id, int n, const \fBXCoordinateAxis\fP * axis)"
 Defines the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
@@ -307,17 +321,17 @@ Defines the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP
 \fBReturns\fP
 .RS 4
-X_SUCCESS (0) if the coordinate axis was successfully set in the database\&. or else the return value of redisxMultiSet()\&.
+X_SUCCESS (0) if the coordinate axis was successfully set in the database\&. or else the return value of \fBredisxMultiSet()\fP\&.
 .RE
 .PP
 \fBSee also\fP
 .RS 4
-\fBsmaxSetCoordinateAxis()\fP, redisxMultiSet() 
+\fBsmaxSetCoordinateAxis()\fP, \fBredisxMultiSet()\fP 
 .RE
 .PP
 
 .PP
-References XCoordinateAxis::name, XCoordinateAxis::refIndex, XCoordinateAxis::refValue, smaxGetRedis(), XCoordinateAxis::step, and XCoordinateAxis::unit\&.
+References \fBFALSE\fP, \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxMultiSet()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBX_FAILURE\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxSetCoordinateSystem (const char * table, const char * key, const \fBXCoordinateSystem\fP * coords)"
 Sets the coordinate system metadata for data in the database\&.
 .PP
@@ -343,6 +357,8 @@ X_SUCCESS (0) if the coordinate system was successfully sent to SMA-X or else th
 .RE
 .PP
 
+.PP
+References \fBXCoordinateSystem::axis\fP, \fBMETA_COORDS\fP, \fBXCoordinateSystem::nAxis\fP, \fBsmaxSetCoordinateAxis()\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxSetDescription (const char * table, const char * key, const char * description)"
 Sets the static description for a given SMA-X variable\&.
 .PP
@@ -366,6 +382,8 @@ X_SUCCESS (0) If successful or else the return value of \fBsmaxPushMeta()\fP
 .RE
 .PP
 
+.PP
+References \fBMETA_DESCRIPTION\fP, \fBsmaxPushMeta()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetUnits (const char * table, const char * key, const char * unit)"
 Sets the physical unit name for a given SMA-X variable\&.
 .PP
@@ -389,6 +407,8 @@ X_SUCCESS (0) If successful or else the return value of \fBsmaxPushMeta()\fP
 .RE
 .PP
 
+.PP
+References \fBMETA_UNIT\fP, \fBsmaxPushMeta()\fP, and \fBX_SUCCESS\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

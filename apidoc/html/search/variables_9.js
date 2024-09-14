@@ -1,10 +1,7 @@
 var searchData=
 [
-  ['serial_402',['serial',['../structXMeta.html#a4f4017ce7a39a4da2ed1cf8c4dc7de3f',1,'XMeta']]],
-  ['status_403',['status',['../structXSyncPoint.html#a6e27f49150e9a14580fb313cc2777e00',1,'XSyncPoint::status()'],['../structXMeta.html#a6e27f49150e9a14580fb313cc2777e00',1,'XMeta::status()']]],
-  ['step_404',['step',['../structXCoordinateAxis.html#a4736138d712d9ee570d0652f08a4786a',1,'XCoordinateAxis']]],
-  ['storebytes_405',['storeBytes',['../structXMeta.html#a766b48fdc93d03992939adfa91766703',1,'XMeta']]],
-  ['storedim_406',['storeDim',['../structXMeta.html#a16e4b9723516717d3493c46157701520',1,'XMeta']]],
-  ['storesizes_407',['storeSizes',['../structXMeta.html#adb4556a75a248cce0b72e557c81f8af6',1,'XMeta']]],
-  ['storetype_408',['storeType',['../structXMeta.html#ace24d22a3441248636253cdb478de9f7',1,'XMeta']]]
+  ['parent_0',['parent',['../../../xchange/apidoc/html/structXStructure.html#a82ba053944ce97d83d41c05f68ec4f3d',1,'XStructure']]],
+  ['pipeline_1',['pipeline',['../../../redisx/apidoc/html/structRedis.html#a59d367a240bf9c00366465d842402de8',1,'Redis']]],
+  ['priv_2',['priv',['../../../xchange/apidoc/html/structXLookupTable.html#a8b6505c37d4ff95854b8b00527e4d9fa',1,'XLookupTable']]],
+  ['prog_3',['prog',['../structXMessage.html#acc6113e98e7cd24d9dcfa520749a5d3f',1,'XMessage']]]
 ];

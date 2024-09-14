@@ -25,7 +25,7 @@
 var NAVTREE =
 [
   [ "smax-clib", "index.html", [
-    [ "Changelog", "md_CHANGELOG.html", [
+    [ "Changelog", "../../redisx/apidoc/html/md_CHANGELOG.html", [
       [ "Table of Contents", "index.html#autotoc_md3", null ],
       [ "Introduction", "index.html#autotoc_md5", null ],
       [ "Prerequisites", "index.html#autotoc_md7", null ],
@@ -63,9 +63,9 @@ var NAVTREE =
       [ "Error handling", "index.html#autotoc_md42", null ],
       [ "Debug support", "index.html#autotoc_md44", null ],
       [ "Future plans", "index.html#autotoc_md46", null ],
-      [ "[Unreleased]", "md_CHANGELOG.html#autotoc_md1", null ]
+      [ "[Unreleased]", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
     ] ],
-    [ "Contributing to RedisX", "md_CONTRIBUTING.html", null ],
+    [ "Contributing to RedisX", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],

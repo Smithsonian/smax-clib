@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['prog_19',['prog',['../structXMessage.html#acc6113e98e7cd24d9dcfa520749a5d3f',1,'XMessage']]]
+  ['key_0',['key',['../../../redisx/apidoc/html/structRedisEntry.html#a5892a9181e6a332f84d27aecd41dcd12',1,'RedisEntry']]]
 ];
