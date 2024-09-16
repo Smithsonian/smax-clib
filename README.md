@@ -41,11 +41,11 @@ Last Updated: 14 September 2024
 <a name="introduction"></a>
 ## Introduction
 
-The SMA information eXchange (SMA-X) is a high performance and versatile data sharing platform for distributed 
-software systems. It is built around a central Redis database, and provides atomic access to structured data, 
-including specific branches and/or leaf nodes, with associated metadadata. SMA-X was developed at the Submillimeter
-Array (SMA) observatory, where we use it to share real-time data among hundreds of computers and nearly a thousand
-individual programs.
+The [SMA information eXchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
+is a high performance and versatile data sharing platform for distributed software systems. It is built around a 
+central Redis database, and provides atomic access to structured data, including specific branches and/or leaf nodes, 
+with associated metadadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use it to share 
+real-time data among hundreds of computers and nearly a thousand individual programs.
 
 SMA-X consists of a set of server-side [LUA](https://lua.org/) scripts that run on [Redis](https://redis.io) (or one 
 of its forks / clones such as [Valkey](https://valkey.io) or [Dragonfly](https://dragonfly.io)); a set of libraries to 
@@ -58,6 +58,7 @@ Before then the API may undergo slight changes and tweaks. Use the repository as
 Some related links:
 
  - [API documentation](https://smithsonian.github.io/smax-clib/apidoc/html/files.html)
+ - [SMA-X specification](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)
  - [Project page](https://smithsonian.github.io/smax-clib) on github.io
  - [Smithsonian/smax-python](https://smithsonian.github.io/smax-python) an alternative library for Python 3.
 
