@@ -49,7 +49,7 @@ individual programs.
 
 SMA-X consists of a set of server-side [LUA](https://lua.org/) scripts that run on [Redis](https://redis.io) (or one 
 of its forks / clones such as [Valkey](https://valkey.io) or [Dragonfly](https://dragonfly.io)); a set of libraries to 
-interface client applications; and a set of command-line tools build with them. Currently we provide client libraries 
+interface client applications; and a set of command-line tools built with them. Currently we provide client libraries 
 for C/C++ and Python 3. We may provide Java and/or Rust client libraries too in the future. 
 
 There are no official releases of __smax-clib__ yet. An initial 1.0.0 release is expected early/mid 2025. 
