@@ -1,4 +1,4 @@
-# Contributing to RedisX
+# Contributing to smax-clib
 
 
 The _SMA-X C/C++_ library is for everyone. And, it is developers like you who can make it better. Whether there is a 
