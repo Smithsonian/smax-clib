@@ -39,7 +39,7 @@
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>
   </topic>
-  <topic label="Contributing to RedisX" href="md_CONTRIBUTING.html"/>
+  <topic label="Contributing to smax-clib" href="md_CONTRIBUTING.html"/>
   <topic label="Data Structures" href="annotated.html">
     <topic label="Data Structures" href="annotated.html">
       <topic label="XCoordinateAxis" href="structXCoordinateAxis.html">

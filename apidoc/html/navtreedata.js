@@ -65,7 +65,7 @@ var NAVTREE =
       [ "Future plans", "index.html#autotoc_md46", null ],
       [ "[Unreleased]", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
     ] ],
-    [ "Contributing to RedisX", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
+    [ "Contributing to smax-clib", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],
