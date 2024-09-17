@@ -388,7 +388,9 @@ int smaxTimeToString(const struct timespec *time, char *buf);
 int smaxSetPipelineConsumer(void (*f)(RESP *));
 
 
-#if !(__Lynx__ && __powerpc__)
+// The following is not available on prior to the POSIX.1-2008 standard
+// We'll use the __STDC_VERSION__ constant as a proxy to see if fnmatch is available
+#if __STDC_VERSION__ > 201112L
 int smaxDeletePattern(const char *pattern);
 #endif
 

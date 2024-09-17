@@ -8,6 +8,9 @@
  *      A collection of commonly used functions for the SMA-X library.
  */
 
+/// For clock_gettime()
+#define _POSIX_C_SOURCE 199309
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1148,7 +1151,9 @@ int smaxUnpackStrings(const char *data, int len, int count, char **dst) {
   return X_SUCCESS;
 }
 
-#if !(__Lynx__ && __powerpc__)
+// The following is not available on prior to the POSIX.1-2008 standard
+// We'll use the __STDC_VERSION__ constant as a proxy to see if fnmatch is available
+#if __STDC_VERSION__ > 201112L
 
 /**
  * Deletes variables and metadata from SMA-X.

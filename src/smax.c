@@ -14,6 +14,9 @@
  *
  */
 
+/// For clock_gettime()
+#define _POSIX_C_SOURCE 199309
+
 #include <sys/types.h>
 
 #include <stdlib.h>

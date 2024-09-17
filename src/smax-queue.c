@@ -11,6 +11,9 @@
  *
  */
 
+/// For clock_gettime()
+#define _POSIX_C_SOURCE 199309
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
@@ -346,15 +349,21 @@ int smaxWaitQueueComplete(int timeoutMillis) {
 static int DrainQueueAsync(int maxRemaining, int timeoutMicros) {
   static const char *fn = "xDrainQueue";
   int totalSleep = 0;
+  struct timespec interval;
 
   xvprintf("SMA-X> read queue full. Waiting to drain...\n");
   while(nQueued > maxRemaining) {
     int sleepMicros;
+
     if(!redisxHasPipeline(smaxGetRedis())) return x_error(X_NO_SERVICE, ENOTCONN, fn, "no pipeline client");
     if(timeoutMicros > 0) if(totalSleep > timeoutMicros) return x_error(X_TIMEDOUT, ETIMEDOUT, fn, "timed out");
     sleepMicros = 1 + nQueued - maxRemaining;
     totalSleep += sleepMicros;
-    usleep(sleepMicros);
+
+    interval.tv_sec = sleepMicros / E6;
+    interval.tv_nsec = (sleepMicros % E6) * 1000;
+
+    if(nanosleep(&interval, NULL) < 0) return x_error(X_FAILURE, errno, fn, "nanosleep() error");
   }
   xvprintf("SMA-X> read queue drained, resuming pipelined reads.\n");
 

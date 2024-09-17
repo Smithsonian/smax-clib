@@ -33,7 +33,7 @@ CC ?= gcc
 CPPFLAGS += -I$(INC)
 
 # Base compiler options (if not defined externally...)
-CFLAGS ?= -Os -Wall 
+CFLAGS ?= -Os -Wall -std=c99
 
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra
@@ -60,7 +60,7 @@ LDFLAGS += -lredisx -lxchange
 
 # cppcheck options for 'check' target
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
-            --error-exitcode=1 $(CHECKEXTRA)
+            --error-exitcode=1 --std=c99 $(CHECKEXTRA)
 
 CHECKOPTS += --template='{file}({line}): {severity} ({id}): {message}' --inline-suppr
 
