@@ -912,6 +912,9 @@ static void ProcessLazyUpdates(const char *pattern, const char *channel, const c
   char *id;
   boolean checkParents = TRUE;
 
+  (void) pattern;
+  (void) length;
+
   if(!channel) return;
 
   xdprintf("SMA-X: lazy incoming on %s\n", channel);

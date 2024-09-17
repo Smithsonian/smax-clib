@@ -367,6 +367,9 @@ static void ProcessMessage(const char *pattern, const char *channel, const char 
   XMessage m;
   char *ts;
 
+  (void) pattern;
+  (void) length;
+
   if(!channel) return;
 
   if(xMatchNextID(MESSAGES_ID, channel) != X_SUCCESS) return;

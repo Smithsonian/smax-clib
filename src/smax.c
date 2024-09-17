@@ -1129,7 +1129,7 @@ int smaxReleaseWaits() {
 
   smaxLockNotify();
 
-  if(notifySize < sizeof(RELEASEID)) {
+  if(notifySize < (int) sizeof(RELEASEID)) {
     char *oldid = notifyID;
     notifyID = realloc(notifyID, sizeof(RELEASEID));
     if(!notifyID) {
@@ -1906,6 +1906,8 @@ int smaxUnlockNotify() {
 
 
 static void ProcessUpdateNotificationAsync(const char *pattern, const char *channel, const char *msg, long length) {
+  (void) pattern;
+
   xdprintf("{message} %s %s\n", channel, msg);
 
   if(strncmp(channel, SMAX_UPDATES, SMAX_UPDATES_LENGTH)) return; // Wrong message prefix

@@ -412,6 +412,8 @@ boolean smaxIsDisabled() {
 }
 
 static void *SMAXReconnectThread(void *arg) {
+  (void) arg;
+
   // Detach this thread (i.e. never to be joined...)
   pthread_detach(pthread_self());
 

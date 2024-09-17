@@ -178,7 +178,7 @@ typedef struct XMeta {
  * Default initialized for SMA-X medatadata structure. You should always initialize local metadata with
  * this.
  */
-#define X_META_INIT             { 0, X_UNKNOWN, -1, {0}, -1 }
+#define X_META_INIT             { 0, X_UNKNOWN, -1, {0}, -1, {'\0'}, {0}, 0 }
 
 /**
  * \brief SMA-X program message
