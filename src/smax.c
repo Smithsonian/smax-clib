@@ -738,7 +738,7 @@ int smaxShare(const char *table, const char *key, const void *value, XType type,
 int smaxShareArray(const char *table, const char *key, const void *ptr, XType type, int ndim, const int *sizes) {
   static const char *fn = "smaxShareArray";
 
-  XField f = {};
+  XField f = {NULL};
   char trybuf[REDISX_CMDBUF_SIZE];
   int count, status;
 
