@@ -16,6 +16,7 @@ Last Updated: 18 September 2024
  - [Introduction](#introduction)
  - [Prerequisites](#prerequisites)
  - [Building the SMA-X C library](#building)
+ - [Command-line tools](#command-line-tools)
  - [Initial configuration](#configuration)
  - [Connecting to / disconnecting from SMA-X](#connecting)
  - [Sharing and pulling data](#sharing-and-pulling)
@@ -95,6 +96,12 @@ prior to invoking `make`. The following build variables can be configured:
    automatically.
    
  - `LDFLAGS`: Linker flags (default is `-lm`). Note, `-lredisx -lxchange` will be added automatically.
+ 
+ - `THREADS`: Linker flags for the __pthread__ library. It will be added to `LDFLAGS` automatically. (default: 
+   `-pthread`)
+
+ - `RTLIB`: Linker flags fo linking against a realtime (if necessary). It will be added to `LDFLAGS` 
+   automatically. (default: empty)
 
  - `BUILD_MODE`: You can set it to `debug` to enable debugging features: it will initialize the global `xDebug` 
    variable to `TRUE` and add `-g` to `CFLAGS`.
@@ -108,6 +115,26 @@ desired `make` target(s). (You can use `make help` to get a summary of the avail
 
 ------------------------------------------------------------------------------
 
+<a name="command-line-tools"></a>
+## Command-line tools
+
+The __smax-clib__ library provides two basic command-line tools:
+
+ - `smaxValue` -- for exploring the contents of SMA-X, including associated metadata, and
+ - `smaxWrite` -- for putting data into SMA-X from the shell.
+ 
+The tools can be compiled with `make tools`. Both tools can be run with the `--help` option for a simple help screen on
+usage. E.g.:
+
+```bash
+  $ smaxValue --help
+```
+
+These command-line tools provide a simple means to interact with SMA-X from the shell or a scripting language, such
+as `bash`, or `perl` (also `python` though we recommend to use the native 
+[Smithsonian/smax-python](https://github.com/Smithsonian/smax-python) library instead).
+
+------------------------------------------------------------------------------
 
 <a name="configuration"></a>
 ## Initial configuration

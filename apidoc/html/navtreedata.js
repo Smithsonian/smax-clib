@@ -32,39 +32,40 @@ var NAVTREE =
       ] ],
       [ "Prerequisites", "index.html#autotoc_md8", null ],
       [ "Building the SMA-X C library", "index.html#autotoc_md10", null ],
-      [ "Initial configuration", "index.html#autotoc_md12", null ],
-      [ "Connecting to / disconnecting from SMA-X", "index.html#autotoc_md14", [
-        [ "Connection / disconnection hooks", "index.html#autotoc_md15", null ]
+      [ "Command-line tools", "index.html#autotoc_md12", null ],
+      [ "Initial configuration", "index.html#autotoc_md14", null ],
+      [ "Connecting to / disconnecting from SMA-X", "index.html#autotoc_md16", [
+        [ "Connection / disconnection hooks", "index.html#autotoc_md17", null ]
       ] ],
-      [ "Sharing and pulling data", "index.html#autotoc_md17", [
-        [ "The basics", "index.html#autotoc_md18", null ],
-        [ "Standard metadata", "index.html#autotoc_md19", null ],
-        [ "Flexible types and sizes", "index.html#autotoc_md20", null ],
-        [ "Scalar quantities", "index.html#autotoc_md21", null ],
-        [ "Arrays", "index.html#autotoc_md22", null ],
-        [ "Structures / substructures...", "index.html#autotoc_md23", null ]
+      [ "Sharing and pulling data", "index.html#autotoc_md19", [
+        [ "The basics", "index.html#autotoc_md20", null ],
+        [ "Standard metadata", "index.html#autotoc_md21", null ],
+        [ "Flexible types and sizes", "index.html#autotoc_md22", null ],
+        [ "Scalar quantities", "index.html#autotoc_md23", null ],
+        [ "Arrays", "index.html#autotoc_md24", null ],
+        [ "Structures / substructures...", "index.html#autotoc_md25", null ]
       ] ],
-      [ "Lazy pulling (high-frequency queries)", "index.html#autotoc_md25", null ],
-      [ "Pipelined pulling (high volume queries)", "index.html#autotoc_md27", [
-        [ "Synchronization points and waiting", "index.html#autotoc_md28", null ],
-        [ "Callbacks", "index.html#autotoc_md29", null ],
-        [ "Finishing up", "index.html#autotoc_md30", null ]
+      [ "Lazy pulling (high-frequency queries)", "index.html#autotoc_md27", null ],
+      [ "Pipelined pulling (high volume queries)", "index.html#autotoc_md29", [
+        [ "Synchronization points and waiting", "index.html#autotoc_md30", null ],
+        [ "Callbacks", "index.html#autotoc_md31", null ],
+        [ "Finishing up", "index.html#autotoc_md32", null ]
       ] ],
-      [ "Custom notifications and update handling", "index.html#autotoc_md32", [
-        [ "Monitoring updates", "index.html#autotoc_md33", null ],
-        [ "Waiting for updates", "index.html#autotoc_md34", null ],
-        [ "Status / error messages", "index.html#autotoc_md35", null ]
+      [ "Custom notifications and update handling", "index.html#autotoc_md34", [
+        [ "Monitoring updates", "index.html#autotoc_md35", null ],
+        [ "Waiting for updates", "index.html#autotoc_md36", null ],
+        [ "Status / error messages", "index.html#autotoc_md37", null ]
       ] ],
-      [ "Optional metadata", "index.html#autotoc_md37", [
-        [ "Descriptions", "index.html#autotoc_md38", null ],
-        [ "Coordinate Systems", "index.html#autotoc_md39", null ],
-        [ "Physical units", "index.html#autotoc_md40", [
-          [ "Coordinate systems", "index.html#autotoc_md41", null ]
+      [ "Optional metadata", "index.html#autotoc_md39", [
+        [ "Descriptions", "index.html#autotoc_md40", null ],
+        [ "Coordinate Systems", "index.html#autotoc_md41", null ],
+        [ "Physical units", "index.html#autotoc_md42", [
+          [ "Coordinate systems", "index.html#autotoc_md43", null ]
         ] ]
       ] ],
-      [ "Error handling", "index.html#autotoc_md43", null ],
-      [ "Debug support", "index.html#autotoc_md45", null ],
-      [ "Future plans", "index.html#autotoc_md47", null ],
+      [ "Error handling", "index.html#autotoc_md45", null ],
+      [ "Debug support", "index.html#autotoc_md47", null ],
+      [ "Future plans", "index.html#autotoc_md49", null ],
       [ "[Unreleased]", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
     ] ],
     [ "Contributing to smax-clib", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
@@ -91,7 +92,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"smax_8h.html#a1d30cb3f0a48b567657975a104a1088f"
+"smax_8h.html#a18027e41c40722011815bc878857e3d0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
