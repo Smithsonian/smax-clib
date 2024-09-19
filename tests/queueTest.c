@@ -172,10 +172,11 @@ struct {
 
 // This is an example callback function that we want to be called when
 // out data has been queued for high-throughput pulls from SMA-X...
-static void checkPull(char *arg) {
+static void checkPull(void *arg) {
+  char *str = (char *) arg;
 
   // Check the argument that was passed to us...
-  if(strcmp(arg, CALLBACKARG)) {
+  if(strcmp(str, CALLBACKARG)) {
     fprintf(stderr, "ERROR! callback: Unexpected callback argument.\n");
     exit(-1);
   }

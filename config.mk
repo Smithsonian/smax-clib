@@ -39,24 +39,30 @@ CFLAGS ?= -Os -Wall -std=c99
 #CFLAGS += -Wextra
 
 # Link against math libs (for e.g. isnan())
-LDFLAGS ?= -lm
+LDFLAGS ?= -lm 
+
+# Link flags to use for threading with pthread
+THREADS ?= -pthread
+
+# Runtime libraries to link against (if any)
+#RTLIB ?= -lrt
 
 # Compile and link against a specific redisx library (if defined)
 ifdef REDISX
   CPPFLAGS += -I$(REDISX)/include
   LDFLAGS += -L$(REDISX)/lib
-  LD_LIBRARY_PATH = $(REDISX)/lib:$(LD_LIBRARY_PATH)
+  LD_LIBRARY_PATH := $(REDISX)/lib:$(LD_LIBRARY_PATH)
 endif
 
 # Compile and link against a specific xchange library (if defined)
 ifdef XCHANGE
   CPPFLAGS += -I$(XCHANGE)/include
   LDFLAGS += -L$(XCHANGE)/lib
-  LD_LIBRARY_PATH = $(XCHANGE)/lib:$(LD_LIBRARY_PATH)
+  LD_LIBRARY_PATH := $(XCHANGE)/lib:$(LD_LIBRARY_PATH)
 endif
 
 # Always link against the xchange lib.
-LDFLAGS += -lredisx -lxchange
+LDFLAGS += -lredisx -lxchange $(RTLIB) $(THREADS)
 
 # cppcheck options for 'check' target
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \

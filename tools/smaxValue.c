@@ -110,7 +110,7 @@ static int printValue(const char *group, const char *key) {
       strftime(date, 100, "%Y-%m-%d %H:%M:%S", ts);
 
       printf("\n");
-      printf(MAG " #" BLU " Type:   " RST "%s\n", xStringType(meta.storeType));
+      printf(MAG " #" BLU " Type:   " RST "%s\n", smaxStringType(meta.storeType));
       printf(MAG " #" BLU " Size:   " RST "%s\n", dims);
       printf(MAG " #" BLU " Origin: " RST "%s\n", meta.origin[0] ? meta.origin : RED "<null>" RST);
       printf(MAG " #" BLU " Time:   " RST "%s (" GRN "%s.%03ld" CYN " UTC" RST ")\n", TS, date, (meta.timestamp.tv_nsec / 1000000));
@@ -217,7 +217,7 @@ static void setOption(char *argv[], int *next) {
   if(!strcmp(option, "m") || !strcmp(option, "-meta")) showMeta = TRUE;
   else if(!strcmp(option, "e") || !strcmp(option, "-errors")) printErrors = TRUE;
   else if(!strcmp(option, "l") || !strcmp(option, "-list")) showList = TRUE;
-  else if(!strcmp(option, "t") || !strcmp(option, "-type")) type = xTypeForString(argv[(*next)++]);
+  else if(!strcmp(option, "t") || !strcmp(option, "-type")) type = smaxTypeForString(argv[(*next)++]);
   else if(!strcmp(option, "n") || !strcmp(option, "-count")) count = atoi(argv[(*next)++]);
   else if(!strcmp(option, "s") || !strcmp(option, "-server")) host = argv[(*next)++];
   else fprintf(stderr, "WARNING! no option: -%s\n", option);

@@ -45,7 +45,7 @@ static void setOption(char *argv[], int *next) {
 
   if(!strcmp(option, "t") || !strcmp(option, "-type")) {
     sType = argv[(*next)++];
-    f.type = xTypeForString(sType);
+    f.type = smaxTypeForString(sType);
     if(f.type == X_UNKNOWN || f.type == X_STRUCT) {
       fprintf(stderr, "ERROR! Invalid type: %s\n", sType);
       exit(1);

@@ -28,17 +28,18 @@ else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
-
 # Link against thread lib
 LDFLAGS += -pthread
 
+export
+
 # Build everything...
 .PHONY: all
-all: shared static $(DOC_TARGETS) check
+all: shared static tools $(DOC_TARGETS) check
 
 # Shared libraries (versioned and unversioned)
 .PHONY: shared
-shared: $(LIB)/libsmax.so
+shared: $(LIB)/libsmax.so 
 
 # Legacy static libraries (locally built)
 .PHONY: static
@@ -46,8 +47,14 @@ static: $(LIB)/libsmax.a
 
 # Run regression tests
 .PHONY: test
-test:
-	make -C test
+test: SRC := tests
+test: shared static
+	make -f test.mk
+
+.PHONY: tools
+tools: SRC := tools
+tools: shared static
+	make -f tools.mk
 
 # Remove intermediates
 .PHONY: clean
@@ -58,7 +65,6 @@ clean:
 .PHONY: distclean
 distclean: clean
 	rm -f Doxyfile.local $(LIB)/libsmax.so* $(LIB)/libsmax.a
-
 
 # ----------------------------------------------------------------------------
 # The nitty-gritty stuff below
@@ -78,6 +84,7 @@ $(LIB)/libsmax.so.$(SO_VERSION): $(SOURCES)
 
 # Static library
 $(LIB)/libsmax.a: $(OBJECTS) | $(LIB) Makefile
+
 
 README-smax.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
@@ -105,6 +112,7 @@ help:
 	@echo
 	@echo "  shared        Builds the shared 'libsmax.so' (linked to versioned)."
 	@echo "  static        Builds the static 'lib/libsmax.a' library."
+	@echo "  tools         Command line tools: 'bin/smaxValue' and 'bin/smaxWrite'."
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  check         Performs static analysis with 'cppcheck'."
 	@echo "  all           All of the above."
@@ -121,4 +129,3 @@ Makefile: config.mk build.mk
 
 include build.mk
 
-	
