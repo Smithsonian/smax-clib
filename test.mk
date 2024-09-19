@@ -1,6 +1,6 @@
-# Load the common Makefile definitions...
-include config.mk 
+include config.mk
 
+# Load the common Makefile definitions...
 CFLAGS += -g
 LDFLAGS += -L$(LIB) -lsmax
 
@@ -13,9 +13,4 @@ TESTS = $(BIN)/simpleIntTest $(BIN)/simpleIntsTest $(BIN)/structTest $(BIN)/queu
 # Top level make targets...
 all: $(TESTS)
 
-
-$(BIN)/%: $(OBJ)/%.o | $(BIN)
-	$(CC) -o $@ $^ $(LDFLAGS)
-
-# Standard generic rules and targets...
 include build.mk
