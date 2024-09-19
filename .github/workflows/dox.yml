@@ -33,10 +33,6 @@ jobs:
     name: Generate API documentation
 
     runs-on: ubuntu-latest
-    env:
-      CC: gcc
-      XCHANGE: xchange
-      REDISX: redisx
     steps:
 
     - name: install doxygen

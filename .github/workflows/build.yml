@@ -55,7 +55,7 @@ jobs:
     - name: Build xchange dependency
       run: make -C xchange shared
       
-    - name: Build xchange dependency
+    - name: Build RedisX dependency
       run: make -C redisx shared
       
     - name: Build shared library
