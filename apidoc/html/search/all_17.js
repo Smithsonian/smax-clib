@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['x_0',['Connecting to / disconnecting from SMA-X',['../index.html#autotoc_md13',1,'']]],
-  ['x_20c_20library_1',['Building the SMA-X C library',['../index.html#autotoc_md9',1,'']]],
+  ['x_0',['Connecting to / disconnecting from SMA-X',['../index.html#autotoc_md14',1,'']]],
+  ['x_20c_20library_1',['Building the SMA-X C library',['../index.html#autotoc_md10',1,'']]],
   ['x2smaxfield_2',['x2smaxfield',['../smax_8h.html#a76bd110891905fe4bdae6628547c50d1',1,'x2smaxField(XField *f):&#160;smax-util.c'],['../smax-util_8c.html#a76bd110891905fe4bdae6628547c50d1',1,'x2smaxField(XField *f):&#160;smax-util.c']]],
   ['x2smaxstruct_3',['x2smaxstruct',['../smax_8h.html#a65cc6cdad09f861b968e2d492abed977',1,'x2smaxStruct(XStructure *s):&#160;smax-util.c'],['../smax-util_8c.html#a65cc6cdad09f861b968e2d492abed977',1,'x2smaxStruct(XStructure *s):&#160;smax-util.c']]],
   ['x_5fmeta_5finit_4',['X_META_INIT',['../smax_8h.html#a793fead1eb30470e219192befc88b3c9',1,'smax.h']]],

@@ -5,5 +5,5 @@ var searchData=
   ['naxis_2',['nAxis',['../structXCoordinateSystem.html#a66b674e84aa11d53a5f0763237b764ba',1,'XCoordinateSystem']]],
   ['ndim_3',['ndim',['../../../xchange/apidoc/html/structXField.html#a0d9c8cbc461c7cf86cad8e548f195bd1',1,'XField']]],
   ['next_4',['next',['../../../xchange/apidoc/html/structXField.html#ae1ebaf87eb62e6266b14908eee28e565',1,'XField']]],
-  ['notifications_20and_20update_20handling_5',['Custom notifications and update handling',['../index.html#autotoc_md31',1,'']]]
+  ['notifications_20and_20update_20handling_5',['Custom notifications and update handling',['../index.html#autotoc_md32',1,'']]]
 ];

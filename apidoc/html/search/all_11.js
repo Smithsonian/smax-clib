@@ -13,6 +13,7 @@ var searchData=
   ['redisx_2eh_10',['redisx.h',['../../../redisx/apidoc/html/redisx_8h.html',1,'']]],
   ['refindex_11',['refIndex',['../structXCoordinateAxis.html#ad191af99a874bc633c0834d247427ea8',1,'XCoordinateAxis']]],
   ['refvalue_12',['refValue',['../structXCoordinateAxis.html#ad56f22fc3fbf9639a29ed9f174c67ec2',1,'XCoordinateAxis']]],
-  ['releaseid_13',['RELEASEID',['../smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9',1,'smax-private.h']]],
-  ['resp_14',['RESP',['../../../redisx/apidoc/html/structRESP.html',1,'']]]
+  ['related_20links_13',['Related links',['../index.html#autotoc_md6',1,'']]],
+  ['releaseid_14',['RELEASEID',['../smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9',1,'smax-private.h']]],
+  ['resp_15',['RESP',['../../../redisx/apidoc/html/structRESP.html',1,'']]]
 ];

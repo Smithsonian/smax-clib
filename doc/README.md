@@ -1,6 +1,8 @@
 <img src="/smax-clib/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
-C/C++ client library for the SMA Exchange (SMA-X) structured real-time database
+C/C++ client library for the 
+[SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
+structured real-time database
 
  - [API documentation](https://smithsonian.github.io/smax-clib/apidoc/html/files.html)
  - [Project pages](https://smithsonian.github.io/smax-clib) on github.io
@@ -30,11 +32,11 @@ Last Updated: 18 September 2024
 <a name="introduction"></a>
 ## Introduction
 
-The [SMA information eXchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
-is a high performance and versatile data sharing platform for distributed software systems. It is built around a 
-central Redis database, and provides atomic access to structured data, including specific branches and/or leaf nodes, 
-with associated metadadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use it to share 
-real-time data among hundreds of computers and nearly a thousand individual programs.
+The [SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
+is a high performance and versatile real-time data sharing platform for distributed software systems. It is built 
+around a central Redis database, and provides atomic access to structured data, including specific branches and/or 
+leaf nodes, with associated metadadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use 
+it to share real-time data among hundreds of computers and nearly a thousand individual programs.
 
 SMA-X consists of a set of server-side [LUA](https://lua.org/) scripts that run on [Redis](https://redis.io) (or one 
 of its forks / clones such as [Valkey](https://valkey.io) or [Dragonfly](https://dragonfly.io)); a set of libraries to 
@@ -44,8 +46,11 @@ for C/C++ (C99) and Python 3. We may provide Java and/or Rust client libraries t
 There are no official releases of __smax-clib__ yet. An initial 1.0.0 release is expected early/mid 2025. 
 Before then the API may undergo slight changes and tweaks. Use the repository as is at your own risk for now.
 
+### Related links
+
  - [SMA-X specification](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)
- - [Smithsonian/smax-python](https://smithsonian.github.io/smax-python) an alternative library for Python 3.
+ - [Smithsonian/smax-python](https://github.com/Smithsonian/smax-python) an alternative library for Python 3.
+ - [Smithsonian/smax-postgres](https://github.com/Smithsonian/smax-postgres) for creating a time-series history of SMA-X in a __PostgreSQL__ database.
 
 
 ------------------------------------------------------------------------------
