@@ -15,18 +15,9 @@ The __smax-clib__ C/C++ client library was created, and is maintained, by Attila
 
 This site contains various online resources that support the library:
 
-__Dependencies__
-
- - [Smithsonian/xchange](https://github.com/Smithsonian/xchange) -- structured data exchange framework
- - [Smithsonian/redisx](https://github.com/Smithsonian/redisx) -- A C/C++ Redis client library
- - [Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) -- SMA-X server configuration kit
- 
 __Downloads__
 
  - [Releases](https://github.com/Smithsonian/smax-clib/releases) from GitHub
- - Doxygen [tag file](apidoc/smax.tag) (`smax.tag`) for linking 
-   your [Doxygen](https://www.doxygen.nl/) documentation to that of __smax-clib__
-
 
 __Documentation__
 
@@ -37,5 +28,10 @@ __Documentation__
  - [Community Forum](https://github.com/Smithsonian/smax-clib/discussions) &ndash; ask a question, provide feedback, or 
    check announcements.
 
+__Dependencies__
 
+ - [Smithsonian/xchange](https://github.com/Smithsonian/xchange) -- structured data exchange framework
+ - [Smithsonian/redisx](https://github.com/Smithsonian/redisx) -- A C/C++ Redis client library
+ - [Smithsonian/smax-server](https://github.com/Smithsonian/smax-server) -- SMA-X server configuration kit
+ 
  
