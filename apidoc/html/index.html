@@ -115,8 +115,13 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">smax-clib </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README-smax"></a> Author: Attila Kovacs</p>
-<p>Last Updated: 14 September 2024</p>
+<div class="textblock"><p><a class="anchor" id="md_README-smax"></a> C/C++ client library for the SMA Exchange (SMA-X) structured real-time database</p>
+<ul>
+<li><a href="https://smithsonian.github.io/smax-clib/apidoc/html/files.html">API documentation</a></li>
+<li><a href="https://smithsonian.github.io/smax-clib">Project pages</a> on github.io</li>
+</ul>
+<p>Author: Attila Kovacs</p>
+<p>Last Updated: 18 September 2024</p>
 <h2><a class="anchor" id="autotoc_md3"></a>
 Table of Contents</h2>
 <ul>
@@ -141,11 +146,8 @@ Introduction</h2>
 <p>The <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA information eXchange (SMA-X)</a> is a high performance and versatile data sharing platform for distributed software systems. It is built around a central <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> database, and provides atomic access to structured data, including specific branches and/or leaf nodes, with associated metadadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use it to share real-time data among hundreds of computers and nearly a thousand individual programs.</p>
 <p>SMA-X consists of a set of server-side <a href="https://lua.org/">LUA</a> scripts that run on <a href="https://redis.io">Redis</a> (or one of its forks / clones such as <a href="https://valkey.io">Valkey</a> or <a href="https://dragonfly.io">Dragonfly</a>); a set of libraries to interface client applications; and a set of command-line tools built with them. Currently we provide client libraries for C/C++ (C99) and Python 3. We may provide Java and/or Rust client libraries too in the future.</p>
 <p>There are no official releases of <b>smax-clib</b> yet. An initial 1.0.0 release is expected early/mid 2025. Before then the API may undergo slight changes and tweaks. Use the repository as is at your own risk for now.</p>
-<p>Some related links:</p>
 <ul>
-<li><a href="https://smithsonian.github.io/smax-clib/apidoc/html/files.html">API documentation</a></li>
 <li><a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA-X specification</a></li>
-<li><a href="https://smithsonian.github.io/smax-clib">Project page</a> on github.io</li>
 <li><a href="https://smithsonian.github.io/smax-python">Smithsonian/smax-python</a> an alternative library for Python 3.</li>
 </ul>
 <hr  />
@@ -169,7 +171,7 @@ Building the SMA-X C library</h2>
 <li><code>REDISX</code>: the root of the location where the <a href="https://github.com/Smithsonian/redisx">Smithsonian/redisx</a> library is installed. It expects to find <code><a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html">redisx.h</a></code> under <code>$(REDISX)/include</code> and <code>libredisx.so</code> under <code>$(REDISX)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 <li><code>CC</code>: The C compiler to use (default: <code>gcc</code>).</li>
 <li><code>CPPFLAGS</code>: C pre-processor flags, such as externally defined compiler constants.</li>
-<li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-Os -Wall</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
+<li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-Os -Wall -std=c99</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
 <li><code>LDFLAGS</code>: Linker flags (default is <code>-lm</code>). Note, <code>-lredisx -lxchange</code> will be added automatically.</li>
 <li><code>BUILD_MODE</code>: You can set it to <code>debug</code> to enable debugging features: it will initialize the global <code>xDebug</code> variable to <code>TRUE</code> and add <code>-g</code> to <code>CFLAGS</code>.</li>
 <li><code>CHECKEXTRA</code>: Extra options to pass to <code>cppcheck</code> for the <code>make check</code> target</li>
@@ -181,10 +183,10 @@ Building the SMA-X C library</h2>
 Initial configuration</h2>
 <p>Bu default, the library assumes that the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server used for SMA-X runs on a machine called <code>smax</code> (e.g. you may assign <code>smax</code> to the IP address in <code>/etc/hosts</code>), and that the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> is on the default port 6379/tcp. However, you can configure to use a specific host and/or an alternative <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> port number to use instead.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="smax_8c.html#a78cf94f007034f63b609cbe72b8047b0">smaxSetServer</a>(<span class="stringliteral">&quot;my-smax.example.com&quot;</span>, 7033);</div>
-<div class="ttc" id="asmax_8c_html_a78cf94f007034f63b609cbe72b8047b0"><div class="ttname"><a href="smax_8c.html#a78cf94f007034f63b609cbe72b8047b0">smaxSetServer</a></div><div class="ttdeci">int smaxSetServer(const char *host, int port)</div><div class="ttdef"><b>Definition</b> smax.c:109</div></div>
+<div class="ttc" id="asmax_8c_html_a78cf94f007034f63b609cbe72b8047b0"><div class="ttname"><a href="smax_8c.html#a78cf94f007034f63b609cbe72b8047b0">smaxSetServer</a></div><div class="ttdeci">int smaxSetServer(const char *host, int port)</div><div class="ttdef"><b>Definition</b> smax.c:112</div></div>
 </div><!-- fragment --><p>Also, while SMA-X will normally run on database index 0, you can also specify a different database number to use. E.g.:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="smax_8c.html#a79fba7411b5afa132457a6828ff5ed9f">smaxSetDB</a>(3);</div>
-<div class="ttc" id="asmax_8c_html_a79fba7411b5afa132457a6828ff5ed9f"><div class="ttname"><a href="smax_8c.html#a79fba7411b5afa132457a6828ff5ed9f">smaxSetDB</a></div><div class="ttdeci">int smaxSetDB(int idx)</div><div class="ttdef"><b>Definition</b> smax.c:165</div></div>
+<div class="ttc" id="asmax_8c_html_a79fba7411b5afa132457a6828ff5ed9f"><div class="ttname"><a href="smax_8c.html#a79fba7411b5afa132457a6828ff5ed9f">smaxSetDB</a></div><div class="ttdeci">int smaxSetDB(int idx)</div><div class="ttdef"><b>Definition</b> smax.c:168</div></div>
 </div><!-- fragment --><p>(Note, you can switch the database later also, but beware that if you have an active subscription client open, you cannot switch that client until the subscriptions are terminated.)</p>
 <p>You can also set up the authentication credentials for using the SMA-X database on the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server:</p>
 <div class="fragment"><div class="line">smaxSetUser(<span class="stringliteral">&quot;johndoe&quot;</span>);</div>
@@ -202,10 +204,10 @@ Connecting to / disconnecting from SMA-X</h2>
 <div class="line">   <span class="comment">// Oops, we could not connect to the server</span></div>
 <div class="line">   ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_a146fb2ed8512919dc91ecad6d08c74d1"><div class="ttname"><a href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect</a></div><div class="ttdeci">int smaxConnect()</div><div class="ttdef"><b>Definition</b> smax.c:418</div></div>
+<div class="ttc" id="asmax_8c_html_a146fb2ed8512919dc91ecad6d08c74d1"><div class="ttname"><a href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect</a></div><div class="ttdeci">int smaxConnect()</div><div class="ttdef"><b>Definition</b> smax.c:421</div></div>
 </div><!-- fragment --><p>And, when you are done, you should disconnect with:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="smax_8c.html#a9d1e6ffa837d3582a8165e326cc44bea">smaxDisconnect</a>();</div>
-<div class="ttc" id="asmax_8c_html_a9d1e6ffa837d3582a8165e326cc44bea"><div class="ttname"><a href="smax_8c.html#a9d1e6ffa837d3582a8165e326cc44bea">smaxDisconnect</a></div><div class="ttdeci">int smaxDisconnect()</div><div class="ttdef"><b>Definition</b> smax.c:503</div></div>
+<div class="ttc" id="asmax_8c_html_a9d1e6ffa837d3582a8165e326cc44bea"><div class="ttname"><a href="smax_8c.html#a9d1e6ffa837d3582a8165e326cc44bea">smaxDisconnect</a></div><div class="ttdeci">int smaxDisconnect()</div><div class="ttdef"><b>Definition</b> smax.c:506</div></div>
 </div><!-- fragment --><p><a class="anchor" id="connection-hooks"></a> </p>
 <h3><a class="anchor" id="autotoc_md14"></a>
 Connection / disconnection hooks</h3>
@@ -216,7 +218,7 @@ Connection / disconnection hooks</h3>
 <div class="line">}</div>
 </div><!-- fragment --><p>And, it can be activated prior to the <code><a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a></code> call.</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30">smaxAddConnectHook</a>(my_connect_hook);</div>
-<div class="ttc" id="asmax_8c_html_ad63c425cc3affdf8bc803c7ff8dd6e30"><div class="ttname"><a href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30">smaxAddConnectHook</a></div><div class="ttdeci">int smaxAddConnectHook(void(*setupCall)(void))</div><div class="ttdef"><b>Definition</b> smax.c:553</div></div>
+<div class="ttc" id="asmax_8c_html_ad63c425cc3affdf8bc803c7ff8dd6e30"><div class="ttname"><a href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30">smaxAddConnectHook</a></div><div class="ttdeci">int smaxAddConnectHook(void(*setupCall)(void))</div><div class="ttdef"><b>Definition</b> smax.c:556</div></div>
 </div><!-- fragment --><p>The same goes for disconnect hooks, using <code><a class="el" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c">smaxAddDisconnectHook()</a></code> instead.</p>
 <hr  />
 <p><a class="anchor" id="sharing-and-pulling"></a> </p>
@@ -244,7 +246,7 @@ The basics</h3>
 <div class="line">  <span class="comment">// Ooops, that did not work...</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_aee07f085e12283ad96f42c4d77430880"><div class="ttname"><a href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare</a></div><div class="ttdeci">int smaxShare(const char *table, const char *key, const void *value, XType type, int count)</div><div class="ttdef"><b>Definition</b> smax.c:708</div></div>
+<div class="ttc" id="asmax_8c_html_aee07f085e12283ad96f42c4d77430880"><div class="ttname"><a href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare</a></div><div class="ttdeci">int smaxShare(const char *table, const char *key, const void *value, XType type, int count)</div><div class="ttdef"><b>Definition</b> smax.c:711</div></div>
 </div><!-- fragment --><p>Pulling data back from SMA-X works similarly, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> data[4][2] = ...   <span class="comment">// buffer in which we will receive data</span></div>
 <div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;               <span class="comment">// (optional) metadata we can obtain </span></div>
@@ -255,7 +257,7 @@ The basics</h3>
 <div class="line">  <span class="comment">// Oops, something went wrong...</span></div>
 <div class="line">  <span class="keywordflow">return</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_afb7eec789669c3d3f416857d3615ace6"><div class="ttname"><a href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull</a></div><div class="ttdeci">int smaxPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax.c:637</div></div>
+<div class="ttc" id="asmax_8c_html_afb7eec789669c3d3f416857d3615ace6"><div class="ttname"><a href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull</a></div><div class="ttdeci">int smaxPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax.c:640</div></div>
 <div class="ttc" id="astructXMeta_html"><div class="ttname"><a href="structXMeta.html">XMeta</a></div><div class="ttdoc">SMA-X standard metadata.</div><div class="ttdef"><b>Definition</b> smax.h:166</div></div>
 </div><!-- fragment --><p>The metadata argument is optional, and can be <code>NULL</code> if not required.</p>
 <p><a class="anchor" id="metadata"></a> </p>
@@ -351,7 +353,7 @@ Arrays</h3>
 <div class="line">  <span class="comment">// Oops, did not work...</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_a1b116e8ffa85c30991ce6d8afb0319e0"><div class="ttname"><a href="smax_8c.html#a1b116e8ffa85c30991ce6d8afb0319e0">smaxShareArray</a></div><div class="ttdeci">int smaxShareArray(const char *table, const char *key, const void *ptr, XType type, int ndim, const int *sizes)</div><div class="ttdef"><b>Definition</b> smax.c:735</div></div>
+<div class="ttc" id="asmax_8c_html_a1b116e8ffa85c30991ce6d8afb0319e0"><div class="ttname"><a href="smax_8c.html#a1b116e8ffa85c30991ce6d8afb0319e0">smaxShareArray</a></div><div class="ttdeci">int smaxShareArray(const char *table, const char *key, const void *ptr, XType type, int ndim, const int *sizes)</div><div class="ttdef"><b>Definition</b> smax.c:738</div></div>
 </div><!-- fragment --><p>Note, that the dimensions of how the data is stored in SMA-X is determined solely by the '2' dimensions specified as the 4th argument and the corresponding 2 elements in the <code>shape</code> array. The <code>data</code> could have been any pointer to an array of floats containing at least the required number of element (8 in the example above).</p>
 <p>For 1D arrays, you have some convenience methods for sharing specific types. These can be convenient because they eliminate one potential source of bugs, where the type argument to <code><a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a></code> does not match the pointer type of the data. Using, say, <code><a class="el" href="smax-easy_8c.html#ace410207bfb5ba9211dc644f7dd2768d">smaxShareFloats()</a></code> instead to share a 1D floating-point array instead of the generic <code><a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a></code> will allow the compiler to check and warn you if the data array is not the <code>float *</code> type. E.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">float</span> *data = ...  <span class="comment">// pointer to a one or higher-dimensional C array of floats.</span></div>
@@ -393,7 +395,7 @@ Structures / substructures...</h3>
 <div class="line">  <span class="comment">// Oops, something did not work</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_ab6a1590c953abc1c37fed841cd3a903a"><div class="ttname"><a href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct</a></div><div class="ttdeci">int smaxShareStruct(const char *id, const XStructure *s)</div><div class="ttdef"><b>Definition</b> smax.c:866</div></div>
+<div class="ttc" id="asmax_8c_html_ab6a1590c953abc1c37fed841cd3a903a"><div class="ttname"><a href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct</a></div><div class="ttdeci">int smaxShareStruct(const char *id, const XStructure *s)</div><div class="ttdef"><b>Definition</b> smax.c:869</div></div>
 <div class="ttc" id="astructXStructure_html"><div class="ttname"><a href="../../xchange/apidoc/html/structXStructure.html">XStructure</a></div></div>
 </div><!-- fragment --><p>Or, you can read a structure, including all embedded substructures in it, with <code><a class="el" href="smax-easy_8c.html#a30a2212f19ab2cbf60ea348110475948">smaxPullStruct()</a></code>:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;</div>
@@ -469,14 +471,14 @@ Pipelined pulling (high volume queries)</h2>
 <div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;   <span class="comment">// (optional) metadata to fill (for the above value).</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_var&quot;</span>, X_DOUBLE, 1, &amp;d, &amp;meta);</div>
-<div class="ttc" id="asmax-queue_8c_html_a2c71427a215e2253d93de24788db338d"><div class="ttname"><a href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a></div><div class="ttdeci">int smaxQueue(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-queue.c:481</div></div>
+<div class="ttc" id="asmax-queue_8c_html_a2c71427a215e2253d93de24788db338d"><div class="ttname"><a href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a></div><div class="ttdeci">int smaxQueue(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-queue.c:490</div></div>
 </div><!-- fragment --><p>Pipelined (batched) pulls have dramatic effects on performance. Rather than being limited by round-trip times, you will be limited by the performance of the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server itself (or the network bandwidth on some older infrastructure). As such, instead of thousand of queries per second, you can pull 2-3 orders of magnitude more in a given time, with hudreds of thousands to even millions of pull per second this way.</p>
 <p><a class="anchor" id="lazy-synchronization"></a> </p>
 <h3><a class="anchor" id="autotoc_md27"></a>
 Synchronization points and waiting</h3>
 <p>After you have submitted a batch of pull request to the queue, you can create a synchronization point as:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structXSyncPoint.html">XSyncPoint</a> *syncPoint = <a class="code hl_function" href="smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1">smaxCreateSyncPoint</a>();</div>
-<div class="ttc" id="asmax-queue_8c_html_a30e2e1eb462ed2274a55016830b9abc1"><div class="ttname"><a href="smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1">smaxCreateSyncPoint</a></div><div class="ttdeci">XSyncPoint * smaxCreateSyncPoint()</div><div class="ttdef"><b>Definition</b> smax-queue.c:68</div></div>
+<div class="ttc" id="asmax-queue_8c_html_a30e2e1eb462ed2274a55016830b9abc1"><div class="ttname"><a href="smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1">smaxCreateSyncPoint</a></div><div class="ttdeci">XSyncPoint * smaxCreateSyncPoint()</div><div class="ttdef"><b>Definition</b> smax-queue.c:71</div></div>
 <div class="ttc" id="astructXSyncPoint_html"><div class="ttname"><a href="structXSyncPoint.html">XSyncPoint</a></div><div class="ttdoc">Synchronization point that can be waited upon when queueing pipelined pulls.</div><div class="ttdef"><b>Definition</b> smax.h:128</div></div>
 </div><!-- fragment --><p>A synchronization point is a marker in the queue that we can wait on. After the synchronization point is created, you can sumbit more pull request to the same queue (e.g. for another processing block), or do some other things for a bit (since it will take at least some microseconds before the data is ready). Then, when ready you can wait on the specific synchronization point to ensure that data submitted prior to its creation is delivered from SMA-X:</p>
 <div class="fragment"><div class="line"><span class="comment">// Wait for data submitted prior to syncPoint to be ready, or time out after 1000 ms.</span></div>
@@ -494,7 +496,7 @@ Synchronization points and waiting</h3>
 <div class="line">  <span class="comment">// Some other error</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-queue_8c_html_a90a901b9e649c77d29379b8fc31cbefc"><div class="ttname"><a href="smax-queue_8c.html#a90a901b9e649c77d29379b8fc31cbefc">smaxSync</a></div><div class="ttdeci">int smaxSync(XSyncPoint *sync, int timeoutMillis)</div><div class="ttdef"><b>Definition</b> smax-queue.c:248</div></div>
+<div class="ttc" id="asmax-queue_8c_html_a90a901b9e649c77d29379b8fc31cbefc"><div class="ttname"><a href="smax-queue_8c.html#a90a901b9e649c77d29379b8fc31cbefc">smaxSync</a></div><div class="ttdeci">int smaxSync(XSyncPoint *sync, int timeoutMillis)</div><div class="ttdef"><b>Definition</b> smax-queue.c:251</div></div>
 </div><!-- fragment --><p><a class="anchor" id="lazy-callbacks"></a> </p>
 <h3><a class="anchor" id="autotoc_md28"></a>
 Callbacks</h3>
@@ -509,7 +511,7 @@ Callbacks</h3>
 </div><!-- fragment --><p>Then submit this callback routine to the queue after the set of variables it requires with:</p>
 <div class="fragment"><div class="line"><span class="comment">// We&#39;ll call my_pull_processor, with the argument &quot;some_tag&quot;, when prior data has arrived.</span></div>
 <div class="line"><a class="code hl_function" href="smax-queue_8c.html#a06781e13ee30b0530ba3ed2e4436b449">smaxQueueCallback</a>(my_pull_processor, <span class="stringliteral">&quot;some_tag&quot;</span>);</div>
-<div class="ttc" id="asmax-queue_8c_html_a06781e13ee30b0530ba3ed2e4436b449"><div class="ttname"><a href="smax-queue_8c.html#a06781e13ee30b0530ba3ed2e4436b449">smaxQueueCallback</a></div><div class="ttdeci">int smaxQueueCallback(void(*f)(void *), void *arg)</div><div class="ttdef"><b>Definition</b> smax-queue.c:142</div></div>
+<div class="ttc" id="asmax-queue_8c_html_a06781e13ee30b0530ba3ed2e4436b449"><div class="ttname"><a href="smax-queue_8c.html#a06781e13ee30b0530ba3ed2e4436b449">smaxQueueCallback</a></div><div class="ttdeci">int smaxQueueCallback(void(*f)(void *), void *arg)</div><div class="ttdef"><b>Definition</b> smax-queue.c:145</div></div>
 </div><!-- fragment --><p><a class="anchor" id="lazy-finish"></a> </p>
 <h3><a class="anchor" id="autotoc_md29"></a>
 Finishing up</h3>
@@ -526,7 +528,7 @@ Finishing up</h3>
 <div class="line">  <span class="comment">// Some other error</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-queue_8c_html_a065361085eed93188b7fd3ffe3a7eaf5"><div class="ttname"><a href="smax-queue_8c.html#a065361085eed93188b7fd3ffe3a7eaf5">smaxWaitQueueComplete</a></div><div class="ttdeci">int smaxWaitQueueComplete(int timeoutMillis)</div><div class="ttdef"><b>Definition</b> smax-queue.c:323</div></div>
+<div class="ttc" id="asmax-queue_8c_html_a065361085eed93188b7fd3ffe3a7eaf5"><div class="ttname"><a href="smax-queue_8c.html#a065361085eed93188b7fd3ffe3a7eaf5">smaxWaitQueueComplete</a></div><div class="ttdeci">int smaxWaitQueueComplete(int timeoutMillis)</div><div class="ttdef"><b>Definition</b> smax-queue.c:326</div></div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="notifications"></a> </p>
 <h2><a class="anchor" id="autotoc_md31"></a>
@@ -560,7 +562,7 @@ Error handling</h2>
 <div class="line">  fprintf(stderr, <span class="stringliteral">&quot;WARNING! set value: %s&quot;</span>, <a class="code hl_function" href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c">smaxErrorDescription</a>(status));</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-util_8c_html_a51856e0dc0261f8e44c8635d31d6193c"><div class="ttname"><a href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c">smaxErrorDescription</a></div><div class="ttdeci">const char * smaxErrorDescription(int code)</div><div class="ttdef"><b>Definition</b> smax-util.c:258</div></div>
+<div class="ttc" id="asmax-util_8c_html_a51856e0dc0261f8e44c8635d31d6193c"><div class="ttname"><a href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c">smaxErrorDescription</a></div><div class="ttdeci">const char * smaxErrorDescription(int code)</div><div class="ttdef"><b>Definition</b> smax-util.c:261</div></div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="debug-support"></a> </p>
 <h2><a class="anchor" id="autotoc_md44"></a>

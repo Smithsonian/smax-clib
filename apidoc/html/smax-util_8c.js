@@ -1,5 +1,6 @@
 var smax_util_8c =
 [
+    [ "_POSIX_C_SOURCE", "smax-util_8c.html#a3024ccd4a9af5109d24e6c57565d74a1", null ],
     [ "smax2xField", "smax-util_8c.html#abfe751f22aa718133911ffdee848f64a", null ],
     [ "smax2xStruct", "smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c", null ],
     [ "smaxCreateField", "smax-util_8c.html#a9871356984c4794a9f9caa3870dc6794", null ],

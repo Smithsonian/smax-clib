@@ -58,7 +58,6 @@ var smax_8h =
     [ "smaxCreateScalarField", "smax_8h.html#a61a3760159e6867cdb55b5995435633c", null ],
     [ "smaxCreateStringField", "smax_8h.html#aa5c7661e29f4f1ba62f457c7138f2654", null ],
     [ "smaxCreateSyncPoint", "smax_8h.html#a30e2e1eb462ed2274a55016830b9abc1", null ],
-    [ "smaxDeletePattern", "smax_8h.html#a6c116311d61874554f98332831ad872b", null ],
     [ "smaxDestroyCoordinateSystem", "smax_8h.html#a92cf6cd3b3f123e21a1cee437f87126d", null ],
     [ "smaxDestroySyncPoint", "smax_8h.html#a97ace8424abf924b8ae0397ae83177f2", null ],
     [ "smaxDisconnect", "smax_8h.html#a9d1e6ffa837d3582a8165e326cc44bea", null ],

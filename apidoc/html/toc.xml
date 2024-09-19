@@ -176,7 +176,6 @@
           <topic label="smaxCreateScalarField" href="smax_8h.html#a61a3760159e6867cdb55b5995435633c"/>
           <topic label="smaxCreateStringField" href="smax_8h.html#aa5c7661e29f4f1ba62f457c7138f2654"/>
           <topic label="smaxCreateSyncPoint" href="smax_8h.html#a30e2e1eb462ed2274a55016830b9abc1"/>
-          <topic label="smaxDeletePattern" href="smax_8h.html#a6c116311d61874554f98332831ad872b"/>
           <topic label="smaxDestroyCoordinateSystem" href="smax_8h.html#a92cf6cd3b3f123e21a1cee437f87126d"/>
           <topic label="smaxDestroySyncPoint" href="smax_8h.html#a97ace8424abf924b8ae0397ae83177f2"/>
           <topic label="smaxDisconnect" href="smax_8h.html#a9d1e6ffa837d3582a8165e326cc44bea"/>
@@ -390,6 +389,7 @@
           <topic label="smaxSetUnits" href="smax-meta_8c.html#a23e6627339f6bf58e87150aa9ff0c964"/>
         </topic>
         <topic label="smax-queue.c" href="smax-queue_8c.html">
+          <topic label="_POSIX_C_SOURCE" href="smax-queue_8c.html#a3024ccd4a9af5109d24e6c57565d74a1"/>
           <topic label="smaxCreateSyncPoint" href="smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1"/>
           <topic label="smaxDestroySyncPoint" href="smax-queue_8c.html#a012860edbebf45f24b1b08c02a37847b"/>
           <topic label="smaxQueue" href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d"/>
@@ -404,6 +404,7 @@
           <topic label="smaxSetResilientExit" href="smax-resilient_8c.html#ae638a5b4c82119eea5ef7a0ba2cd40c1"/>
         </topic>
         <topic label="smax-util.c" href="smax-util_8c.html">
+          <topic label="_POSIX_C_SOURCE" href="smax-util_8c.html#a3024ccd4a9af5109d24e6c57565d74a1"/>
           <topic label="smax2xField" href="smax-util_8c.html#abfe751f22aa718133911ffdee848f64a"/>
           <topic label="smax2xStruct" href="smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c"/>
           <topic label="smaxCreateField" href="smax-util_8c.html#a9871356984c4794a9f9caa3870dc6794"/>
@@ -432,6 +433,7 @@
           <topic label="x2smaxStruct" href="smax-util_8c.html#a65cc6cdad09f861b968e2d492abed977"/>
         </topic>
         <topic label="smax.c" href="smax_8c.html">
+          <topic label="_POSIX_C_SOURCE" href="smax_8c.html#a3024ccd4a9af5109d24e6c57565d74a1"/>
           <topic label="smaxAddConnectHook" href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30"/>
           <topic label="smaxAddDisconnectHook" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c"/>
           <topic label="smaxAddSubscriber" href="smax_8c.html#a827dd87397943f3384605f87116b630c"/>

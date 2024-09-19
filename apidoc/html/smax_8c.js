@@ -1,5 +1,6 @@
 var smax_8c =
 [
+    [ "_POSIX_C_SOURCE", "smax_8c.html#a3024ccd4a9af5109d24e6c57565d74a1", null ],
     [ "smaxAddConnectHook", "smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30", null ],
     [ "smaxAddDisconnectHook", "smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c", null ],
     [ "smaxAddSubscriber", "smax_8c.html#a827dd87397943f3384605f87116b630c", null ],

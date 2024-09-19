@@ -1,5 +1,6 @@
 var smax_queue_8c =
 [
+    [ "_POSIX_C_SOURCE", "smax-queue_8c.html#a3024ccd4a9af5109d24e6c57565d74a1", null ],
     [ "smaxCreateSyncPoint", "smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1", null ],
     [ "smaxDestroySyncPoint", "smax-queue_8c.html#a012860edbebf45f24b1b08c02a37847b", null ],
     [ "smaxQueue", "smax-queue_8c.html#a2c71427a215e2253d93de24788db338d", null ],

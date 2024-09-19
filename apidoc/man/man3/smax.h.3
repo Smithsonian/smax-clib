@@ -161,7 +161,7 @@ include/smax.h
 .br
 .RI "\fBRedis\fP meta table where the number of times a variable has been written is stored\&. "
 .ti -1c
-.RI "#define \fBX_META_INIT\fP   { 0, \fBX_UNKNOWN\fP, \-1, {0}, \-1 }"
+.RI "#define \fBX_META_INIT\fP   { 0, \fBX_UNKNOWN\fP, \-1, {0}, \-1, {'\\0'}, {0}, 0 }"
 .br
 .in -1c
 .SS "Functions"
@@ -226,9 +226,6 @@ include/smax.h
 .br
 .ti -1c
 .RI "\fBXSyncPoint\fP * \fBsmaxCreateSyncPoint\fP ()"
-.br
-.ti -1c
-.RI "int \fBsmaxDeletePattern\fP (const char *pattern)"
 .br
 .ti -1c
 .RI "void \fBsmaxDestroyCoordinateSystem\fP (\fBXCoordinateSystem\fP *coords)"
@@ -624,7 +621,7 @@ Attila Kovacs
 \fBRedis\fP meta table where variable types are stored\&. Character arrays a treated somewhat differently, with the element size bundled in the type, to allow variable length strings to be properly parsed into them without overflow\&.\&.\&. 
 .SS "#define SMAX_VERSION_STRING"
 The version string for this library 
-.SS "#define X_META_INIT   { 0, \fBX_UNKNOWN\fP, \-1, {0}, \-1 }"
+.SS "#define X_META_INIT   { 0, \fBX_UNKNOWN\fP, \-1, {0}, \-1, {'\\0'}, {0}, 0 }"
 Default initialized for SMA-X medatadata structure\&. You should always initialize local metadata with this\&. 
 .SH "Function Documentation"
 .PP 
@@ -1095,22 +1092,6 @@ Pointer to a newly created synchronization point that can be waited upon\&.
 
 .PP
 References \fBXSyncPoint::isComplete\fP, \fBXSyncPoint::lock\fP, \fBXSyncPoint::status\fP, \fBX_INCOMPLETE\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxDeletePattern (const char * pattern)"
-Deletes variables and metadata from SMA-X\&.
-.PP
-\fBParameters\fP
-.RS 4
-\fIpattern\fP Glob variable name pattern 
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-The number of variables deleted from the SQL DB 
-.RE
-.PP
-
-.PP
-References \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_NULL\fP, and \fBX_SEP\fP\&.
 .SS "void smaxDestroyCoordinateSystem (\fBXCoordinateSystem\fP * coords)"
 Deallocates a coordinate system structure\&.
 .PP

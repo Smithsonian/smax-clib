@@ -401,13 +401,6 @@
       <arglist>()</arglist>
     </member>
     <member kind="function">
-      <type>int</type>
-      <name>smaxDeletePattern</name>
-      <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a6c116311d61874554f98332831ad872b</anchor>
-      <arglist>(const char *pattern)</arglist>
-    </member>
-    <member kind="function">
       <type>void</type>
       <name>smaxDestroyCoordinateSystem</name>
       <anchorfile>smax_8h.html</anchorfile>
@@ -1844,6 +1837,13 @@
     <path>src/</path>
     <filename>smax-queue_8c.html</filename>
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_POSIX_C_SOURCE</name>
+      <anchorfile>smax-queue_8c.html</anchorfile>
+      <anchor>a3024ccd4a9af5109d24e6c57565d74a1</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>XSyncPoint *</type>
       <name>smaxCreateSyncPoint</name>
@@ -1926,6 +1926,13 @@
     <path>src/</path>
     <filename>smax-util_8c.html</filename>
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_POSIX_C_SOURCE</name>
+      <anchorfile>smax-util_8c.html</anchorfile>
+      <anchor>a3024ccd4a9af5109d24e6c57565d74a1</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>int</type>
       <name>smax2xField</name>
@@ -2114,6 +2121,13 @@
     <path>src/</path>
     <filename>smax_8c.html</filename>
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_POSIX_C_SOURCE</name>
+      <anchorfile>smax_8c.html</anchorfile>
+      <anchor>a3024ccd4a9af5109d24e6c57565d74a1</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>int</type>
       <name>smaxAddConnectHook</name>

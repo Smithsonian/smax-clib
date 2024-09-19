@@ -1,8 +1,13 @@
 <img src="/smax-clib/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
+C/C++ client library for the SMA Exchange (SMA-X) structured real-time database
+
+ - [API documentation](https://smithsonian.github.io/smax-clib/apidoc/html/files.html)
+ - [Project pages](https://smithsonian.github.io/smax-clib) on github.io
+
 Author: Attila Kovacs
 
-Last Updated: 14 September 2024
+Last Updated: 18 September 2024
 
 ## Table of Contents
 
@@ -39,11 +44,7 @@ for C/C++ (C99) and Python 3. We may provide Java and/or Rust client libraries t
 There are no official releases of __smax-clib__ yet. An initial 1.0.0 release is expected early/mid 2025. 
 Before then the API may undergo slight changes and tweaks. Use the repository as is at your own risk for now.
 
-Some related links:
-
- - [API documentation](https://smithsonian.github.io/smax-clib/apidoc/html/files.html)
  - [SMA-X specification](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)
- - [Project page](https://smithsonian.github.io/smax-clib) on github.io
  - [Smithsonian/smax-python](https://smithsonian.github.io/smax-python) an alternative library for Python 3.
 
 
@@ -85,7 +86,8 @@ prior to invoking `make`. The following build variables can be configured:
 
  - `CPPFLAGS`: C pre-processor flags, such as externally defined compiler constants.
  
- - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall`). Note, `-Iinclude` will be added automatically.
+ - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
+   automatically.
    
  - `LDFLAGS`: Linker flags (default is `-lm`). Note, `-lredisx -lxchange` will be added automatically.
 

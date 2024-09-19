@@ -265,7 +265,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>SMAX_WRITES</b>&#160;&#160;&#160;&quot;&lt;writes&gt;&quot;</td></tr>
 <tr class="memdesc:af6088c6c91a1f0089000288f0214f67c"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> meta table where the number of times a variable has been written is stored. <br /></td></tr>
 <tr class="separator:af6088c6c91a1f0089000288f0214f67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a793fead1eb30470e219192befc88b3c9" id="r_a793fead1eb30470e219192befc88b3c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a793fead1eb30470e219192befc88b3c9">X_META_INIT</a>&#160;&#160;&#160;{ 0, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, -1, {0}, -1 }</td></tr>
+<tr class="memitem:a793fead1eb30470e219192befc88b3c9" id="r_a793fead1eb30470e219192befc88b3c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a793fead1eb30470e219192befc88b3c9">X_META_INIT</a>&#160;&#160;&#160;{ 0, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, -1, {0}, -1, {'\0'}, {0}, 0 }</td></tr>
 <tr class="separator:a793fead1eb30470e219192befc88b3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -310,8 +310,6 @@ Functions</h2></td></tr>
 <tr class="separator:aa5c7661e29f4f1ba62f457c7138f2654"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30e2e1eb462ed2274a55016830b9abc1" id="r_a30e2e1eb462ed2274a55016830b9abc1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structXSyncPoint.html">XSyncPoint</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a30e2e1eb462ed2274a55016830b9abc1">smaxCreateSyncPoint</a> ()</td></tr>
 <tr class="separator:a30e2e1eb462ed2274a55016830b9abc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c116311d61874554f98332831ad872b" id="r_a6c116311d61874554f98332831ad872b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a6c116311d61874554f98332831ad872b">smaxDeletePattern</a> (const char *pattern)</td></tr>
-<tr class="separator:a6c116311d61874554f98332831ad872b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92cf6cd3b3f123e21a1cee437f87126d" id="r_a92cf6cd3b3f123e21a1cee437f87126d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a92cf6cd3b3f123e21a1cee437f87126d">smaxDestroyCoordinateSystem</a> (<a class="el" href="structXCoordinateSystem.html">XCoordinateSystem</a> *coords)</td></tr>
 <tr class="separator:a92cf6cd3b3f123e21a1cee437f87126d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97ace8424abf924b8ae0397ae83177f2" id="r_a97ace8424abf924b8ae0397ae83177f2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a97ace8424abf924b8ae0397ae83177f2">smaxDestroySyncPoint</a> (<a class="el" href="structXSyncPoint.html">XSyncPoint</a> *sync)</td></tr>
@@ -603,7 +601,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define X_META_INIT&#160;&#160;&#160;{ 0, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, -1, {0}, -1 }</td>
+          <td class="memname">#define X_META_INIT&#160;&#160;&#160;{ 0, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, -1, {0}, -1, {'\0'}, {0}, 0 }</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1382,34 +1380,6 @@ Functions</h2></td></tr>
 <a class="el" href="smax-queue_8c.html#a06781e13ee30b0530ba3ed2e4436b449">smaxQueueCallback()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="structXSyncPoint.html#a0b9f91194934aba0d7936d18d4bc81cc">XSyncPoint::isComplete</a>, <a class="el" href="structXSyncPoint.html#a33586b4184d23f2b8f4df153ec23af13">XSyncPoint::lock</a>, <a class="el" href="structXSyncPoint.html#a6e27f49150e9a14580fb313cc2777e00">XSyncPoint::status</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a888dbfa464548f0b65794e172713160b">X_INCOMPLETE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
-
-</div>
-</div>
-<a id="a6c116311d61874554f98332831ad872b" name="a6c116311d61874554f98332831ad872b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c116311d61874554f98332831ad872b">&#9670;&#160;</a></span>smaxDeletePattern()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int smaxDeletePattern </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>pattern</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Deletes variables and metadata from SMA-X.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">pattern</td><td>Glob variable name pattern </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The number of variables deleted from the SQL DB </dd></dl>
-
-<p class="reference">References <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a923cd66e2074f32817a3468c5617a440">X_SEP</a>.</p>
 
 </div>
 </div>
