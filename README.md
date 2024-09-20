@@ -111,14 +111,9 @@ prior to invoking `make`. The following build variables can be configured:
  - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
    automatically.
    
- - `LDFLAGS`: Linker flags (default is `-lm`). Note, `-lredisx -lxchange` will be added automatically.
+ - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm -lredisx -lxchange -pthread` will be added 
+   automatically.
  
- - `THREADS`: Linker flags for the __pthread__ library. It will be added to `LDFLAGS` automatically. (default: 
-   `-pthread`)
-
- - `RTLIB`: Linker flags fo linking against a realtime (if necessary). It will be added to `LDFLAGS` 
-   automatically. (default: empty)
-
  - `BUILD_MODE`: You can set it to `debug` to enable debugging features: it will initialize the global `xDebug` 
    variable to `TRUE` and add `-g` to `CFLAGS`.
 

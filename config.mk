@@ -1,6 +1,6 @@
 # ===========================================================================
-# Generic configuration options for building the RedisX library (both static 
-# and shared).
+# Generic configuration options for building the SMA-X client library (both 
+# static and shared).
 #
 # You can include this snipplet in your Makefile also.
 # ============================================================================
@@ -38,31 +38,17 @@ CFLAGS ?= -Os -Wall -std=c99
 # Extra warnings (not supported on all compilers)
 #CFLAGS += -Wextra
 
-# Link against math libs (for e.g. isnan())
-LDFLAGS ?= -lm 
+# Extra link flags (if any)
+#LDFLAGS =
 
 # Link flags to use for threading with pthread
 THREADS ?= -pthread
 
-# Runtime libraries to link against (if any)
-#RTLIB ?= -lrt
+# Link flags required for network functions (if any) to include in LDFLAGS
+#NETFLAGS = -lnsl
 
-# Compile and link against a specific redisx library (if defined)
-ifdef REDISX
-  CPPFLAGS += -I$(REDISX)/include
-  LDFLAGS += -L$(REDISX)/lib
-  LD_LIBRARY_PATH := $(REDISX)/lib:$(LD_LIBRARY_PATH)
-endif
-
-# Compile and link against a specific xchange library (if defined)
-ifdef XCHANGE
-  CPPFLAGS += -I$(XCHANGE)/include
-  LDFLAGS += -L$(XCHANGE)/lib
-  LD_LIBRARY_PATH := $(XCHANGE)/lib:$(LD_LIBRARY_PATH)
-endif
-
-# Always link against the xchange lib.
-LDFLAGS += -lredisx -lxchange $(RTLIB) $(THREADS)
+# Link flags required for OS calls (if any) to include in LDFLAGS
+#OSFLAGS =
 
 # cppcheck options for 'check' target
 CHECKOPTS ?= --enable=performance,warning,portability,style --language=c \
@@ -86,6 +72,32 @@ CHECKOPTS += --template='{file}({line}): {severity} ({id}): {message}' --inline-
 ifeq ($(BUILD_MODE),debug)
 	CFLAGS += -g -DDEBUG
 endif
+
+ifdef OSFLAGS
+  LDFLAGS += $(OSFLAGS)
+endif
+
+ifdef NETFLAGS
+  LDFLAGS += $(NETFLAGS)
+endif
+
+# Links against pthread and dependencies
+LDFLAGS += $(THREADS) -lredisx -lxchange 
+
+# Compile and link against a specific redisx library (if defined)
+ifdef REDISX
+  CPPFLAGS += -I$(REDISX)/include
+  LDFLAGS += -L$(REDISX)/lib
+  LD_LIBRARY_PATH := $(REDISX)/lib:$(LD_LIBRARY_PATH)
+endif
+
+# Compile and link against a specific xchange library (if defined)
+ifdef XCHANGE
+  CPPFLAGS += -I$(XCHANGE)/include
+  LDFLAGS += -L$(XCHANGE)/lib
+  LD_LIBRARY_PATH := $(XCHANGE)/lib:$(LD_LIBRARY_PATH)
+endif
+
 
 # Search for files in the designated locations
 vpath %.h $(INC)
