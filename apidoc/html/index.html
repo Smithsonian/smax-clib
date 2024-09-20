@@ -115,7 +115,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
   <div class="headertitle"><div class="title">smax-clib </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="md_README-smax"></a> C/C++ client library for the <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA Exchange (SMA-X)</a> structured real-time database</p>
+<div class="textblock"><p><a class="anchor" id="md_README-smax"></a> C/C++ client library and toolkit for the <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA Exchange (SMA-X)</a> structured real-time database</p>
 <ul>
 <li><a href="https://smithsonian.github.io/smax-clib/apidoc/html/files.html">API documentation</a></li>
 <li><a href="https://smithsonian.github.io/smax-clib">Project pages</a> on github.io</li>
@@ -176,9 +176,7 @@ Building the SMA-X C library</h2>
 <li><code>CC</code>: The C compiler to use (default: <code>gcc</code>).</li>
 <li><code>CPPFLAGS</code>: C pre-processor flags, such as externally defined compiler constants.</li>
 <li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-Os -Wall -std=c99</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
-<li><code>LDFLAGS</code>: Linker flags (default is <code>-lm</code>). Note, <code>-lredisx -lxchange</code> will be added automatically.</li>
-<li><code>THREADS</code>: Linker flags for the <b>pthread</b> library. It will be added to <code>LDFLAGS</code> automatically. (default: <code>-pthread</code>)</li>
-<li><code>RTLIB</code>: Linker flags fo linking against a realtime (if necessary). It will be added to <code>LDFLAGS</code> automatically. (default: empty)</li>
+<li><code>LDFLAGS</code>: Extra linker flags (default: <em>not set</em>). Note, <code>-lm -lredisx -lxchange -pthread</code> will be added automatically.</li>
 <li><code>BUILD_MODE</code>: You can set it to <code>debug</code> to enable debugging features: it will initialize the global <code>xDebug</code> variable to <code>TRUE</code> and add <code>-g</code> to <code>CFLAGS</code>.</li>
 <li><code>CHECKEXTRA</code>: Extra options to pass to <code>cppcheck</code> for the <code>make check</code> target</li>
 </ul>
