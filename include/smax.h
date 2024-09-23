@@ -296,13 +296,13 @@ int smaxAddSubscriber(const char *stem, RedisSubscriberCall f);
 int smaxRemoveSubscribers(RedisSubscriberCall f);
 
 // Messages --------------------------------------------------->
-int smaxSendStatus(const char *msg);
-int smaxSendInfo(const char *msg);
-int smaxSendDetail(const char *msg);
-int smaxSendDebug(const char *msg);
-int smaxSendWarning(const char *msg);
-int smaxSendError(const char *msg);
-int smaxSendProgress(double fraction, const char *msg);
+int smaxSendStatus(const char *msg, ...);
+int smaxSendInfo(const char *msg, ...);
+int smaxSendDetail(const char *msg, ...);
+int smaxSendDebug(const char *msg, ...);
+int smaxSendWarning(const char *msg, ...);
+int smaxSendError(const char *msg, ...);
+int smaxSendProgress(double fraction, const char *msg, ...);
 int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void (*f)(XMessage *));
 int smaxAddDefaultMessageProcessor(const char *host, const char *prog, const char *type);
 int smaxRemoveMessageProcessor(int id);

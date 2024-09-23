@@ -27,6 +27,7 @@ Author: Attila Kovacs
 
 Last Updated: 18 September 2024
 
+
 ## Table of Contents
 
  - [Introduction](#introduction)
@@ -39,6 +40,7 @@ Last Updated: 18 September 2024
  - [Lazy pulling (high-frequency queries)](#lazy-pulling)
  - [Pipelined pulls (high volume queries)](#pipelined-pulls)
  - [Custom notification and update handling](#notifications)
+ - [Program status / error messages via SMA-X](#status-messages)
  - [Optional metadata](#optional-metadata)
  - [Error handling](#error-handling)
  - [Debug support](#debug-support)
@@ -686,8 +688,6 @@ all previously sumbitted requests have been collected. You can do that with:
   }
 ```
 
-
-
 ------------------------------------------------------------------------------
 
 <a name="notifications"></a>
@@ -815,10 +815,111 @@ callback information on a queue, and then spawn or notify a separate thread to p
 background, including discarding the copied data if it's no longer needed. Alternatively, you can launch a decicated
 processor thread early on, and iside it wait for the updates before executing some complex action. The choice is
 yours.
-  
-  
-### Status / error messages
 
+
+------------------------------------------------------------------------------  
+
+<a name="status-messages"></a>  
+## Program status / error messages via SMA-X
+
+ - [Broadcasting status messages from an application](#broadcasting-messages)
+ - [Processing program messages](#processing-messages)
+
+SMA-X also provides a standard for reporting porgram status, warning, and error messages via the Redis PUB/SUB 
+infrastructure. 
+ 
+<a name="broadcasting-messages"></a>
+### Broadcasting status messages from an application
+
+Broadcasting program messages to SMA-X is very simple using a set of dedicated messaging functions by message
+type. These are:
+
+ | __smax_clib__ function                                     | Description                                |
+ | `smaxSendStatus(const char *msg, ...)`                     | sends a status message                     |
+ | `smaxSendInfo(const char *msg, ...)`                       | sends an informational message             |
+ | `smaxSendDetail(const char *msg, ...)`                     | sends optional status/information detail   |
+ | `smaxSendDebug(const char *msg, ...)`                      | sends a debugging messages                 |
+ | `smaxSendWarning(const char *msg, ...)`                    | sends a warning message                    |
+ | `smaxSendError(const char *msg, ...)`                      | sends an error message                     |
+ | `smaxSendProgress(double fraction, const char *msg, ...)`  | sends a progress update and message        |
+
+All the above methods work like `printf()`, and can take additional parameters corresponding to the format specifiers
+contained in the `msg` argument.
+
+By default, the messages are sent under the canonocal program name (i.e. set by `_progname` on GNU/Linux systems) 
+that produced the message. You can override that, and define a custom sender ID for your status messages, by calling
+`smaxSetMessageSenderID()` prior to broadcasting, e.g.:
+
+```c
+  // Set out sender ID to "my_program_id"
+  smaxSetMessageSenderID("my_program_id");
+  
+  ...
+  
+  // Broadcast a warning message for "my_program_id"
+  int status = smaxSendWarning("Something did not work" %s", explanation);
+```
+
+<a name="processing-messages"></a>
+### Processing program messages
+
+On the receiving end, other applications can process such program messages, for a selection of hosts, programs, and 
+message types. You need to prepare you message processor function(s) first, e.g.:
+
+```c
+  void my_message_processor(XMessage *m) {
+    printf("Received %s message from %s: %s\n", m->type, m->prog, m->text);
+  }
+  
+```
+
+The processor function does not return any value, since it is called by a background thread, which does not check for
+return status. The `XMessage` type, a pointer to which is the sole argument of the processor, is defined in `smax.h` 
+as:
+
+
+```c
+  typedef struct {
+    char *host;                   // Host where message originated from
+    char *prog;                   // Originator program name
+    char *type;                   // Message type, e.g. "info", "detail", "warning", "error"
+    char *text;                   // Message body (with timestamp stripped).
+    double timestamp;             // Message timestamp, if available (otherwise 0.0)
+  } XMessage;
+```
+
+Once you have your message consumer function, you can set it to be called for messages from select hosts, programs, and/or
+select message types, using `smaxAddMessageProcessor()`, e.g.:
+
+```c
+  // Will call my_message_procesor for all messages coming from "my_program_id" from all hosts.
+  // The return ID number (if > 0) can be used later to uniquely identify the processor with the set of selection 
+  // parameters it is used with. So make sure to keep it handy for later.
+  int id = smaxAddMessageProcessor("*", "my_program_id", "*", my_message_processor);
+  if (id < 0) {
+    // Oops that did not work as planned.
+    ...
+  }
+```
+
+Each string argument (`host`, `prog`, and `type`) may take an asterisk (`"*"`) or `NULL` as the argument to indicate that
+the processor function should be called for incoming messages for all values for the given parameter.
+
+The processor function can also inspect what type of message it received by comparing the `XMessage` `type` value against
+one of the pre-defined constant expressions in `smax.h`:
+
+ | `XMessage` `type`          | Description                                     |
+ | -------------------------- | ----------------------------------------------- |
+ | `SMAX_MSG_STATUS`          | Program status update                           |
+ | `SMAX_MSG_INFO`            | Informational program message                   |
+ | `SMAX_MSG_DETAIL`          | Program detail (i.e. verbose messages)          |
+ | `SMAX_MSG_PROGRESS`        | Program detail (i.e. verbose messages)          |
+ | `SMAX_MSG_DEBUG`           | Program debug messages (also e.g. traces)       |
+ | `SMAX_MSG_WARNING`         | Program warnings                                |
+ | `SMAX_MSG_ERROR`           | Program errors                                  |
+
+Once you no longer need to process messages by the given processor function, you can remove it from the call list by
+passing its ID number (&lt;0) to `smaxRemoveMessageProcessor()`.
 
 ------------------------------------------------------------------------------
 
@@ -831,9 +932,6 @@ yours.
 ### Coordinate Systems
 
 ### Physical units
-
-#### Coordinate systems
-
 
 
 -----------------------------------------------------------------------------

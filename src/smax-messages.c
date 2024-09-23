@@ -8,11 +8,22 @@
  *          Simple API for sending and receiving program broadcast messages through SMA-X.
  */
 
+
+// We'll use gcc major version as a proy for the glibc library to decide which feature macro to use.
+// gcc 5.1 was released 2015-04-22...
+#if __GNUC__ >= 5
+#  define _ISOC99_SOURCE        ///< vsnprintf() feature macro starting glibc 2.20 (2014-09-08)
+#else
+#  define _BSD_SOURCE           ///< vsnprinf() feature macro for glibc <= 2.19
+#endif
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
 #include <errno.h>
+#include <stdarg.h>
 
 #include "smax-private.h"
 
@@ -40,37 +51,41 @@ static int nextID;
 static void ProcessMessage(const char *pattern, const char *channel, const char *msg, long length);
 
 
-static int SendMessage(const char *type, const char *text) {
+static int SendMessage(const char *type, const char *text, va_list varg) {
   static const char *fn = "SendMessage";
+
+  char *msg;
 
   const char *id = senderID ? senderID : smaxGetProgramID();
   char *channel;
-  char *tsmsg;
   int n;
 
   if(!type) return x_error(X_NULL, EINVAL, fn, "type parameter is NULL");
   if(!text) return x_error(X_NULL, EINVAL, fn, "text parameter is NULL");
 
+  if(strlen(text) > sizeof(msg) - X_TIMESTAMP_LENGTH - 1) x_error(X_NULL, EINVAL, fn, "text message is too long: >= %d bytes", strlen(text));
+
   n = sizeof(MESSAGES_PREFIX) + strlen(id) + X_SEP_LENGTH + strlen(type);
   channel = malloc(n);
-  if(!channel) return x_error(X_NULL, errno, fn, "malloc() error (%d bytes)", n);
-
-  n = strlen(text) + X_TIMESTAMP_LENGTH + 3;
-  tsmsg = malloc(n);
-  if(!tsmsg) {
-    free(channel);
-    return x_error(X_NULL, errno, fn, "malloc() error (%d bytes)", n);
-  }
+  if(!channel) return x_error(X_NULL, errno, fn, "malloc() error (channel: %d bytes)", n);
 
   sprintf(channel, MESSAGES_PREFIX "%s" X_SEP "%s", id, type);
-  n = sprintf(tsmsg, "%s @", text);
-  smaxTimestamp(&tsmsg[n]);
 
-  n = redisxNotify(smaxGetRedis(), channel, tsmsg);
+  n = vsnprintf(NULL, 0, text, varg);
+  msg = (char *) malloc(n + X_TIMESTAMP_LENGTH + 1);
+  if(!msg) {
+    free(channel);
+    return x_error(X_NULL, errno, fn, "malloc() error (msg: %d bytes)", n);
+  }
+
+  n = vsnprintf(msg, n, text, varg);
+  smaxTimestamp(&msg[n]);
+
+  n = redisxNotify(smaxGetRedis(), channel, msg);
   if(n > 0) n = X_FAILURE;
 
+  free(msg);
   free(channel);
-  free(tsmsg);
 
   prop_error(fn, n);
 
@@ -98,98 +113,144 @@ void smaxSetMessageSenderID(const char *id) {
 }
 
 /**
- * Broadcast a program status update via SMA-X.
+ * Broadcast a program status update via SMA-X. Works just like `printf()`.
  *
- * @param msg       Message text
+ * @param msg       Message text (may include format specifications for additional vararg parameters)
  * @return          X_SUCCESS (0), or else an X error.
  *
  * @sa sendInfo()
  */
-int smaxSendStatus(const char *msg) {
-  prop_error("smaxSendStatus", SendMessage(SMAX_MSG_STATUS, msg));
+
+int smaxSendStatus(const char *msg, ...) {
+  va_list varg;
+  int status;
+
+  va_start(varg, msg);
+  status = SendMessage(SMAX_MSG_STATUS, msg, varg);
+  va_end(varg);
+
+  prop_error("smaxSendDetail", status);
   return X_SUCCESS;
 }
 
 /**
  * Broadcast an informational message via SMA-X. These should be confirmations or essential
  * information reported back to users. Non-essential information should be sent with
- * sendDetail() instead.
+ * sendDetail() instead. Works just like `printf()`.
  *
- * @param msg       Message text
+ * @param msg       Message text (may include format specifications for additional vararg parameters)
  * @return          X_SUCCESS (0), or else an X error.
  *
  * @sa sendDetail()
  * @sa sendStatus()
  */
-int smaxSendInfo(const char *msg) {
-  prop_error("smaxSendInfo", SendMessage(SMAX_MSG_INFO, msg));
+int smaxSendInfo(const char *msg, ...) {
+  va_list varg;
+  int status;
+
+  va_start(varg, msg);
+  status = SendMessage(SMAX_MSG_INFO, msg, varg);
+  va_end(varg);
+
+  prop_error("smaxSendDetail", status);
   return X_SUCCESS;
 }
 
 /**
- * Broadcast non-essential verbose informational detail via SMA-X.
+ * Broadcast non-essential verbose informational detail via SMA-X. Works just like `printf()`.
  *
- * @param msg       Message text
+ * @param msg       Message text (may include format specifications for additional vararg parameters)
  * @return          X_SUCCESS (0), or else an X error.
  */
-int smaxSendDetail(const char *msg) {
-  prop_error("smaxSendDetail", SendMessage(SMAX_MSG_DETAIL, msg));
+int smaxSendDetail(const char *msg, ...) {
+  va_list varg;
+  int status;
+
+  va_start(varg, msg);
+  status = SendMessage(SMAX_MSG_DETAIL, msg, varg);
+  va_end(varg);
+
+  prop_error("smaxSendDetail", status);
   return X_SUCCESS;
 }
 
 /**
- * Broadcast a debugging message via SMA-X (e.g. program traces).
+ * Broadcast a debugging message via SMA-X (e.g. program traces). Works just like `printf()`.
  *
- * @param msg       Message text
+ * @param msg       Message text (may include format specifications for additional vararg parameters)
  * @return          X_SUCCESS (0), or else an X error.
  */
-int smaxSendDebug(const char *msg) {
-  prop_error("smaxSendDEbug", SendMessage(SMAX_MSG_DEBUG, msg));
+int smaxSendDebug(const char *msg, ...) {
+  va_list varg;
+  int status;
+
+  va_start(varg, msg);
+  status = SendMessage(SMAX_MSG_DEBUG, msg, varg);
+  va_end(varg);
+
+  prop_error("smaxSendDetail", status);
   return X_SUCCESS;
 }
 
 /**
  * Broadcast a warning message via SMA-X. Warnings should be used for any potentially
  * problematic issues that nonetheless do not impair program functionality.
+ * Works just like `printf()`.
  *
- * @param msg       Message text
+ * @param msg       Message text (may include format specifications for additional vararg parameters)
  * @return          X_SUCCESS (0), or else an X error.
  *
  * @sa smaxSendError();
  * @sa smaxSendDebug();
  *
  */
-int smaxSendWarning(const char *msg) {
-  prop_error("smaxSendWarning", SendMessage(SMAX_MSG_WARNING, msg));
+int smaxSendWarning(const char *msg, ...) {
+  va_list varg;
+  int status;
+
+  va_start(varg, msg);
+  status = SendMessage(SMAX_MSG_WARNING, msg, varg);
+  va_end(varg);
+
+  prop_error("smaxSendDetail", status);
   return X_SUCCESS;
 }
 
 /**
  * Broadcast an error message via SMA-X. Errors should be used for an issues
- * that impair program functionality.
+ * that impair program functionality. Works just like `printf()`.
  *
- * @param msg       Message text
+ * @param msg       Message text (may include format specifications for additional vararg parameters)
  * @return          X_SUCCESS (0), or else an X error.
  *
  * @sa smaxSendWarning();
  * @sa smaxSendDebug();
  *
  */
-int smaxSendError(const char *msg) {
-  prop_error("smaxSendError", SendMessage(SMAX_MSG_ERROR, msg));
+int smaxSendError(const char *msg, ...) {
+  va_list varg;
+  int status;
+
+  va_start(varg, msg);
+  status = SendMessage(SMAX_MSG_ERROR, msg, varg);
+  va_end(varg);
+
+  prop_error("smaxSendDetail", status);
   return X_SUCCESS;
 }
 
 /**
- * Broadcast a progress update over SMA-X.
+ * Broadcast a progress update over SMA-X. Apart from the progress fraction argument, it works just like
+ * `printf()`.
  *
  * @param fraction  (0.0:1.0) Completion fraction.
- * @param msg       Message text
+ * @param msg       Message text (may include format specifications for additional vararg parameters)
  * @return          X_SUCCESS (0), or else an X error.
  */
-int smaxSendProgress(double fraction, const char *msg) {
+int smaxSendProgress(double fraction, const char *msg, ...) {
   static const char *fn = "smaxSendProgress";
 
+  va_list varg;
   char *progress;
   int result;
 
@@ -203,7 +264,10 @@ int smaxSendProgress(double fraction, const char *msg) {
 
   sprintf(progress, "%.1f %s", (100.0 * fraction), msg);
 
-  result = SendMessage(SMAX_MSG_DETAIL, progress);
+  va_start(varg, msg);
+  result = SendMessage(SMAX_MSG_DETAIL, progress, varg);
+  va_end(varg);
+
   free(progress);
 
   prop_error(fn, result);
