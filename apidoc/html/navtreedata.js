@@ -54,18 +54,20 @@ var NAVTREE =
       [ "Custom notifications and update handling", "index.html#autotoc_md34", [
         [ "Monitoring updates", "index.html#autotoc_md35", null ],
         [ "Waiting for updates", "index.html#autotoc_md36", null ],
-        [ "Status / error messages", "index.html#autotoc_md37", null ]
+        [ "Update callbacks", "index.html#autotoc_md37", null ]
       ] ],
-      [ "Optional metadata", "index.html#autotoc_md39", [
-        [ "Descriptions", "index.html#autotoc_md40", null ],
-        [ "Coordinate Systems", "index.html#autotoc_md41", null ],
-        [ "Physical units", "index.html#autotoc_md42", [
-          [ "Coordinate systems", "index.html#autotoc_md43", null ]
-        ] ]
+      [ "Program status / error messages via SMA-X", "index.html#autotoc_md39", [
+        [ "Broadcasting status messages from an application", "index.html#autotoc_md40", null ],
+        [ "Processing program messages", "index.html#autotoc_md41", null ]
       ] ],
-      [ "Error handling", "index.html#autotoc_md45", null ],
-      [ "Debug support", "index.html#autotoc_md47", null ],
-      [ "Future plans", "index.html#autotoc_md49", null ],
+      [ "Optional metadata", "index.html#autotoc_md43", [
+        [ "Descriptions", "index.html#autotoc_md44", null ],
+        [ "Coordinate Systems", "index.html#autotoc_md45", null ],
+        [ "Physical units", "index.html#autotoc_md46", null ]
+      ] ],
+      [ "Error handling", "index.html#autotoc_md48", null ],
+      [ "Debug support", "index.html#autotoc_md50", null ],
+      [ "Future plans", "index.html#autotoc_md52", null ],
       [ "[Unreleased]", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
     ] ],
     [ "Contributing to smax-clib", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
@@ -92,7 +94,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"smax_8h.html#a18027e41c40722011815bc878857e3d0"
+"smax_8h.html#a167a60b494fa9ec5b046f9da796f18b5"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

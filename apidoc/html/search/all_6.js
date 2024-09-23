@@ -6,6 +6,7 @@ var searchData=
   ['flexible_20types_20and_20sizes_3',['Flexible types and sizes',['../index.html#autotoc_md22',1,'']]],
   ['for_20updates_4',['Waiting for updates',['../index.html#autotoc_md36',1,'']]],
   ['frequency_20queries_5',['Lazy pulling (high-frequency queries)',['../index.html#autotoc_md27',1,'']]],
-  ['from_20sma_20x_6',['Connecting to / disconnecting from SMA-X',['../index.html#autotoc_md16',1,'']]],
-  ['future_20plans_7',['Future plans',['../index.html#autotoc_md49',1,'']]]
+  ['from_20an_20application_6',['Broadcasting status messages from an application',['../index.html#autotoc_md40',1,'']]],
+  ['from_20sma_20x_7',['Connecting to / disconnecting from SMA-X',['../index.html#autotoc_md16',1,'']]],
+  ['future_20plans_8',['Future plans',['../index.html#autotoc_md52',1,'']]]
 ];

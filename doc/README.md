@@ -11,6 +11,7 @@ Author: Attila Kovacs
 
 Last Updated: 18 September 2024
 
+
 ## Table of Contents
 
  - [Introduction](#introduction)
@@ -23,6 +24,7 @@ Last Updated: 18 September 2024
  - [Lazy pulling (high-frequency queries)](#lazy-pulling)
  - [Pipelined pulls (high volume queries)](#pipelined-pulls)
  - [Custom notification and update handling](#notifications)
+ - [Program status / error messages via SMA-X](#status-messages)
  - [Optional metadata](#optional-metadata)
  - [Error handling](#error-handling)
  - [Debug support](#debug-support)
@@ -670,19 +672,238 @@ all previously sumbitted requests have been collected. You can do that with:
   }
 ```
 
-
-
 ------------------------------------------------------------------------------
 
 <a name="notifications"></a>
 ## Custom notifications and update handling
 
+ - [Monitoring updates](#monitoring-updates)
+ - [Waiting for updates](#waiting-for-updates)
+ - [Update callbacks](#update-callbacks)
+
+
+<a name="monitoring-updates"></a>
 ### Monitoring updates
 
+The LUA scripts that define SMA-X interface on the Redis server send out PUB/SUB notifications for every variable on 
+their own dedicate PUB/SUB channel whenever the variable is updated. Byt default, lazy access methods subscribe to 
+these messages and use them to determine when to invalidate the chache and fetch new values from the database again. 
+However, you may subscribe and use these messages outside of the lazy update routines also. The only thing you need to 
+pay attention to is not to unsubscribe from update notifications for those variables that have multiple active monitors
+(including lazy updates).
+
+One common use case is that you want to execute some code in your application when some value changes in SMA-X. You
+can do that easily, and have two choices on how you want to trigger the code execution: (1) you can block execution of
+your current thread until an update notification is received for one of the variables (or patterns) of interest to 
+which you have subscribed, or (2) you can let __smax_clib__ call a designated function of your application when such 
+an update notification is captured. We'll cover these two cases separately below.
+
+However, in either case you will have to subscribe to the variable(s) or pattern(s) of interest with `smaxSubscribe()`
+before updates can be processed, e.g.
+
+```c
+  int status = smaxSubscribe("some_table", "watch_point_variable");
+  if (status < 0) {
+    // Ooops something did not go to plan
+    ...
+  }
+```
+
+and/or pattern(s)
+
+```c
+  int status = smaxSubscribe("watch_*", "watch_[a-z]_*");
+  if (status < 0) {
+    // Ooops something did not go to plan
+    ...
+  }
+```
+
+You can subscribe to any number of variables or patterns in this way. __smax_clib__ will receive and process 
+notifications for all of them. (So beware of creating unneccessary network traffic.)
+
+<a name="waiting-for-updates"></a>
 ### Waiting for updates
 
-### Status / error messages
+The first option for executing code conditional on some variable update is to block execution in the current thread
+and wait until the variable(s) of interest change(s) (or until some timeout limit is reached). There is a group of
+functions `smaxWaitOn...()` that do exactly that. For example:
 
+```c
+  // Wait for watch_foo:watch_h_bar to update, or wait at most 500 ms
+  int status = smaxWaitOnSubscribedVar("watch_foo", "watch_h_bar", 500);
+  if (status == X_TIMEDOUT) {
+    // Wait timed out, maybe we want to try again, or do something else...
+    ...
+  }
+  else if (status < 0) {
+    // Oh no, some other error happened.
+    ...
+  }
+  ...
+
+```
+
+Similar methods allow you to wait for updates on any subscribed variable in selected tables, or the update of
+select variables in all subscribed tables, or any of the subscribed variables to change for the wait to end
+normally (with return value 0).
+
+
+<a name="update-callbacks"></a>
+### Update callbacks
+
+Sometimes, you don't want to block execution, but you want to make sure some code executes when the a variable
+or variables of interest get updated. For such cases you can designate your own `RedisSubscriberCall` callback 
+function, e.g.:
+
+```c
+  void my_update_processor(const char *pattern, const char *channel, const char *msg, long len) {
+     const char *varID;  // The variable aggregate ID. 
+  
+     // check that it's a SMA-X update -- channel should begin with SMAX_UPDATE
+     if (strncmp(channel, SMAX_UPDATE, SMAX_UPDATE_LENGTH) != 0) {
+       // Not an SMA-X variable update. It's not what we expected.
+       return;
+     }
+     
+     id = &channel[SMAX_UPDATE_LENGTH];
+     // Now we can check the ID to see which of the variables updated, and act accordingly.
+     ...
+  }
+```
+
+Once you have defined your callback function, you can activate it with `smaxAddSubscriber()`, e.g.:
+
+```c
+  // Call my_update_processor on updates for any subscribed variable whose table name starts with "watch_table_"
+  int status = smaxAddSubscriber("watch_table_", my_update_processor);
+  if (status < 0) {
+    // Did not go to plan.
+    ...
+  }
+```
+  
+When you no longer need to process such updates, you can simply remove the function from being called via 
+`smaxRemoveSubscriber()`, and if you are absolutely sure that no other part of your code needs the subscription(s)
+that could trigger it, you can also unsubscribe from the trigger variables/pattern to eliminate unnecessary network 
+traffic.
+
+One word of caution on callbacks is that they are expected to:
+
+ - execute quickly
+ - never block for prolonged periods. (It may be OK to wait briefly on a mutex, provided nothing else can hog that 
+   mutex for prolonged periods).
+  
+If the above two conditions cannot be guaranteed, it's best practice for your callback to place a copy of the 
+callback information on a queue, and then spawn or notify a separate thread to process the infomation in the 
+background, including discarding the copied data if it's no longer needed. Alternatively, you can launch a decicated
+processor thread early on, and iside it wait for the updates before executing some complex action. The choice is
+yours.
+
+
+------------------------------------------------------------------------------  
+
+<a name="status-messages"></a>  
+## Program status / error messages via SMA-X
+
+ - [Broadcasting status messages from an application](#broadcasting-messages)
+ - [Processing program messages](#processing-messages)
+
+SMA-X also provides a standard for reporting porgram status, warning, and error messages via the Redis PUB/SUB 
+infrastructure. 
+ 
+<a name="broadcasting-messages"></a>
+### Broadcasting status messages from an application
+
+Broadcasting program messages to SMA-X is very simple using a set of dedicated messaging functions by message
+type. These are:
+
+ | __smax_clib__ function                                     | Description                                |
+ | `smaxSendStatus(const char *msg, ...)`                     | sends a status message                     |
+ | `smaxSendInfo(const char *msg, ...)`                       | sends an informational message             |
+ | `smaxSendDetail(const char *msg, ...)`                     | sends optional status/information detail   |
+ | `smaxSendDebug(const char *msg, ...)`                      | sends a debugging messages                 |
+ | `smaxSendWarning(const char *msg, ...)`                    | sends a warning message                    |
+ | `smaxSendError(const char *msg, ...)`                      | sends an error message                     |
+ | `smaxSendProgress(double fraction, const char *msg, ...)`  | sends a progress update and message        |
+
+All the above methods work like `printf()`, and can take additional parameters corresponding to the format specifiers
+contained in the `msg` argument.
+
+By default, the messages are sent under the canonocal program name (i.e. set by `_progname` on GNU/Linux systems) 
+that produced the message. You can override that, and define a custom sender ID for your status messages, by calling
+`smaxSetMessageSenderID()` prior to broadcasting, e.g.:
+
+```c
+  // Set out sender ID to "my_program_id"
+  smaxSetMessageSenderID("my_program_id");
+  
+  ...
+  
+  // Broadcast a warning message for "my_program_id"
+  int status = smaxSendWarning("Something did not work" %s", explanation);
+```
+
+<a name="processing-messages"></a>
+### Processing program messages
+
+On the receiving end, other applications can process such program messages, for a selection of hosts, programs, and 
+message types. You need to prepare you message processor function(s) first, e.g.:
+
+```c
+  void my_message_processor(XMessage *m) {
+    printf("Received %s message from %s: %s\n", m->type, m->prog, m->text);
+  }
+  
+```
+
+The processor function does not return any value, since it is called by a background thread, which does not check for
+return status. The `XMessage` type, a pointer to which is the sole argument of the processor, is defined in `smax.h` 
+as:
+
+
+```c
+  typedef struct {
+    char *host;                   // Host where message originated from
+    char *prog;                   // Originator program name
+    char *type;                   // Message type, e.g. "info", "detail", "warning", "error"
+    char *text;                   // Message body (with timestamp stripped).
+    double timestamp;             // Message timestamp, if available (otherwise 0.0)
+  } XMessage;
+```
+
+Once you have your message consumer function, you can set it to be called for messages from select hosts, programs, and/or
+select message types, using `smaxAddMessageProcessor()`, e.g.:
+
+```c
+  // Will call my_message_procesor for all messages coming from "my_program_id" from all hosts.
+  // The return ID number (if > 0) can be used later to uniquely identify the processor with the set of selection 
+  // parameters it is used with. So make sure to keep it handy for later.
+  int id = smaxAddMessageProcessor("*", "my_program_id", "*", my_message_processor);
+  if (id < 0) {
+    // Oops that did not work as planned.
+    ...
+  }
+```
+
+Each string argument (`host`, `prog`, and `type`) may take an asterisk (`"*"`) or `NULL` as the argument to indicate that
+the processor function should be called for incoming messages for all values for the given parameter.
+
+The processor function can also inspect what type of message it received by comparing the `XMessage` `type` value against
+one of the pre-defined constant expressions in `smax.h`:
+
+ | `XMessage` `type`          | Description                                     |
+ | -------------------------- | ----------------------------------------------- |
+ | `SMAX_MSG_STATUS`          | Program status update                           |
+ | `SMAX_MSG_INFO`            | Informational program message                   |
+ | `SMAX_MSG_DETAIL`          | Program detail (i.e. verbose messages)          |
+ | `SMAX_MSG_PROGRESS`        | Program detail (i.e. verbose messages)          |
+ | `SMAX_MSG_DEBUG`           | Program debug messages (also e.g. traces)       |
+ | `SMAX_MSG_WARNING`         | Program warnings                                |
+ | `SMAX_MSG_ERROR`           | Program errors                                  |
+
+Once you no longer need to process messages by the given processor function, you can remove it from the call list by
+passing its ID number (&lt;0) to `smaxRemoveMessageProcessor()`.
 
 ------------------------------------------------------------------------------
 
@@ -695,9 +916,6 @@ all previously sumbitted requests have been collected. You can do that with:
 ### Coordinate Systems
 
 ### Physical units
-
-#### Coordinate systems
-
 
 
 -----------------------------------------------------------------------------

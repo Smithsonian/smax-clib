@@ -423,25 +423,25 @@ include/smax.h
 .RI "void \fBsmaxResetMeta\fP (\fBXMeta\fP *m)"
 .br
 .ti -1c
-.RI "int \fBsmaxSendDebug\fP (const char *msg)"
+.RI "int \fBsmaxSendDebug\fP (const char *msg,\&.\&.\&.)"
 .br
 .ti -1c
-.RI "int \fBsmaxSendDetail\fP (const char *msg)"
+.RI "int \fBsmaxSendDetail\fP (const char *msg,\&.\&.\&.)"
 .br
 .ti -1c
-.RI "int \fBsmaxSendError\fP (const char *msg)"
+.RI "int \fBsmaxSendError\fP (const char *msg,\&.\&.\&.)"
 .br
 .ti -1c
-.RI "int \fBsmaxSendInfo\fP (const char *msg)"
+.RI "int \fBsmaxSendInfo\fP (const char *msg,\&.\&.\&.)"
 .br
 .ti -1c
-.RI "int \fBsmaxSendProgress\fP (double fraction, const char *msg)"
+.RI "int \fBsmaxSendProgress\fP (double fraction, const char *msg,\&.\&.\&.)"
 .br
 .ti -1c
-.RI "int \fBsmaxSendStatus\fP (const char *msg)"
+.RI "int \fBsmaxSendStatus\fP (const char *msg,\&.\&.\&.)"
 .br
 .ti -1c
-.RI "int \fBsmaxSendWarning\fP (const char *msg)"
+.RI "int \fBsmaxSendWarning\fP (const char *msg,\&.\&.\&.)"
 .br
 .ti -1c
 .RI "int \fBsmaxSetAuth\fP (const char *username, const char *password)"
@@ -2593,12 +2593,12 @@ Set metadata to their default values\&. After resetting the supplied metadata wi
 
 .PP
 References \fBX_META_INIT\fP\&.
-.SS "int smaxSendDebug (const char * msg)"
-Broadcast a debugging message via SMA-X (e\&.g\&. program traces)\&.
+.SS "int smaxSendDebug (const char * msg,  \&.\&.\&.)"
+Broadcast a debugging message via SMA-X (e\&.g\&. program traces)\&. Works just like \fCprintf()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fImsg\fP Message text 
+\fImsg\fP Message text (may include format specifications for additional vararg parameters) 
 .RE
 .PP
 \fBReturns\fP
@@ -2609,12 +2609,12 @@ X_SUCCESS (0), or else an X error\&.
 
 .PP
 References \fBSMAX_MSG_DEBUG\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxSendDetail (const char * msg)"
-Broadcast non-essential verbose informational detail via SMA-X\&.
+.SS "int smaxSendDetail (const char * msg,  \&.\&.\&.)"
+Broadcast non-essential verbose informational detail via SMA-X\&. Works just like \fCprintf()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fImsg\fP Message text 
+\fImsg\fP Message text (may include format specifications for additional vararg parameters) 
 .RE
 .PP
 \fBReturns\fP
@@ -2625,12 +2625,12 @@ X_SUCCESS (0), or else an X error\&.
 
 .PP
 References \fBSMAX_MSG_DETAIL\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxSendError (const char * msg)"
-Broadcast an error message via SMA-X\&. Errors should be used for an issues that impair program functionality\&.
+.SS "int smaxSendError (const char * msg,  \&.\&.\&.)"
+Broadcast an error message via SMA-X\&. Errors should be used for an issues that impair program functionality\&. Works just like \fCprintf()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fImsg\fP Message text 
+\fImsg\fP Message text (may include format specifications for additional vararg parameters) 
 .RE
 .PP
 \fBReturns\fP
@@ -2648,12 +2648,12 @@ X_SUCCESS (0), or else an X error\&.
 
 .PP
 References \fBSMAX_MSG_ERROR\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxSendInfo (const char * msg)"
-Broadcast an informational message via SMA-X\&. These should be confirmations or essential information reported back to users\&. Non-essential information should be sent with sendDetail() instead\&.
+.SS "int smaxSendInfo (const char * msg,  \&.\&.\&.)"
+Broadcast an informational message via SMA-X\&. These should be confirmations or essential information reported back to users\&. Non-essential information should be sent with sendDetail() instead\&. Works just like \fCprintf()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fImsg\fP Message text 
+\fImsg\fP Message text (may include format specifications for additional vararg parameters) 
 .RE
 .PP
 \fBReturns\fP
@@ -2671,14 +2671,14 @@ sendStatus()
 
 .PP
 References \fBSMAX_MSG_INFO\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxSendProgress (double fraction, const char * msg)"
-Broadcast a progress update over SMA-X\&.
+.SS "int smaxSendProgress (double fraction, const char * msg,  \&.\&.\&.)"
+Broadcast a progress update over SMA-X\&. Apart from the progress fraction argument, it works just like \fCprintf()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
 \fIfraction\fP (0\&.0:1\&.0) Completion fraction\&. 
 .br
-\fImsg\fP Message text 
+\fImsg\fP Message text (may include format specifications for additional vararg parameters) 
 .RE
 .PP
 \fBReturns\fP
@@ -2689,12 +2689,12 @@ X_SUCCESS (0), or else an X error\&.
 
 .PP
 References \fBSMAX_MSG_DETAIL\fP, \fBx_error()\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxSendStatus (const char * msg)"
-Broadcast a program status update via SMA-X\&.
+.SS "int smaxSendStatus (const char * msg,  \&.\&.\&.)"
+Broadcast a program status update via SMA-X\&. Works just like \fCprintf()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fImsg\fP Message text 
+\fImsg\fP Message text (may include format specifications for additional vararg parameters) 
 .RE
 .PP
 \fBReturns\fP
@@ -2710,12 +2710,12 @@ sendInfo()
 
 .PP
 References \fBSMAX_MSG_STATUS\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxSendWarning (const char * msg)"
-Broadcast a warning message via SMA-X\&. Warnings should be used for any potentially problematic issues that nonetheless do not impair program functionality\&.
+.SS "int smaxSendWarning (const char * msg,  \&.\&.\&.)"
+Broadcast a warning message via SMA-X\&. Warnings should be used for any potentially problematic issues that nonetheless do not impair program functionality\&. Works just like \fCprintf()\fP\&.
 .PP
 \fBParameters\fP
 .RS 4
-\fImsg\fP Message text 
+\fImsg\fP Message text (may include format specifications for additional vararg parameters) 
 .RE
 .PP
 \fBReturns\fP

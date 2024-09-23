@@ -859,50 +859,50 @@
       <type>int</type>
       <name>smaxSendDebug</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a6c8e73f27c445dedd5ba4ac5b399f8d1</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a1e7fa44ff0842c8ce3b49971511b950a</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendDetail</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a2a0607da9db140f4227524da37b3bf51</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a4fdf286d99a08358832702c3f31a88b3</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendError</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a7d936da43078b9be469a97a6a4bb82a8</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>aeb4adbc4c56cbf31bc6f94054512e241</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendInfo</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a6056608a81e52d070dcc0f3ee96579b5</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>af28f27177a145167d0289586c9bf9739</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendProgress</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a0f32699c2148f3b09a48e84b3fa4d036</anchor>
-      <arglist>(double fraction, const char *msg)</arglist>
+      <anchor>ad41c05eabbc4fb669430cd638a06c826</anchor>
+      <arglist>(double fraction, const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendStatus</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a3739383ee6770337b3bb023cfe0cc64c</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a02c52082bf38f02dd47b563684e8208e</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendWarning</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a740f4a171334a6aa5d4736c15fc327e4</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a1c90a439b48a53555e9cfb60ce1b9102</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1638,6 +1638,13 @@
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
     <member kind="define">
       <type>#define</type>
+      <name>_BSD_SOURCE</name>
+      <anchorfile>smax-messages_8c.html</anchorfile>
+      <anchor>ad3d8a3bd0c0b677acef144f2c2ef6d73</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>MESSAGES_ID</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
       <anchor>a7b2e3f4ba6d955bd23ae56f2a2d9a3e3</anchor>
@@ -1675,50 +1682,50 @@
       <type>int</type>
       <name>smaxSendDebug</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a6c8e73f27c445dedd5ba4ac5b399f8d1</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a1e7fa44ff0842c8ce3b49971511b950a</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendDetail</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a2a0607da9db140f4227524da37b3bf51</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a4fdf286d99a08358832702c3f31a88b3</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendError</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a7d936da43078b9be469a97a6a4bb82a8</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>aeb4adbc4c56cbf31bc6f94054512e241</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendInfo</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a6056608a81e52d070dcc0f3ee96579b5</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>af28f27177a145167d0289586c9bf9739</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendProgress</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a0f32699c2148f3b09a48e84b3fa4d036</anchor>
-      <arglist>(double fraction, const char *msg)</arglist>
+      <anchor>ad41c05eabbc4fb669430cd638a06c826</anchor>
+      <arglist>(double fraction, const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendStatus</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a3739383ee6770337b3bb023cfe0cc64c</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a02c52082bf38f02dd47b563684e8208e</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxSendWarning</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a740f4a171334a6aa5d4736c15fc327e4</anchor>
-      <arglist>(const char *msg)</arglist>
+      <anchor>a1c90a439b48a53555e9cfb60ce1b9102</anchor>
+      <arglist>(const char *msg,...)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -2608,6 +2615,12 @@
     <docanchor file="index.html">lazy-callbacks</docanchor>
     <docanchor file="index.html">lazy-finish</docanchor>
     <docanchor file="index.html">notifications</docanchor>
+    <docanchor file="index.html">monitoring-updates</docanchor>
+    <docanchor file="index.html">waiting-for-updates</docanchor>
+    <docanchor file="index.html">update-callbacks</docanchor>
+    <docanchor file="index.html">status-messages</docanchor>
+    <docanchor file="index.html">broadcasting-messages</docanchor>
+    <docanchor file="index.html">processing-messages</docanchor>
     <docanchor file="index.html">optional-metadata</docanchor>
     <docanchor file="index.html">error-handling</docanchor>
     <docanchor file="index.html">debug-support</docanchor>

@@ -26,18 +26,20 @@
     <topic label="Custom notifications and update handling" href="index.html#autotoc_md34">
       <topic label="Monitoring updates" href="index.html#autotoc_md35"/>
       <topic label="Waiting for updates" href="index.html#autotoc_md36"/>
-      <topic label="Status / error messages" href="index.html#autotoc_md37"/>
+      <topic label="Update callbacks" href="index.html#autotoc_md37"/>
     </topic>
-    <topic label="Optional metadata" href="index.html#autotoc_md39">
-      <topic label="Descriptions" href="index.html#autotoc_md40"/>
-      <topic label="Coordinate Systems" href="index.html#autotoc_md41"/>
-      <topic label="Physical units" href="index.html#autotoc_md42">
-        <topic label="Coordinate systems" href="index.html#autotoc_md43"/>
-      </topic>
+    <topic label="Program status / error messages via SMA-X" href="index.html#autotoc_md39">
+      <topic label="Broadcasting status messages from an application" href="index.html#autotoc_md40"/>
+      <topic label="Processing program messages" href="index.html#autotoc_md41"/>
     </topic>
-    <topic label="Error handling" href="index.html#autotoc_md45"/>
-    <topic label="Debug support" href="index.html#autotoc_md47"/>
-    <topic label="Future plans" href="index.html#autotoc_md49"/>
+    <topic label="Optional metadata" href="index.html#autotoc_md43">
+      <topic label="Descriptions" href="index.html#autotoc_md44"/>
+      <topic label="Coordinate Systems" href="index.html#autotoc_md45"/>
+      <topic label="Physical units" href="index.html#autotoc_md46"/>
+    </topic>
+    <topic label="Error handling" href="index.html#autotoc_md48"/>
+    <topic label="Debug support" href="index.html#autotoc_md50"/>
+    <topic label="Future plans" href="index.html#autotoc_md52"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>
@@ -244,13 +246,13 @@
           <topic label="smaxRemoveMessageProcessor" href="smax_8h.html#a1550f0f7aed841d5576d47ec7e62e0c4"/>
           <topic label="smaxRemoveSubscribers" href="smax_8h.html#a77d04f4fbb447f169d40b2a24fa7cf71"/>
           <topic label="smaxResetMeta" href="smax_8h.html#a7ea3483859bf8f7764143b8590af067e"/>
-          <topic label="smaxSendDebug" href="smax_8h.html#a6c8e73f27c445dedd5ba4ac5b399f8d1"/>
-          <topic label="smaxSendDetail" href="smax_8h.html#a2a0607da9db140f4227524da37b3bf51"/>
-          <topic label="smaxSendError" href="smax_8h.html#a7d936da43078b9be469a97a6a4bb82a8"/>
-          <topic label="smaxSendInfo" href="smax_8h.html#a6056608a81e52d070dcc0f3ee96579b5"/>
-          <topic label="smaxSendProgress" href="smax_8h.html#a0f32699c2148f3b09a48e84b3fa4d036"/>
-          <topic label="smaxSendStatus" href="smax_8h.html#a3739383ee6770337b3bb023cfe0cc64c"/>
-          <topic label="smaxSendWarning" href="smax_8h.html#a740f4a171334a6aa5d4736c15fc327e4"/>
+          <topic label="smaxSendDebug" href="smax_8h.html#a1e7fa44ff0842c8ce3b49971511b950a"/>
+          <topic label="smaxSendDetail" href="smax_8h.html#a4fdf286d99a08358832702c3f31a88b3"/>
+          <topic label="smaxSendError" href="smax_8h.html#aeb4adbc4c56cbf31bc6f94054512e241"/>
+          <topic label="smaxSendInfo" href="smax_8h.html#af28f27177a145167d0289586c9bf9739"/>
+          <topic label="smaxSendProgress" href="smax_8h.html#ad41c05eabbc4fb669430cd638a06c826"/>
+          <topic label="smaxSendStatus" href="smax_8h.html#a02c52082bf38f02dd47b563684e8208e"/>
+          <topic label="smaxSendWarning" href="smax_8h.html#a1c90a439b48a53555e9cfb60ce1b9102"/>
           <topic label="smaxSetAuth" href="smax_8h.html#a097b12d3bbb43175084b0b0a2f55339c"/>
           <topic label="smaxSetCoordinateAxis" href="smax_8h.html#a5d59620a1646428f41b040d1a0a91554"/>
           <topic label="smaxSetCoordinateSystem" href="smax_8h.html#a04c3b8ea7ff6b8117d2dba9bf9edd52f"/>
@@ -361,18 +363,19 @@
           <topic label="smaxLazyPullStruct" href="smax-lazy_8c.html#af96429709d1b029a8db74cb7407f9ffb"/>
         </topic>
         <topic label="smax-messages.c" href="smax-messages_8c.html">
+          <topic label="_BSD_SOURCE" href="smax-messages_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73"/>
           <topic label="MESSAGES_ID" href="smax-messages_8c.html#a7b2e3f4ba6d955bd23ae56f2a2d9a3e3"/>
           <topic label="MESSAGES_PREFIX" href="smax-messages_8c.html#a309d33601440402f7f3fb5175864b62b"/>
           <topic label="smaxAddDefaultMessageProcessor" href="smax-messages_8c.html#aa3e777f85e81ffb9b02dc8cc3d124a94"/>
           <topic label="smaxAddMessageProcessor" href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f"/>
           <topic label="smaxRemoveMessageProcessor" href="smax-messages_8c.html#a1550f0f7aed841d5576d47ec7e62e0c4"/>
-          <topic label="smaxSendDebug" href="smax-messages_8c.html#a6c8e73f27c445dedd5ba4ac5b399f8d1"/>
-          <topic label="smaxSendDetail" href="smax-messages_8c.html#a2a0607da9db140f4227524da37b3bf51"/>
-          <topic label="smaxSendError" href="smax-messages_8c.html#a7d936da43078b9be469a97a6a4bb82a8"/>
-          <topic label="smaxSendInfo" href="smax-messages_8c.html#a6056608a81e52d070dcc0f3ee96579b5"/>
-          <topic label="smaxSendProgress" href="smax-messages_8c.html#a0f32699c2148f3b09a48e84b3fa4d036"/>
-          <topic label="smaxSendStatus" href="smax-messages_8c.html#a3739383ee6770337b3bb023cfe0cc64c"/>
-          <topic label="smaxSendWarning" href="smax-messages_8c.html#a740f4a171334a6aa5d4736c15fc327e4"/>
+          <topic label="smaxSendDebug" href="smax-messages_8c.html#a1e7fa44ff0842c8ce3b49971511b950a"/>
+          <topic label="smaxSendDetail" href="smax-messages_8c.html#a4fdf286d99a08358832702c3f31a88b3"/>
+          <topic label="smaxSendError" href="smax-messages_8c.html#aeb4adbc4c56cbf31bc6f94054512e241"/>
+          <topic label="smaxSendInfo" href="smax-messages_8c.html#af28f27177a145167d0289586c9bf9739"/>
+          <topic label="smaxSendProgress" href="smax-messages_8c.html#ad41c05eabbc4fb669430cd638a06c826"/>
+          <topic label="smaxSendStatus" href="smax-messages_8c.html#a02c52082bf38f02dd47b563684e8208e"/>
+          <topic label="smaxSendWarning" href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102"/>
           <topic label="smaxSetMessageSenderID" href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3"/>
         </topic>
         <topic label="smax-meta.c" href="smax-meta_8c.html">
