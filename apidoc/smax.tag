@@ -2614,7 +2614,7 @@
     <docanchor file="index.html">lazy-synchronization</docanchor>
     <docanchor file="index.html">lazy-callbacks</docanchor>
     <docanchor file="index.html">lazy-finish</docanchor>
-    <docanchor file="index.html">notifications</docanchor>
+    <docanchor file="index.html">update-handling</docanchor>
     <docanchor file="index.html">monitoring-updates</docanchor>
     <docanchor file="index.html">waiting-for-updates</docanchor>
     <docanchor file="index.html">update-callbacks</docanchor>

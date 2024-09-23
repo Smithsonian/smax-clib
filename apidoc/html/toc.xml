@@ -23,7 +23,7 @@
       <topic label="Callbacks" href="index.html#autotoc_md31"/>
       <topic label="Finishing up" href="index.html#autotoc_md32"/>
     </topic>
-    <topic label="Custom notifications and update handling" href="index.html#autotoc_md34">
+    <topic label="Custom update handling" href="index.html#autotoc_md34">
       <topic label="Monitoring updates" href="index.html#autotoc_md35"/>
       <topic label="Waiting for updates" href="index.html#autotoc_md36"/>
       <topic label="Update callbacks" href="index.html#autotoc_md37"/>

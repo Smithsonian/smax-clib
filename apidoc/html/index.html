@@ -134,7 +134,7 @@ Table of Contents</h2>
 <li><a class="el" href="index.html#sharing-and-pulling">Sharing and pulling data</a></li>
 <li><a class="el" href="index.html#lazy-pulling">Lazy pulling (high-frequency queries)</a></li>
 <li><a class="el" href="index.html#pipelined-pulls">Pipelined pulls (high volume queries)</a></li>
-<li><a class="el" href="index.html#notifications">Custom notification and update handling</a></li>
+<li><a class="el" href="index.html#update-handling">Custom update handling</a></li>
 <li><a class="el" href="index.html#status-messages">Program status / error messages via SMA-X</a></li>
 <li><a class="el" href="index.html#optional-metadata">Optional metadata</a></li>
 <li><a class="el" href="index.html#error-handling">Error handling</a></li>
@@ -547,9 +547,9 @@ Finishing up</h3>
 <div class="line">}</div>
 <div class="ttc" id="asmax-queue_8c_html_a065361085eed93188b7fd3ffe3a7eaf5"><div class="ttname"><a href="smax-queue_8c.html#a065361085eed93188b7fd3ffe3a7eaf5">smaxWaitQueueComplete</a></div><div class="ttdeci">int smaxWaitQueueComplete(int timeoutMillis)</div><div class="ttdef"><b>Definition</b> smax-queue.c:326</div></div>
 </div><!-- fragment --><hr  />
-<p><a class="anchor" id="notifications"></a> </p>
+<p><a class="anchor" id="update-handling"></a> </p>
 <h2><a class="anchor" id="autotoc_md34"></a>
-Custom notifications and update handling</h2>
+Custom update handling</h2>
 <ul>
 <li><a class="el" href="index.html#monitoring-updates">Monitoring updates</a></li>
 <li><a class="el" href="index.html#waiting-for-updates">Waiting for updates</a></li>
@@ -647,8 +647,8 @@ Broadcasting status messages from an application</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Broadcast a warning message for &quot;my_program_id&quot;</span></div>
 <div class="line">int status = <a class="code hl_function" href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a>(<span class="stringliteral">&quot;Something did not work&quot;</span> %s<span class="stringliteral">&quot;, explanation);</span></div>
-<div class="ttc" id="asmax-messages_8c_html_a1c90a439b48a53555e9cfb60ce1b9102"><div class="ttname"><a href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a></div><div class="ttdeci">int smaxSendWarning(const char *msg,...)</div><div class="ttdef"><b>Definition</b> smax-messages.c:207</div></div>
-<div class="ttc" id="asmax-messages_8c_html_af3e8295bb941f68cf3177c79cd5fb4d3"><div class="ttname"><a href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a></div><div class="ttdeci">void smaxSetMessageSenderID(const char *id)</div><div class="ttdef"><b>Definition</b> smax-messages.c:106</div></div>
+<div class="ttc" id="asmax-messages_8c_html_a1c90a439b48a53555e9cfb60ce1b9102"><div class="ttname"><a href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a></div><div class="ttdeci">int smaxSendWarning(const char *msg,...)</div><div class="ttdef"><b>Definition</b> smax-messages.c:213</div></div>
+<div class="ttc" id="asmax-messages_8c_html_af3e8295bb941f68cf3177c79cd5fb4d3"><div class="ttname"><a href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a></div><div class="ttdeci">void smaxSetMessageSenderID(const char *id)</div><div class="ttdef"><b>Definition</b> smax-messages.c:112</div></div>
 </div><!-- fragment --><p><a class="anchor" id="processing-messages"></a> </p>
 <h3><a class="anchor" id="autotoc_md41"></a>
 Processing program messages</h3>
@@ -677,7 +677,7 @@ Processing program messages</h3>
 <div class="line">  <span class="comment">// Oops that did not work as planned.</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-messages_8c_html_abaa2573fb8e85e8359c8853647c38f2f"><div class="ttname"><a href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f">smaxAddMessageProcessor</a></div><div class="ttdeci">int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void(*f)(XMessage *))</div><div class="ttdef"><b>Definition</b> smax-messages.c:291</div></div>
+<div class="ttc" id="asmax-messages_8c_html_abaa2573fb8e85e8359c8853647c38f2f"><div class="ttname"><a href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f">smaxAddMessageProcessor</a></div><div class="ttdeci">int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void(*f)(XMessage *))</div><div class="ttdef"><b>Definition</b> smax-messages.c:297</div></div>
 </div><!-- fragment --><p>Each string argument (<code>host</code>, <code>prog</code>, and <code>type</code>) may take an asterisk (<code>"*"</code>) or <code>NULL</code> as the argument to indicate that the processor function should be called for incoming messages for all values for the given parameter.</p>
 <p>The processor function can also inspect what type of message it received by comparing the <code><a class="el" href="structXMessage.html" title="SMA-X program message.">XMessage</a></code> <code>type</code> value against one of the pre-defined constant expressions in <code><a class="el" href="smax_8h.html">smax.h</a></code>:</p>
 <table class="markdownTable">

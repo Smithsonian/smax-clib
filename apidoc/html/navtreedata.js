@@ -51,7 +51,7 @@ var NAVTREE =
         [ "Callbacks", "index.html#autotoc_md31", null ],
         [ "Finishing up", "index.html#autotoc_md32", null ]
       ] ],
-      [ "Custom notifications and update handling", "index.html#autotoc_md34", [
+      [ "Custom update handling", "index.html#autotoc_md34", [
         [ "Monitoring updates", "index.html#autotoc_md35", null ],
         [ "Waiting for updates", "index.html#autotoc_md36", null ],
         [ "Update callbacks", "index.html#autotoc_md37", null ]

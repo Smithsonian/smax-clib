@@ -11,5 +11,5 @@ var searchData=
   ['contents_8',['Table of Contents',['../index.html#autotoc_md3',1,'']]],
   ['contributing_20to_20smax_20clib_9',['Contributing to smax-clib',['../../../redisx/apidoc/html/md_CONTRIBUTING.html',1,'']]],
   ['coordinate_20systems_10',['Coordinate Systems',['../index.html#autotoc_md45',1,'']]],
-  ['custom_20notifications_20and_20update_20handling_11',['Custom notifications and update handling',['../index.html#autotoc_md34',1,'']]]
+  ['custom_20update_20handling_11',['Custom update handling',['../index.html#autotoc_md34',1,'']]]
 ];

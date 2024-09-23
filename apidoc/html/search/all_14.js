@@ -5,6 +5,6 @@ var searchData=
   ['unreleased_2',['[Unreleased]',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
   ['up_3',['Finishing up',['../index.html#autotoc_md32',1,'']]],
   ['update_20callbacks_4',['Update callbacks',['../index.html#autotoc_md37',1,'']]],
-  ['update_20handling_5',['Custom notifications and update handling',['../index.html#autotoc_md34',1,'']]],
+  ['update_20handling_5',['Custom update handling',['../index.html#autotoc_md34',1,'']]],
   ['updates_6',['updates',['../index.html#autotoc_md35',1,'Monitoring updates'],['../index.html#autotoc_md36',1,'Waiting for updates']]]
 ];

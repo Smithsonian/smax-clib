@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['handling_0',['handling',['../index.html#autotoc_md34',1,'Custom notifications and update handling'],['../index.html#autotoc_md48',1,'Error handling']]],
+  ['handling_0',['handling',['../index.html#autotoc_md34',1,'Custom update handling'],['../index.html#autotoc_md48',1,'Error handling']]],
   ['hget_5fwith_5fmeta_1',['HGET_WITH_META',['../smax_8c.html#ac5e36a13b5d67f497b15ab44b5a315af',1,'smax.c']]],
   ['high_20frequency_20queries_2',['Lazy pulling (high-frequency queries)',['../index.html#autotoc_md27',1,'']]],
   ['high_20volume_20queries_3',['Pipelined pulling (high volume queries)',['../index.html#autotoc_md29',1,'']]],
