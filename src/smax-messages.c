@@ -437,8 +437,8 @@ static void ProcessMessage(const char *pattern, const char *channel, const char 
   XMessage m;
   char *ts;
 
-  (void) pattern;
-  (void) length;
+  (void) pattern; // unused
+  (void) length;  // unused
 
   if(!channel) return;
 

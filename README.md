@@ -39,7 +39,7 @@ Last Updated: 18 September 2024
  - [Sharing and pulling data](#sharing-and-pulling)
  - [Lazy pulling (high-frequency queries)](#lazy-pulling)
  - [Pipelined pulls (high volume queries)](#pipelined-pulls)
- - [Custom notification and update handling](#notifications)
+ - [Custom update handling](#update-handling)
  - [Program status / error messages via SMA-X](#status-messages)
  - [Optional metadata](#optional-metadata)
  - [Error handling](#error-handling)
@@ -690,8 +690,8 @@ all previously sumbitted requests have been collected. You can do that with:
 
 ------------------------------------------------------------------------------
 
-<a name="notifications"></a>
-## Custom notifications and update handling
+<a name="update-handling"></a>
+## Custom update handling
 
  - [Monitoring updates](#monitoring-updates)
  - [Waiting for updates](#waiting-for-updates)
