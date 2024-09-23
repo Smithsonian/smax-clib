@@ -54,6 +54,7 @@ static void ProcessMessage(const char *pattern, const char *channel, const char 
 static int SendMessage(const char *type, const char *text, va_list varg) {
   static const char *fn = "SendMessage";
 
+  const char stdmsg[1024];
   char *msg;
 
   const char *id = senderID ? senderID : smaxGetProgramID();
@@ -69,8 +70,10 @@ static int SendMessage(const char *type, const char *text, va_list varg) {
 
   sprintf(channel, MESSAGES_PREFIX "%s" X_SEP "%s", id, type);
 
+  // Figure out how big of a storage we need.
   n = vsnprintf(NULL, 0, text, varg);
-  msg = (char *) malloc(n + X_TIMESTAMP_LENGTH + 1);
+  if(n < sizeof(stdmsg)) msg = (char *) stdmsg;
+  else msg = (char *) malloc(n + X_TIMESTAMP_LENGTH + 1);
   if(!msg) {
     free(channel);
     return x_error(X_NULL, errno, fn, "malloc() error (msg: %d bytes)", n);
@@ -82,7 +85,7 @@ static int SendMessage(const char *type, const char *text, va_list varg) {
   n = redisxNotify(smaxGetRedis(), channel, msg);
   if(n > 0) n = X_FAILURE;
 
-  free(msg);
+  if(msg != stdmsg) free(msg);
   free(channel);
 
   prop_error(fn, n);
