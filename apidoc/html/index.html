@@ -684,19 +684,19 @@ Processing program messages</h3>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone"><code><a class="el" href="structXMessage.html" title="SMA-X program message.">XMessage</a></code> <code>type</code>   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_STATUS</code>   </td><td class="markdownTableBodyNone">Program status update    </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_STATUS</code>   </td><td class="markdownTableBodyNone">status update    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_INFO</code>   </td><td class="markdownTableBodyNone">Informational program message    </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_INFO</code>   </td><td class="markdownTableBodyNone">onformational program message    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_DETAIL</code>   </td><td class="markdownTableBodyNone">Program detail (i.e. verbose messages)    </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_DETAIL</code>   </td><td class="markdownTableBodyNone">additional detail (e.g. for verbose messages).    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_PROGRESS</code>   </td><td class="markdownTableBodyNone">Program detail (i.e. verbose messages)    </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_PROGRESS</code>   </td><td class="markdownTableBodyNone">progress update.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_DEBUG</code>   </td><td class="markdownTableBodyNone">Program debug messages (also e.g. traces)    </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_DEBUG</code>   </td><td class="markdownTableBodyNone">debug messages (also e.g. traces)    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_WARNING</code>   </td><td class="markdownTableBodyNone">Program warnings    </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_WARNING</code>   </td><td class="markdownTableBodyNone">warning message    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_ERROR</code>   </td><td class="markdownTableBodyNone">Program errors   </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_ERROR</code>   </td><td class="markdownTableBodyNone">error message   </td></tr>
 </table>
 <p>Once you no longer need to process messages by the given processor function, you can remove it from the call list by passing its ID number (&lt;0) to <code><a class="el" href="smax-messages_8c.html#a1550f0f7aed841d5576d47ec7e62e0c4">smaxRemoveMessageProcessor()</a></code>.</p>
 <hr  />
