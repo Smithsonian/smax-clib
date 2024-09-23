@@ -109,8 +109,8 @@
 // SMA-X program message types.
 #define SMAX_MSG_STATUS     "status"        ///< Program status update.
 #define SMAX_MSG_INFO       "info"          ///< Informational program message.
-#define SMAX_MSG_DETAIL     "detail"        ///< Program detail (i.e. verbose messages).
-#define SMAX_MSG_PROGRESS   "progress"      ///< Program detail (i.e. verbose messages).
+#define SMAX_MSG_DETAIL     "detail"        ///< Additional program detail provided (e.g. for verbose mode)
+#define SMAX_MSG_PROGRESS   "progress"      ///< Program progress update.
 #define SMAX_MSG_DEBUG      "debug"         ///< Program debug messages (also e.g. traces).
 #define SMAX_MSG_WARNING    "warning"       ///< Program warnings.
 #define SMAX_MSG_ERROR      "error"         ///< Program errors.

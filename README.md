@@ -910,13 +910,13 @@ one of the pre-defined constant expressions in `smax.h`:
 
  | `XMessage` `type`          | Description                                     |
  | -------------------------- | ----------------------------------------------- |
- | `SMAX_MSG_STATUS`          | Program status update                           |
- | `SMAX_MSG_INFO`            | Informational program message                   |
- | `SMAX_MSG_DETAIL`          | Program detail (i.e. verbose messages)          |
- | `SMAX_MSG_PROGRESS`        | Program detail (i.e. verbose messages)          |
- | `SMAX_MSG_DEBUG`           | Program debug messages (also e.g. traces)       |
- | `SMAX_MSG_WARNING`         | Program warnings                                |
- | `SMAX_MSG_ERROR`           | Program errors                                  |
+ | `SMAX_MSG_STATUS`          | status update                                   |
+ | `SMAX_MSG_INFO`            | onformational program message                   |
+ | `SMAX_MSG_DETAIL`          | additional detail (e.g. for verbose messages).  |
+ | `SMAX_MSG_PROGRESS`        | progress update.                                |
+ | `SMAX_MSG_DEBUG`           | debug messages (also e.g. traces)               |
+ | `SMAX_MSG_WARNING`         | warning message                                 |
+ | `SMAX_MSG_ERROR`           | error message                                   |
 
 Once you no longer need to process messages by the given processor function, you can remove it from the call list by
 passing its ID number (&lt;0) to `smaxRemoveMessageProcessor()`.
