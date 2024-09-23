@@ -54,8 +54,8 @@ static void ProcessMessage(const char *pattern, const char *channel, const char 
 static int SendMessage(const char *type, const char *text, va_list varg) {
   static const char *fn = "SendMessage";
 
-  const char stdmsg[1024];
-  char *msg;
+  const char stdmsg[1024];  // standard message buffer, unless we need something larger.
+  char *msg;                // Message buffer (standard or allocated)
 
   const char *id = senderID ? senderID : smaxGetProgramID();
   char *channel;
@@ -72,20 +72,25 @@ static int SendMessage(const char *type, const char *text, va_list varg) {
 
   // Figure out how big of a storage we need.
   n = vsnprintf(NULL, 0, text, varg);
-  if(n < sizeof(stdmsg)) msg = (char *) stdmsg;
-  else msg = (char *) malloc(n + X_TIMESTAMP_LENGTH + 1);
-  if(!msg) {
-    free(channel);
-    return x_error(X_NULL, errno, fn, "malloc() error (msg: %d bytes)", n);
+
+  // Assign message buffer to standard, or else allocate
+  if(n + X_TIMESTAMP_LENGTH < (int) sizeof(stdmsg)) msg = (char *) stdmsg;
+  else {
+    msg = (char *) malloc(n + X_TIMESTAMP_LENGTH + 1);
+    if(!msg) {
+      free(channel);
+      return x_error(X_NULL, errno, fn, "malloc() error (msg: %d bytes)", n);
+    }
   }
 
+  // Print message, followed immediately by timestamp.
   n = vsnprintf(msg, n, text, varg);
   smaxTimestamp(&msg[n]);
 
   n = redisxNotify(smaxGetRedis(), channel, msg);
-  if(n > 0) n = X_FAILURE;
+  if(n < 0) n = X_FAILURE;
 
-  if(msg != stdmsg) free(msg);
+  if(msg != stdmsg) free(msg);    // free allocated message buffer
   free(channel);
 
   prop_error(fn, n);
