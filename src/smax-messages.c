@@ -63,7 +63,7 @@ static int SendMessage(const char *type, const char *text, va_list varg) {
   if(!type) return x_error(X_NULL, EINVAL, fn, "type parameter is NULL");
   if(!text) return x_error(X_NULL, EINVAL, fn, "text parameter is NULL");
 
-  if(strlen(text) > sizeof(msg) - X_TIMESTAMP_LENGTH - 1) x_error(X_NULL, EINVAL, fn, "text message is too long: >= %d bytes", strlen(text));
+  if(strlen(text) > sizeof(msg) - X_TIMESTAMP_LENGTH - 1) x_error(X_NULL, EINVAL, fn, "text message is too long: >= %ld bytes", (long) strlen(text));
 
   n = sizeof(MESSAGES_PREFIX) + strlen(id) + X_SEP_LENGTH + strlen(type);
   channel = malloc(n);
