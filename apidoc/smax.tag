@@ -1935,6 +1935,13 @@
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
     <member kind="define">
       <type>#define</type>
+      <name>_BSD_SOURCE</name>
+      <anchorfile>smax-util_8c.html</anchorfile>
+      <anchor>ad3d8a3bd0c0b677acef144f2c2ef6d73</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>_POSIX_C_SOURCE</name>
       <anchorfile>smax-util_8c.html</anchorfile>
       <anchor>a3024ccd4a9af5109d24e6c57565d74a1</anchor>

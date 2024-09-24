@@ -208,6 +208,9 @@ Initial configuration</h2>
 <p>You can also set up the authentication credentials for using the SMA-X database on the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server:</p>
 <div class="fragment"><div class="line">smaxSetUser(<span class="stringliteral">&quot;johndoe&quot;</span>);</div>
 <div class="line">smaxSetPassword(mySecretPassword);</div>
+</div><!-- fragment --><p>By default <b>smax_clib</b> will connect both an interactive and a pipeline (high-troughput) <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> client. However, if you are planning to only use interactive mode (for setting an queries), you might not want to connect the pipeline client at all:</p>
+<div class="fragment"><div class="line"><a class="code hl_function" href="smax_8c.html#a8d7a3f57360d8e505baa78e445a53875">smaxSetPipelined</a>(FALSE);</div>
+<div class="ttc" id="asmax_8c_html_a8d7a3f57360d8e505baa78e445a53875"><div class="ttname"><a href="smax_8c.html#a8d7a3f57360d8e505baa78e445a53875">smaxSetPipelined</a></div><div class="ttdeci">int smaxSetPipelined(boolean isEnabled)</div><div class="ttdef"><b>Definition</b> smax.c:228</div></div>
 </div><!-- fragment --><p>And finally, you can select the option to automatically try reconnect to the SMA-X server in case of lost connection or network errors (and keep track of changes locally until then):</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient</a>(TRUE);</div>
 <div class="ttc" id="asmax-resilient_8c_html_a469095a9a74a8ce5d6bbae347d7194e5"><div class="ttname"><a href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient</a></div><div class="ttdeci">void smaxSetResilient(boolean value)</div><div class="ttdef"><b>Definition</b> smax-resilient.c:62</div></div>
@@ -647,8 +650,8 @@ Broadcasting status messages from an application</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Broadcast a warning message for &quot;my_program_id&quot;</span></div>
 <div class="line">int status = <a class="code hl_function" href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a>(<span class="stringliteral">&quot;Something did not work&quot;</span> %s<span class="stringliteral">&quot;, explanation);</span></div>
-<div class="ttc" id="asmax-messages_8c_html_a1c90a439b48a53555e9cfb60ce1b9102"><div class="ttname"><a href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a></div><div class="ttdeci">int smaxSendWarning(const char *msg,...)</div><div class="ttdef"><b>Definition</b> smax-messages.c:213</div></div>
-<div class="ttc" id="asmax-messages_8c_html_af3e8295bb941f68cf3177c79cd5fb4d3"><div class="ttname"><a href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a></div><div class="ttdeci">void smaxSetMessageSenderID(const char *id)</div><div class="ttdef"><b>Definition</b> smax-messages.c:112</div></div>
+<div class="ttc" id="asmax-messages_8c_html_a1c90a439b48a53555e9cfb60ce1b9102"><div class="ttname"><a href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a></div><div class="ttdeci">int smaxSendWarning(const char *msg,...)</div><div class="ttdef"><b>Definition</b> smax-messages.c:219</div></div>
+<div class="ttc" id="asmax-messages_8c_html_af3e8295bb941f68cf3177c79cd5fb4d3"><div class="ttname"><a href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a></div><div class="ttdeci">void smaxSetMessageSenderID(const char *id)</div><div class="ttdef"><b>Definition</b> smax-messages.c:118</div></div>
 </div><!-- fragment --><p><a class="anchor" id="processing-messages"></a> </p>
 <h3><a class="anchor" id="autotoc_md41"></a>
 Processing program messages</h3>
@@ -677,7 +680,7 @@ Processing program messages</h3>
 <div class="line">  <span class="comment">// Oops that did not work as planned.</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-messages_8c_html_abaa2573fb8e85e8359c8853647c38f2f"><div class="ttname"><a href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f">smaxAddMessageProcessor</a></div><div class="ttdeci">int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void(*f)(XMessage *))</div><div class="ttdef"><b>Definition</b> smax-messages.c:297</div></div>
+<div class="ttc" id="asmax-messages_8c_html_abaa2573fb8e85e8359c8853647c38f2f"><div class="ttname"><a href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f">smaxAddMessageProcessor</a></div><div class="ttdeci">int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void(*f)(XMessage *))</div><div class="ttdef"><b>Definition</b> smax-messages.c:303</div></div>
 </div><!-- fragment --><p>Each string argument (<code>host</code>, <code>prog</code>, and <code>type</code>) may take an asterisk (<code>"*"</code>) or <code>NULL</code> as the argument to indicate that the processor function should be called for incoming messages for all values for the given parameter.</p>
 <p>The processor function can also inspect what type of message it received by comparing the <code><a class="el" href="structXMessage.html" title="SMA-X program message.">XMessage</a></code> <code>type</code> value against one of the pre-defined constant expressions in <code><a class="el" href="smax_8h.html">smax.h</a></code>:</p>
 <table class="markdownTable">
@@ -720,7 +723,7 @@ Error handling</h2>
 <div class="line">  fprintf(stderr, <span class="stringliteral">&quot;WARNING! set value: %s&quot;</span>, <a class="code hl_function" href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c">smaxErrorDescription</a>(status));</div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-util_8c_html_a51856e0dc0261f8e44c8635d31d6193c"><div class="ttname"><a href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c">smaxErrorDescription</a></div><div class="ttdeci">const char * smaxErrorDescription(int code)</div><div class="ttdef"><b>Definition</b> smax-util.c:261</div></div>
+<div class="ttc" id="asmax-util_8c_html_a51856e0dc0261f8e44c8635d31d6193c"><div class="ttname"><a href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c">smaxErrorDescription</a></div><div class="ttdeci">const char * smaxErrorDescription(int code)</div><div class="ttdef"><b>Definition</b> smax-util.c:269</div></div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="debug-support"></a> </p>
 <h2><a class="anchor" id="autotoc_md50"></a>
@@ -734,6 +737,7 @@ Future plans</h2>
 <p>Some obvious ways the library could evolve and grow in the not too distant future:</p>
 <ul>
 <li>Automated regression testing and coverage tracking.</li>
+<li>Standardized remote program settings implementation.</li>
 </ul>
 <p>If you have an idea for a must have feature, please let me (Attila) know. Pull requests, for new features or fixes to existing ones, are especially welcome!</p>
 <hr  />

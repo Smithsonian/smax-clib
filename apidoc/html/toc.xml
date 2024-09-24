@@ -410,6 +410,7 @@
           <topic label="smaxSetResilientExit" href="smax-resilient_8c.html#ae638a5b4c82119eea5ef7a0ba2cd40c1"/>
         </topic>
         <topic label="smax-util.c" href="smax-util_8c.html">
+          <topic label="_BSD_SOURCE" href="smax-util_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73"/>
           <topic label="_POSIX_C_SOURCE" href="smax-util_8c.html#a3024ccd4a9af5109d24e6c57565d74a1"/>
           <topic label="smax2xField" href="smax-util_8c.html#abfe751f22aa718133911ffdee848f64a"/>
           <topic label="smax2xStruct" href="smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c"/>
