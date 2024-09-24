@@ -965,7 +965,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
 
   if(str == NULL) {
     xZero(value, type, eCount);
-    return x_trace_null(fn, NULL);
+    return x_error(X_NULL, EINVAL, fn, "input string is NULL");
   }
 
   next = (char *) str;
