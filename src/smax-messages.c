@@ -17,13 +17,13 @@
 #  define _BSD_SOURCE           ///< vsnprinf() feature macro for glibc <= 2.19
 #endif
 
-
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <pthread.h>
 #include <errno.h>
-#include <stdarg.h>
+
 
 #include "smax-private.h"
 
@@ -70,21 +70,27 @@ static int SendMessage(const char *type, const char *text, va_list varg) {
 
   sprintf(channel, MESSAGES_PREFIX "%s" X_SEP "%s", id, type);
 
+#if (__Lynx__ && __powerpc__)
+  msg = (char *) stdmsg;
+  n = vsprintf(msg, text, varg);
+#else
   // Figure out how big of a storage we need.
-  n = vsnprintf(NULL, 0, text, varg);
+   n = vsnprintf(NULL, 0, text, varg);
 
-  // Assign message buffer to standard, or else allocate
-  if(n + X_TIMESTAMP_LENGTH < (int) sizeof(stdmsg)) msg = (char *) stdmsg;
-  else {
-    msg = (char *) malloc(n + X_TIMESTAMP_LENGTH + 1);
-    if(!msg) {
-      free(channel);
-      return x_error(X_NULL, errno, fn, "malloc() error (msg: %d bytes)", n);
-    }
-  }
+   // Assign message buffer to standard, or else allocate
+   if(n + X_TIMESTAMP_LENGTH < (int) sizeof(stdmsg)) msg = (char *) stdmsg;
+   else {
+     msg = (char *) malloc(n + X_TIMESTAMP_LENGTH + 1);
+     if(!msg) {
+       free(channel);
+       return x_error(X_NULL, errno, fn, "malloc() error (msg: %d bytes)", n);
+     }
+   }
 
   // Print message, followed immediately by timestamp.
   n = vsnprintf(msg, n, text, varg);
+#endif
+
   smaxTimestamp(&msg[n]);
 
   n = redisxNotify(smaxGetRedis(), channel, msg);
