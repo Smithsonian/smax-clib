@@ -742,8 +742,9 @@ static LazyMonitor *CreateMonitorAsync(const char *table, const char *key, XType
   id = xGetAggregateID(table, key);
   m->channel = calloc(1, sizeof(SMAX_UPDATES) + strlen(id));
   if(!m->channel) {
-    x_error(0, errno, fn, "calloc() error (%d bytes)", sizeof(SMAX_UPDATES) + strlen(id));
     free(m);
+    x_error(0, errno, fn, "calloc() error (%d bytes)", sizeof(SMAX_UPDATES) + strlen(id));
+    free(id);
     return NULL;
   }
 
