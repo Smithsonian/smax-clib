@@ -60,6 +60,7 @@ static LazyMonitor *GetMonitorAsync(const char *table, const char *key);
 static LazyMonitor *GetSpecificMonitorAsync(const char *table, const char *key);
 static void ProcessLazyUpdates(const char *pattern, const char *channel, const char *msg, long length);
 
+
 /**
  * Decrements the number of concurrent user calls that currently need access to the specific
  * lazy monitor data. If the monitor has no users left and is not currently monitored
@@ -210,7 +211,10 @@ static int UpdateCachedAsync(LazyMonitor *m, boolean background) {
 
   if(background && smaxIsPipelined()) {
     status = smaxQueue(m->table, m->key, type, 1, ptr, staging->meta);
-    if(!status) smaxQueueCallback(ApplyUpdate, staging);
+    if(!status) {
+      m->users++;
+      smaxQueueCallback(ApplyUpdate, staging);
+    }
   }
   else {
     status = smaxPull(m->table, m->key, type, 1, ptr, staging->meta);
