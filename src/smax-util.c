@@ -11,6 +11,14 @@
 /// For clock_gettime()
 #define _POSIX_C_SOURCE 199309
 
+// We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
+// gcc 5.1 was released 2015-04-22...
+#if __GNUC__ >= 5
+#  define _ISOC99_SOURCE        ///< strtoll() feature macro starting glibc 2.20 (2014-09-08)
+#else
+#  define _BSD_SOURCE           ///< strtoll() feature macro for glibc <= 2.19
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -957,7 +965,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
 
   if(str == NULL) {
     xZero(value, type, eCount);
-    return X_NULL;
+    return x_trace_null(fn, NULL);
   }
 
   next = (char *) str;

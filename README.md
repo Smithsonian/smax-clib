@@ -980,6 +980,7 @@ settings.
 Some obvious ways the library could evolve and grow in the not too distant future:
 
  - Automated regression testing and coverage tracking.
+ - Standardized remote program settings implementation.
 
 If you have an idea for a must have feature, please let me (Attila) know. Pull requests, for new features or fixes to
 existing ones, are especially welcome! 

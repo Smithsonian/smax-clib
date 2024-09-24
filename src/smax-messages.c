@@ -9,7 +9,7 @@
  */
 
 
-// We'll use gcc major version as a proy for the glibc library to decide which feature macro to use.
+// We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
 // gcc 5.1 was released 2015-04-22...
 #if __GNUC__ >= 5
 #  define _ISOC99_SOURCE        ///< vsnprintf() feature macro starting glibc 2.20 (2014-09-08)

@@ -10,9 +10,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
-#include "redisx.h"
 #include "smax.h"
+#include "redisx.h"
 
 static XField f;
 static char *host = SMAX_DEFAULT_HOSTNAME;
@@ -44,7 +45,7 @@ static void setOption(char *argv[], int *next) {
   option++;
 
   if(!strcmp(option, "t") || !strcmp(option, "-type")) {
-    sType = argv[(*next)++];
+    sType = argv[*(next++)];
     f.type = smaxTypeForString(sType);
     if(f.type == X_UNKNOWN || f.type == X_STRUCT) {
       fprintf(stderr, "ERROR! Invalid type: %s\n", sType);
@@ -53,15 +54,15 @@ static void setOption(char *argv[], int *next) {
   }
 
   else if(!strcmp(option, "d") || !strcmp(option, "-dims")) {
-    f.ndim = xParseDims(argv[(*next)++], f.sizes);
+    f.ndim = xParseDims(argv[*(next++)], f.sizes);
   }
 
   else if(!strcmp(option, "D") || !strcmp(option, "-delims")) {
-    delims = argv[(*next)++];
+    delims = argv[*(next++)];
   }
 
   else if(!strcmp(option, "s") || !strcmp(option, "-server")) {
-    host = argv[(*next)++];
+    host = argv[*(next++)];
   }
 }
 
@@ -84,7 +85,6 @@ int main(int argc, char *argv[]) {
   int next, n, status;
 
   if(argc < 5) usage();
-
   smaxSetPipelined(FALSE);
 
   for(next = 1; next < argc; next++) {
@@ -125,10 +125,15 @@ int main(int argc, char *argv[]) {
     f.sizes[0] = n + 1;
   }
 
+  f.value = calloc(xGetFieldCount(&f), xElementSizeOf(f.type));
+  if(!f.value) {
+    fprintf(stderr, "ERROR! alloc error (%d x %d): %s\n", xGetFieldCount(&f), xElementSizeOf(f.type), strerror(errno));
+  }
+
   if(f.type == X_STRING || f.type == X_RAW) f.value = (char *) &value;
   else {
-    status = smaxStringToValues(value, &f.value, f.type, xGetFieldCount(&f), &n);
-    if(status) {
+    status = smaxStringToValues(value, f.value, f.type, xGetFieldCount(&f), &n);
+    if(status < 0) {
       fprintf(stderr, "ERROR! SMA-X invalid value: %s\n", smaxErrorDescription(status));
       return status;
     }
@@ -140,7 +145,6 @@ int main(int argc, char *argv[]) {
     return status;
   }
 
-  smaxSetResilient(FALSE);
   status = smaxShareField(table, &f);
   smaxDisconnect();
 
