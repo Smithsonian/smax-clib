@@ -84,6 +84,11 @@ endif
 # Links against pthread and dependencies
 LDFLAGS += $(THREADS) -lredisx -lxchange 
 
+# Search for libraries under LIB
+ifneq ($(findstring $(LIB),$(LD_LIBRARY_PATH)),$LIB)
+  LD_LIBRARY_PATH := $(LIB):$(LD_LIBRARY_PATH)
+endif
+
 # Compile and link against a specific redisx library (if defined)
 ifdef REDISX
   CPPFLAGS += -I$(REDISX)/include
