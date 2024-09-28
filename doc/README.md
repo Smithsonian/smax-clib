@@ -38,7 +38,7 @@ Last Updated: 18 September 2024
 The [SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
 is a high performance and versatile real-time data sharing platform for distributed software systems. It is built 
 around a central Redis database, and provides atomic access to structured data, including specific branches and/or 
-leaf nodes, with associated metadadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use 
+leaf nodes, with associated metadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use 
 it to share real-time data among hundreds of computers and nearly a thousand individual programs.
 
 SMA-X consists of a set of server-side [LUA](https://lua.org/) scripts that run on [Redis](https://redis.io) (or one 
@@ -53,7 +53,8 @@ Before then the API may undergo slight changes and tweaks. Use the repository as
 
  - [SMA-X specification](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing)
  - [Smithsonian/smax-python](https://github.com/Smithsonian/smax-python) an alternative library for Python 3.
- - [Smithsonian/smax-postgres](https://github.com/Smithsonian/smax-postgres) for creating a time-series history of SMA-X in a __PostgreSQL__ database.
+ - [Smithsonian/smax-postgres](https://github.com/Smithsonian/smax-postgres) for creating a time-series history of 
+   SMA-X in a __PostgreSQL__ database.
 
 
 ------------------------------------------------------------------------------
@@ -92,7 +93,7 @@ prior to invoking `make`. The following build variables can be configured:
    
  - `CC`: The C compiler to use (default: `gcc`).
 
- - `CPPFLAGS`: C pre-processor flags, such as externally defined compiler constants.
+ - `CPPFLAGS`: C preprocessor flags, such as externally defined compiler constants.
  
  - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
    automatically.
@@ -161,7 +162,7 @@ You can also set up the authentication credentials for using the SMA-X database 
   smaxSetPassword(mySecretPassword);
 ```
 
-By default __smax_clib__ will connect both an interactive and a pipeline (high-troughput) Redis client. However, if you
+By default __smax_clib__ will connect both an interactive and a pipeline (high-throughput) Redis client. However, if you
 are planning to only use interactive mode (for setting an queries), you might not want to connect the pipeline client
 at all:
 
@@ -181,7 +182,7 @@ network errors (and keep track of changes locally until then):
 <a name="connecting"></a>
 ## Connecting to / disconnecting from SMA-X 
 
-Once you have configured the connection parameters, you can connec to the server by:
+Once you have configured the connection parameters, you can connect to the server by:
 
 ```c
   int status = smaxConnect();
@@ -202,7 +203,7 @@ And, when you are done, you should disconnect with:
 
 The user of the __smax-clib__ library might want to know when connections to the SMA-X server are established, or when 
 disconnections happen, and may want to perform some configuration or clean-up accordingly. For this reason, the 
-library provides support for connection 'hooks' -- that is custom functions that are called in the even of connecting 
+library provides support for connection hooks -- that is custom functions that are called in the even of connecting 
 to or disconnecting from a Redis server.
 
 Here is an example of a connection hook, which simply prints a message about the connection to the console.
@@ -316,7 +317,7 @@ array of 10), now it might report for just 9, or perhaps it now reports for 12.
 
 The point is that if your consumer application was written to expect ten 32-bit floating floating point values, it can 
 get that even if the producer changed the exact type or element count since you have written your client. The library 
-will simply apply the necessaty type conversion automatically, and then truncate, or else pad (with zeroes), the data 
+will simply apply the necessary type conversion automatically, and then truncate, or else pad (with zeroes), the data 
 as necessary to get what you want.
 
 The type conversion can be both widening or narrowing. Strings and numerical values can be converted to one another 
@@ -503,7 +504,7 @@ smallish structures only (with, say, a hundred or so or fewer leaf nodes).
 ## Lazy pulling (high-frequency queries)
   
 What happens if you need the data frequently? Do you pound on the database at some high-frequency? No, you probably 
-no not want to do that, especially if the data you need is not necessaily changing fast. There is no point on wasting
+no not want to do that, especially if the data you need is not necessarily changing fast. There is no point on wasting
 network bandwidth only to return the same values again and again. This is where 'lazy' pulling excels.
 
 From the caller's perspective lazy pulling works just like regular SMA-X pulls, e.g.:
@@ -528,7 +529,7 @@ the SMA-X server. Thus, as long as no update notification is received, successiv
 cached value. This can save big on network usage, and also provides orders of magnitude faster access so long as the 
 variable remains unchanged.
 
-When the vatiable is updated in SMA-X, our client library will be notified, and one of two things can happen:
+When the variable is updated in SMA-X, our client library will be notified, and one of two things can happen:
 
  1. it invalidates the cache, so that the next lazy pull will again work just like a regular pull, fetching the 
     updated value from SMA-X on demand. And again the library will cache that value and watch for notifications for 
@@ -601,8 +602,8 @@ Again it works similarly to the basic pulling, except that you submit your pull 
 
 Pipelined (batched) pulls have dramatic effects on performance. Rather than being limited by round-trip times, you will
 be limited by the performance of the Redis server itself (or the network bandwidth on some older infrastructure). As 
-such, instead of thousand of queries per second, you can pull 2-3 orders of magnitude more in a given time, with hudreds 
-of thousands to even millions of pull per second this way.
+such, instead of thousand of queries per second, you can pull 2-3 orders of magnitude more in a given time, with 
+hundreds of thousands of pull per second this way.
 
 <a name="lazy-synchronization"></a>
 ### Synchronization points and waiting
@@ -614,7 +615,7 @@ After you have submitted a batch of pull request to the queue, you can create a 
 ```
 
 A synchronization point is a marker in the queue that we can wait on. After the synchronization point is created, you
-can sumbit more pull request to the same queue (e.g. for another processing block), or do some other things for a bit
+can submit more pull request to the same queue (e.g. for another processing block), or do some other things for a bit
 (since it will take at least some microseconds before the data is ready). Then, when ready you can wait on the 
 specific synchronization point to ensure that data submitted prior to its creation is delivered from SMA-X:
 
@@ -663,7 +664,7 @@ Then submit this callback routine to the queue after the set of variables it req
 ### Finishing up
 
 If you might still have some pending pipelined pulls that have not received responses yet, you may want to wait until
-all previously sumbitted requests have been collected. You can do that with:
+all previously submitted requests have been collected. You can do that with:
 
 ```c
   // Wait for up to 3000 ms for all pipelined pulls to collect responses from SMA-X.
@@ -694,8 +695,8 @@ all previously sumbitted requests have been collected. You can do that with:
 ### Monitoring updates
 
 The LUA scripts that define SMA-X interface on the Redis server send out PUB/SUB notifications for every variable on 
-their own dedicate PUB/SUB channel whenever the variable is updated. Byt default, lazy access methods subscribe to 
-these messages and use them to determine when to invalidate the chache and fetch new values from the database again. 
+their own dedicate PUB/SUB channel whenever the variable is updated. By default, lazy access methods subscribe to 
+these messages and use them to determine when to invalidate the cache and fetch new values from the database again. 
 However, you may subscribe and use these messages outside of the lazy update routines also. The only thing you need to 
 pay attention to is not to unsubscribe from update notifications for those variables that have multiple active monitors
 (including lazy updates).
@@ -728,7 +729,7 @@ and/or pattern(s)
 ```
 
 You can subscribe to any number of variables or patterns in this way. __smax_clib__ will receive and process 
-notifications for all of them. (So beware of creating unneccessary network traffic.)
+notifications for all of them. (So beware of creating unnecessary network traffic.)
 
 <a name="waiting-for-updates"></a>
 ### Waiting for updates
@@ -803,9 +804,9 @@ One word of caution on callbacks is that they are expected to:
    mutex for prolonged periods).
   
 If the above two conditions cannot be guaranteed, it's best practice for your callback to place a copy of the 
-callback information on a queue, and then spawn or notify a separate thread to process the infomation in the 
-background, including discarding the copied data if it's no longer needed. Alternatively, you can launch a decicated
-processor thread early on, and iside it wait for the updates before executing some complex action. The choice is
+callback information on a queue, and then spawn or notify a separate thread to process the information in the 
+background, including discarding the copied data if it's no longer needed. Alternatively, you can launch a dedicated
+processor thread early on, and inside it wait for the updates before executing some complex action. The choice is
 yours.
 
 
@@ -817,7 +818,7 @@ yours.
  - [Broadcasting status messages from an application](#broadcasting-messages)
  - [Processing program messages](#processing-messages)
 
-SMA-X also provides a standard for reporting porgram status, warning, and error messages via the Redis PUB/SUB 
+SMA-X also provides a standard for reporting program status, warning, and error messages via the Redis PUB/SUB 
 infrastructure. 
  
 <a name="broadcasting-messages"></a>
@@ -838,7 +839,7 @@ type. These are:
 All the above methods work like `printf()`, and can take additional parameters corresponding to the format specifiers
 contained in the `msg` argument.
 
-By default, the messages are sent under the canonocal program name (i.e. set by `_progname` on GNU/Linux systems) 
+By default, the messages are sent under the canonical program name (i.e. set by `_progname` on GNU/Linux systems) 
 that produced the message. You can override that, and define a custom sender ID for your status messages, by calling
 `smaxSetMessageSenderID()` prior to broadcasting, e.g.:
 
@@ -898,12 +899,12 @@ Each string argument (`host`, `prog`, and `type`) may take an asterisk (`"*"`) o
 the processor function should be called for incoming messages for all values for the given parameter.
 
 The processor function can also inspect what type of message it received by comparing the `XMessage` `type` value against
-one of the pre-defined constant expressions in `smax.h`:
+one of the predefined constant expressions in `smax.h`:
 
  | `XMessage` `type`          | Description                                     |
  | -------------------------- | ----------------------------------------------- |
  | `SMAX_MSG_STATUS`          | status update                                   |
- | `SMAX_MSG_INFO`            | onformational program message                   |
+ | `SMAX_MSG_INFO`            | informational program message                   |
  | `SMAX_MSG_DETAIL`          | additional detail (e.g. for verbose messages).  |
  | `SMAX_MSG_PROGRESS`        | progress update.                                |
  | `SMAX_MSG_DEBUG`           | debug messages (also e.g. traces)               |

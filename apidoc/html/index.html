@@ -145,7 +145,7 @@ Table of Contents</h2>
 <p><a class="anchor" id="introduction"></a> </p>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Introduction</h2>
-<p>The <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA Exchange (SMA-X)</a> is a high performance and versatile real-time data sharing platform for distributed software systems. It is built around a central <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> database, and provides atomic access to structured data, including specific branches and/or leaf nodes, with associated metadadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use it to share real-time data among hundreds of computers and nearly a thousand individual programs.</p>
+<p>The <a href="https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing">SMA Exchange (SMA-X)</a> is a high performance and versatile real-time data sharing platform for distributed software systems. It is built around a central <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> database, and provides atomic access to structured data, including specific branches and/or leaf nodes, with associated metadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use it to share real-time data among hundreds of computers and nearly a thousand individual programs.</p>
 <p>SMA-X consists of a set of server-side <a href="https://lua.org/">LUA</a> scripts that run on <a href="https://redis.io">Redis</a> (or one of its forks / clones such as <a href="https://valkey.io">Valkey</a> or <a href="https://dragonfly.io">Dragonfly</a>); a set of libraries to interface client applications; and a set of command-line tools built with them. Currently we provide client libraries for C/C++ (C99) and Python 3. We may provide Java and/or Rust client libraries too in the future.</p>
 <p>There are no official releases of <b>smax-clib</b> yet. An initial 1.0.0 release is expected early/mid 2025. Before then the API may undergo slight changes and tweaks. Use the repository as is at your own risk for now.</p>
 <h3><a class="anchor" id="autotoc_md6"></a>
@@ -175,7 +175,7 @@ Building the SMA-X C library</h2>
 <li><code>XCHANGE</code>: the root of the location where the <a href="https://github.com/Smithsonian/xchange">Smithsonian/xchange</a> library is installed. It expects to find <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html">xchange.h</a></code> under <code>$(XCHANGE)/include</code> and <code>libxchange.so</code> under <code>$(XCHANGE)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 <li><code>REDISX</code>: the root of the location where the <a href="https://github.com/Smithsonian/redisx">Smithsonian/redisx</a> library is installed. It expects to find <code><a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html">redisx.h</a></code> under <code>$(REDISX)/include</code> and <code>libredisx.so</code> under <code>$(REDISX)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 <li><code>CC</code>: The C compiler to use (default: <code>gcc</code>).</li>
-<li><code>CPPFLAGS</code>: C pre-processor flags, such as externally defined compiler constants.</li>
+<li><code>CPPFLAGS</code>: C preprocessor flags, such as externally defined compiler constants.</li>
 <li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-Os -Wall -std=c99</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
 <li><code>LDFLAGS</code>: Extra linker flags (default: <em>not set</em>). Note, <code>-lm -lredisx -lxchange -pthread</code> will be added automatically.</li>
 <li><code>BUILD_MODE</code>: You can set it to <code>debug</code> to enable debugging features: it will initialize the global <code>xDebug</code> variable to <code>TRUE</code> and add <code>-g</code> to <code>CFLAGS</code>.</li>
@@ -208,7 +208,7 @@ Initial configuration</h2>
 <p>You can also set up the authentication credentials for using the SMA-X database on the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server:</p>
 <div class="fragment"><div class="line">smaxSetUser(<span class="stringliteral">&quot;johndoe&quot;</span>);</div>
 <div class="line">smaxSetPassword(mySecretPassword);</div>
-</div><!-- fragment --><p>By default <b>smax_clib</b> will connect both an interactive and a pipeline (high-troughput) <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> client. However, if you are planning to only use interactive mode (for setting an queries), you might not want to connect the pipeline client at all:</p>
+</div><!-- fragment --><p>By default <b>smax_clib</b> will connect both an interactive and a pipeline (high-throughput) <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> client. However, if you are planning to only use interactive mode (for setting an queries), you might not want to connect the pipeline client at all:</p>
 <div class="fragment"><div class="line"><a class="code hl_function" href="smax_8c.html#a8d7a3f57360d8e505baa78e445a53875">smaxSetPipelined</a>(FALSE);</div>
 <div class="ttc" id="asmax_8c_html_a8d7a3f57360d8e505baa78e445a53875"><div class="ttname"><a href="smax_8c.html#a8d7a3f57360d8e505baa78e445a53875">smaxSetPipelined</a></div><div class="ttdeci">int smaxSetPipelined(boolean isEnabled)</div><div class="ttdef"><b>Definition</b> smax.c:228</div></div>
 </div><!-- fragment --><p>And finally, you can select the option to automatically try reconnect to the SMA-X server in case of lost connection or network errors (and keep track of changes locally until then):</p>
@@ -218,7 +218,7 @@ Initial configuration</h2>
 <p><a class="anchor" id="connecting"></a> </p>
 <h2><a class="anchor" id="autotoc_md16"></a>
 Connecting to / disconnecting from SMA-X</h2>
-<p>Once you have configured the connection parameters, you can connec to the server by:</p>
+<p>Once you have configured the connection parameters, you can connect to the server by:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect</a>();</div>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">   <span class="comment">// Oops, we could not connect to the server</span></div>
@@ -231,7 +231,7 @@ Connecting to / disconnecting from SMA-X</h2>
 </div><!-- fragment --><p><a class="anchor" id="connection-hooks"></a> </p>
 <h3><a class="anchor" id="autotoc_md17"></a>
 Connection / disconnection hooks</h3>
-<p>The user of the <b>smax-clib</b> library might want to know when connections to the SMA-X server are established, or when disconnections happen, and may want to perform some configuration or clean-up accordingly. For this reason, the library provides support for connection 'hooks' &ndash; that is custom functions that are called in the even of connecting to or disconnecting from a <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server.</p>
+<p>The user of the <b>smax-clib</b> library might want to know when connections to the SMA-X server are established, or when disconnections happen, and may want to perform some configuration or clean-up accordingly. For this reason, the library provides support for connection hooks &ndash; that is custom functions that are called in the even of connecting to or disconnecting from a <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server.</p>
 <p>Here is an example of a connection hook, which simply prints a message about the connection to the console.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">void</span> my_connect_hook() {</div>
 <div class="line">   printf(<span class="stringliteral">&quot;Connected to SMA-X server\n&quot;</span>);</div>
@@ -310,7 +310,7 @@ Standard metadata</h3>
 <h3><a class="anchor" id="autotoc_md22"></a>
 Flexible types and sizes</h3>
 <p>One nifty feature of the library is that as a consumer you need not be too concerned about what type or size of data the producer provides. The program that produces the data may sometimes change, for example from writing 32-bit floating point types to a 64-bit floating point types. Also while it produced data for say 10 units before (as an array of 10), now it might report for just 9, or perhaps it now reports for 12.</p>
-<p>The point is that if your consumer application was written to expect ten 32-bit floating floating point values, it can get that even if the producer changed the exact type or element count since you have written your client. The library will simply apply the necessaty type conversion automatically, and then truncate, or else pad (with zeroes), the data as necessary to get what you want.</p>
+<p>The point is that if your consumer application was written to expect ten 32-bit floating floating point values, it can get that even if the producer changed the exact type or element count since you have written your client. The library will simply apply the necessary type conversion automatically, and then truncate, or else pad (with zeroes), the data as necessary to get what you want.</p>
 <p>The type conversion can be both widening or narrowing. Strings and numerical values can be converted to one another through the expected string representation of numbers and vice versa. Boolean <code>true</code> values are treated equivalently to a numerical value of 1 and all non-zero numerical values will convert to boolean <code>true</code>.</p>
 <p>And, if you are concerned about the actual type or size (or shape) of the data stored, you have the option to inspect the metadata, and make decisions based on it. Otherwise, the library will just take care of giving you the available data in the format you expect.</p>
 <p><a class="anchor" id="scalars"></a> </p>
@@ -441,19 +441,19 @@ Structures / substructures...</h3>
 <p><a class="anchor" id="lazy-pulling"></a> </p>
 <h2><a class="anchor" id="autotoc_md27"></a>
 Lazy pulling (high-frequency queries)</h2>
-<p>What happens if you need the data frequently? Do you pound on the database at some high-frequency? No, you probably no not want to do that, especially if the data you need is not necessaily changing fast. There is no point on wasting network bandwidth only to return the same values again and again. This is where 'lazy' pulling excels.</p>
+<p>What happens if you need the data frequently? Do you pound on the database at some high-frequency? No, you probably no not want to do that, especially if the data you need is not necessarily changing fast. There is no point on wasting network bandwidth only to return the same values again and again. This is where 'lazy' pulling excels.</p>
 <p>From the caller's perspective lazy pulling works just like regular SMA-X pulls, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> data[10][4][2];</div>
 <div class="line"><span class="keywordtype">int</span> sizes[] = { 10, 4, 2 };</div>
 <div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_data&quot;</span>, X_INT, 3, sizes, data, &amp;meta);</div>
-<div class="ttc" id="asmax-lazy_8c_html_ab50222d7bbaa985fd6d004d67b0269ce"><div class="ttname"><a href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull</a></div><div class="ttdeci">int smaxLazyPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:439</div></div>
+<div class="ttc" id="asmax-lazy_8c_html_ab50222d7bbaa985fd6d004d67b0269ce"><div class="ttname"><a href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull</a></div><div class="ttdeci">int smaxLazyPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:443</div></div>
 </div><!-- fragment --><p>or</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561">smaxLazyPullDouble</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_var&quot;</span>);</div>
-<div class="ttc" id="asmax-lazy_8c_html_a31ed83292a29d69e1c9635b21aae7561"><div class="ttname"><a href="smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561">smaxLazyPullDouble</a></div><div class="ttdeci">double smaxLazyPullDouble(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:487</div></div>
+<div class="ttc" id="asmax-lazy_8c_html_a31ed83292a29d69e1c9635b21aae7561"><div class="ttname"><a href="smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561">smaxLazyPullDouble</a></div><div class="ttdeci">double smaxLazyPullDouble(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:491</div></div>
 </div><!-- fragment --><p>But, under the hood, it does something different. The first time a new variable is lazy pulled it is fetched from the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> database just like a regular pull. But, it also will cache the value, and watch for update notifications from the SMA-X server. Thus, as long as no update notification is received, successive calls will simply return the locally cached value. This can save big on network usage, and also provides orders of magnitude faster access so long as the variable remains unchanged.</p>
-<p>When the vatiable is updated in SMA-X, our client library will be notified, and one of two things can happen:</p>
+<p>When the variable is updated in SMA-X, our client library will be notified, and one of two things can happen:</p>
 <ol type="1">
 <li>it invalidates the cache, so that the next lazy pull will again work just like a regular pull, fetching the updated value from SMA-X on demand. And again the library will cache that value and watch for notifications for the next update. Or,</li>
 <li>it will trigger a background process to update the cached value in the background with a pipelined (high-throughput) pull. However, until the new value is actually fetched, it will return the previously cached value promptly.</li>
@@ -474,7 +474,7 @@ Lazy pulling (high-frequency queries)</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// And to stop lazy accessing all</span></div>
 <div class="line">smaxLazyFlush();</div>
-<div class="ttc" id="asmax-lazy_8c_html_a167a60b494fa9ec5b046f9da796f18b5"><div class="ttname"><a href="smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5">smaxLazyEnd</a></div><div class="ttdeci">int smaxLazyEnd(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:597</div></div>
+<div class="ttc" id="asmax-lazy_8c_html_a167a60b494fa9ec5b046f9da796f18b5"><div class="ttname"><a href="smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5">smaxLazyEnd</a></div><div class="ttdeci">int smaxLazyEnd(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:601</div></div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="pipelined-pulls"></a> </p>
 <h2><a class="anchor" id="autotoc_md29"></a>
@@ -492,7 +492,7 @@ Pipelined pulling (high volume queries)</h2>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_var&quot;</span>, X_DOUBLE, 1, &amp;d, &amp;meta);</div>
 <div class="ttc" id="asmax-queue_8c_html_a2c71427a215e2253d93de24788db338d"><div class="ttname"><a href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a></div><div class="ttdeci">int smaxQueue(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-queue.c:490</div></div>
-</div><!-- fragment --><p>Pipelined (batched) pulls have dramatic effects on performance. Rather than being limited by round-trip times, you will be limited by the performance of the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server itself (or the network bandwidth on some older infrastructure). As such, instead of thousand of queries per second, you can pull 2-3 orders of magnitude more in a given time, with hudreds of thousands to even millions of pull per second this way.</p>
+</div><!-- fragment --><p>Pipelined (batched) pulls have dramatic effects on performance. Rather than being limited by round-trip times, you will be limited by the performance of the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server itself (or the network bandwidth on some older infrastructure). As such, instead of thousand of queries per second, you can pull 2-3 orders of magnitude more in a given time, with hundreds of thousands of pull per second this way.</p>
 <p><a class="anchor" id="lazy-synchronization"></a> </p>
 <h3><a class="anchor" id="autotoc_md30"></a>
 Synchronization points and waiting</h3>
@@ -500,7 +500,7 @@ Synchronization points and waiting</h3>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structXSyncPoint.html">XSyncPoint</a> *syncPoint = <a class="code hl_function" href="smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1">smaxCreateSyncPoint</a>();</div>
 <div class="ttc" id="asmax-queue_8c_html_a30e2e1eb462ed2274a55016830b9abc1"><div class="ttname"><a href="smax-queue_8c.html#a30e2e1eb462ed2274a55016830b9abc1">smaxCreateSyncPoint</a></div><div class="ttdeci">XSyncPoint * smaxCreateSyncPoint()</div><div class="ttdef"><b>Definition</b> smax-queue.c:71</div></div>
 <div class="ttc" id="astructXSyncPoint_html"><div class="ttname"><a href="structXSyncPoint.html">XSyncPoint</a></div><div class="ttdoc">Synchronization point that can be waited upon when queueing pipelined pulls.</div><div class="ttdef"><b>Definition</b> smax.h:128</div></div>
-</div><!-- fragment --><p>A synchronization point is a marker in the queue that we can wait on. After the synchronization point is created, you can sumbit more pull request to the same queue (e.g. for another processing block), or do some other things for a bit (since it will take at least some microseconds before the data is ready). Then, when ready you can wait on the specific synchronization point to ensure that data submitted prior to its creation is delivered from SMA-X:</p>
+</div><!-- fragment --><p>A synchronization point is a marker in the queue that we can wait on. After the synchronization point is created, you can submit more pull request to the same queue (e.g. for another processing block), or do some other things for a bit (since it will take at least some microseconds before the data is ready). Then, when ready you can wait on the specific synchronization point to ensure that data submitted prior to its creation is delivered from SMA-X:</p>
 <div class="fragment"><div class="line"><span class="comment">// Wait for data submitted prior to syncPoint to be ready, or time out after 1000 ms.</span></div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-queue_8c.html#a90a901b9e649c77d29379b8fc31cbefc">smaxSync</a>(syncPoint, 1000);</div>
 <div class="line"> </div>
@@ -535,7 +535,7 @@ Callbacks</h3>
 </div><!-- fragment --><p><a class="anchor" id="lazy-finish"></a> </p>
 <h3><a class="anchor" id="autotoc_md32"></a>
 Finishing up</h3>
-<p>If you might still have some pending pipelined pulls that have not received responses yet, you may want to wait until all previously sumbitted requests have been collected. You can do that with:</p>
+<p>If you might still have some pending pipelined pulls that have not received responses yet, you may want to wait until all previously submitted requests have been collected. You can do that with:</p>
 <div class="fragment"><div class="line"><span class="comment">// Wait for up to 3000 ms for all pipelined pulls to collect responses from SMA-X.</span></div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-queue_8c.html#a065361085eed93188b7fd3ffe3a7eaf5">smaxWaitQueueComplete</a>(3000);</div>
 <div class="line"> </div>
@@ -561,7 +561,7 @@ Custom update handling</h2>
 <p><a class="anchor" id="monitoring-updates"></a> </p>
 <h3><a class="anchor" id="autotoc_md35"></a>
 Monitoring updates</h3>
-<p>The LUA scripts that define SMA-X interface on the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server send out PUB/SUB notifications for every variable on their own dedicate PUB/SUB channel whenever the variable is updated. Byt default, lazy access methods subscribe to these messages and use them to determine when to invalidate the chache and fetch new values from the database again. However, you may subscribe and use these messages outside of the lazy update routines also. The only thing you need to pay attention to is not to unsubscribe from update notifications for those variables that have multiple active monitors (including lazy updates).</p>
+<p>The LUA scripts that define SMA-X interface on the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server send out PUB/SUB notifications for every variable on their own dedicate PUB/SUB channel whenever the variable is updated. By default, lazy access methods subscribe to these messages and use them to determine when to invalidate the cache and fetch new values from the database again. However, you may subscribe and use these messages outside of the lazy update routines also. The only thing you need to pay attention to is not to unsubscribe from update notifications for those variables that have multiple active monitors (including lazy updates).</p>
 <p>One common use case is that you want to execute some code in your application when some value changes in SMA-X. You can do that easily, and have two choices on how you want to trigger the code execution: (1) you can block execution of your current thread until an update notification is received for one of the variables (or patterns) of interest to which you have subscribed, or (2) you can let <b>smax_clib</b> call a designated function of your application when such an update notification is captured. We'll cover these two cases separately below.</p>
 <p>However, in either case you will have to subscribe to the variable(s) or pattern(s) of interest with <code><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a></code> before updates can be processed, e.g.</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;watch_point_variable&quot;</span>);</div>
@@ -576,7 +576,7 @@ Monitoring updates</h3>
 <div class="line">  <span class="comment">// Ooops something did not go to plan</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>You can subscribe to any number of variables or patterns in this way. <b>smax_clib</b> will receive and process notifications for all of them. (So beware of creating unneccessary network traffic.)</p>
+</div><!-- fragment --><p>You can subscribe to any number of variables or patterns in this way. <b>smax_clib</b> will receive and process notifications for all of them. (So beware of creating unnecessary network traffic.)</p>
 <p><a class="anchor" id="waiting-for-updates"></a> </p>
 <h3><a class="anchor" id="autotoc_md36"></a>
 Waiting for updates</h3>
@@ -625,7 +625,7 @@ Update callbacks</h3>
 <li>execute quickly</li>
 <li>never block for prolonged periods. (It may be OK to wait briefly on a mutex, provided nothing else can hog that mutex for prolonged periods).</li>
 </ul>
-<p>If the above two conditions cannot be guaranteed, it's best practice for your callback to place a copy of the callback information on a queue, and then spawn or notify a separate thread to process the infomation in the background, including discarding the copied data if it's no longer needed. Alternatively, you can launch a decicated processor thread early on, and iside it wait for the updates before executing some complex action. The choice is yours.</p>
+<p>If the above two conditions cannot be guaranteed, it's best practice for your callback to place a copy of the callback information on a queue, and then spawn or notify a separate thread to process the information in the background, including discarding the copied data if it's no longer needed. Alternatively, you can launch a dedicated processor thread early on, and inside it wait for the updates before executing some complex action. The choice is yours.</p>
 <hr  />
 <p><a class="anchor" id="status-messages"></a> <br  />
  </p>
@@ -635,14 +635,14 @@ Program status / error messages via SMA-X</h2>
 <li><a class="el" href="index.html#broadcasting-messages">Broadcasting status messages from an application</a></li>
 <li><a class="el" href="index.html#processing-messages">Processing program messages</a></li>
 </ul>
-<p>SMA-X also provides a standard for reporting porgram status, warning, and error messages via the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> PUB/SUB infrastructure.</p>
+<p>SMA-X also provides a standard for reporting program status, warning, and error messages via the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> PUB/SUB infrastructure.</p>
 <p><a class="anchor" id="broadcasting-messages"></a> </p>
 <h3><a class="anchor" id="autotoc_md40"></a>
 Broadcasting status messages from an application</h3>
 <p>Broadcasting program messages to SMA-X is very simple using a set of dedicated messaging functions by message type. These are:</p>
 <p>| <b>smax_clib</b> function | Description | | <code><a class="el" href="smax-messages_8c.html#a02c52082bf38f02dd47b563684e8208e">smaxSendStatus(const char *msg, ...)</a></code> | sends a status message | | <code><a class="el" href="smax-messages_8c.html#af28f27177a145167d0289586c9bf9739">smaxSendInfo(const char *msg, ...)</a></code> | sends an informational message | | <code><a class="el" href="smax-messages_8c.html#a4fdf286d99a08358832702c3f31a88b3">smaxSendDetail(const char *msg, ...)</a></code> | sends optional status/information detail | | <code><a class="el" href="smax-messages_8c.html#a1e7fa44ff0842c8ce3b49971511b950a">smaxSendDebug(const char *msg, ...)</a></code> | sends a debugging messages | | <code><a class="el" href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning(const char *msg, ...)</a></code> | sends a warning message | | <code><a class="el" href="smax-messages_8c.html#aeb4adbc4c56cbf31bc6f94054512e241">smaxSendError(const char *msg, ...)</a></code> | sends an error message | | <code><a class="el" href="smax-messages_8c.html#ad41c05eabbc4fb669430cd638a06c826">smaxSendProgress(double fraction, const char *msg, ...)</a></code> | sends a progress update and message |</p>
 <p>All the above methods work like <code>printf()</code>, and can take additional parameters corresponding to the format specifiers contained in the <code>msg</code> argument.</p>
-<p>By default, the messages are sent under the canonocal program name (i.e. set by <code>_progname</code> on GNU/Linux systems) that produced the message. You can override that, and define a custom sender ID for your status messages, by calling <code><a class="el" href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID()</a></code> prior to broadcasting, e.g.:</p>
+<p>By default, the messages are sent under the canonical program name (i.e. set by <code>_progname</code> on GNU/Linux systems) that produced the message. You can override that, and define a custom sender ID for your status messages, by calling <code><a class="el" href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID()</a></code> prior to broadcasting, e.g.:</p>
 <div class="fragment"><div class="line"><span class="comment">// Set out sender ID to &quot;my_program_id&quot;</span></div>
 <div class="line"><a class="code hl_function" href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a>(<span class="stringliteral">&quot;my_program_id&quot;</span>);</div>
 <div class="line"> </div>
@@ -682,14 +682,14 @@ Processing program messages</h3>
 <div class="line">}</div>
 <div class="ttc" id="asmax-messages_8c_html_abaa2573fb8e85e8359c8853647c38f2f"><div class="ttname"><a href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f">smaxAddMessageProcessor</a></div><div class="ttdeci">int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void(*f)(XMessage *))</div><div class="ttdef"><b>Definition</b> smax-messages.c:303</div></div>
 </div><!-- fragment --><p>Each string argument (<code>host</code>, <code>prog</code>, and <code>type</code>) may take an asterisk (<code>"*"</code>) or <code>NULL</code> as the argument to indicate that the processor function should be called for incoming messages for all values for the given parameter.</p>
-<p>The processor function can also inspect what type of message it received by comparing the <code><a class="el" href="structXMessage.html" title="SMA-X program message.">XMessage</a></code> <code>type</code> value against one of the pre-defined constant expressions in <code><a class="el" href="smax_8h.html">smax.h</a></code>:</p>
+<p>The processor function can also inspect what type of message it received by comparing the <code><a class="el" href="structXMessage.html" title="SMA-X program message.">XMessage</a></code> <code>type</code> value against one of the predefined constant expressions in <code><a class="el" href="smax_8h.html">smax.h</a></code>:</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone"><code><a class="el" href="structXMessage.html" title="SMA-X program message.">XMessage</a></code> <code>type</code>   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>SMAX_MSG_STATUS</code>   </td><td class="markdownTableBodyNone">status update    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>SMAX_MSG_INFO</code>   </td><td class="markdownTableBodyNone">onformational program message    </td></tr>
+<td class="markdownTableBodyNone"><code>SMAX_MSG_INFO</code>   </td><td class="markdownTableBodyNone">informational program message    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>SMAX_MSG_DETAIL</code>   </td><td class="markdownTableBodyNone">additional detail (e.g. for verbose messages).    </td></tr>
 <tr class="markdownTableRowEven">
