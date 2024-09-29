@@ -80,7 +80,7 @@ $(LIB)/libsmax.so: $(LIB)/libsmax.so.$(SO_VERSION)
 $(LIB)/libsmax.so.$(SO_VERSION): $(SOURCES)
 
 # Static library
-$(LIB)/libsmax.a: $(OBJECTS) | $(LIB) Makefile
+$(LIB)/libsmax.a: $(OBJECTS)
 
 
 README-smax.md: README.md
