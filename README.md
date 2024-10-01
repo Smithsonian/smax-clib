@@ -177,6 +177,14 @@ You can also set up the authentication credentials for using the SMA-X database 
   smaxSetPassword(mySecretPassword);
 ```
 
+By default __smax_clib__ will connect both an interactive and a pipeline (high-troughput) Redis client. However, if you
+are planning to only use interactive mode (for setting an queries), you might not want to connect the pipeline client
+at all:
+
+```c
+  smaxSetPipelined(FALSE);
+```
+
 And finally, you can select the option to automatically try reconnect to the SMA-X server in case of lost connection or
 network errors (and keep track of changes locally until then):
 
