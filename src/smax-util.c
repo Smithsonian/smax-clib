@@ -793,7 +793,7 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
   if(type == X_UNKNOWN) stringSize = 2 * eCount;
   else if(type == X_STRING) {
     stringSize = 1;
-    for(k = 0; k < eCount; k++) stringSize += strlen(S[k]) + 1;
+    for(k = 0; k < eCount; k++) stringSize += (S[k] ? strlen(S[k]) : 0) + 1;
   }
   else {
     eSize = xElementSizeOf(type);
@@ -881,7 +881,7 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
       }
       break;
     case X_STRING:
-      for(k=0; k<eCount; k++) next += sprintf(next, "%s\r", S[k]);
+      for(k=0; k<eCount; k++) next += sprintf(next, "%s\r", S[k] ? S[k] : "");
       break;
     default:
       for(k=0; k<eCount; k++) next += sprintf(next, "0 ");
