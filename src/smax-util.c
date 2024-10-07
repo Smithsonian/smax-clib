@@ -1152,10 +1152,16 @@ int smaxUnpackStrings(const char *data, int len, int count, char **dst) {
     dst[i] = (char *) malloc(l+1);
     if(!dst[i]) return x_error(X_INCOMPLETE, errno, fn, "malloc() error (%d bytes)", (l+1));
 
-    memcpy(dst[i], from, l);
+    if(l) memcpy(dst[i], from, l);
     dst[i][l] = '\0'; // termination...
 
     offset += l;
+  }
+
+  // Pad remaining elements with empty strings...
+  for(; i < count; i++) {
+    dst[i] = calloc(1, sizeof(char));
+    if(!dst[i]) return x_error(X_INCOMPLETE, errno, fn, "calloc() error (1x1 byte)");
   }
 
   return X_SUCCESS;
