@@ -317,7 +317,6 @@ unsigned char smaxGetHashLookupIndex(const char *table, int lTab, const char *ke
 }
 /// \endcond
 
-
 /**
  * \cond PROTECTED
  *
@@ -1136,13 +1135,13 @@ int smaxUnpackStrings(const char *data, int len, int count, char **dst) {
 
     for(l=0; from[l] && offset + l < len; l++) if(from[l] == '\r') break;
 
-    dst[i] = (char *) malloc(l+1);
+    dst[i] = (char *) malloc(l + 1);
     if(!dst[i]) return x_error(X_INCOMPLETE, errno, fn, "malloc() error (%d bytes)", (l+1));
 
     if(l) memcpy(dst[i], from, l);
     dst[i][l] = '\0'; // termination...
 
-    offset += l;
+    offset += l + 1;
   }
 
   // Pad remaining elements with empty strings...
