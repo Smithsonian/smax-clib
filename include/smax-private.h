@@ -37,7 +37,7 @@ int smaxUnlockConfig();
 int smaxLockNotify();
 int smaxUnlockNotify();
 
-long smaxGetHash(const char *buf, const int size, const XType type);
+long smaxGetHash(const char *buf, int size);
 
 int smaxRead(PullRequest *req, int channel);
 int smaxWrite(const char *group, const XField *f);

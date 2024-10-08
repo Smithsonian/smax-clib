@@ -309,49 +309,40 @@ unsigned char smaxGetHashLookupIndex(const char *table, int lTab, const char *ke
 
   if(table) {
     if(!lTab) lTab = strlen(table);
-    if(lTab > 0) hash += smaxGetHash(table, lTab, X_STRING);
+    if(lTab > 0) hash += smaxGetHash(table, lTab);
   }
 
   if(key) {
     if(!lKey) lKey = strlen(key);
-    if(lKey > 0) hash += smaxGetHash(key, lKey, X_STRING);
+    if(lKey > 0) hash += smaxGetHash(key, lKey);
   }
 
   return (char) (hash & 0xff);
 }
 /// \endcond
 
+
 /**
  * \cond PROTECTED
  *
  * A quick 32-bit integer hashing algorithm. It uses a combination of 32-bit XOR products and summing to
- * obtain something reasonably robust at detecting changes. The returned hash is unique for data that fits in
- * 4-bytes.
+ * obtain something reasonably robust at detecting changes.
  *
  * \param buf       Pointer to the byte buffer to calculate a hash on
- * \param size      Size of the byte buffer
- * \param type      SMA-X type (character arrays are negative, with values of -length, see smax.h)
+ * \param size      (bytes) Number of bytes from buf to calculate sum on, or &lt;=0 to
+ *                  do it until string termination.
  *
  * \return          An integer hash value.
  */
-long smaxGetHash(const char *buf, const int size, const XType type) {
+long smaxGetHash(const char *buf, int size) {
   int i;
   long sum = 0;
 
-  const int nChars = xIsCharSequence(type) ? xElementSizeOf(type) : 0;
-
   if(!buf) return SMAX_DEFAULT_HASH;
-  if(size <= 0) return SMAX_DEFAULT_HASH;
+  if(size <= 0) size = strlen(buf);
 
-  for(i=0; i<size; i++) {
-    // For character arrays, jump to next element if reached termination...
-    if(nChars) if(buf[i] == '\0') {
-      i += nChars - (i % nChars);
-      continue;
-    }
-
-    sum += buf[i];  // Calculate a simple sum of all relevant bytes
-  }
+  for(i=0; i < size; i++)
+    sum += buf[i] ^ i;  // Calculate a simple sum of all relevant bytes
 
   return sum;
 }
