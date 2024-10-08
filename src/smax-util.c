@@ -307,15 +307,11 @@ void smaxDestroyPullRequest(PullRequest *p) {
 unsigned char smaxGetHashLookupIndex(const char *table, int lTab, const char *key, int lKey) {
   unsigned long hash = 0;
 
-  if(table) {
-    if(!lTab) lTab = strlen(table);
-    if(lTab > 0) hash += smaxGetHash(table, lTab);
-  }
+  if(table)
+    hash += smaxGetHash(table, lTab);
 
-  if(key) {
-    if(!lKey) lKey = strlen(key);
-    if(lKey > 0) hash += smaxGetHash(key, lKey);
-  }
+  if(key)
+    hash += smaxGetHash(key, lKey);
 
   return (char) (hash & 0xff);
 }
@@ -341,7 +337,7 @@ long smaxGetHash(const char *buf, int size) {
   if(!buf) return SMAX_DEFAULT_HASH;
   if(size <= 0) size = strlen(buf);
 
-  for(i=0; i < size; i++)
+  for(i = 0; i < size; i++)
     sum += buf[i] ^ i;  // Calculate a simple sum of all relevant bytes
 
   return sum;
