@@ -232,6 +232,8 @@ char *smaxPullString(const char *table, const char *key);
 long long *smaxPullLongs(const char *table, const char *key, XMeta *meta, int *n);
 int *smaxPullInts(const char *table, const char *key, XMeta *meta, int *n);
 double *smaxPullDoubles(const char *table, const char *key, XMeta *meta, int *n);
+XComplex32 *smaxPullComplex32s(const char *table, const char *key, XMeta *meta, int *n);
+XComplex32 *smaxPullComplex64s(const char *table, const char *key, XMeta *meta, int *n);
 char **smaxPullStrings(const char *table, const char *key, XMeta *meta, int *n);
 XStructure *smaxPullStruct(const char *name, XMeta *meta, int *status);
 
@@ -272,6 +274,8 @@ int smaxShareBoolean(const char *table, const char *key, boolean value);
 int smaxShareInt(const char *table, const char *key, long long value);
 int smaxShareHex(const char *table, const char *key, long long value);
 int smaxShareDouble(const char *table, const char *key, double value);
+int smaxShareComplex32(const char *table, const char *key, float re, float im);
+int smaxShareComplex64(const char *table, const char *key, double re, double im);
 int smaxShareString(const char *table, const char *key, const char *sValue);
 int smaxShareBooleans(const char *table, const char *key, const boolean *values, int n);
 int smaxShareBytes(const char *table, const char *key, const char *values, int n);
@@ -279,6 +283,8 @@ int smaxShareShorts(const char *table, const char *key, const short *values, int
 int smaxShareInts(const char *table, const char *key, const int *values, int n);
 int smaxShareLongs(const char *table, const char *key, const long long *values, int n);
 int smaxShareFloats(const char *table, const char *key, const float *values, int n);
+int smaxShareComplex32s(const char *table, const char *key, const XComplex32 *values, int n);
+int smaxShareComplex64s(const char *table, const char *key, const XComplex64 *values, int n);
 int smaxShareDoubles(const char *table, const char *key, const double *values, int n);
 int smaxShareStrings(const char *table, const char *key, const char **sValues, int n);
 int smaxShareStruct(const char *id, const XStructure *s);
@@ -351,6 +357,8 @@ XField *smaxCreateScalarField(const char *name, XType type, const void *value);
 XField *smaxCreate1DField(const char *name, XType type, int size, const void *value);
 XField *smaxCreateField(const char *name, XType type, int ndim, const int *sizes, const void *value);
 XField *smaxCreateDoubleField(const char *name, double value);
+XField *smaxCreateComplex32Field(const char *name, double value);
+XField *smaxCreateComplex64Field(const char *name, double value)
 XField *smaxCreateLongField(const char *name, long long value);
 XField *smaxCreateIntField(const char *name, int value);
 XField *smaxCreateBooleanField(const char *name, boolean value);

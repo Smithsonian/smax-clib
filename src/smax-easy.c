@@ -215,6 +215,48 @@ double *smaxPullDoubles(const char *table, const char *key, XMeta *meta, int *n)
 }
 
 /**
+ * Returns a dynamically allocated array of single-precision complex values stored in an SMA-X variable.
+ *
+ * \param[in]   table     The hash table name.
+ * \param[in]   key       The variable name under which the data is stored.
+ * \param[out]  meta      (optional) Pointer to metadata to be filled or NULL if not required.
+ * \param[out]  n         Pointer to which the number of double is returned (if *n > 0) or else an error code.
+ *
+ * \return      Pointer to C XComplex32[] array containing *n elements, or NULL.
+ *
+ * @sa smaxPullDouble()
+ * @sa smaxPullFloats()
+ */
+XComplex32 *smaxPullComplex32s(const char *table, const char *key, XMeta *meta, int *n) {
+  int stat;
+  XComplex32 *ptr = (XComplex32 *) smaxPullDynamic(table, key, X_COMPLEX64, meta, &stat);
+  if(n) *n = stat;
+  if(stat < 0) x_trace_null("smaxPullComplex32s", NULL);
+  return ptr;
+}
+
+/**
+ * Returns a dynamically allocated array of double-precision complex values stored in an SMA-X variable.
+ *
+ * \param[in]   table     The hash table name.
+ * \param[in]   key       The variable name under which the data is stored.
+ * \param[out]  meta      (optional) Pointer to metadata to be filled or NULL if not required.
+ * \param[out]  n         Pointer to which the number of double is returned (if *n > 0) or else an error code.
+ *
+ * \return      Pointer to C XComplex64[] array containing *n elements, or NULL.
+ *
+ * @sa smaxPullDouble()
+ * @sa smaxPullFloats()
+ */
+XComplex64 *smaxPullComplex64s(const char *table, const char *key, XMeta *meta, int *n) {
+  int stat;
+  XComplex64 *ptr = (XComplex64 *) smaxPullDynamic(table, key, X_COMPLEX64, meta, &stat);
+  if(n) *n = stat;
+  if(stat < 0) x_trace_null("smaxPullComplex64s", NULL);
+  return ptr;
+}
+
+/**
  * Returns a single string value for a given SMA-X variable, or a NULL if the
  * value could not be retrieved.
  *
@@ -450,6 +492,44 @@ int smaxShareDouble(const char *table, const char *key, double value) {
 }
 
 /**
+ * Shares a singular single-precision complex value to SMA-X.
+ *
+ * \param table     The hash table name.
+ * \param key       The variable name under which the data is stored.
+ * \param re        real part of complex value
+ * \param im        imaginary part of complex value
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxSareComplex64()
+ * @sa smaxShareComplex32s()
+ */
+int smaxShareComplex32(const char *table, const char *key, float re, float im) {
+  XComplex32 z = { re, im };
+  prop_error("smaxShareComplex32", smaxShareComplex32s(table, key, &z, 1));
+  return X_SUCCESS;
+}
+
+/**
+ * Shares a singular double-precision complex value to SMA-X.
+ *
+ * \param table     The hash table name.
+ * \param key       The variable name under which the data is stored.
+ * \param re        real part of complex value
+ * \param im        imaginary part of complex value
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxSareComplex64()
+ * @sa smaxShareComplex32s()
+ */
+int smaxShareComplex64(const char *table, const char *key, double re, double im) {
+  XComplex64 z = { re, im };
+  prop_error("smaxShareComplex32", smaxShareComplex32s(table, key, &z, 1));
+  return X_SUCCESS;
+}
+
+/**
  * Shares a single string value to SMA-X.
  *
  * \param table     The hash table name.
@@ -583,7 +663,7 @@ int smaxShareFloats(const char *table, const char *key, const float *values, int
 }
 
 /**
- * Shares an array of doubles to SMA-X.
+ * Shares an array of double-precision floating-point values to SMA-X.
  *
  * \param table     The hash table name.
  * \param key       The variable name under which the data is stored.
@@ -597,6 +677,42 @@ int smaxShareFloats(const char *table, const char *key, const float *values, int
  */
 int smaxShareDoubles(const char *table, const char *key, const double *values, int n) {
   prop_error("smaxShareDoubles", smaxShare(table, key, values, X_DOUBLE, n));
+  return X_SUCCESS;
+}
+
+/**
+ * Shares an array of single-precision complex values to SMA-X.
+ *
+ * \param table     The hash table name.
+ * \param key       The variable name under which the data is stored.
+ * \param values    Pointer to XComplex32[] array.
+ * \param n         Number of elements in array to share.
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxShareDouble()
+ * @sa smaxShareFloats()
+ */
+int smaxShareComplex32s(const char *table, const char *key, const XComplex32 *values, int n) {
+  prop_error("smaxShareComplex32s", smaxShare(table, key, values, X_COMPLEX32, n));
+  return X_SUCCESS;
+}
+
+/**
+ * Shares an array of double-precision complex values to SMA-X.
+ *
+ * \param table     The hash table name.
+ * \param key       The variable name under which the data is stored.
+ * \param values    Pointer to XComplex64[] array.
+ * \param n         Number of elements in array to share.
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxShareDouble()
+ * @sa smaxShareFloats()
+ */
+int smaxShareComplex64s(const char *table, const char *key, const XComplex64 *values, int n) {
+  prop_error("smaxShareComplex32s", smaxShare(table, key, values, X_COMPLEX64, n));
   return X_SUCCESS;
 }
 
@@ -701,6 +817,39 @@ XField *smaxCreateDoubleField(const char *name, double value) {
   XField *f = smaxCreateScalarField(name, X_DOUBLE, &value);
   return f ? f : x_trace_null("smaxCreateDoubleField", NULL);
 }
+
+/**
+ * Creates a field holding a single-precision complex value.
+ * It is like `xCreateComplex32Field()` except that the field is created in serialized form.
+ *
+ * \param name      Field name
+ * \param value     Associated value
+ *
+ * \return          A newly created field with the supplied data, or NULL if there was an error.
+ *
+ * @sa xSetField()
+ */
+XField *smaxCreateComplex32Field(const char *name, double value) {
+  XField *f = smaxCreateScalarField(name, X_COMPLEX32, &value);
+  return f ? f : x_trace_null("smaxCreateDoubleField", NULL);
+}
+
+/**
+ * Creates a field holding a double-precision complex value.
+ * It is like `xCreateComplex64Field()` except that the field is created in serialized form.
+ *
+ * \param name      Field name
+ * \param value     Associated value
+ *
+ * \return          A newly created field with the supplied data, or NULL if there was an error.
+ *
+ * @sa xSetField()
+ */
+XField *smaxCreateComplex64Field(const char *name, double value) {
+  XField *f = smaxCreateScalarField(name, X_COMPLEX32, &value);
+  return f ? f : x_trace_null("smaxCreateDoubleField", NULL);
+}
+
 
 /**
  * Creates a field holding a single wide (64-bit) integer value.

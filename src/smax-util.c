@@ -776,15 +776,31 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
   if(type == X_RAW) if(value) return *(char **) value;
 
   // Figure out how big the serialized string might be...
-  if(type == X_UNKNOWN) stringSize = 2 * eCount;
-  else if(type == X_STRING) {
-    stringSize = 1;
-    for(k = 0; k < eCount; k++) stringSize += (S[k] ? strlen(S[k]) : 0) + 1;
-  }
-  else {
-    eSize = xElementSizeOf(type);
-    if(eSize <= 0) return x_trace_null(fn, NULL);       // Unsupported element type...
-    stringSize = eCount * xStringElementSizeOf(type);
+  switch(type) {
+
+    case X_UNKNOWN:
+      stringSize = 2 * eCount;
+      break;
+
+    case X_STRING:
+      stringSize = 1;
+      for(k = 0; k < eCount; k++) stringSize += (S[k] ? strlen(S[k]) : 0) + 1;
+      break;
+
+    case X_COMPLEX32:
+      type = X_FLOAT;
+      eCount <<= 1;
+      break;
+
+    case X_COMPLEX64:
+      type = X_DOUBLE;
+      eCount <<= 1;
+      break;
+
+    default:
+      eSize = xElementSizeOf(type);
+      if(eSize <= 0) return x_trace_null(fn, NULL);       // Unsupported element type...
+      stringSize = eCount * xStringElementSizeOf(type);
   }
 
   if(stringSize <= 0) stringSize = 1;                   // empty string
@@ -938,13 +954,27 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
   if(value == NULL) return x_error(X_NULL, EINVAL, fn, "value is NULL");
   if(eCount <= 0) return x_error(X_SIZE_INVALID, EINVAL, fn, "invalid count: %d", eCount);
 
-  if(type == X_RAW || type == X_STRUCT) return x_error(X_TYPE_INVALID, EINVAL, fn, "X_RAW or X_STRUCT not allowed");
+  switch(type) {
+    case X_RAW:
+    case X_STRUCT: return x_error(X_TYPE_INVALID, EINVAL, fn, "X_RAW or X_STRUCT not allowed");
 
-  if(type == X_STRING) {
-    int n = smaxUnpackStrings(str, strlen(str), eCount, (char **) value);
-    prop_error(fn, n);
-    return n;
+    case X_STRING: {
+      int n = smaxUnpackStrings(str, strlen(str), eCount, (char **) value);
+      prop_error(fn, n);
+      return n;
+    }
+
+    case X_COMPLEX32:
+      type = X_FLOAT;
+      eCount <<= 1;
+      break;
+
+    case X_COMPLEX64:
+      type = X_DOUBLE;
+      eCount <<= 1;
+      break;
   }
+
 
   eSize = xElementSizeOf(type);
   if(eSize <= 0) return x_trace(fn, NULL, X_SIZE_INVALID);
@@ -1061,6 +1091,8 @@ char *smaxStringType(XType type) {
     case X_LONG_HEX: return "int64";
     case X_FLOAT: return "float";
     case X_DOUBLE: return "double";
+    case X_COMPLEX32: return "complex32";
+    case X_COMPLEX64: return "complex64";
     case X_STRING: return "string";
     case X_RAW: return "raw";
     case X_STRUCT: return "struct";
@@ -1094,6 +1126,9 @@ XType smaxTypeForString(const char *type) {
   if(!strcmp("float32", type)) return X_FLOAT;
   if(!strcmp("float64", type)) return X_DOUBLE;
   if(!strcmp("double", type)) return X_DOUBLE;
+  if(!strcmp("complex", type)) return X_COMPLEX64;
+  if(!strcmp("complex32", type)) return X_COMPLEX32;
+  if(!strcmp("complex64", type)) return X_COMPLEX64;
   if(!strcmp("string", type) || !strcmp("str", type)) return X_STRING;
   if(!strcmp("struct", type)) return X_STRUCT;
   if(!strcmp("raw", type)) return X_RAW;
