@@ -4,42 +4,43 @@
       <topic label="Related links" href="index.html#autotoc_md6"/>
     <topic label="Prerequisites" href="index.html#autotoc_md8"/>
     <topic label="Building the SMA-X C library" href="index.html#autotoc_md10"/>
-    <topic label="Command-line tools" href="index.html#autotoc_md12"/>
-    <topic label="Initial configuration" href="index.html#autotoc_md14"/>
-    <topic label="Connecting to / disconnecting from SMA-X" href="index.html#autotoc_md16">
-      <topic label="Connection / disconnection hooks" href="index.html#autotoc_md17"/>
+    <topic label="Linking your application against &lt;tt&gt;smax-clib&lt;/tt&gt;" href="index.html#autotoc_md12"/>
+    <topic label="Command-line tools" href="index.html#autotoc_md14"/>
+    <topic label="Initial configuration" href="index.html#autotoc_md16"/>
+    <topic label="Connecting to / disconnecting from SMA-X" href="index.html#autotoc_md18">
+      <topic label="Connection / disconnection hooks" href="index.html#autotoc_md19"/>
     </topic>
-    <topic label="Sharing and pulling data" href="index.html#autotoc_md19">
-      <topic label="The basics" href="index.html#autotoc_md20"/>
-      <topic label="Standard metadata" href="index.html#autotoc_md21"/>
-      <topic label="Flexible types and sizes" href="index.html#autotoc_md22"/>
-      <topic label="Scalar quantities" href="index.html#autotoc_md23"/>
-      <topic label="Arrays" href="index.html#autotoc_md24"/>
-      <topic label="Structures / substructures..." href="index.html#autotoc_md25"/>
+    <topic label="Sharing and pulling data" href="index.html#autotoc_md21">
+      <topic label="The basics" href="index.html#autotoc_md22"/>
+      <topic label="Standard metadata" href="index.html#autotoc_md23"/>
+      <topic label="Flexible types and sizes" href="index.html#autotoc_md24"/>
+      <topic label="Scalar quantities" href="index.html#autotoc_md25"/>
+      <topic label="Arrays" href="index.html#autotoc_md26"/>
+      <topic label="Structures / substructures..." href="index.html#autotoc_md27"/>
     </topic>
-    <topic label="Lazy pulling (high-frequency queries)" href="index.html#autotoc_md27"/>
-    <topic label="Pipelined pulling (high volume queries)" href="index.html#autotoc_md29">
-      <topic label="Synchronization points and waiting" href="index.html#autotoc_md30"/>
-      <topic label="Callbacks" href="index.html#autotoc_md31"/>
-      <topic label="Finishing up" href="index.html#autotoc_md32"/>
+    <topic label="Lazy pulling (high-frequency queries)" href="index.html#autotoc_md29"/>
+    <topic label="Pipelined pulling (high volume queries)" href="index.html#autotoc_md31">
+      <topic label="Synchronization points and waiting" href="index.html#autotoc_md32"/>
+      <topic label="Callbacks" href="index.html#autotoc_md33"/>
+      <topic label="Finishing up" href="index.html#autotoc_md34"/>
     </topic>
-    <topic label="Custom update handling" href="index.html#autotoc_md34">
-      <topic label="Monitoring updates" href="index.html#autotoc_md35"/>
-      <topic label="Waiting for updates" href="index.html#autotoc_md36"/>
-      <topic label="Update callbacks" href="index.html#autotoc_md37"/>
+    <topic label="Custom update handling" href="index.html#autotoc_md36">
+      <topic label="Monitoring updates" href="index.html#autotoc_md37"/>
+      <topic label="Waiting for updates" href="index.html#autotoc_md38"/>
+      <topic label="Update callbacks" href="index.html#autotoc_md39"/>
     </topic>
-    <topic label="Program status / error messages via SMA-X" href="index.html#autotoc_md39">
-      <topic label="Broadcasting status messages from an application" href="index.html#autotoc_md40"/>
-      <topic label="Processing program messages" href="index.html#autotoc_md41"/>
+    <topic label="Program status / error messages via SMA-X" href="index.html#autotoc_md41">
+      <topic label="Broadcasting status messages from an application" href="index.html#autotoc_md42"/>
+      <topic label="Processing program messages" href="index.html#autotoc_md43"/>
     </topic>
-    <topic label="Optional metadata" href="index.html#autotoc_md43">
-      <topic label="Descriptions" href="index.html#autotoc_md44"/>
-      <topic label="Coordinate Systems" href="index.html#autotoc_md45"/>
-      <topic label="Physical units" href="index.html#autotoc_md46"/>
+    <topic label="Optional metadata" href="index.html#autotoc_md45">
+      <topic label="Descriptions" href="index.html#autotoc_md46"/>
+      <topic label="Coordinate Systems" href="index.html#autotoc_md47"/>
+      <topic label="Physical units" href="index.html#autotoc_md48"/>
     </topic>
-    <topic label="Error handling" href="index.html#autotoc_md48"/>
-    <topic label="Debug support" href="index.html#autotoc_md50"/>
-    <topic label="Future plans" href="index.html#autotoc_md52"/>
+    <topic label="Error handling" href="index.html#autotoc_md50"/>
+    <topic label="Debug support" href="index.html#autotoc_md52"/>
+    <topic label="Future plans" href="index.html#autotoc_md54"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>

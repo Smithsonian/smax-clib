@@ -2605,6 +2605,7 @@
     <docanchor file="index.html">introduction</docanchor>
     <docanchor file="index.html">prerequisites</docanchor>
     <docanchor file="index.html">building</docanchor>
+    <docanchor file="index.html">linking</docanchor>
     <docanchor file="index.html">command-line-tools</docanchor>
     <docanchor file="index.html">configuration</docanchor>
     <docanchor file="index.html">connecting</docanchor>

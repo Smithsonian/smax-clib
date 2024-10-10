@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"smax_8h.html#a14bc33c30d27be9e2954ae7831099f1c":[3,0,0,1,117],
 "smax_8h.html#a1550f0f7aed841d5576d47ec7e62e0c4":[3,0,0,1,120],
 "smax_8h.html#a167a60b494fa9ec5b046f9da796f18b5":[3,0,0,1,88],
 "smax_8h.html#a1714cac6dfa55917edecd0028e6da64c":[3,0,0,1,44],
