@@ -10,24 +10,25 @@
 $(OBJ)/%.o: %.c dep/%.d $(OBJ) Makefile
 	$(CC) -o $@ -c $(CPPFLAGS) $(CFLAGS) $<
 
-# Share librarry recipe
-$(LIB)/%.so.$(SO_VERSION) : | $(LIB) Makefile
+# Share library recipe
+$(LIB)/%.so.$(SO_VERSION):
+	@make $(LIB)
 	$(CC) -o $@ $(CPPFLAGS) $(CFLAGS) $^ -shared -fPIC -Wl,-soname,$(subst $(LIB)/,,$@) $(LDFLAGS)
 
 # Unversioned shared libs (for linking against)
 $(LIB)/lib%.so:
-	@if [ ! -e $(LIB) ] ; then mkdir $(LIB); fi
 	@rm -f $@
 	ln -sr $< $@
 
 # Static library: *.a
-$(LIB)/%.a: | $(LIB) Makefile
-	@if [ ! -e $(LIB) ] ; then mkdir $(LIB); fi
+$(LIB)/%.a:
+	@make $(LIB)
 	ar -rc $@ $^
 	ranlib $@
 
 # Simple binaries
-$(BIN)/%: $(OBJ)/%.o | $(BIN)
+$(BIN)/%: $(OBJ)/%.o
+	@make $(BIN)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
 # Create sub-directories for build targets
@@ -61,13 +62,13 @@ check:
 
 # Doxygen documentation (HTML and man pages) under apidocs/
 .PHONY: dox
-dox: README.md Doxyfile | apidoc $(SRC) $(INC)
+dox: README.md Doxyfile apidoc $(SRC) $(INC)
 	@echo "   [doxygen]"
 	@$(DOXYGEN)
 
 # Automatic dependence on included header files.
 .PRECIOUS: dep/%.d
-dep/%.d: $(SRC)/%.c | dep
+dep/%.d: $(SRC)/%.c dep
 	@echo " > $@" \
 	&& $(CC) $(CPPFLAGS) -MM -MG $< > $@.$$$$ \
 	&& sed 's|\w*\.o[ :]*| $(OBJ)/&|g' < $@.$$$$ > $@; \
