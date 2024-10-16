@@ -370,8 +370,10 @@ static void DefaultProcessor(XMessage *m) {
   else if(!strcmp(m->type, SMAX_MSG_DEBUG)) printf("DEBUG> %s(%s): %s.\n", m->prog, m->host, m->text);
   else if(!strcmp(m->type, SMAX_MSG_PROGRESS)) {
     char *tail;
-    double d = strtod(m->text, &tail);
-    if(errno == ERANGE || tail == m->text) printf(" %s(%s): %s\r", m->prog, m->host, m->text);
+    double d;
+    errno = 0;
+    d = strtod(m->text, &tail);
+    if(errno) printf(" %s(%s): %s\r", m->prog, m->host, m->text);
     else printf(" %s(%s) [%5.1f] %s\r", m->prog, m->host, d, m->text);
   }
 }

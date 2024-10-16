@@ -121,19 +121,26 @@ char *smaxPullMeta(const char *meta, const char *table, const char *key, int *st
  * \sa setPushMeta()
  */
 double smaxPullTime(const char *table, const char *key) {
+  static const char *fn = "smaxPullTime";
+
   int status;
   char *str = smaxPullMeta(SMAX_TIMESTAMPS, table, key, &status);
   double ts;
 
   if(status) {
-    x_trace_null("smaxPullTime", NULL);
+    x_trace_null(fn, NULL);
     if(str) free(str);
     return NAN;
   }
 
   if(!str) return NAN;
 
+  errno = 0;
   ts = strtod(str, NULL);
+  if(errno) {
+    x_error(0, errno, fn, "invalid time: %s", str);
+    return NAN;
+  }
   free(str);
 
   return ts;
@@ -358,20 +365,23 @@ XCoordinateAxis *smaxGetCoordinateAxis(const char *id, int n) {
       fprintf(stderr, "WARNING! (nil) value for %s in database. Skipping.\n", f->key);
 
     else if(strcmp(f->key, "refIndex")) {
+      errno = 0;
       axis->refIndex = strtod(f->value, NULL);
-      if(errno == ERANGE)
+      if(errno)
         fprintf(stderr, "WARNING! Invalid coordinate refIndex '%s' in database. Assuming %g\n", f->value, axis->refIndex);
     }
 
     else if(strcmp(f->key, "refValue")) {
+      errno = 0;
       axis->refValue = strtod(f->value,NULL);
-      if(errno == ERANGE)
+      if(errno)
         fprintf(stderr, "WARNING! Invalid coordinate refValue '%s' in database. Assuming %g\n", f->value, axis->refValue);
     }
 
     else if(strcmp(f->key, "step")) {
+      errno = 0;
       axis->step = strtod(f->value, NULL);
-      if(errno == ERANGE || axis->step == 0.0) {
+      if(errno || axis->step == 0.0) {
         axis->step = 1.0;
         fprintf(stderr, "WARNING! Invalid coordinate step '%s' in database. Assuming %g\n", f->value, axis->step);
       }

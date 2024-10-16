@@ -486,16 +486,20 @@ int smaxParseTime(const char *timestamp, time_t *secs, long *nanosecs) {
   if(!timestamp) return x_error(X_NULL, EINVAL, fn, "input timestamp is NULL");
   if(!secs) return x_error(X_NULL, EINVAL, fn, "output seconds is NULL");
 
+  errno = 0;
   *secs = (time_t) strtoll(timestamp, &next, 10);
-  if(errno == ERANGE || next == timestamp) {
+  if(errno) {
     *nanosecs = 0;
     return x_error(X_PARSE_ERROR, ENOMSG, fn, "cannot parse seconds: '%s'", timestamp);
   }
 
   if(*next == '.') {
     char *end;
-    double d = strtod(next, &end);
-    if(errno == ERANGE || end == next) {
+    double d;
+
+    errno = 0;
+    d = strtod(next, &end);
+    if(errno) {
       *nanosecs = 0;
       return 1;
     }
@@ -892,7 +896,7 @@ static char *NextToken(char *str) {
 }
 
 static __inline__ void CheckParseError(char **next, int *status) {
-  if(errno == ERANGE) {
+  if(errno) {
     *next = NextToken(*next);
     *status = X_PARSE_ERROR;
   }
@@ -985,6 +989,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
       case X_BYTE:
       case X_BYTE_HEX:
         for(k=0; k<eCount && *next; k++) {
+          errno = 0;
           c[k] = (char) strtol(next, &next, 0);
           CheckParseError(&next, &status);
         }
@@ -992,6 +997,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
       case X_SHORT:
       case X_SHORT_HEX:
         for(k=0; k<eCount && *next; k++) {
+          errno = 0;
           s[k] = (short) strtol(next, &next, 0);
           CheckParseError(&next, &status);
         }
@@ -999,6 +1005,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
       case X_INT:
       case X_INT_HEX:
         for(k=0; k<eCount && *next; k++) {
+          errno = 0;
           i[k] = (int) strtol(next, &next, 0);
           CheckParseError(&next, &status);
         }
@@ -1006,6 +1013,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
       case X_LONG:
       case X_LONG_HEX:
         for(k=0; k<eCount && *next; k++) {
+          errno = 0;
           l[k] = (int) strtoll(next, &next, 0);
           CheckParseError(&next, &status);
         }

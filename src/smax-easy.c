@@ -805,9 +805,9 @@ long long smaxGetLongField(const XStructure *s, const char *name, long long defa
 
   if(!f) return defaultValue;
 
+  errno = 0;
   i = strtol(f->value, &end, 0);
-  if(end == f->value) return defaultValue;
-  if(errno == ERANGE) return defaultValue;
+  if(errno) return defaultValue;
   return i;
 }
 
@@ -829,9 +829,9 @@ double smaxGetDoubleField(const XStructure *s, const char *name, double defaultV
 
   if(!f) return defaultValue;
 
+  errno = 0;
   d = strtod(f->value, &end);
-  if(end == f->value) return defaultValue;
-  if(errno == ERANGE) return defaultValue;
+  if(errno) return defaultValue;
   return d;
 }
 
