@@ -348,14 +348,17 @@ int smaxWaitQueueComplete(int timeoutMillis) {
  */
 static int DrainQueueAsync(int maxRemaining, int timeoutMicros) {
   static const char *fn = "xDrainQueue";
+  Redis *r = smaxGetRedis();
   int totalSleep = 0;
   struct timespec interval;
+
+  if(!r) return smaxError(fn, X_NO_INIT);
 
   xvprintf("SMA-X> read queue full. Waiting to drain...\n");
   while(nQueued > maxRemaining) {
     int sleepMicros;
 
-    if(!redisxHasPipeline(smaxGetRedis())) return x_error(X_NO_SERVICE, ENOTCONN, fn, "no pipeline client");
+    if(!redisxHasPipeline(r)) return x_error(X_NO_SERVICE, ENOTCONN, fn, "no pipeline client");
     if(timeoutMicros > 0) if(totalSleep > timeoutMicros) return x_error(X_TIMEDOUT, ETIMEDOUT, fn, "timed out");
     sleepMicros = 1 + nQueued - maxRemaining;
     totalSleep += sleepMicros;

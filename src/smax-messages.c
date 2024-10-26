@@ -54,6 +54,7 @@ static void ProcessMessage(const char *pattern, const char *channel, const char 
 static int SendMessage(const char *type, const char *text, va_list varg) {
   static const char *fn = "SendMessage";
 
+  Redis *r = smaxGetRedis();
   const char stdmsg[1024];  // standard message buffer, unless we need something larger.
   char *msg;                // Message buffer (standard or allocated)
 
@@ -63,6 +64,8 @@ static int SendMessage(const char *type, const char *text, va_list varg) {
 
   if(!type) return x_error(X_NULL, EINVAL, fn, "type parameter is NULL");
   if(!text) return x_error(X_NULL, EINVAL, fn, "text parameter is NULL");
+
+  if(!r) return smaxError(fn, X_NO_INIT);
 
   n = sizeof(MESSAGES_PREFIX) + strlen(id) + X_SEP_LENGTH + strlen(type);
   channel = malloc(n);
@@ -93,7 +96,7 @@ static int SendMessage(const char *type, const char *text, va_list varg) {
 
   smaxTimestamp(&msg[n]);
 
-  n = redisxNotify(smaxGetRedis(), channel, msg);
+  n = redisxNotify(r, channel, msg);
   if(n < 0) n = X_FAILURE;
 
   if(msg != stdmsg) free(msg);    // free allocated message buffer
@@ -303,11 +306,13 @@ int smaxSendProgress(double fraction, const char *msg, ...) {
 int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void (*f)(XMessage *)) {
   static const char *fn = "smaxAddMessageProcessor";
 
+  Redis *r = smaxGetRedis();
   MessageProcessor *p;
   int L = sizeof(MESSAGES_PREFIX) + 2 * X_SEP_LENGTH + 1;   // Empty pattern, e.g. "messages:::"
   int result = X_SUCCESS;
 
   if(!f) return x_error(X_NULL, EINVAL, fn, "processor function is NULL");
+  if(!r) return smaxError(fn, X_NO_INIT);
 
   p = (MessageProcessor *) calloc(1, sizeof(MessageProcessor));
   x_check_alloc(p);
@@ -336,7 +341,7 @@ int smaxAddMessageProcessor(const char *host, const char *prog, const char *type
   pthread_mutex_lock(&listMutex);
 
   if(firstProc) firstProc->prior = p;
-  else result = redisxAddSubscriber(smaxGetRedis(), MESSAGES_PREFIX, ProcessMessage);
+  else result = redisxAddSubscriber(r, MESSAGES_PREFIX, ProcessMessage);
 
   if(result == X_SUCCESS) {
     p->next = firstProc;
@@ -346,7 +351,7 @@ int smaxAddMessageProcessor(const char *host, const char *prog, const char *type
   pthread_mutex_unlock(&listMutex);
 
   // If so far-so good, subscribe to notifications/
-  if(result == X_SUCCESS) result = redisxSubscribe(smaxGetRedis(), p->pattern);
+  if(result == X_SUCCESS) result = redisxSubscribe(r, p->pattern);
 
   if(result != X_SUCCESS) {
     // in case of error, remove the added message processor func, and return with an error.
@@ -402,7 +407,10 @@ int smaxAddDefaultMessageProcessor(const char *host, const char *prog, const cha
  * @sa smaxAddMessageProcessor()
  */
 int smaxRemoveMessageProcessor(int id) {
+  Redis *r = smaxGetRedis();
   MessageProcessor *p;
+
+  if(!r) smaxError("smaxRemoveMessageProcessor", X_NO_INIT);
 
   pthread_mutex_lock(&listMutex);
 
@@ -417,13 +425,13 @@ int smaxRemoveMessageProcessor(int id) {
     break;
   }
 
-  if(!firstProc) redisxRemoveSubscribers(smaxGetRedis(), ProcessMessage);
+  if(!firstProc) redisxRemoveSubscribers(r, ProcessMessage);
 
   pthread_mutex_unlock(&listMutex);
 
   if(!p) return X_NULL;
 
-  redisxUnsubscribe(smaxGetRedis(), p->pattern);
+  redisxUnsubscribe(r, p->pattern);
 
   if(p->pattern) free(p->pattern);
   if(p->host) free(p->host);

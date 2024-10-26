@@ -42,7 +42,7 @@ int smaxPushMeta(const char *meta, const char *table, const char *key, const cha
   if(!meta[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "input 'meta' is empty");
   if(value == NULL) return x_error(X_NULL, EINVAL, fn, "int value is NULL");
 
-  if(redis == NULL) return x_error(X_NO_INIT, ENOTCONN, fn, "not connected");
+  if(redis == NULL) return smaxError(fn, X_NO_INIT);
 
   var = xGetAggregateID(table, key);
   if(var == NULL) return x_trace(fn, NULL, X_NULL);
@@ -83,11 +83,6 @@ char *smaxPullMeta(const char *meta, const char *table, const char *key, int *st
   Redis *redis = smaxGetRedis();
   char *var, *value;
 
-  if(redis == NULL) {
-    x_error(X_NO_INIT, EINVAL, fn, "not initialized");
-    return NULL;
-  }
-
   if(meta == NULL) {
     x_error(X_GROUP_INVALID, EINVAL, fn, "meta name is NULL");
     return NULL;
@@ -95,6 +90,11 @@ char *smaxPullMeta(const char *meta, const char *table, const char *key, int *st
 
   if(!meta[0]) {
     x_error(X_GROUP_INVALID, EINVAL, fn, "meta name is empty");
+    return NULL;
+  }
+
+  if(redis == NULL) {
+    smaxError(fn, X_NO_INIT);
     return NULL;
   }
 
@@ -319,10 +319,16 @@ int smaxSetCoordinateAxis(const char *id, int n, const XCoordinateAxis *axis) {
 XCoordinateAxis *smaxGetCoordinateAxis(const char *id, int n) {
   static const char *fn = "smaxGetCoordinateAxis";
 
+  Redis *r = smaxGetRedis();
   RedisEntry *fields;
   XCoordinateAxis *axis;
   char *axisName, idx[20];
   int i;
+
+  if(!r) {
+    smaxError(fn, X_NO_INIT);
+    return NULL;
+  }
 
   if(n < 0) {
     x_error(0, EINVAL, fn, "invalid coordinate index: %d", n);
@@ -333,7 +339,7 @@ XCoordinateAxis *smaxGetCoordinateAxis(const char *id, int n) {
   axisName = xGetAggregateID(id, idx);
   if(!axisName) return x_trace_null(fn, NULL);
 
-  fields = redisxGetTable(smaxGetRedis(), axisName, &n);
+  fields = redisxGetTable(r, axisName, &n);
   free(axisName);
 
   if(n <= 0) {

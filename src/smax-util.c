@@ -376,6 +376,11 @@ char *smaxGetScriptSHA1(const char *scriptName, int *status) {
     return NULL;
   }
 
+  if(!redis) {
+    smaxError(fn, X_NO_INIT);
+    return NULL;
+  }
+
   reply = redisxRequest(redis, "HGET", SMAX_SCRIPTS, scriptName, NULL, status);
 
   if(*status) {
@@ -730,7 +735,12 @@ int smax2xStruct(XStructure *s) {
  *                  or another error returned by redisxCheckRESP().
  */
 int smaxGetServerTime(struct timespec *t) {
-  prop_error("smaxGetServerTime", redisxGetTime(smaxGetRedis(), t));
+  static const char *fn = "smaxGetServerTime";
+  Redis *r = smaxGetRedis();
+
+  if(!r) return smaxError(fn, X_NO_INIT);
+
+  prop_error(fn, redisxGetTime(r, t));
   return X_SUCCESS;
 }
 
@@ -1174,16 +1184,21 @@ int smaxUnpackStrings(const char *data, int len, int count, char **dst) {
 int smaxDeletePattern(const char *pattern) {
   static const char *fn = "smaxDeletePattern";
 
+  Redis *r = smaxGetRedis();
   char *metaPattern;
+  int n;
 
-  int n = redisxDeleteEntries(smaxGetRedis(), pattern);
+  if(!r) return smaxError(fn, X_NO_INIT);
+
+
+  n = redisxDeleteEntries(r, pattern);
   prop_error(fn, n);
 
   metaPattern = (char *) malloc(strlen(pattern) + 20);
   if(!metaPattern) return x_error(X_NULL, errno, fn, "malloc() error (%ld bytes)", (long) strlen(pattern) + 20);
 
   sprintf(metaPattern, "<*>" X_SEP "%s", pattern);
-  redisxDeleteEntries(smaxGetRedis(), metaPattern);
+  redisxDeleteEntries(r, metaPattern);
   free(metaPattern);
 
   return n;

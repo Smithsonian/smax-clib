@@ -554,7 +554,10 @@ int smaxReconnect() {
  * @sa smaxConnectTo()
  */
 int smaxAddConnectHook(void (*setupCall)(void)) {
-  prop_error("smaxAddConnectHook", redisxAddConnectHook(smaxGetRedis(), (void (*)(Redis *)) setupCall));
+  static const char *fn = "smaxAddConnectHook";
+  Redis *r = smaxGetRedis();
+  if(!r) return smaxError(fn, X_NO_INIT);
+  prop_error(fn, redisxAddConnectHook(r, (void (*)(Redis *)) setupCall));
   return X_SUCCESS;
 }
 
@@ -569,7 +572,10 @@ int smaxAddConnectHook(void (*setupCall)(void)) {
  * @sa smaxConnectTo()
  */
 int smaxRemoveConnectHook(void (*setupCall)(void)) {
-  prop_error("smaxRemoveConnectHook", redisxRemoveConnectHook(smaxGetRedis(), (void (*)(Redis *)) setupCall));
+  static const char *fn = "smaxRemoveConnectHook";
+  Redis *r = smaxGetRedis();
+  if(!r) return smaxError(fn, X_NO_INIT);
+  prop_error(fn, redisxRemoveConnectHook(r, (void (*)(Redis *)) setupCall));
   return X_SUCCESS;
 }
 
@@ -583,7 +589,10 @@ int smaxRemoveConnectHook(void (*setupCall)(void)) {
  * @sa smaxDisconnect()
  */
 int smaxAddDisconnectHook(void (*cleanupCall)(void)) {
-  prop_error("smaxAddDisconnectHook", redisxAddDisconnectHook(smaxGetRedis(), (void (*)(Redis *)) cleanupCall));
+  static const char *fn = "smaxAddDisconnectHook";
+  Redis *r = smaxGetRedis();
+  if(!r) return smaxError(fn, X_NO_INIT);
+  prop_error(fn, redisxAddDisconnectHook(r, (void (*)(Redis *)) cleanupCall));
   return X_SUCCESS;
 }
 
@@ -597,7 +606,10 @@ int smaxAddDisconnectHook(void (*cleanupCall)(void)) {
  * @sa smaxDisconnect()
  */
 int smaxRemoveDisconnectHook(void (*cleanupCall)(void)) {
-  prop_error("smaxRemoveDisconnectHook", redisxRemoveDisconnectHook(smaxGetRedis(), (void (*)(Redis *)) cleanupCall));
+  static const char *fn = "smaxRemoveDisconnectHook";
+  Redis *r = smaxGetRedis();
+  if(!r) return smaxError(fn, X_NO_INIT);
+  prop_error(fn, redisxRemoveDisconnectHook(r, (void (*)(Redis *)) cleanupCall));
   return X_SUCCESS;
 }
 
@@ -612,7 +624,12 @@ int smaxRemoveDisconnectHook(void (*cleanupCall)(void)) {
  * @sa smaxIsPipelined()
  */
 int smaxSetPipelineConsumer(void (*f)(RESP *)) {
-  prop_error("smaxSetPipelineConsumer", redisxSetPipelineConsumer(smaxGetRedis(), f));
+  static const char *fn = "smaxSetPipelineConsumer";
+  Redis *r = smaxGetRedis();
+
+  if(!r) return smaxError(fn, X_NO_INIT);
+
+  prop_error(fn, redisxSetPipelineConsumer(r, f));
   return X_SUCCESS;
 }
 
@@ -830,8 +847,13 @@ int smaxShareField(const char *table, const XField *f) {
 static int SendStruct(const char *id, const XStructure *s) {
   static const char *fn = "SendStruct";
 
-  RedisClient *cl = redis->interactive;
+  Redis *r = smaxGetRedis();
+  RedisClient *cl;
   int status;
+
+  if(!r) return smaxError(fn, X_NO_INIT);
+
+  cl = r->interactive;
 
   status = redisxLockConnected(cl);
   if(!status) {
@@ -911,10 +933,17 @@ int smaxShareStruct(const char *id, const XStructure *s) {
  * @sa smaxAddSubscriber()
  */
 int smaxSubscribe(const char *table, const char *key) {
-  char *p = smaxGetUpdateChannelPattern(table, key);
-  int status = redisxSubscribe(redis, p);
+  static const char *fn = "smaxSubscribe";
+  Redis *r = smaxGetRedis();
+  char *p;
+  int status;
+
+  if(!r) return smaxError(fn, X_NO_INIT);
+
+  p = smaxGetUpdateChannelPattern(table, key);
+  status = redisxSubscribe(r, p);
   free(p);
-  prop_error("smaxSubscribe", status);
+  prop_error(fn, status);
   return X_SUCCESS;
 }
 
@@ -938,10 +967,16 @@ int smaxSubscribe(const char *table, const char *key) {
  * @sa smaxRemoveSubscribers()
  */
 int smaxUnsubscribe(const char *table, const char *key) {
-  char *p = smaxGetUpdateChannelPattern(table, key);
-  int status = redisxUnsubscribe(redis, p);
+  static const char *fn = "smaxUnsubscribe";
+  Redis *r = smaxGetRedis();
+  char *p;
+  int status;
+
+  if(!r) return smaxError(fn, X_NO_INIT);
+  p = smaxGetUpdateChannelPattern(table, key);
+  status = redisxUnsubscribe(r, p);
   free(p);
-  prop_error("smaxUnsubscribe", status);
+  prop_error(fn, status);
   return X_SUCCESS;
 }
 
@@ -966,10 +1001,17 @@ int smaxUnsubscribe(const char *table, const char *key) {
  * @sa smaxSubscribe()
  */
 int smaxAddSubscriber(const char *idStem, RedisSubscriberCall f) {
-  char *stem = xGetAggregateID(SMAX_UPDATES_ROOT, idStem);
-  int status = redisxAddSubscriber(smaxGetRedis(), stem, f);
+  static const char *fn = "smaxAddSubscriber";
+  Redis *r = smaxGetRedis();
+  char *stem;
+  int status;
+
+  if(!r) return smaxError(fn, X_NO_INIT);
+
+  stem = xGetAggregateID(SMAX_UPDATES_ROOT, idStem);
+  status = redisxAddSubscriber(r, stem, f);
   free(stem);
-  prop_error("smaxAddSubscriber", status);
+  prop_error(fn, status);
   return X_SUCCESS;
 }
 
@@ -985,7 +1027,9 @@ int smaxAddSubscriber(const char *idStem, RedisSubscriberCall f) {
  * @sa smaxUnsubscribe()
  */
 int smaxRemoveSubscribers(RedisSubscriberCall f) {
-  prop_error("smaxRemoveSubscribers", redisxRemoveSubscribers(smaxGetRedis(), f));
+  Redis *r = smaxGetRedis();
+  if(!r) return smaxError("smaxRemoveSubscribers", X_NO_INIT);
+  prop_error("smaxRemoveSubscribers", redisxRemoveSubscribers(r, f));
   return X_SUCCESS;
 }
 
@@ -1164,13 +1208,15 @@ int smaxReleaseWaits() {
  */
 int smaxKeyCount(const char *table) {
   static const char *fn = "smaxKeyCount";
+  Redis *r = smaxGetRedis();
   RESP *reply;
   int status;
 
   if(table == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is NULL");
   if(!table[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is empty");
+  if(!r) return smaxError(fn, X_NO_INIT);
 
-  reply = redisxRequest(redis, "HLEN", table, NULL, NULL, &status);
+  reply = redisxRequest(r, "HLEN", table, NULL, NULL, &status);
   if(status) {
     redisxDestroyRESP(reply);
     return x_trace(fn, NULL, status);
@@ -1205,6 +1251,7 @@ int smaxKeyCount(const char *table) {
 char **smaxGetKeys(const char *table, int *n) {
   static const char *fn = "smaxGetKeys";
 
+  Redis *r = smaxGetRedis();
   char **keys;
 
   if(n == NULL) {
@@ -1212,9 +1259,14 @@ char **smaxGetKeys(const char *table, int *n) {
     return NULL;
   }
 
+  if(!r) {
+    smaxError(fn, X_NO_INIT);
+    return NULL;
+  }
+
   xvprintf("SMA-X> get variable names.\n");
 
-  keys = redisxGetKeys(redis, table, n);
+  keys = redisxGetKeys(r, table, n);
 
   if(*n > 0) return keys;
 
@@ -1252,6 +1304,7 @@ int smaxRead(PullRequest *req, int channel) {
   static const char *fn = "smaxRead";
 
   char *args[5], *script = NULL;
+  Redis *r = smaxGetRedis();
   RESP *reply = NULL;
   RedisClient *cl;
   int status, n = 0;
@@ -1264,6 +1317,7 @@ int smaxRead(PullRequest *req, int channel) {
     if(req->key == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "req->group is NULL");
     if(!req->key[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "req->group is empty");
   }
+  if(!r) return smaxError(fn, X_NO_INIT);
 
   xvprintf("SMA-X> read %s:%s.\n", (req->group ? req->group : ""), (req->key ? req->key : ""));
 
@@ -1292,7 +1346,7 @@ int smaxRead(PullRequest *req, int channel) {
     args[n++] = req->key;
   }
 
-  cl = redisxGetLockedConnectedClient(redis, channel);
+  cl = redisxGetLockedConnectedClient(r, channel);
   if(cl == NULL) return x_trace(fn, NULL, X_NO_SERVICE);
 
   // Call script
@@ -1640,6 +1694,7 @@ int smaxWrite(const char *table, const XField *f) {
   int status;
   char *args[9];
   char dims[X_MAX_STRING_DIMS];
+  Redis *r = smaxGetRedis();
   RedisClient *cl;
 
   if(table == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is NULL");
@@ -1651,6 +1706,7 @@ int smaxWrite(const char *table, const XField *f) {
 
   // Create timestamped string values.
   if(f->type == X_STRUCT) return x_error(X_TYPE_INVALID, EINVAL, fn, "structures not supported");
+  if(!r) return smaxError(fn, X_NO_INIT);
 
   xPrintDims(dims, f->ndim, f->sizes);
 
@@ -1672,7 +1728,7 @@ int smaxWrite(const char *table, const XField *f) {
     if(!args[6]) return x_trace(fn, NULL, X_NULL);
   }
 
-  cl = redisxGetLockedConnectedClient(redis, REDISX_INTERACTIVE_CHANNEL);
+  cl = redisxGetLockedConnectedClient(r, REDISX_INTERACTIVE_CHANNEL);
   if(cl == NULL) {
     if(!f->isSerialized) if(f->type != X_RAW) free(args[6]);
     return x_trace(fn, NULL, X_NO_SERVICE);
@@ -1814,9 +1870,13 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
 static int InitScript(const char *name, char **pSHA1) {
   static const char *fn = "InitScript";
 
+  Redis *r = smaxGetRedis();
   RESP *reply;
   char *sha1 = NULL;
   int status = X_SUCCESS;
+
+  if(!name) return smaxError(fn, X_NAME_INVALID);
+  if(!r) return smaxError(fn, X_NO_INIT);
 
   if(*pSHA1 != NULL) free(*pSHA1);
   *pSHA1 = NULL;
@@ -1828,7 +1888,7 @@ static int InitScript(const char *name, char **pSHA1) {
   }
   if(!sha1) return x_trace(fn, name, X_NULL);
 
-  reply = redisxRequest(redis, "SCRIPT", "EXISTS", sha1, NULL, &status);
+  reply = redisxRequest(r, "SCRIPT", "EXISTS", sha1, NULL, &status);
   if(!status) status = redisxCheckRESP(reply, RESP_ARRAY, 1);
   if(!status) {
     RESP **array = (RESP **) reply->value;
