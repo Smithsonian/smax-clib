@@ -1095,6 +1095,8 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout)
 
   if(changedTable == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "'changedTable' parameter is NULL");
   if(changedKey == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "'changedKey' parameter is NULL");
+  if(!smaxGetRedis()) return smaxError(fn, X_NO_INIT);
+  if(!smaxIsConnected()) return x_error(X_NO_SERVICE, ENOTCONN, fn, "not connected to SMA-X server.");
 
   xvprintf("SMA-X> waiting for notification...\n");
 
