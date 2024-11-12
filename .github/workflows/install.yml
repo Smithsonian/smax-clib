@@ -46,11 +46,20 @@ jobs:
         repository: Smithsonian/redisx
         path: redisx
 
+    - name: Build xchange dependency
+      run: make -C xchange shared
+
     - name: Install xchange dependency
       run: sudo make -C xchange install
 
+    - name: Build RedisX dependency
+      run: make -C redisx shared
+
     - name: Install RedisX dependency
       run: sudo make -C redisx install
+
+    - name: Build smax-clib distro
+      run: make distro
 
     - name: Install smax-clib in default location
       run: sudo make install   
