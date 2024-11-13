@@ -173,17 +173,21 @@ Building the SMA-X C library</h2>
 <p>The <b>smax-clib</b> library can be built either as a shared (<code>libsmax.so[.1]</code>) and as a static (<code>libsmax.a</code>) library, depending on what suits your needs best.</p>
 <p>You can configure the build, either by editing <code>config.mk</code> or else by defining the relevant environment variables prior to invoking <code>make</code>. The following build variables can be configured:</p>
 <ul>
-<li><code>XCHANGE</code>: the root of the location where the <a href="https://github.com/Smithsonian/xchange">Smithsonian/xchange</a> library is installed. It expects to find <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html">xchange.h</a></code> under <code>$(XCHANGE)/include</code> and <code>libxchange.so</code> under <code>$(XCHANGE)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
-<li><code>REDISX</code>: the root of the location where the <a href="https://github.com/Smithsonian/redisx">Smithsonian/redisx</a> library is installed. It expects to find <code><a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html">redisx.h</a></code> under <code>$(REDISX)/include</code> and <code>libredisx.so</code> under <code>$(REDISX)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 <li><code>CC</code>: The C compiler to use (default: <code>gcc</code>).</li>
 <li><code>CPPFLAGS</code>: C preprocessor flags, such as externally defined compiler constants.</li>
 <li><code>CFLAGS</code>: Flags to pass onto the C compiler (default: <code>-Os -Wall -std=c99</code>). Note, <code>-Iinclude</code> will be added automatically.</li>
 <li><code>LDFLAGS</code>: Extra linker flags (default: <em>not set</em>). Note, <code>-lm -lredisx -lxchange -pthread</code> will be added automatically.</li>
 <li><code>BUILD_MODE</code>: You can set it to <code>debug</code> to enable debugging features: it will initialize the global <code>xDebug</code> variable to <code>TRUE</code> and add <code>-g</code> to <code>CFLAGS</code>.</li>
 <li><code>CHECKEXTRA</code>: Extra options to pass to <code>cppcheck</code> for the <code>make check</code> target</li>
+<li><code>XCHANGE</code>: If the <a href="https://github.com/Smithsonian/xchange">Smithsonian/xchange</a> library is not installed on your system (e.g. under <code>/usr</code>) set <code>XCHANGE</code> to where the distribution can be found. The build will expect to find <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html">xchange.h</a></code> under <code>$(XCHANGE)/include</code> and <code>libxchange.so</code> / <code>libxchange.a</code> under <code>$(XCHANGE)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
+<li><code>REDISX</code>: If the <a href="https://github.com/Smithsonian/redisx">Smithsonian/redisx</a> library is not installed on your system (e.g. under <code>/usr</code>) set <code>REDISX</code> to where the distribution can be found. The build will expect to find <code><a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html">redisx.h</a></code> under <code>$(REDISX)/include</code> and <code>libredisx.so</code> / <code>libredisx.a</code> under <code>$(REDISX)/lib</code> or else in the default <code>LD_LIBRARY_PATH</code>.</li>
 </ul>
 <p>After configuring, you can simply run <code>make</code>, which will build the <code>shared</code> (<code>lib/libsmax.so[.1]</code>) and <code>static</code> (<code>lib/libsmax.a</code>) libraries, local HTML documentation (provided <code>doxygen</code> is available), and performs static analysis via the <code>check</code> target. Or, you may build just the components you are interested in, by specifying the desired <code>make</code> target(s). (You can use <code>make help</code> to get a summary of the available <code>make</code> targets).</p>
-<hr  />
+<p>After building the library you can install the above components to the desired locations on your system. For a system-wide install you may simply run:</p>
+<div class="fragment"><div class="line">$ sudo make install</div>
+</div><!-- fragment --><p>Or, to install in some other locations, you may set a prefix. For example to install under <code>/opt</code> instead, you can:</p>
+<div class="fragment"><div class="line">$ sudo make prefix=/opt install</div>
+</div><!-- fragment --><hr  />
 <p><a class="anchor" id="linking"></a> </p>
 <h2><a class="anchor" id="autotoc_md12"></a>
 Linking your application against &lt;tt&gt;smax-clib&lt;/tt&gt;</h2>
@@ -275,7 +279,7 @@ The basics</h3>
 <div class="line">  <span class="comment">// Ooops, that did not work...</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_aee07f085e12283ad96f42c4d77430880"><div class="ttname"><a href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare</a></div><div class="ttdeci">int smaxShare(const char *table, const char *key, const void *value, XType type, int count)</div><div class="ttdef"><b>Definition</b> smax.c:711</div></div>
+<div class="ttc" id="asmax_8c_html_aee07f085e12283ad96f42c4d77430880"><div class="ttname"><a href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare</a></div><div class="ttdeci">int smaxShare(const char *table, const char *key, const void *value, XType type, int count)</div><div class="ttdef"><b>Definition</b> smax.c:728</div></div>
 </div><!-- fragment --><p>Pulling data back from SMA-X works similarly, e.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> data[4][2] = ...   <span class="comment">// buffer in which we will receive data</span></div>
 <div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;               <span class="comment">// (optional) metadata we can obtain </span></div>
@@ -286,7 +290,7 @@ The basics</h3>
 <div class="line">  <span class="comment">// Oops, something went wrong...</span></div>
 <div class="line">  <span class="keywordflow">return</span>;</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_afb7eec789669c3d3f416857d3615ace6"><div class="ttname"><a href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull</a></div><div class="ttdeci">int smaxPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax.c:640</div></div>
+<div class="ttc" id="asmax_8c_html_afb7eec789669c3d3f416857d3615ace6"><div class="ttname"><a href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull</a></div><div class="ttdeci">int smaxPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax.c:657</div></div>
 <div class="ttc" id="astructXMeta_html"><div class="ttname"><a href="structXMeta.html">XMeta</a></div><div class="ttdoc">SMA-X standard metadata.</div><div class="ttdef"><b>Definition</b> smax.h:166</div></div>
 </div><!-- fragment --><p>The metadata argument is optional, and can be <code>NULL</code> if not required.</p>
 <p><a class="anchor" id="metadata"></a> </p>
@@ -382,7 +386,7 @@ Arrays</h3>
 <div class="line">  <span class="comment">// Oops, did not work...</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_a1b116e8ffa85c30991ce6d8afb0319e0"><div class="ttname"><a href="smax_8c.html#a1b116e8ffa85c30991ce6d8afb0319e0">smaxShareArray</a></div><div class="ttdeci">int smaxShareArray(const char *table, const char *key, const void *ptr, XType type, int ndim, const int *sizes)</div><div class="ttdef"><b>Definition</b> smax.c:738</div></div>
+<div class="ttc" id="asmax_8c_html_a1b116e8ffa85c30991ce6d8afb0319e0"><div class="ttname"><a href="smax_8c.html#a1b116e8ffa85c30991ce6d8afb0319e0">smaxShareArray</a></div><div class="ttdeci">int smaxShareArray(const char *table, const char *key, const void *ptr, XType type, int ndim, const int *sizes)</div><div class="ttdef"><b>Definition</b> smax.c:755</div></div>
 </div><!-- fragment --><p>Note, that the dimensions of how the data is stored in SMA-X is determined solely by the '2' dimensions specified as the 4th argument and the corresponding 2 elements in the <code>shape</code> array. The <code>data</code> could have been any pointer to an array of floats containing at least the required number of element (8 in the example above).</p>
 <p>For 1D arrays, you have some convenience methods for sharing specific types. These can be convenient because they eliminate one potential source of bugs, where the type argument to <code><a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a></code> does not match the pointer type of the data. Using, say, <code><a class="el" href="smax-easy_8c.html#ace410207bfb5ba9211dc644f7dd2768d">smaxShareFloats()</a></code> instead to share a 1D floating-point array instead of the generic <code><a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a></code> will allow the compiler to check and warn you if the data array is not the <code>float *</code> type. E.g.:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">float</span> *data = ...  <span class="comment">// pointer to a one or higher-dimensional C array of floats.</span></div>
@@ -424,7 +428,7 @@ Structures / substructures...</h3>
 <div class="line">  <span class="comment">// Oops, something did not work</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_ab6a1590c953abc1c37fed841cd3a903a"><div class="ttname"><a href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct</a></div><div class="ttdeci">int smaxShareStruct(const char *id, const XStructure *s)</div><div class="ttdef"><b>Definition</b> smax.c:869</div></div>
+<div class="ttc" id="asmax_8c_html_ab6a1590c953abc1c37fed841cd3a903a"><div class="ttname"><a href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct</a></div><div class="ttdeci">int smaxShareStruct(const char *id, const XStructure *s)</div><div class="ttdef"><b>Definition</b> smax.c:891</div></div>
 <div class="ttc" id="astructXStructure_html"><div class="ttname"><a href="../../xchange/apidoc/html/structXStructure.html">XStructure</a></div></div>
 </div><!-- fragment --><p>Or, you can read a structure, including all embedded substructures in it, with <code><a class="el" href="smax-easy_8c.html#a30a2212f19ab2cbf60ea348110475948">smaxPullStruct()</a></code>:</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;</div>
@@ -500,7 +504,7 @@ Pipelined pulling (high volume queries)</h2>
 <div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;   <span class="comment">// (optional) metadata to fill (for the above value).</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_var&quot;</span>, X_DOUBLE, 1, &amp;d, &amp;meta);</div>
-<div class="ttc" id="asmax-queue_8c_html_a2c71427a215e2253d93de24788db338d"><div class="ttname"><a href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a></div><div class="ttdeci">int smaxQueue(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-queue.c:490</div></div>
+<div class="ttc" id="asmax-queue_8c_html_a2c71427a215e2253d93de24788db338d"><div class="ttname"><a href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue</a></div><div class="ttdeci">int smaxQueue(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-queue.c:493</div></div>
 </div><!-- fragment --><p>Pipelined (batched) pulls have dramatic effects on performance. Rather than being limited by round-trip times, you will be limited by the performance of the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server itself (or the network bandwidth on some older infrastructure). As such, instead of thousand of queries per second, you can pull 2-3 orders of magnitude more in a given time, with hundreds of thousands of pull per second this way.</p>
 <p><a class="anchor" id="lazy-synchronization"></a> </p>
 <h3><a class="anchor" id="autotoc_md32"></a>
@@ -578,7 +582,7 @@ Monitoring updates</h3>
 <div class="line">  <span class="comment">// Ooops something did not go to plan</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_a53614ba57a594135c13b64a2d89eaa43"><div class="ttname"><a href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe</a></div><div class="ttdeci">int smaxSubscribe(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax.c:913</div></div>
+<div class="ttc" id="asmax_8c_html_a53614ba57a594135c13b64a2d89eaa43"><div class="ttname"><a href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe</a></div><div class="ttdeci">int smaxSubscribe(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax.c:935</div></div>
 </div><!-- fragment --><p>and/or pattern(s)</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe</a>(<span class="stringliteral">&quot;watch_*&quot;</span>, <span class="stringliteral">&quot;watch_[a-z]_*&quot;</span>);</div>
 <div class="line"><span class="keywordflow">if</span> (status &lt; 0) {</div>
@@ -627,7 +631,7 @@ Update callbacks</h3>
 <div class="line">  <span class="comment">// Did not go to plan.</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax_8c_html_a827dd87397943f3384605f87116b630c"><div class="ttname"><a href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber</a></div><div class="ttdeci">int smaxAddSubscriber(const char *idStem, RedisSubscriberCall f)</div><div class="ttdef"><b>Definition</b> smax.c:968</div></div>
+<div class="ttc" id="asmax_8c_html_a827dd87397943f3384605f87116b630c"><div class="ttname"><a href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber</a></div><div class="ttdeci">int smaxAddSubscriber(const char *idStem, RedisSubscriberCall f)</div><div class="ttdef"><b>Definition</b> smax.c:1003</div></div>
 </div><!-- fragment --><p>When you no longer need to process such updates, you can simply remove the function from being called via <code>smaxRemoveSubscriber()</code>, and if you are absolutely sure that no other part of your code needs the subscription(s) that could trigger it, you can also unsubscribe from the trigger variables/pattern to eliminate unnecessary network traffic.</p>
 <p>One word of caution on callbacks is that they are expected to:</p>
 <ul>
@@ -659,8 +663,8 @@ Broadcasting status messages from an application</h3>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Broadcast a warning message for &quot;my_program_id&quot;</span></div>
 <div class="line">int status = <a class="code hl_function" href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a>(<span class="stringliteral">&quot;Something did not work&quot;</span> %s<span class="stringliteral">&quot;, explanation);</span></div>
-<div class="ttc" id="asmax-messages_8c_html_a1c90a439b48a53555e9cfb60ce1b9102"><div class="ttname"><a href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a></div><div class="ttdeci">int smaxSendWarning(const char *msg,...)</div><div class="ttdef"><b>Definition</b> smax-messages.c:219</div></div>
-<div class="ttc" id="asmax-messages_8c_html_af3e8295bb941f68cf3177c79cd5fb4d3"><div class="ttname"><a href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a></div><div class="ttdeci">void smaxSetMessageSenderID(const char *id)</div><div class="ttdef"><b>Definition</b> smax-messages.c:118</div></div>
+<div class="ttc" id="asmax-messages_8c_html_a1c90a439b48a53555e9cfb60ce1b9102"><div class="ttname"><a href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a></div><div class="ttdeci">int smaxSendWarning(const char *msg,...)</div><div class="ttdef"><b>Definition</b> smax-messages.c:222</div></div>
+<div class="ttc" id="asmax-messages_8c_html_af3e8295bb941f68cf3177c79cd5fb4d3"><div class="ttname"><a href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a></div><div class="ttdeci">void smaxSetMessageSenderID(const char *id)</div><div class="ttdef"><b>Definition</b> smax-messages.c:121</div></div>
 </div><!-- fragment --><p><a class="anchor" id="processing-messages"></a> </p>
 <h3><a class="anchor" id="autotoc_md43"></a>
 Processing program messages</h3>
@@ -689,7 +693,7 @@ Processing program messages</h3>
 <div class="line">  <span class="comment">// Oops that did not work as planned.</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-messages_8c_html_abaa2573fb8e85e8359c8853647c38f2f"><div class="ttname"><a href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f">smaxAddMessageProcessor</a></div><div class="ttdeci">int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void(*f)(XMessage *))</div><div class="ttdef"><b>Definition</b> smax-messages.c:303</div></div>
+<div class="ttc" id="asmax-messages_8c_html_abaa2573fb8e85e8359c8853647c38f2f"><div class="ttname"><a href="smax-messages_8c.html#abaa2573fb8e85e8359c8853647c38f2f">smaxAddMessageProcessor</a></div><div class="ttdeci">int smaxAddMessageProcessor(const char *host, const char *prog, const char *type, void(*f)(XMessage *))</div><div class="ttdef"><b>Definition</b> smax-messages.c:306</div></div>
 </div><!-- fragment --><p>Each string argument (<code>host</code>, <code>prog</code>, and <code>type</code>) may take an asterisk (<code>"*"</code>) or <code>NULL</code> as the argument to indicate that the processor function should be called for incoming messages for all values for the given parameter.</p>
 <p>The processor function can also inspect what type of message it received by comparing the <code><a class="el" href="structXMessage.html" title="SMA-X program message.">XMessage</a></code> <code>type</code> value against one of the predefined constant expressions in <code><a class="el" href="smax_8h.html">smax.h</a></code>:</p>
 <table class="markdownTable">

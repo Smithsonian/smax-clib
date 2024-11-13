@@ -227,7 +227,7 @@ The number of variables deleted from the SQL DB
 .PP
 
 .PP
-References \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_NULL\fP, and \fBX_SEP\fP\&.
+References \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, and \fBX_SEP\fP\&.
 .SS "int smaxError (const char * func, int errorCode)"
 Prints a descriptive error message to stderr, and returns the error code\&.
 .PP
@@ -290,7 +290,7 @@ String buffer with the SHA1 key or NULL if it could not be retrieved\&. (The cal
 .PP
 
 .PP
-References \fBredisxCheckDestroyRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_BULK_STRING\fP, \fBSMAX_SCRIPTS\fP, \fBsmaxGetRedis()\fP, \fBRESP::value\fP, \fBx_error()\fP, \fBX_NAME_INVALID\fP, and \fBx_trace_null()\fP\&.
+References \fBredisxCheckDestroyRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_BULK_STRING\fP, \fBSMAX_SCRIPTS\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBRESP::value\fP, \fBx_error()\fP, \fBX_NAME_INVALID\fP, \fBX_NO_INIT\fP, and \fBx_trace_null()\fP\&.
 .SS "int smaxGetServerTime (struct timespec * t)"
 Returns the current time on the \fBRedis\fP server instance\&.
 .PP
@@ -306,7 +306,7 @@ X_SUCCESS (0) if successful, or X_NO_INIT if not connected to SMA-X, or X_NULL i
 .PP
 
 .PP
-References \fBredisxGetTime()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxGetTime()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "double smaxGetTime (const char * timestamp)"
 Returns the a sub-second precision UNIX time value for the given SMA-X timestamp
 .PP

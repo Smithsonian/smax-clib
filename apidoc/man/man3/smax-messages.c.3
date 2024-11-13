@@ -125,7 +125,7 @@ Serial ID number (> 0) of the message processor, or X_NULL if callback function 
 .PP
 
 .PP
-References \fBMESSAGES_PREFIX\fP, \fBredisxAddSubscriber()\fP, \fBredisxSubscribe()\fP, \fBsmaxGetRedis()\fP, \fBsmaxRemoveMessageProcessor()\fP, \fBx_error()\fP, \fBX_NULL\fP, \fBX_SEP\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxStringCopyOf()\fP\&.
+References \fBMESSAGES_PREFIX\fP, \fBredisxAddSubscriber()\fP, \fBredisxSubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBsmaxRemoveMessageProcessor()\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SEP\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxRemoveMessageProcessor (int id)"
 Stops a running message processor\&.
 .PP
@@ -146,7 +146,7 @@ X_SUCCESS (0) if successful, or X_NULL if no message processor is running by tha
 .PP
 
 .PP
-References \fBredisxRemoveSubscribers()\fP, \fBredisxUnsubscribe()\fP, \fBsmaxGetRedis()\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveSubscribers()\fP, \fBredisxUnsubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSendDebug (const char * msg,  \&.\&.\&.)"
 Broadcast a debugging message via SMA-X (e\&.g\&. program traces)\&. Works just like \fCprintf()\fP\&.
 .PP

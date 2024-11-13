@@ -188,7 +188,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxAddConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxAddConnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddDisconnectHook (void(*)(void) cleanupCall)"
 Add a callback function for when SMA-X is disconnected\&. It's a wrapper to \fBredisxAddDisconnectHook()\fP\&.
 .PP
@@ -211,7 +211,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxAddDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxAddDisconnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddSubscriber (const char * idStem, \fBRedisSubscriberCall\fP f)"
 Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id)\&. The function should itself check that the channel receiving notification is indeed what it expectes before acting on it, as the callback routine will be invoked for any update inside the specified table, unless the table argument refers to a specific aggregate ID of a single variable\&. This call only registers the callback routine for SMA-X update notifications for variables that begin with the specified stem\&. You will still have to subscrive to any relevant variables with \fBsmaxSubscribe()\fP to enable delivering update notifications for the variables of your choice\&.
 .PP
@@ -234,7 +234,7 @@ X_SUCCESS if successful, or else an approriate error code by \fBredisxAddSubscri
 .PP
 
 .PP
-References \fBredisxAddSubscriber()\fP, \fBSMAX_UPDATES_ROOT\fP, \fBsmaxGetRedis()\fP, \fBX_SUCCESS\fP, and \fBxGetAggregateID()\fP\&.
+References \fBredisxAddSubscriber()\fP, \fBSMAX_UPDATES_ROOT\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxConnect ()"
 Initializes the SMA-X sharing library in this runtime instance\&.
 .PP
@@ -352,7 +352,7 @@ An array of pointers to the names of \fBRedis\fP keys\&.
 .PP
 
 .PP
-References \fBredisxGetKeys()\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxvprintf\fP\&.
+References \fBredisxGetKeys()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxvprintf\fP\&.
 .SS "char * smaxGetProgramID ()"
 Returns the SMA-X program ID\&.
 .PP
@@ -449,7 +449,7 @@ The number of keys (fields) in the specified table (>= 0), or an error code (<0)
 .PP
 
 .PP
-References \fBRESP::n\fP, \fBredisxCheckRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_INT\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
+References \fBRESP::n\fP, \fBredisxCheckRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_INT\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxPull (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
 Pull data from the specified hash table\&. This calls data via the interactive client to \fBRedis\fP\&.
 .PP
@@ -551,7 +551,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxRemoveConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveConnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveDisconnectHook (void(*)(void) cleanupCall)"
 Remove a post-cdisconnect callback function\&. It's a wrapper to redisxRemiveDisconnectHook()\&.
 .PP
@@ -574,7 +574,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxRemoveDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveDisconnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveSubscribers (\fBRedisSubscriberCall\fP f)"
 Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages\&. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the \fBRedis\fP server\&. You should therefore also call \fBsmaxUnsubscribe()\fP as appropriate to stop notifications for variables that no longer have associated callbacks\&.
 .PP
@@ -595,7 +595,7 @@ X_SUCCESS (0) if successful, or else an error (<0) returned by redisxRemoveSubsc
 .PP
 
 .PP
-References \fBredisxRemoveSubscribers()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveSubscribers()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetAuth (const char * username, const char * password)"
 Sets the SMA-X database authentication parameters (if any) before connecting to the SMA-X server\&.
 .PP
@@ -682,7 +682,7 @@ X_SUCCESS (0) if successful, or else an error by \fBredisxSetPipelineConsumer()\
 .PP
 
 .PP
-References \fBredisxSetPipelineConsumer()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxSetPipelineConsumer()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetPipelined (\fBboolean\fP isEnabled)"
 Enable or disable pipelined write operations (enabled by default)\&. When pipelining, share calls will return as soon as the request is sent to the \fBRedis\fP server, without waiting for a response\&. Instead, responses are consumed asynchronously by a dedicated thread, which will report errors to stderr\&. Pipelined writes can have a significant performance advantage over handshaking at the cost of one extra socket connection to \fBRedis\fP (dedicated to pipelining) and the extra thread consuming responses\&.
 .PP
@@ -925,7 +925,7 @@ X_SUCCESS if successfully subscribed to the \fBRedis\fP distribution channel\&. 
 .PP
 
 .PP
-References \fBredisxSubscribe()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxSubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxUnsubscribe (const char * table, const char * key)"
 Unsubscribes from a specific key(s) in specific group(s)\&. Both the group and key names may contain \fBRedis\fP subscription patterns, e\&.g\&. '*' or '?', or bound characters in square-brackets, e\&.g\&. '[ab]'\&. Unsubscribing will only stops the delivery of update notifications for the affected varuiables, but does not deactivate the associated callbacks for these added via \fBsmaxAddSubscriber()\fP\&. Therefore you should also call smaxRemovesubscribers() as appropriate to deactivate actions that can no longer get triggered by updates\&.
 .PP
@@ -950,7 +950,7 @@ X_SUCCESS if successfully unsubscribed to the \fBRedis\fP distribution channel\&
 .PP
 
 .PP
-References \fBredisxUnsubscribe()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxUnsubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxWaitOnAnySubscribed (char ** changedTable, char ** changedKey, int timeout)"
 Waits until any variable was pushed on any host, returning both the host and variable name for the updated value\&. The variable must be already subscribed to with \fBsmaxSubscribe()\fP, or else the wait will not receive update notifications\&.
 .PP
@@ -981,7 +981,7 @@ X_SUCCESS (0) if a variable was pushed on a host\&. X_NO_INIT if the SMA-X shari
 .PP
 
 .PP
-References \fBRELEASEID\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_INTERRUPTED\fP, \fBX_NAME_INVALID\fP, \fBX_NO_SERVICE\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBxdprintf\fP, \fBxLastSeparator()\fP, \fBxStringCopyOf()\fP, and \fBxvprintf\fP\&.
+References \fBRELEASEID\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_INTERRUPTED\fP, \fBX_NAME_INVALID\fP, \fBX_NO_INIT\fP, \fBX_NO_SERVICE\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBxdprintf\fP, \fBxLastSeparator()\fP, \fBxStringCopyOf()\fP, and \fBxvprintf\fP\&.
 .SH "Author"
 .PP 
 Generated automatically by Doxygen for smax-clib from the source code\&.

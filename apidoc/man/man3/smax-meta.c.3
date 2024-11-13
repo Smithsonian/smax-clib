@@ -131,7 +131,7 @@ Pointer to a newly allocated \fBXCoordinateAxis\fP structure or NULL if the axis
 .PP
 
 .PP
-References \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxGetTable()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+References \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxGetTable()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "\fBXCoordinateSystem\fP * smaxGetCoordinateSystem (const char * table, const char * key)"
 Returns the coordinate system, if any, associated to a given SMA-X variable\&.
 .PP
@@ -229,7 +229,7 @@ setPushMeta()
 .PP
 
 .PP
-References \fBredisxGetStringValue()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+References \fBredisxGetStringValue()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "double smaxPullTime (const char * table, const char * key)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
@@ -252,7 +252,7 @@ setPushMeta()
 .PP
 
 .PP
-References \fBNAN\fP, \fBSMAX_TIMESTAMPS\fP, \fBsmaxPullMeta()\fP, and \fBx_trace_null()\fP\&.
+References \fBNAN\fP, \fBSMAX_TIMESTAMPS\fP, \fBsmaxPullMeta()\fP, \fBx_error()\fP, and \fBx_trace_null()\fP\&.
 .SS "\fBXType\fP smaxPullTypeDimension (const char * table, const char * key, int * ndim, int * sizes)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
@@ -306,7 +306,7 @@ X_SUCCESS (0) if the metadata was successfully retrieved X_INCOMPLETE if the mea
 .PP
 
 .PP
-References \fBFALSE\fP, \fBredisxNotify()\fP, \fBredisxSetValue()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
+References \fBFALSE\fP, \fBredisxNotify()\fP, \fBredisxSetValue()\fP, \fBsmaxError()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxSetCoordinateAxis (const char * id, int n, const \fBXCoordinateAxis\fP * axis)"
 Defines the n'th coordinate axis for a given SMA-X coordinate system table id\&.
 .PP

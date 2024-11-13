@@ -695,7 +695,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxAddConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxAddConnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddDefaultMessageProcessor (const char * host, const char * prog, const char * type)"
 Report messages to stdout/stderr in default formats\&.
 .PP
@@ -738,7 +738,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxAddDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxAddDisconnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxAddMessageProcessor (const char * host, const char * prog, const char * type, void(*)(\fBXMessage\fP *) f)"
 Adds a message processor function for a specific host (or all hosts), a specific program (or all programs), and a specific message type (or all message types)\&.
 .PP
@@ -765,7 +765,7 @@ Serial ID number (> 0) of the message processor, or X_NULL if callback function 
 .PP
 
 .PP
-References \fBMESSAGES_PREFIX\fP, \fBredisxAddSubscriber()\fP, \fBredisxSubscribe()\fP, \fBsmaxGetRedis()\fP, \fBsmaxRemoveMessageProcessor()\fP, \fBx_error()\fP, \fBX_NULL\fP, \fBX_SEP\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxStringCopyOf()\fP\&.
+References \fBMESSAGES_PREFIX\fP, \fBredisxAddSubscriber()\fP, \fBredisxSubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBsmaxRemoveMessageProcessor()\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SEP\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxAddSubscriber (const char * idStem, \fBRedisSubscriberCall\fP f)"
 Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id)\&. The function should itself check that the channel receiving notification is indeed what it expectes before acting on it, as the callback routine will be invoked for any update inside the specified table, unless the table argument refers to a specific aggregate ID of a single variable\&. This call only registers the callback routine for SMA-X update notifications for variables that begin with the specified stem\&. You will still have to subscrive to any relevant variables with \fBsmaxSubscribe()\fP to enable delivering update notifications for the variables of your choice\&.
 .PP
@@ -788,7 +788,7 @@ X_SUCCESS if successful, or else an approriate error code by \fBredisxAddSubscri
 .PP
 
 .PP
-References \fBredisxAddSubscriber()\fP, \fBSMAX_UPDATES_ROOT\fP, \fBsmaxGetRedis()\fP, \fBX_SUCCESS\fP, and \fBxGetAggregateID()\fP\&.
+References \fBredisxAddSubscriber()\fP, \fBSMAX_UPDATES_ROOT\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxConnect ()"
 Initializes the SMA-X sharing library in this runtime instance\&.
 .PP
@@ -1241,7 +1241,7 @@ Pointer to a newly allocated \fBXCoordinateAxis\fP structure or NULL if the axis
 .PP
 
 .PP
-References \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxGetTable()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+References \fBRedisEntry::key\fP, \fBXCoordinateAxis::name\fP, \fBredisxGetTable()\fP, \fBXCoordinateAxis::refIndex\fP, \fBXCoordinateAxis::refValue\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBXCoordinateAxis::step\fP, \fBXCoordinateAxis::unit\fP, \fBRedisEntry::value\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "\fBXCoordinateSystem\fP * smaxGetCoordinateSystem (const char * table, const char * key)"
 Returns the coordinate system, if any, associated to a given SMA-X variable\&.
 .PP
@@ -1355,7 +1355,7 @@ An array of pointers to the names of \fBRedis\fP keys\&.
 .PP
 
 .PP
-References \fBredisxGetKeys()\fP, \fBx_error()\fP, \fBx_trace_null()\fP, and \fBxvprintf\fP\&.
+References \fBredisxGetKeys()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxGetLazyCached (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
 Retrieve a variable from the local cache (if available), or else pull from the SMA-X database\&. If local caching was not previously eanbled, it will be enabled with this call, so that subsequent calls will always return data from the locally updated cache with minimal overhead and effectively no latency\&.
 .PP
@@ -1517,7 +1517,7 @@ String buffer with the SHA1 key or NULL if it could not be retrieved\&. (The cal
 .PP
 
 .PP
-References \fBredisxCheckDestroyRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_BULK_STRING\fP, \fBSMAX_SCRIPTS\fP, \fBsmaxGetRedis()\fP, \fBRESP::value\fP, \fBx_error()\fP, \fBX_NAME_INVALID\fP, and \fBx_trace_null()\fP\&.
+References \fBredisxCheckDestroyRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_BULK_STRING\fP, \fBSMAX_SCRIPTS\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBRESP::value\fP, \fBx_error()\fP, \fBX_NAME_INVALID\fP, \fBX_NO_INIT\fP, and \fBx_trace_null()\fP\&.
 .SS "int smaxGetServerTime (struct timespec * t)"
 Returns the current time on the \fBRedis\fP server instance\&.
 .PP
@@ -1533,7 +1533,7 @@ X_SUCCESS (0) if successful, or X_NO_INIT if not connected to SMA-X, or X_NULL i
 .PP
 
 .PP
-References \fBredisxGetTime()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxGetTime()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "double smaxGetTime (const char * timestamp)"
 Returns the a sub-second precision UNIX time value for the given SMA-X timestamp
 .PP
@@ -1654,7 +1654,7 @@ The number of keys (fields) in the specified table (>= 0), or an error code (<0)
 .PP
 
 .PP
-References \fBRESP::n\fP, \fBredisxCheckRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_INT\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
+References \fBRESP::n\fP, \fBredisxCheckRESP()\fP, \fBredisxDestroyRESP()\fP, \fBredisxRequest()\fP, \fBRESP_INT\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxLazyCache (const char * table, const char * key, \fBXType\fP type)"
 Specify that a specific variable should be cached for minimum overhead lazy access\&. When a variable is lazy cached its local copy is automatically updated in the background so that accessing it is always nearly instantaneous\&. Lazy caching is a good choice for variables that change less frequently than they are polled typically\&. For variables that change frequently (ans used less frequently), lazy caching is not a great choice since it consumes network bandwidth even when the variable is not being accessed\&.
 .PP
@@ -2191,7 +2191,7 @@ setPushMeta()
 .PP
 
 .PP
-References \fBredisxGetStringValue()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
+References \fBredisxGetStringValue()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_NO_INIT\fP, \fBx_trace_null()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "char * smaxPullRaw (const char * table, const char * key, \fBXMeta\fP * meta, int * status)"
 Returns a dynamically allocated buffer with the raw string value stored in SMA-X\&. This call can also be used to get single string values from SMA-X, since for single string the stored raw value is simply the string itself\&. However, to properly retrieve string arrays, you want to use \fBsmaxPullStrings()\fP instead\&.
 .PP
@@ -2324,7 +2324,7 @@ setPushMeta()
 .PP
 
 .PP
-References \fBNAN\fP, \fBSMAX_TIMESTAMPS\fP, \fBsmaxPullMeta()\fP, and \fBx_trace_null()\fP\&.
+References \fBNAN\fP, \fBSMAX_TIMESTAMPS\fP, \fBsmaxPullMeta()\fP, \fBx_error()\fP, and \fBx_trace_null()\fP\&.
 .SS "\fBXType\fP smaxPullTypeDimension (const char * table, const char * key, int * ndim, int * sizes)"
 Retrieves the timestamp for a given variable from the database\&.
 .PP
@@ -2378,7 +2378,7 @@ X_SUCCESS (0) if the metadata was successfully retrieved X_INCOMPLETE if the mea
 .PP
 
 .PP
-References \fBFALSE\fP, \fBredisxNotify()\fP, \fBredisxSetValue()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
+References \fBFALSE\fP, \fBredisxNotify()\fP, \fBredisxSetValue()\fP, \fBsmaxError()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxGetRedis()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetAggregateID()\fP\&.
 .SS "int smaxQueue (const char * table, const char * key, \fBXType\fP type, int count, void * value, \fBXMeta\fP * meta)"
 Queues a pull requests for pipelined data retrieval\&. Because pipelined pulls are executed on a separate \fBRedis\fP client from the one used for sharing values, e\&.g\&. via \fBsmaxShare()\fP, there is no guarantee as to the order of this pull operation and previously initiated shares from the same thread\&. This would only be an issue if you are trying to use queued read to read back a value you have just shared -- which is not really a good use case anyway, as it generates network traffic for not real reason\&. But, if you must read back a value you have shared, you probably should use a regular \fBsmaxPull()\fP call to ensure ordering\&.
 .PP
@@ -2511,7 +2511,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxRemoveConnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveConnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveDisconnectHook (void(*)(void) cleanupCall)"
 Remove a post-cdisconnect callback function\&. It's a wrapper to redisxRemiveDisconnectHook()\&.
 .PP
@@ -2534,7 +2534,7 @@ X_SUCCESS (0) or an error code (<0) from \fBredisxAddConnectHook()\fP\&.
 .PP
 
 .PP
-References \fBredisxRemoveDisconnectHook()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveDisconnectHook()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveMessageProcessor (int id)"
 Stops a running message processor\&.
 .PP
@@ -2555,7 +2555,7 @@ X_SUCCESS (0) if successful, or X_NULL if no message processor is running by tha
 .PP
 
 .PP
-References \fBredisxRemoveSubscribers()\fP, \fBredisxUnsubscribe()\fP, \fBsmaxGetRedis()\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveSubscribers()\fP, \fBredisxUnsubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, \fBX_NULL\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxRemoveSubscribers (\fBRedisSubscriberCall\fP f)"
 Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages\&. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the \fBRedis\fP server\&. You should therefore also call \fBsmaxUnsubscribe()\fP as appropriate to stop notifications for variables that no longer have associated callbacks\&.
 .PP
@@ -2576,7 +2576,7 @@ X_SUCCESS (0) if successful, or else an error (<0) returned by redisxRemoveSubsc
 .PP
 
 .PP
-References \fBredisxRemoveSubscribers()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxRemoveSubscribers()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "void smaxResetMeta (\fBXMeta\fP * m)"
 Set metadata to their default values\&. After resetting the supplied metadata will have exactly the same content as if it were initialized with the X_META_INIT macro\&.
 .PP
@@ -2936,7 +2936,7 @@ X_SUCCESS (0) if successful, or else an error by \fBredisxSetPipelineConsumer()\
 .PP
 
 .PP
-References \fBredisxSetPipelineConsumer()\fP, \fBsmaxGetRedis()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxSetPipelineConsumer()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetPipelined (\fBboolean\fP isEnabled)"
 Enable or disable pipelined write operations (enabled by default)\&. When pipelining, share calls will return as soon as the request is sent to the \fBRedis\fP server, without waiting for a response\&. Instead, responses are consumed asynchronously by a dedicated thread, which will report errors to stderr\&. Pipelined writes can have a significant performance advantage over handshaking at the cost of one extra socket connection to \fBRedis\fP (dedicated to pipelining) and the extra thread consuming responses\&.
 .PP
@@ -3668,7 +3668,7 @@ X_SUCCESS if successfully subscribed to the \fBRedis\fP distribution channel\&. 
 .PP
 
 .PP
-References \fBredisxSubscribe()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxSubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSync (\fBXSyncPoint\fP * sync, int timeoutMillis)"
 Waits for the queue to reach the specified sync point, up to an optional timeout limit\&.
 .PP
@@ -3799,7 +3799,7 @@ X_SUCCESS if successfully unsubscribed to the \fBRedis\fP distribution channel\&
 .PP
 
 .PP
-References \fBredisxUnsubscribe()\fP, and \fBX_SUCCESS\fP\&.
+References \fBredisxUnsubscribe()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
 .SS "char * smaxValuesToString (const void * value, \fBXType\fP type, int eCount, char * trybuf, int trylength)"
 Serializes binary values into a string representation (for \fBRedis\fP)\&.
 .PP
@@ -3854,7 +3854,7 @@ X_SUCCESS (0) if a variable was pushed on a host\&. X_NO_INIT if the SMA-X shari
 .PP
 
 .PP
-References \fBRELEASEID\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_INTERRUPTED\fP, \fBX_NAME_INVALID\fP, \fBX_NO_SERVICE\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBxdprintf\fP, \fBxLastSeparator()\fP, \fBxStringCopyOf()\fP, and \fBxvprintf\fP\&.
+References \fBRELEASEID\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBsmaxIsConnected()\fP, \fBx_error()\fP, \fBX_GROUP_INVALID\fP, \fBX_INCOMPLETE\fP, \fBX_INTERRUPTED\fP, \fBX_NAME_INVALID\fP, \fBX_NO_INIT\fP, \fBX_NO_SERVICE\fP, \fBX_SEP_LENGTH\fP, \fBX_SUCCESS\fP, \fBxdprintf\fP, \fBxLastSeparator()\fP, \fBxStringCopyOf()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxWaitOnSubscribed (const char * table, const char * key, int timeout)"
 Waits for a specific pushed entry\&. There must be an active subscription that includes the specified group & variable, or else the call will block indefinitely\&.
 .PP
