@@ -99,14 +99,6 @@ depending on what suits your needs best.
 
 You can configure the build, either by editing `config.mk` or else by defining the relevant environment variables 
 prior to invoking `make`. The following build variables can be configured:
-
- - `XCHANGE`: the root of the location where the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library 
-   is installed. It expects to find `xchange.h` under `$(XCHANGE)/include` and `libxchange.so` under `$(XCHANGE)/lib`
-   or else in the default `LD_LIBRARY_PATH`.
-   
- - `REDISX`: the root of the location where the [Smithsonian/redisx](https://github.com/Smithsonian/redisx) library 
-   is installed. It expects to find `redisx.h` under `$(REDISX)/include` and `libredisx.so` under `$(REDISX)/lib`
-   or else in the default `LD_LIBRARY_PATH`.
    
  - `CC`: The C compiler to use (default: `gcc`).
 
@@ -122,6 +114,16 @@ prior to invoking `make`. The following build variables can be configured:
    variable to `TRUE` and add `-g` to `CFLAGS`.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
+
+ - `XCHANGE`: If the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library is not installed on your
+   system (e.g. under `/usr`) set `XCHANGE` to where the distribution can be found. The build will expect to find 
+   `xchange.h` under `$(XCHANGE)/include` and `libxchange.so` / `libxchange.a` under `$(XCHANGE)/lib` or else in the 
+   default `LD_LIBRARY_PATH`.
+   
+ - `REDISX`: If the [Smithsonian/redisx](https://github.com/Smithsonian/redisx) library is not installed on your
+   system (e.g. under `/usr`) set `REDISX` to where the distribution can be found. The build will expect to find 
+   `redisx.h` under `$(REDISX)/include` and `libredisx.so` / `libredisx.a` under `$(REDISX)/lib` or else in the 
+   default `LD_LIBRARY_PATH`.
  
 After configuring, you can simply run `make`, which will build the `shared` (`lib/libsmax.so[.1]`) and `static` 
 (`lib/libsmax.a`) libraries, local HTML documentation (provided `doxygen` is available), and performs static
