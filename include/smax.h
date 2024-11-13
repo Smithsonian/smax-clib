@@ -11,8 +11,8 @@
 #include <time.h>
 #include <math.h>
 
-#include "redisx.h"
-#include "xchange.h"
+#include <redisx.h>
+#include <xchange.h>
 
 #ifndef SMAX_DEFAULT_HOSTNAME
 #  define SMAX_DEFAULT_HOSTNAME             "smax"      ///< Host name of Redis server used for SMA-X.

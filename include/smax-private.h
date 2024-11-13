@@ -14,8 +14,7 @@
 #define SMAX_PRIVATE_H_
 
 #define __XCHANGE_INTERNAL_API__        ///< User internal definitions
-
-#include "smax.h"
+#include <smax.h>
 
 #define RELEASEID       "<release>"     ///< Redis PUB/SUB channel prefix for wait release notifications.
 
