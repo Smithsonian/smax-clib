@@ -117,7 +117,7 @@ docdir ?= $(datarootdir)/doc/smax-clib
 htmldir ?= $(docdir)/html
 
 .PHONY: install
-install: install-libs install-headers install-apidoc
+install: install-libs install-tools install-headers install-apidoc
 
 .PHONY: install-libs
 install-libs:
@@ -127,6 +127,16 @@ ifneq ($(wildcard $(LIB)/*),)
 	install -m 755 -D $(LIB)/lib*.so* $(libdir)/
 else
 	@echo "WARNING! Skipping libs install: needs 'shared' and/or 'static'"
+endif
+
+.PHONY: install-tools
+install-tools:
+ifneq ($(wildcard $(BIN)/*),)
+	@echo "installing executable(s) under $(bindir)."
+	@install -d $(bindir)
+	@install -m 755 -D $(BIN)/* $(bindir)/
+else
+	@echo "WARNING! Skipping tools install: needs 'tools'"
 endif
 
 .PHONY: install-headers
