@@ -116,15 +116,19 @@ mydatadir ?= $(datadir)/smax-clib
 docdir ?= $(datarootdir)/doc/smax-clib
 htmldir ?= $(docdir)/html
 
+# Standard install commands
+INSTALL_PROGRAM ?= install
+INSTALL_DATA ?= install -m 644
+
 .PHONY: install
 install: install-libs install-tools install-headers install-apidoc
 
 .PHONY: install-libs
 install-libs:
 ifneq ($(wildcard $(LIB)/*),)
-	@echo "installing libraries to $(libdir)"
-	install -d $(libdir)
-	install -m 755 -D $(LIB)/lib*.so* $(libdir)/
+	@echo "installing libraries to $(DESTDIR)$(libdir)"
+	install -d $(DESTDIR)$(libdir)
+	$(INSTALL_PROGRAM) -D $(LIB)/lib*.so* $(DESTDIR)$(libdir)/
 else
 	@echo "WARNING! Skipping libs install: needs 'shared' and/or 'static'"
 endif
@@ -132,29 +136,29 @@ endif
 .PHONY: install-tools
 install-tools:
 ifneq ($(wildcard $(BIN)/*),)
-	@echo "installing executable(s) under $(bindir)."
-	@install -d $(bindir)
-	@install -m 755 -D $(BIN)/* $(bindir)/
+	@echo "installing executable(s) under $(DESTDIR)$(bindir)."
+	@install -d $(DESTDIR)$(bindir)
+	$(INSTALL_PROGRAM) -D $(BIN)/* $(DESTDIR)$(bindir)/
 else
 	@echo "WARNING! Skipping tools install: needs 'tools'"
 endif
 
 .PHONY: install-headers
 install-headers:
-	@echo "installing headers to $(includedir)"
-	install -d $(includedir)
-	install -m 644 -D include/* $(includedir)/
+	@echo "installing headers to $(DESTDIR)$(includedir)"
+	install -d $(DESTDIR)$(includedir)
+	$(INSTALL_DATA) -D include/* $(DESTDIR)$(includedir)/
 
 .PHONY: install-apidoc
 install-apidoc:
 ifneq ($(wildcard apidoc/html/search/*),)
-	@echo "installing API documentation to $(htmldir)"
-	install -d $(htmldir)/search
-	install -m 644 -D apidoc/html/search/* $(htmldir)/search/
-	install -m 644 -D apidoc/html/*.* $(htmldir)/
-	@echo "installing Doxygen tag file to $(docdir)"
-	install -d $(docdir)
-	install -m 644 -D apidoc/*.tag $(docdir)/
+	@echo "installing API documentation to $(DESTDIR)$(htmldir)"
+	install -d $(DESTDIR)$(htmldir)/search
+	$(INSTALL_DATA) -D apidoc/html/search/* $(DESTDIR)$(htmldir)/search/
+	$(INSTALL_DATA) -D apidoc/html/*.* $(DESTDIR)$(htmldir)/
+	@echo "installing Doxygen tag file to $(DESTDIR)$(docdir)"
+	install -d $(DESTDIR)$(docdir)
+	$(INSTALL_DATA) -D apidoc/*.tag $(DESTDIR)$(docdir)/
 else
 	@echo "WARNING! Skipping apidoc install: needs doxygen and 'local-dox'"
 endif
