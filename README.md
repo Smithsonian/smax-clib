@@ -137,10 +137,17 @@ system-wide install you may simply run:
   $ sudo make install
 ```
 
-Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+Or, to install in some other locations, you may set a prefix and/or `DESTDIR`. For example, to install under `/opt` 
+instead, you can:
 
 ```bash
-  $ sudo make prefix=/opt install
+  $ sudo make prefix="/opt" install
+```
+
+Or, to stage the installation (to `/usr`) under a 'build root':
+
+```bash
+  $ make DESTDIR="/tmp/stage" install
 ```
 
 -----------------------------------------------------------------------------

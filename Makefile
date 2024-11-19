@@ -113,6 +113,7 @@ includedir ?= $(prefix)/include
 datarootdir ?= $(prefix)/share
 datadir ?= $(datarootdir)
 mydatadir ?= $(datadir)/smax-clib
+mandir ?= $(datarootdir)/man
 docdir ?= $(datarootdir)/doc/smax-clib
 htmldir ?= $(docdir)/html
 
@@ -121,7 +122,7 @@ INSTALL_PROGRAM ?= install
 INSTALL_DATA ?= install -m 644
 
 .PHONY: install
-install: install-libs install-tools install-headers install-apidoc
+install: install-libs install-tools install-man install-headers install-apidoc
 
 .PHONY: install-libs
 install-libs:
@@ -142,6 +143,12 @@ ifneq ($(wildcard $(BIN)/*),)
 else
 	@echo "WARNING! Skipping tools install: needs 'tools'"
 endif
+
+.PHONY: install-man
+install-man:
+	@echo "installing man pages under $(DESTDIR)$(mandir)."
+	@install -d $(DESTDIR)$(mandir)/man1
+	$(INSTALL_DATA) -D man/man1/* $(DESTDIR)$(mandir)/man1
 
 .PHONY: install-headers
 install-headers:

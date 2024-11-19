@@ -234,7 +234,7 @@ static void usage() {
   printf("    -t <type>    Print as <type>, e.g. 'int8', 'float', 'string', 'raw'.\n");
   printf("    -n <count>   Print as <count> number of elements.\n");
   printf("    -l           List field names contained in structures.\n");
-  printf("    -e           Print errors/warning to stderr.\n");
+  printf("    -e           Print errors/warnings to stderr.\n");
   printf("    -s <host>    Use a specific host as the SMA-X database server.\n\n");
   printf("  This tool always returns a value (or the requested number of values),\n");
   printf("  It defaults to zero(es) for any elements not in the SMA-X database.\n");

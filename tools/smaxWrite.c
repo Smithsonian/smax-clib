@@ -20,8 +20,6 @@ static char *host = SMAX_DEFAULT_HOSTNAME;
 static char *delims = ",;";
 static char *sType;
 
-#define NOT_ENOUGH_TOKENS       2
-
 static void syntax() {
   printf("\n");
   printf("  Syntax: smaxWrite -t <type> [options] table:key value\n\n");
