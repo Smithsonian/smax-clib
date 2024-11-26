@@ -37,10 +37,11 @@ Last Updated: 18 September 2024
 ## Introduction
 
 The [SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
-is a high performance and versatile real-time data sharing platform for distributed software systems. It is built 
-around a central Redis database, and provides atomic access to structured data, including specific branches and/or 
-leaf nodes, with associated metadata. SMA-X was developed at the Submillimeter Array (SMA) observatory, where we use 
-it to share real-time data among hundreds of computers and nearly a thousand individual programs.
+is a free, high performance, and versatile real-time data sharing platform for distributed software systems. It is 
+built around a central Redis (or equivalent) database, and provides efficient atomic access to structured data, 
+including specific branches and/or leaf nodes, with associated metadata. SMA-X was developed at the Submillimeter 
+Array (SMA) observatory, where we use it to share real-time data among hundreds of computers and nearly a thousand 
+individual programs. The __smax-clib__ library is free to use, in any way you like, without licensing restrictions.
 
 SMA-X consists of a set of server-side [LUA](https://lua.org/) scripts that run on [Redis](https://redis.io) (or one 
 of its forks / clones such as [Valkey](https://valkey.io) or [Dragonfly](https://dragonfly.io)); a set of libraries to 
@@ -121,10 +122,17 @@ system-wide install you may simply run:
   $ sudo make install
 ```
 
-Or, to install in some other locations, you may set a prefix. For example to install under `/opt` instead, you can:
+Or, to install in some other locations, you may set a prefix and/or `DESTDIR`. For example, to install under `/opt` 
+instead, you can:
 
 ```bash
-  $ sudo make prefix=/opt install
+  $ sudo make prefix="/opt" install
+```
+
+Or, to stage the installation (to `/usr`) under a 'build root':
+
+```bash
+  $ make DESTDIR="/tmp/stage" install
 ```
 
 -----------------------------------------------------------------------------

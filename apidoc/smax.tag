@@ -4,7 +4,7 @@
     <name>smax-private.h</name>
     <path>include/</path>
     <filename>smax-private_8h.html</filename>
-    <includes id="smax_8h" name="smax.h" local="yes" import="no" module="no" objc="no">smax.h</includes>
+    <includes id="smax_8h" name="smax.h" local="no" import="no" module="no" objc="no">smax.h</includes>
     <member kind="define">
       <type>#define</type>
       <name>__XCHANGE_INTERNAL_API__</name>
