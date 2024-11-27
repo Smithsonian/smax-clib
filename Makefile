@@ -52,6 +52,10 @@ test: SRC := tests
 test: shared static
 	make -f test.mk
 
+# 'test' + 'analyze'
+.PHONY: check
+check: test analyze
+
 .PHONY: tools
 tools: SRC := tools
 tools: shared static
@@ -103,6 +107,18 @@ Doxyfile.local: Doxyfile Makefile
 local-dox: README-smax.md Doxyfile.local
 	doxygen Doxyfile.local
 
+# Some standard GNU targets, that should always exist...
+.PHONY: html
+html: local-dox
+
+.PHONY: dvi
+dvi:
+
+.PHONY: ps
+ps:
+
+.PHONY: pdf
+pdf:
 
 # Default values for install locations
 # See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
@@ -122,7 +138,7 @@ INSTALL_PROGRAM ?= install
 INSTALL_DATA ?= install -m 644
 
 .PHONY: install
-install: install-libs install-tools install-man install-headers install-apidoc
+install: install-libs install-tools install-man install-headers install-html
 
 .PHONY: install-libs
 install-libs:
@@ -156,8 +172,8 @@ install-headers:
 	install -d $(DESTDIR)$(includedir)
 	$(INSTALL_DATA) -D include/* $(DESTDIR)$(includedir)/
 
-.PHONY: install-apidoc
-install-apidoc:
+.PHONY: install-html
+install-html:
 ifneq ($(wildcard apidoc/html/search/*),)
 	@echo "installing API documentation to $(DESTDIR)$(htmldir)"
 	install -d $(DESTDIR)$(htmldir)/search
@@ -182,7 +198,7 @@ help:
 	@echo "  static        Builds the static 'lib/libsmax.a' library."
 	@echo "  tools         Command line tools: 'bin/smaxValue' and 'bin/smaxWrite'."
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
-	@echo "  check         Performs static analysis with 'cppcheck'."
+	@echo "  analyze       Performs static analysis with 'cppcheck'."
 	@echo "  all           All of the above."
 	@echo "  install       Install components (e.g. 'make prefix=<path> install')"
 	@echo "  clean         Removes intermediate products."
