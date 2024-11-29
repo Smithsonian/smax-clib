@@ -771,7 +771,7 @@ int smaxGetServerTime(struct timespec *t) {
 char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf, int trylength) {
   static const char *fn = "smaxValuedToString";
 
-  int eSize=1, k, stringSize = 1;
+  int eSize=1, k, stringSize;
   char *sValue, *next;
 
   const double *d = (double *) value;

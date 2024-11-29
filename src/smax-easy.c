@@ -1014,7 +1014,7 @@ int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeo
  */
 static int WaitOn(const char *table, const char *key, int timeout, ...) {
   static const char *fn = "WaitOn";
-  char *gotTable, *gotKey;
+  char *gotTable = NULL, *gotKey = NULL;
   va_list args;
 
   va_start(args, timeout);         /* Initialize the argument list. */

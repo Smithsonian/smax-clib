@@ -123,7 +123,7 @@ char *smaxPullMeta(const char *meta, const char *table, const char *key, int *st
 double smaxPullTime(const char *table, const char *key) {
   static const char *fn = "smaxPullTime";
 
-  int status;
+  int status = X_SUCCESS;
   char *str = smaxPullMeta(SMAX_TIMESTAMPS, table, key, &status);
   double ts;
 
@@ -163,7 +163,7 @@ XType smaxPullTypeDimension(const char *table, const char *key, int *ndim, int *
   static const char *fn = "smaxPullTYpeDimension";
 
   XType type;
-  int status;
+  int status = X_SUCCESS;
   char *str = smaxPullMeta(SMAX_TYPES, table, key, &status);
 
   if(status) {

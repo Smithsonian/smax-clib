@@ -43,7 +43,7 @@ static void setOption(char *argv[], int *next) {
   option++;
 
   if(!strcmp(option, "t") || !strcmp(option, "-type")) {
-    sType = argv[*(next++)];
+    sType = argv[*next];
     f.type = smaxTypeForString(sType);
     if(f.type == X_UNKNOWN || f.type == X_STRUCT) {
       fprintf(stderr, "ERROR! Invalid type: %s\n", sType);
@@ -52,15 +52,15 @@ static void setOption(char *argv[], int *next) {
   }
 
   else if(!strcmp(option, "d") || !strcmp(option, "-dims")) {
-    f.ndim = xParseDims(argv[*(next++)], f.sizes);
+    f.ndim = xParseDims(argv[*next], f.sizes);
   }
 
   else if(!strcmp(option, "D") || !strcmp(option, "-delims")) {
-    delims = argv[*(next++)];
+    delims = argv[*next];
   }
 
   else if(!strcmp(option, "s") || !strcmp(option, "-server")) {
-    host = argv[*(next++)];
+    host = argv[*next];
   }
 }
 

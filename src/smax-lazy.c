@@ -682,7 +682,7 @@ int smaxLazyFlush() {
  */
 int smaxGetLazyUpdateCount(const char *table, const char *key) {
   LazyMonitor *m;
-  int n = -1;
+  int n;
 
   if(!table) return -1;
   if(!key) return -1;
