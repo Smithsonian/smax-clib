@@ -13,7 +13,9 @@
 
 // We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
 // gcc 5.1 was released 2015-04-22...
-#if __GNUC__ >= 5
+#ifndef __GNUC__
+#  define _ISOC99_SOURCE        ///< strtoll() feature macro starting glibc 2.20 (2014-09-08)
+#elif __GNUC__ >= 5 || __clang__
 #  define _ISOC99_SOURCE        ///< strtoll() feature macro starting glibc 2.20 (2014-09-08)
 #else
 #  define _BSD_SOURCE           ///< strtoll() feature macro for glibc <= 2.19
