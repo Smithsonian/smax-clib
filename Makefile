@@ -30,13 +30,13 @@ endif
 
 export
 
-# Build everything...
-.PHONY: all
-all: shared static tools $(DOC_TARGETS) check
-
 # Build for distribution
 .PHONY: distro
 distro: shared $(DOC_TARGETS)
+
+# Build everything...
+.PHONY: all
+all: shared static tools $(DOC_TARGETS) check
 
 # Shared libraries (versioned and unversioned)
 .PHONY: shared
@@ -55,6 +55,11 @@ test: shared static
 # 'test' + 'analyze'
 .PHONY: check
 check: test analyze
+
+# Static code analysis via Facebook's infer
+.PHONY: infer
+infer: clean
+	infer run -- make shared
 
 .PHONY: tools
 tools: SRC := tools
@@ -200,6 +205,7 @@ help:
 	@echo "  local-dox     Compiles local HTML API documentation using 'doxygen'."
 	@echo "  analyze       Performs static analysis with 'cppcheck'."
 	@echo "  all           All of the above."
+	@echo "  distro        shared libs and documentation (default target)."
 	@echo "  install       Install components (e.g. 'make prefix=<path> install')"
 	@echo "  clean         Removes intermediate products."
 	@echo "  distclean     Deletes all generated files."
