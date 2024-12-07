@@ -606,6 +606,36 @@ int x2smaxField(XField *f) {
     prop_error(fn, x2smaxStruct((XStructure *) f->value));
     return X_SUCCESS;
   }
+  if(f->type == X_FIELD) {
+    // Convert an array of fields into a structure, with fields whose
+    // names are '.' + 1-based index, i.e. '.1', '.2'...
+    const XField *array = (XField *) f->value;
+    XStructure *s = xCreateStruct();
+    int i;
+
+    for(i = xGetFieldCount(f); --i >= 0;) {
+      char fname[20];
+
+      XField *e = (XField *) calloc(1, sizeof(XField));
+      *e = array[i];    // shallow copy the array field
+      prop_error(fn, x2smaxField(e));   // then convert the copy to smax
+
+      sprintf(fname, ".%d", (i + 1)); // Label each field with the array index
+      e->name = xStringCopyOf(fname);
+
+      e->next = s->firstField; // As to the structure...
+      s->firstField = e;
+    }
+
+    // clear the original field
+    xClearField(f);
+
+    // Set the converted structure as the new data
+    f->type = X_STRUCT;
+    f->value = (char *) s;
+
+    return X_SUCCESS;
+  }
   if(f->isSerialized) return X_SUCCESS;
 
   value = f->value;
