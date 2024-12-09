@@ -69,11 +69,6 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 # Below are some generated constants based on the one that were set above
 # ============================================================================
 
-# Compiler and linker options etc.
-ifeq ($(BUILD_MODE),debug)
-	CFLAGS += -g -DDEBUG
-endif
-
 ifdef OSFLAGS
   LDFLAGS += $(OSFLAGS)
 endif
