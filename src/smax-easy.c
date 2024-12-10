@@ -400,22 +400,6 @@ int smaxShareInt(const char *table, const char *key, long long value) {
 }
 
 /**
- * Shares a single integer value to SMA-X in a hexadecimal representatin.
- *
- * \param table     The hash table name.
- * \param key       The variable name under which the data is stored.
- * \param value     Integer value.
- *
- * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
- *
- * \sa smaxShareInt()
- */
-int smaxShareHex(const char *table, const char *key, long long value) {
-  prop_error("smaxShareHex", smaxShare(table, key, &value, X_LONG_HEX, 1));
-  return X_SUCCESS;
-}
-
-/**
  * Shares a single boolean value to SMA-X. All non-zero values are mapped
  * to "1".
  *

@@ -879,26 +879,14 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
     case X_BYTE:
       for(k=0; k<eCount; k++) next += sprintf(next, "%hhd ", c[k]);
       break;
-    case X_BYTE_HEX:
-      for(k=0; k<eCount; k++) next += sprintf(next, "0x%hhx ", (unsigned char) c[k]);
-      break;
     case X_SHORT:
       for(k=0; k<eCount; k++) next += sprintf(next, "%hd ", s[k]);
-      break;
-    case X_SHORT_HEX:
-      for(k=0; k<eCount; k++) next += sprintf(next, "0x%hx ", (unsigned short) s[k]);
       break;
     case X_INT:
       for(k=0; k<eCount; k++) next += sprintf(next, "%d ", i[k]);
       break;
-    case X_INT_HEX:
-      for(k=0; k<eCount; k++) next += sprintf(next, "0x%x ", i[k]);
-      break;
     case X_LONG:
       for(k=0; k<eCount; k++) next += sprintf(next, "%lld ", l[k]);
-      break;
-    case X_LONG_HEX:
-      for(k=0; k<eCount; k++) next += sprintf(next, "0x%llx ", l[k]);
       break;
     case X_FLOAT:
       for(k=0; k<eCount; k++) {
@@ -1029,7 +1017,6 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
         }
         break;
       case X_BYTE:
-      case X_BYTE_HEX:
         for(k=0; k<eCount && *next; k++) {
           errno = 0;
           c[k] = (char) strtol(next, &next, 0);
@@ -1037,7 +1024,6 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
         }
         break;
       case X_SHORT:
-      case X_SHORT_HEX:
         for(k=0; k<eCount && *next; k++) {
           errno = 0;
           s[k] = (short) strtol(next, &next, 0);
@@ -1045,7 +1031,6 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
         }
         break;
       case X_INT:
-      case X_INT_HEX:
         for(k=0; k<eCount && *next; k++) {
           errno = 0;
           i[k] = (int) strtol(next, &next, 0);
@@ -1053,7 +1038,6 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
         }
         break;
       case X_LONG:
-      case X_LONG_HEX:
         for(k=0; k<eCount && *next; k++) {
           errno = 0;
           l[k] = (int) strtoll(next, &next, 0);
@@ -1101,14 +1085,10 @@ char *smaxStringType(XType type) {
 
   switch(type) {
     case X_BOOLEAN: return "boolean";
-    case X_BYTE:
-    case X_BYTE_HEX: return "int8";
-    case X_SHORT:
-    case X_SHORT_HEX: return "int16";
-    case X_INT:
-    case X_INT_HEX: return "int32";
-    case X_LONG:
-    case X_LONG_HEX: return "int64";
+    case X_BYTE: return "int8";
+    case X_SHORT: return "int16";
+    case X_INT: return "int32";
+    case X_LONG: return "int64";
     case X_FLOAT: return "float";
     case X_DOUBLE: return "double";
     case X_STRING: return "string";

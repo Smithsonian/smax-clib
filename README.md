@@ -105,8 +105,13 @@ prior to invoking `make`. The following build variables can be configured:
 
  - `CPPFLAGS`: C preprocessor flags, such as externally defined compiler constants.
  
- - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
+ - `CFLAGS`: Flags to pass onto the C compiler (default: `-g -Os -Wall`). Note, `-Iinclude` will be added 
    automatically.
+ 
+ - `CSTANDARD`: Optionally, specify the C standard to compile for, e.g. `c99` to compile for the C99 standard. If
+   defined then `-std=$(CSTANDARD)` is added to `CFLAGS` automatically.
+   
+ - `WEXTRA`: If set to 1, `-Wextra` is added to `CFLAGS` automatically.
    
  - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm -lredisx -lxchange -pthread` will be added 
    automatically.

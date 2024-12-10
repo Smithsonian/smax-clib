@@ -270,7 +270,6 @@ int smaxGetLazyUpdateCount(const char *table, const char *key);
 // Some convenience methods for simpler shares ----------->
 int smaxShareBoolean(const char *table, const char *key, boolean value);
 int smaxShareInt(const char *table, const char *key, long long value);
-int smaxShareHex(const char *table, const char *key, long long value);
 int smaxShareDouble(const char *table, const char *key, double value);
 int smaxShareString(const char *table, const char *key, const char *sValue);
 int smaxShareBooleans(const char *table, const char *key, const boolean *values, int n);
