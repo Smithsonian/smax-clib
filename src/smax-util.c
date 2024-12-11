@@ -384,11 +384,7 @@ char *smaxGetScriptSHA1(const char *scriptName, int *status) {
   }
 
   reply = redisxRequest(redis, "HGET", SMAX_SCRIPTS, scriptName, NULL, status);
-
-  if(*status) {
-    redisxDestroyRESP(reply);
-    return x_trace_null(fn, NULL);
-  }
+  if(*status) return x_trace_null(fn, NULL);
 
   *status = redisxCheckDestroyRESP(reply, RESP_BULK_STRING, 0);
   if(*status) return x_trace_null(fn, NULL);

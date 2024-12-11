@@ -16,6 +16,7 @@
 #define __XCHANGE_INTERNAL_API__        ///< User internal definitions
 #include <smax.h>
 
+
 #define RELEASEID       "<release>"     ///< Redis PUB/SUB channel prefix for wait release notifications.
 
 /// \cond PROTECTED

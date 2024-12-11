@@ -18,6 +18,10 @@
 #  define SMAX_DEFAULT_HOSTNAME             "smax"      ///< Host name of Redis server used for SMA-X.
 #endif
 
+#ifndef SMAX_SENTINEL_SERVICENAME
+#  define SMAX_SENTINEL_SERVICENAME         "SMA-X"     ///< Sentinel service name for SMA-X.
+#endif
+
 #ifndef SMAX_DEFAULT_PIPELINE_ENABLED
 #  define SMAX_DEFAULT_PIPELINE_ENABLED     TRUE        ///< Whether pipelining is enabled by default.
 #endif
@@ -200,6 +204,7 @@ void smaxSetOrigin(XMeta *m, const char *origin);
 
 // Globally available functions provided by SMA-X ------------->
 int smaxSetServer(const char *host, int port);
+int smaxSetSentinel(const RedisServer *servers, int nServers);
 int smaxSetAuth(const char *username, const char *password);
 int smaxSetDB(int idx);
 int smaxSetTcpBuf(int size);

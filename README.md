@@ -16,7 +16,7 @@
 
 # smax-clib
 
-C/C++ client library and toolkit for the 
+A free C/C++ client library and toolkit for the 
 [SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
 structured real-time database
 
@@ -165,7 +165,7 @@ look like:
 
 ```make
 myprog: ...
-	cc -o $@ $^ $(LDFLAGS) -lsmax -lredisx -lxchange 
+	$(CC) -o $@ $^ $(LDFLAGS) -lsmax -lredisx -lxchange 
 ```
 
 (Or, you might simply add `-lsmax -lredisx -lxchange` to `LDFLAGS` and use a more standard recipe.) And, in if you 

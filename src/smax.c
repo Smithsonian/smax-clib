@@ -88,6 +88,9 @@ static int notifySize;
 
 static char *server;
 static int serverPort = REDISX_TCP_PORT;
+static RedisServer *sentinel;
+static int nSentinel;
+
 static char *user;
 static char *auth;
 static int dbIndex;
@@ -119,10 +122,32 @@ int smaxSetServer(const char *host, int port) {
 
   if(server) free(server);
   server = xStringCopyOf(host);
-
   serverPort = port > 0 ? port : REDISX_TCP_PORT;
 
   smaxUnlockConfig();
+  return X_SUCCESS;
+}
+
+/**
+ * Configure SMA-X to use a high availability Redis Sentinel configuration
+ *
+ * @param servers     An array of known Sentinel servers
+ * @param nServers    The number of servers in the array
+ * @return            X_SUCCESS (0) if successful or else an error code &lt;0.
+ *
+ * @sa smaxConnect()
+ */
+int smaxSetSentinel(const RedisServer *servers, int nServers) {
+  static const char *fn = "smaxSetSentinel";
+
+  prop_error(fn, redisxValidateSentinel(SMAX_SENTINEL_SERVICENAME, servers, nServers));
+
+  sentinel = (RedisServer *) calloc(nServers, sizeof(RedisServer));
+  if(!sentinel) return x_error(X_FAILURE, errno, fn, "alloc error (%d RedisServer)", nServers);
+
+  memcpy(sentinel, servers, nServers * sizeof(RedisServer));
+  nSentinel = nServers;
+
   return X_SUCCESS;
 }
 
@@ -412,6 +437,7 @@ int smaxConnectTo(const char *server) {
  *              X_NULL              If the Redis IP address is NULL
  *
  * @sa smaxSetServer()
+ * @sa smaxSetSentinel()
  * @sa smaxSetAuth()
  * @sa smaxConnectTo()
  * @sa smaxDisconnect()
@@ -440,13 +466,16 @@ int smaxConnect() {
 
     redisxSetTcpBuf(tcpBufSize);
 
-    redis = redisxInit(server ? server : SMAX_DEFAULT_HOSTNAME);
+    if(sentinel) redis = redisxInitSentinel(SMAX_SENTINEL_SERVICENAME, sentinel, nSentinel);
+    else redis = redisxInit(server ? server : SMAX_DEFAULT_HOSTNAME);
+
     if(redis == NULL) {
       smaxUnlockConfig();
       return x_trace(fn, NULL, X_NO_INIT);
     }
 
-    redisxSetPort(redis, serverPort);
+    if(!sentinel) redisxSetPort(redis, serverPort);
+
     redisxSetUser(redis, user);
     redisxSetPassword(redis, auth);
     redisxSelectDB(redis, dbIndex);
@@ -1219,10 +1248,7 @@ int smaxKeyCount(const char *table) {
   if(!r) return smaxError(fn, X_NO_INIT);
 
   reply = redisxRequest(r, "HLEN", table, NULL, NULL, &status);
-  if(status) {
-    redisxDestroyRESP(reply);
-    return x_trace(fn, NULL, status);
-  }
+  if(status) return x_trace(fn, NULL, status);
 
   status = redisxCheckRESP(reply, RESP_INT, 0);
   if(!status) status = reply->n;
