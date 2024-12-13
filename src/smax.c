@@ -1331,7 +1331,7 @@ char **smaxGetKeys(const char *table, int *n) {
 int smaxRead(PullRequest *req, int channel) {
   static const char *fn = "smaxRead";
 
-  char *args[5], *script = NULL;
+  const char *args[5], *script = NULL;
   Redis *r = smaxGetRedis();
   RESP *reply = NULL;
   RedisClient *cl;
@@ -1768,7 +1768,7 @@ int smaxWrite(const char *table, const XField *f) {
     int L[9] = {0};
 
     // Call script
-    status = redisxSendArrayRequestAsync(cl, args, L, 9);
+    status = redisxSendArrayRequestAsync(cl, (const char **) args, L, 9);
   }
 
   redisxUnlockClient(cl);
@@ -1858,7 +1858,7 @@ static int SendStructDataAsync(RedisClient *cl, const char *id, const XStructure
     status = redisxSkipReplyAsync(cl);
 
     // Call script
-    if(!status) status = redisxSendArrayRequestAsync(cl, args, NULL, n);
+    if(!status) status = redisxSendArrayRequestAsync(cl, (const char **) args, NULL, n);
   }
 
   next = 5;

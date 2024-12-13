@@ -63,7 +63,7 @@ infer: clean
 
 .PHONY: tools
 tools: SRC := tools
-tools: shared static
+tools: shared
 	make -f tools.mk
 
 # Remove intermediates
