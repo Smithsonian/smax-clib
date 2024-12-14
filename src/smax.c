@@ -464,7 +464,7 @@ int smaxConnect() {
     smaxGetProgramID();
     xvprintf("SMA-X> program ID: %s\n", programID);
 
-    redisxSetTcpBuf(tcpBufSize);
+    redisxSetTcpBuf(redis, tcpBufSize);
 
     if(sentinel) redis = redisxInitSentinel(SMAX_SENTINEL_SERVICENAME, sentinel, nSentinel);
     else redis = redisxInit(server ? server : SMAX_DEFAULT_HOSTNAME);
@@ -480,7 +480,7 @@ int smaxConnect() {
     redisxSetPassword(redis, auth);
     redisxSelectDB(redis, dbIndex);
 
-    redisxSetTransmitErrorHandler(redis, smaxTransmitErrorHandler);
+    redisxSetSocketErrorHandler(redis, smaxSocketErrorHandler);
 
     smaxSetPipelineConsumer(smaxProcessPipedWritesAsync);
     smaxAddSubscriber(NULL, ProcessUpdateNotificationAsync);
@@ -1765,10 +1765,8 @@ int smaxWrite(const char *table, const XField *f) {
   // Writes not to request reply.
   status = redisxSkipReplyAsync(cl);
   if(!status) {
-    int L[9] = {0};
-
     // Call script
-    status = redisxSendArrayRequestAsync(cl, (const char **) args, L, 9);
+    status = redisxSendArrayRequestAsync(cl, (const char **) args, NULL, 9);
   }
 
   redisxUnlockClient(cl);

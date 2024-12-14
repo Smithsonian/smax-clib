@@ -47,7 +47,7 @@ void smaxProcessPipedWritesAsync(RESP *reply);
 unsigned char smaxGetHashLookupIndex(const char *group, int lGroup, const char *key, int lKey);
 char *smaxGetUpdateChannelPattern(const char *table, const char *key);
 int smaxStorePush(const char *table, const XField *field);
-void smaxTransmitErrorHandler(Redis *r, enum redisx_channel channel, const char *op);
+void smaxSocketErrorHandler(Redis *r, enum redisx_channel channel, const char *op);
 int smaxScriptError(const char *name, int status);
 int smaxScriptErrorAsync(const char *name, int status);
 boolean smaxIsDisabled();

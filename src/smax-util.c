@@ -147,7 +147,7 @@ void smaxSetOrigin(XMeta *m, const char *origin) {
  */
 // cppcheck-suppress constParameterPointer
 // cppcheck-suppress constParameter
-void smaxTransmitErrorHandler(Redis *redis, enum redisx_channel channel, const char *op) {
+void smaxSocketErrorHandler(Redis *redis, enum redisx_channel channel, const char *op) {
   pthread_t tid;
 
   if(redis != smaxGetRedis()) {
