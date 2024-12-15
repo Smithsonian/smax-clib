@@ -1326,6 +1326,7 @@ char **smaxGetKeys(const char *table, int *n) {
  *                      X_GROUP_INVALID     if the table name is invalid.
  *                      X_NAME_INVALID      if the 'key argument is invalid.
  *                      X_NO_SERVICE        if there was no connection to the Redis server.
+ *                      X_TIMEDOUT          if timed out waiting for a response
  *                      X_FAILURE           if there was an underlying failure.
  */
 int smaxRead(PullRequest *req, int channel) {
@@ -1380,12 +1381,12 @@ int smaxRead(PullRequest *req, int channel) {
   // Call script
   status = redisxSendArrayRequestAsync(cl, args, NULL, n);
 
-  if(channel != REDISX_PIPELINE_CHANNEL) if(!status) reply = redisxReadReplyAsync(cl);
+  if(channel != REDISX_PIPELINE_CHANNEL) if(!status) reply = redisxReadReplyAsync(cl, &status);
 
   redisxUnlockClient(cl);
 
   // Process reply as needed...
-  if(reply) {
+  if(!status && reply) {
     // Process the value
     status = smaxProcessReadResponse(reply, req);
     redisxDestroyRESP(reply);
