@@ -15,7 +15,7 @@
 // gcc 5.1 was released 2015-04-22...
 #ifndef __GNUC__
 #  define _ISOC99_SOURCE        ///< strtoll() feature macro starting glibc 2.20 (2014-09-08)
-#elif __GNUC__ >= 5 || __clang__
+#elif __GNUC__ >= 5
 #  define _ISOC99_SOURCE        ///< strtoll() feature macro starting glibc 2.20 (2014-09-08)
 #else
 #  define _BSD_SOURCE           ///< strtoll() feature macro for glibc <= 2.19
