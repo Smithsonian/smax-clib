@@ -394,7 +394,7 @@ Redis *smaxGetRedis() {
  * @sa smaxReconnect()
  */
 int smaxIsConnected() {
-  return redisxIsConnected(redis);
+  return redis && redisxIsConnected(redis);
 }
 
 
@@ -464,8 +464,6 @@ int smaxConnect() {
     smaxGetProgramID();
     xvprintf("SMA-X> program ID: %s\n", programID);
 
-    redisxSetTcpBuf(redis, tcpBufSize);
-
     if(sentinel) redis = redisxInitSentinel(SMAX_SENTINEL_SERVICENAME, sentinel, nSentinel);
     else redis = redisxInit(server ? server : SMAX_DEFAULT_HOSTNAME);
 
@@ -476,9 +474,11 @@ int smaxConnect() {
 
     if(!sentinel) redisxSetPort(redis, serverPort);
 
-    redisxSetUser(redis, user);
-    redisxSetPassword(redis, auth);
-    redisxSelectDB(redis, dbIndex);
+    redisxSetTcpBuf(redis, tcpBufSize);
+
+    if(user) redisxSetUser(redis, user);
+    if(auth) redisxSetPassword(redis, auth);
+    if(dbIndex) redisxSelectDB(redis, dbIndex);
 
     redisxSetSocketErrorHandler(redis, smaxSocketErrorHandler);
 
