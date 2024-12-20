@@ -48,9 +48,13 @@ static: $(LIB)/libsmax.a
 
 # Run regression tests
 .PHONY: test
-test: SRC := tests
 test: shared static
 	make -f test.mk
+
+# Build benchmark program
+.PHONY: benchmark
+benchmark: shared static
+	make -f test.mk benchmark
 
 # 'test' + 'analyze'
 .PHONY: check

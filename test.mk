@@ -1,3 +1,5 @@
+SRC := tests
+
 include config.mk
 
 # Load the common Makefile definitions...
@@ -10,8 +12,10 @@ TESTS = $(BIN)/simpleIntTest $(BIN)/simpleIntsTest $(BIN)/structTest $(BIN)/queu
 		$(BIN)/waitTest $(BIN)/resilientTest
 
 # Top level make targets...
+.PHONY: build
 build: $(TESTS)
 
+.PHONY: run
 run: build
 	$(BIN)/simpleIntTest
 	$(BIN)/simpleIntsTest
@@ -20,5 +24,11 @@ run: build
 	$(BIN)/lazyTest
 	$(BIN)/waitTest
 	$(BIN)/resilientTest
+
+.PHONY: benchmark
+benchmark: $(BIN)/benchmark
+
+$(BIN)/benchmark: LDFLAGS += -lpopt -lbsd
+
 
 include build.mk
