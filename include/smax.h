@@ -49,7 +49,7 @@
 #define SMAX_MINOR_VERSION  9
 
 /// Integer sub version of the release
-#define SMAX_PATCHLEVEL     0
+#define SMAX_PATCHLEVEL     1
 
 /// Additional release information in version, e.g. "-1", or "-rc1".
 #define SMAX_RELEASE_STRING "-devel"
@@ -239,7 +239,7 @@ int *smaxPullInts(const char *table, const char *key, XMeta *meta, int *n);
 double *smaxPullDoubles(const char *table, const char *key, XMeta *meta, int *n);
 char **smaxPullStrings(const char *table, const char *key, XMeta *meta, int *n);
 XStructure *smaxPullStruct(const char *name, XMeta *meta, int *status);
-
+XField *smaxPullField(const char *id, XMeta *meta, int *status);
 
 // Convenience methods for serialized strucures ---------->
 boolean smaxGetBooleanField(const XStructure *s, const char *name, boolean defaultValue);
@@ -286,7 +286,6 @@ int smaxShareFloats(const char *table, const char *key, const float *values, int
 int smaxShareDoubles(const char *table, const char *key, const double *values, int n);
 int smaxShareStrings(const char *table, const char *key, const char **sValues, int n);
 int smaxShareStruct(const char *id, const XStructure *s);
-
 
 // Notifications ---------------------------------------------->
 int smaxSubscribe(const char *table, const char *key);

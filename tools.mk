@@ -1,6 +1,6 @@
 include config.mk
 
-LDFLAGS += -L$(LIB) -lsmax
+LDFLAGS += -L$(LIB) -lsmax -lpopt
 LD_LIBRARY_PATH := $(LIB):$(LD_LIBRARY_PATH)
 
 # Top level make targets...

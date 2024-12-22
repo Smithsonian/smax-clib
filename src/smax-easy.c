@@ -64,6 +64,7 @@ char *smaxPullRaw(const char *table, const char *key, XMeta *meta, int *status) 
  *
  * @sa smaxLazyPullStruct()
  * @sa xDestroyStruct()
+ * @sa smaxPullNode()
  */
 XStructure *smaxPullStruct(const char *id, XMeta *meta, int *status) {
   static const char *fn = "smaxPullStruct";
@@ -81,6 +82,109 @@ XStructure *smaxPullStruct(const char *id, XMeta *meta, int *status) {
   if(*status) x_trace_null(fn, NULL);
 
   return s;
+}
+
+/**
+ * Returns a dynamically allocated deserialized XField for the specified node in SMA-X. You
+ * should use this function with great care, as it might retrieve very large data from SMA-X,
+ * and therefore block access to the database for a long time. It's OK to use to retrieve data
+ * for smaller sub-hierarchies, but you should probably stay away from using to to pull large
+ * hierarchies.
+ *
+ * @param id            The aggregate SMA-X ID of the node
+ * @param[out] meta     Pointer to where to return metadata, or NULL if metadata is not required.
+ * @param[out] status   Pointer to integer in which to return status, or NULL if not required.
+ * @return              A field containing the data for the node, or NULL if there was an error.
+ *
+ * @sa smaxShareField()
+ */
+XField *smaxPullField(const char *id, XMeta *meta, int *status) {
+  static const char *fn = "smaxPullField";
+
+  char *str, *table, *key;
+  XType type;
+  int l = 0, ndim;
+  int sizes[X_MAX_DIMS], count, s;
+  void *value;
+  XField *f;
+
+  if(!id) {
+    x_error(0, EINVAL, fn, "input ID is NULL");
+    return NULL;
+  }
+
+  if(!id[0]) {
+    x_error(0, EINVAL, fn, "input ID is empty");
+    return NULL;
+  }
+
+  if(status) *status = X_FAILURE;
+
+  str = redisxGetStringValue(smaxGetRedis(), SMAX_TYPES, id, &l);
+  if(l < 0 || str == NULL) {
+    if(status) *status = l;
+    return x_trace_null(fn, "type");
+  }
+
+  type = smaxTypeForString(str);
+  free(str);
+
+  if(type == X_UNKNOWN) {
+    if(status) *status = X_TYPE_INVALID;
+    return x_trace_null(fn, "type");
+  }
+
+  str = redisxGetStringValue(smaxGetRedis(), SMAX_DIMS, id, &l);
+  if(l < 0 || str == NULL) {
+    if(status) *status = l;
+    return x_trace_null(fn, "dims");
+  }
+
+  ndim = xParseDims(str, sizes);
+  free(str);
+
+  if(ndim < 0) {
+    if(status) *status = ndim;
+    return x_trace_null(fn, "dims");
+  }
+
+  count = xGetElementCount(ndim, sizes);
+  if(count < 0) {
+    if(status) *status = count;
+    return x_trace_null(fn, "count");
+  }
+
+  value = calloc(count, xElementSizeOf(type));
+  if(!value) {
+    x_error(0, errno, fn, "alloc error (%d bytes)", xElementSizeOf(type) * count);
+    return NULL;
+  }
+
+  table = xStringCopyOf(id);
+  if(!table) {
+    free(value);
+    return x_trace_null(fn, "split id");
+  }
+
+  xSplitID(table, &key);
+
+  s = smaxPull(table, key, type, count, value, meta);
+  if(status) *status = s;
+
+  if(s != X_SUCCESS) {
+    free(value);
+    return x_trace_null(fn, NULL);
+  }
+
+  f = xCreateField(key, type, ndim, sizes, value);
+  if(!f) {
+    if(status) *status = X_FAILURE;
+    return x_trace_null(fn, NULL);
+  }
+
+  smax2xField(f);
+
+  return f;
 }
 
 /**

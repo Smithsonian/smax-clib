@@ -11,8 +11,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <popt.h>
 
-#include "redisx.h"
+#include <redisx.h>
+#include <xjson.h>
+
 #include "smax.h"
 
 #define RED   "\x1B[31m"
@@ -24,48 +27,150 @@
 #define WHT   "\x1B[37m"
 #define RST   "\x1B[0m"
 
-static boolean showMeta = FALSE, showList = FALSE, printErrors = FALSE;
+static boolean showMeta = FALSE, showList = FALSE, printErrors = FALSE, json = FALSE;
 static XType type = X_UNKNOWN;
 static int count = -1;
 static char *host = SMAX_DEFAULT_HOSTNAME;
 
 static int printValue(const char *group, const char *key);
 static int listEntries(const char *group, const char *key);
-static void setOption(char *argv[], int *next);
-static void usage();
 
 #define NO_SUCH_KEY     1
 #define NOT_ENOUGH_TOKENS       2
 
-int main(int argc, char *argv[]) {
-  const char *group = NULL;
-  char *key = NULL, *id;
-  int next = 1;
 
-  if(argc < 2) usage();
+static void printVersion(const char *name) {
+  printf("%s %s\n", name, SMAX_VERSION_STRING);
+}
+
+
+int main(int argc, const char *argv[]) {
+  static const char *fn = "smaxValue";
+
+  int port = REDISX_TCP_PORT;
+  char *sType = NULL;
+  char *user = NULL;
+  char *password = NULL;
+  int repeat = 1;
+  double interval = 1.0;
+  int verbose = FALSE;
+  int debug = FALSE;
+
+  struct poptOption options[] = { //
+          {"host",       'h', POPT_ARG_STRING | POPT_ARGFLAG_SHOW_DEFAULT,    &host,     0, "Server hostname.", "<hostname>"}, //
+          {"port",       'p', POPT_ARG_INT    | POPT_ARGFLAG_SHOW_DEFAULT,    &port,     0, "Server port.", "<port>"}, //
+          {"user",       'u', POPT_ARG_STRING, &user,        0, "Used to send ACL style 'AUTH username pass'. Needs -a.", "<username>"}, //
+          {"pass",       'a', POPT_ARG_STRING, &password,    0, "Password to use when connecting to the server.", "<password>"}, //
+          {"type",       't', POPT_ARG_STRING, &sType,       0, "Print as <type>, e.g. 'int8', 'float', 'string', 'raw'.", "<type>"}, //
+          {"count",      'n', POPT_ARG_INT,    &count,       0, "Print as <count> number of elements.", "<count>"}, //
+          {"meta",       'm', POPT_ARG_NONE,   &showMeta,    0, "Print metadata.", NULL}, //
+          {"list",       'l', POPT_ARG_NONE,   &showList,    0, "List field names contained in structures.", NULL}, //
+          {"repeat",     'r', POPT_ARG_INT,    &repeat,      0, "Execute specified command this many times.", "<times>"}, //
+          {"interval",   'i', POPT_ARG_DOUBLE | POPT_ARGFLAG_SHOW_DEFAULT, &interval,     0, "When -r is used, waits this many seconds before repeating.  " //
+                  "It is possible to specify sub-second times like -i 0.1.", "<seconds>" //
+          }, //
+          {"json",         0, POPT_ARG_NONE,   &json,        0, "Output in JSON format", NULL}, //
+          {"errors",       0, POPT_ARG_NONE,   &printErrors, 0, "Print errors.", NULL }, //
+          {"verbose",      0, POPT_ARG_NONE,   &verbose,     0, "Verbose mode.", NULL }, //
+          {"debug",        0, POPT_ARG_NONE   | POPT_ARGFLAG_DOC_HIDDEN,   &debug,       0, "Debug mode. Prints all network traffic.", NULL }, //
+          {"version",      0, POPT_ARG_NONE,   NULL,       'v', "Output version and exit.", NULL }, //
+          POPT_AUTOHELP POPT_TABLEEND //
+  };
+
+  int i, rc;
+  const char *group = NULL;
+  char *key = NULL, *id, **cmdargs;
+
+  poptContext optcon = poptGetContext(fn, argc, argv, options, 0);
+
+  poptSetOtherOptionHelp(optcon, "[OPTIONS] [table] key");
+
+  if(argc < 2) {
+    poptPrintUsage(optcon, stdout, 0);
+    exit(1);
+  }
+
+  while((rc = poptGetNextOpt(optcon)) != -1) {
+    if(rc < -1) {
+      fprintf(stderr, "ERROR! Bad syntax. Try running with --help to see command-line options.\n");
+      exit(1);
+    }
+
+    switch(rc) {
+      case 'v': printVersion(fn); return 0;
+    }
+  }
+
+  if(repeat < 1) repeat = 1;
+  if(sType) type = smaxTypeForString(sType);
+
+  cmdargs = (char **) poptGetArgs(optcon);
+  if(cmdargs) {
+    for(i = 0; i < 2 && cmdargs[i]; i++) {
+      if(group) key = cmdargs[i];
+      else group = cmdargs[i];
+    }
+  }
 
   smaxSetPipelined(FALSE);
 
-  while(next < argc) {
-    if(argv[next][0] == '-') setOption(argv, &next);
-    else if(key) {
-      fprintf(stderr, "ERROR! Too many arguments.\n");
-      usage();
-    }
-    else if(group) key = argv[next++];
-    else group = argv[next++];
-  }
+  if(verbose) smaxSetVerbose(TRUE);
+  if(debug) xSetDebug(TRUE);
+  if(user || password) smaxSetAuth(user, password);
+  if(port > 0) smaxSetServer(host, port);
 
-  if(!group) usage();
+  if(!group) {
+    poptPrintUsage(optcon, stdout, 0);
+    exit(1);
+  }
 
   id = xGetAggregateID(group, key);
   if(!id) return -1;
 
-  if(showList) return printValue(id, NULL);
-  else {
-    if(xSplitID(id, &key)) return -1;
-    return printValue(id, key);
+  for(i = 0; i < repeat; i++) {
+    if(i > 0 && interval > 0) {
+      struct timespec sleeptime;
+      sleeptime.tv_sec = (int) interval;
+      sleeptime.tv_nsec = 1000000000 * (interval - sleeptime.tv_sec);
+      nanosleep(&sleeptime, NULL);
+    }
+
+    if(showList) return printValue(id, NULL);
+    else {
+      if(xSplitID(id, &key)) return -1;
+      return printValue(id, key);
+    }
   }
+
+  poptFreeContext(optcon);
+
+  return 0;
+}
+
+static int printJSON(const char *group, const char *key, XMeta *meta) {
+  char *id = xGetAggregateID(group, key);
+  char *str;
+  int status = X_SUCCESS;
+  XField *f = smaxPullField(id, meta, &status);
+
+  if(id) free(id);
+
+  if(status != X_SUCCESS) {
+    fprintf(stderr, "ERROR! %s\n", xErrorDescription(status));
+    return status;
+  }
+
+  xReduceField(f);
+  str = xjsonFieldToString(f);
+
+  if(str) {
+    printf("%s\n", str);
+    free(str);
+  }
+  else printf("(nil)\n");
+
+  xDestroyField(f);
+  return 0;
 }
 
 static int printValue(const char *group, const char *key) {
@@ -74,7 +179,7 @@ static int printValue(const char *group, const char *key) {
   int status = X_SUCCESS;
 
   if(key) {
-    status = smaxConnectTo(host);
+    status = smaxConnect();
 
     if(status) {
       fprintf(stderr, "ERROR! SMA-X init: %d", status);
@@ -82,7 +187,10 @@ static int printValue(const char *group, const char *key) {
     }
 
     smaxSetResilient(FALSE);
-    value = smaxPullRaw(group, key, &meta, &status);
+
+    if(json) status = printJSON(group, key, &meta);
+    else value = smaxPullRaw(group, key, &meta, &status);
+
     smaxDisconnect();
 
     if(status) return smaxError("SMA-X", status);
@@ -120,6 +228,10 @@ static int printValue(const char *group, const char *key) {
   }
 
   printf(" ");
+
+  if(json) {
+
+  }
 
   if(type == X_UNKNOWN) type = meta.storeType;
 
@@ -206,41 +318,5 @@ static int listEntries(const char *group, const char *key) {
 
   for(i=0; i<n; i++) printf(BLU " >" RST " %s\n", keys[i]);
 
-
   return X_SUCCESS;
-}
-
-static void setOption(char *argv[], int *next) {
-  char *option = argv[(*next)++];
-  option++;
-
-  if(!strcmp(option, "m") || !strcmp(option, "-meta")) showMeta = TRUE;
-  else if(!strcmp(option, "e") || !strcmp(option, "-errors")) printErrors = TRUE;
-  else if(!strcmp(option, "l") || !strcmp(option, "-list")) showList = TRUE;
-  else if(!strcmp(option, "t") || !strcmp(option, "-type")) type = smaxTypeForString(argv[(*next)++]);
-  else if(!strcmp(option, "n") || !strcmp(option, "-count")) count = atoi(argv[(*next)++]);
-  else if(!strcmp(option, "s") || !strcmp(option, "-server")) host = argv[(*next)++];
-  else fprintf(stderr, "WARNING! no option: -%s\n", option);
-}
-
-
-static void usage() {
-  printf("\n");
-  printf("  Syntax: smaxValue [options] [table] key\n\n");
-  printf("    [table]      hash table name.\n");
-  printf("    key          The name of the variable.\n\n");
-  printf("  Options:\n\n");
-  printf("    -m           Print metadata.\n");
-  printf("    -t <type>    Print as <type>, e.g. 'int8', 'float', 'string', 'raw'.\n");
-  printf("    -n <count>   Print as <count> number of elements.\n");
-  printf("    -l           List field names contained in structures.\n");
-  printf("    -e           Print errors/warnings to stderr.\n");
-  printf("    -s <host>    Use a specific host as the SMA-X database server.\n\n");
-  printf("  This tool always returns a value (or the requested number of values),\n");
-  printf("  It defaults to zero(es) for any elements not in the SMA-X database.\n");
-  printf("  Check return value for errors:\n\n");
-  printf("    0 - Normal return\n");
-  printf("    1 - No such value in SMA-X database\n");
-  printf("    2 - SMA-X has fewer than requested elements.\n\n");
-  exit(0);
 }
