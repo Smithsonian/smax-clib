@@ -688,9 +688,26 @@ int smaxPull(const char *table, const char *key, XType type, int count, void *va
 
   PullRequest *data;
   char *id = NULL;
-  int status;
+  int status = X_SUCCESS;
 
-  if(type == X_STRUCT) {
+  if(type == X_FIELD) {
+    XField *f;
+
+    if(!value) return x_error(X_NULL, EINVAL, fn, "output value pointer is NULL");
+
+    id = xGetAggregateID(table, key);
+    if(!id) return x_trace(fn, NULL, X_NULL);
+
+    f = smaxPullField(id, meta, &status);
+    if(f) {
+      *(XField *) value = *f;
+      free(f);
+    }
+
+    prop_error(fn, status);
+    return X_SUCCESS;
+  }
+  else if(type == X_STRUCT) {
     id = xGetAggregateID(table, key);
     if(!id) return x_trace(fn, NULL, X_NULL);
   }
@@ -1085,7 +1102,7 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
   }
   else {
     p = (char *) malloc(sizeof(SMAX_UPDATES) + strlen(table) + X_SEP_LENGTH + strlen(key));
-    x_check_alloc(p)
+    x_check_alloc(p);
     sprintf(p, SMAX_UPDATES "%s" X_SEP "%s", table, key);
   }
   return p;
