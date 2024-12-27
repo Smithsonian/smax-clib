@@ -32,7 +32,7 @@ export
 
 # Build for distribution
 .PHONY: distro
-distro: shared $(DOC_TARGETS)
+distro: shared tools $(DOC_TARGETS)
 
 # Build everything...
 .PHONY: all
@@ -133,6 +133,7 @@ pdf:
 # See https://www.gnu.org/prep/standards/html_node/Directory-Variables.html 
 prefix ?= /usr
 exec_prefix ?= $(prefix)
+bindir ?= $(exec_prefix)/bin
 libdir ?= $(exec_prefix)/lib
 includedir ?= $(prefix)/include
 datarootdir ?= $(prefix)/share
