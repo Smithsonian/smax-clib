@@ -28,8 +28,6 @@ else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
-export
-
 # Build for distribution
 .PHONY: distro
 distro: shared tools $(DOC_TARGETS)
@@ -66,9 +64,15 @@ infer: clean
 	infer run -- make shared
 
 .PHONY: tools
-tools: SRC := tools
+tools: 
+	make -f tools.mk all
+
+# Link tools against the static or shared libs
+ifeq ($(STATICLINK),1)
+tools: static
+else
 tools: shared
-	make -f tools.mk
+endif
 
 # Remove intermediates
 .PHONY: clean

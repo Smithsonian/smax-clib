@@ -127,6 +127,9 @@ prior to invoking `make`. The following build variables can be configured:
    system (e.g. under `/usr`) set `REDISX` to where the distribution can be found. The build will expect to find 
    `redisx.h` under `$(REDISX)/include` and `libredisx.so` / `libredisx.a` under `$(REDISX)/lib` or else in the 
    default `LD_LIBRARY_PATH`.
+   
+ - `STATICLINK`: Set to 1 to prefer linking tools statically against `libsmax.a`. (It may still link dynamically if 
+   `libsmax.so` is also available.
  
 After configuring, you can simply run `make`, which will build the `shared` (`lib/libsmax.so[.1]`) and `static` 
 (`lib/libsmax.a`) libraries, local HTML documentation (provided `doxygen` is available), and performs static
