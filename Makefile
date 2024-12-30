@@ -47,12 +47,12 @@ static: $(LIB)/libsmax.a
 # Run regression tests
 .PHONY: test
 test: shared static
-	make -f test.mk
+	$(MAKE) -f test.mk
 
 # Build benchmark program
 .PHONY: benchmark
 benchmark: shared static
-	make -f test.mk benchmark
+	$(MAKE) -f test.mk benchmark
 
 # 'test' + 'analyze'
 .PHONY: check
@@ -61,11 +61,11 @@ check: test analyze
 # Static code analysis via Facebook's infer
 .PHONY: infer
 infer: clean
-	infer run -- make shared
+	infer run -- $(MAKE) shared
 
 .PHONY: tools
 tools: 
-	make -f tools.mk all
+	$(MAKE) -f tools.mk all
 
 # Link tools against the static or shared libs
 ifeq ($(STATICLINK),1)
