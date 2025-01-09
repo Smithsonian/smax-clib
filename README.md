@@ -113,7 +113,7 @@ prior to invoking `make`. The following build variables can be configured:
    
  - `WEXTRA`: If set to 1, `-Wextra` is added to `CFLAGS` automatically.
    
- - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm -lredisx -lxchange -pthread` will be added 
+ - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm  -lpthread -lredisx -lxchange` will be added 
    automatically.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target

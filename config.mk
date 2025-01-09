@@ -45,11 +45,14 @@ ifeq ($(WEXTRA), 1)
   CFLAGS += -Wextra
 endif
 
+# On some old platforms __progname is not provided by libc. We have a 
+# workaround in place for LynxOS/PowerPCs. For other platforms without
+# __progname, uncomment the line below to use a default program name
+# instead.
+#NO_PROCNAME = 1
+
 # Extra link flags (if any)
 #LDFLAGS =
-
-# Link flags to use for threading with pthread
-THREADS ?= -pthread
 
 # Link flags required for network functions (if any) to include in LDFLAGS
 #NETFLAGS = -lnsl
@@ -76,6 +79,10 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 # Below are some generated constants based on the one that were set above
 # ============================================================================
 
+ifeq ($(NO_PROCNAME),1)
+  CPPFLAGS += -DNO_PROCNAME=1
+endif
+
 ifdef OSFLAGS
   LDFLAGS += $(OSFLAGS)
 endif
@@ -84,8 +91,8 @@ ifdef NETFLAGS
   LDFLAGS += $(NETFLAGS)
 endif
 
-# Links against pthread and dependencies
-LDFLAGS += $(THREADS) -lredisx -lxchange 
+# Link against pthread and dependencies
+LDFLAGS += -lpthread -lredisx -lxchange 
 
 # Search for libraries under LIB
 ifneq ($(findstring $(LIB),$(LD_LIBRARY_PATH)),$LIB)

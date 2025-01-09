@@ -29,10 +29,7 @@
 #include <sys/utsname.h>
 
 #include "smax-private.h"
-
-#if __Lynx__
 #include "procname.h"
-#endif
 
 
 
@@ -349,10 +346,10 @@ void smaxSetHostName(const char *name) {
  *
  */
 char *smaxGetProgramID() {
-#if __Lynx__ && __powerpc__
+#if (__Lynx__ && __powerpc__)
   char procName[40];
 #else
-  const char *procName;
+  const char *procName = DEFAULT_PROCESS_NAME;
   extern char *__progname;
 #endif
 
@@ -360,7 +357,7 @@ char *smaxGetProgramID() {
 
   if(programID) return programID;
 
-#if __Lynx__ && __powerpc__
+#if (__Lynx__ && __powerpc__)
   getProcessName(getpid(), procName, 40);
 #else
   procName = __progname;
