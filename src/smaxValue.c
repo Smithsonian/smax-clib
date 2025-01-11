@@ -1,5 +1,4 @@
 /**
- * @file
  *
  * @date Created on: Apr 8, 2019
  * @author Attila Kovacs
@@ -18,6 +17,7 @@
 
 #include "smax.h"
 
+/// \cond PRIVATE
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
 #define YEL   "\x1B[33m"
@@ -26,6 +26,7 @@
 #define CYN   "\x1B[36m"
 #define WHT   "\x1B[37m"
 #define RST   "\x1B[0m"
+/// \endcond
 
 static boolean showMeta = FALSE, showList = FALSE, printErrors = FALSE, json = FALSE;
 static XType type = X_UNKNOWN;

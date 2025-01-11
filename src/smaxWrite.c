@@ -1,5 +1,4 @@
 /**
- * @file
  *
  * @date Created on: Oct 4, 2022
  * @author Attila Kovacs
