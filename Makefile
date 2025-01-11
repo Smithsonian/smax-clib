@@ -63,9 +63,8 @@ check: test analyze
 infer: clean
 	infer run -- $(MAKE) shared
 
+# Command-line tools
 .PHONY: tools
-tools: 
-	$(MAKE) -f tools.mk all
 
 # Link tools against the static or shared libs
 ifeq ($(STATICLINK),1)
@@ -73,6 +72,9 @@ tools: static
 else
 tools: shared
 endif
+
+# The actual tools to build
+tools: $(BIN)/smaxValue $(BIN)/smaxWrite
 
 # Remove intermediates
 .PHONY: clean
@@ -103,7 +105,6 @@ $(LIB)/libsmax.so.$(SO_VERSION): $(SOURCES)
 
 # Static library
 $(LIB)/libsmax.a: $(OBJECTS)
-
 
 README-smax.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@

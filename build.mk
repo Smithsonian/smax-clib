@@ -28,7 +28,11 @@ $(LIB)/%.a:
 # Simple binaries
 $(BIN)/%: $(OBJ)/%.o
 	@$(MAKE) $(BIN)
-	$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS) 
+
+# Link binaries against smax lib
+$(BIN)/%: LDFLAGS := -L$(LIB) $(LDFLAGS) -lsmax -lpopt
+$(BIN)/%: LD_LIBRARY_PATH := $(LIB):$(LD_LIBRARY_PATH)
 
 # Create sub-directories for build targets
 dep $(OBJ) $(LIB) $(BIN) apidoc:
