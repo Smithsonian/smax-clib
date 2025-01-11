@@ -18,6 +18,9 @@
 #include "smax.h"
 
 /// \cond PRIVATE
+#define NO_SUCH_KEY             1
+#define NOT_ENOUGH_TOKENS       2
+
 #define RED   "\x1B[31m"
 #define GRN   "\x1B[32m"
 #define YEL   "\x1B[33m"
@@ -36,14 +39,9 @@ static char *host = SMAX_DEFAULT_HOSTNAME;
 static int printValue(const char *group, const char *key);
 static int listEntries(const char *group, const char *key);
 
-#define NO_SUCH_KEY     1
-#define NOT_ENOUGH_TOKENS       2
-
-
 static void printVersion(const char *name) {
   printf("%s %s\n", name, SMAX_VERSION_STRING);
 }
-
 
 int main(int argc, const char *argv[]) {
   static const char *fn = "smaxValue";
