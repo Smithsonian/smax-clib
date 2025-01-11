@@ -72,7 +72,7 @@ int main(int argc, const char *argv[]) {
 
   const char *id = NULL;
   char **cmdargs, *table = NULL, *value = NULL;
-  int rc, i, n, status = X_SUCCESS;
+  int rc, n, status = X_SUCCESS;
 
   poptContext optcon = poptGetContext(fn, argc, argv, options, 0);
 
@@ -91,6 +91,7 @@ int main(int argc, const char *argv[]) {
 
   cmdargs = (char **) poptGetArgs(optcon);
   if(cmdargs) {
+    int i;
     for(i = 0; i < 2 && cmdargs[i]; i++) {
       if(id) value = cmdargs[i];
       else id = cmdargs[i];
@@ -135,7 +136,7 @@ int main(int argc, const char *argv[]) {
     table = (char *) id;
   }
   else {
-    char *table = xStringCopyOf(id);
+    table = xStringCopyOf(id);
 
     status = xSplitID(table, &f.name);
     if(status) {
