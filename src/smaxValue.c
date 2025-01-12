@@ -6,10 +6,12 @@
  *  Simple command-line tool for querying the SMA-X database.
  */
 
+#define _POSIX_C_SOURCE 199309L   ///< for nanosleep()
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <popt.h>
 
 #include <redisx.h>
