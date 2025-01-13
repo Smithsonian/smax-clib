@@ -443,7 +443,6 @@ int smaxConnectTo(const char *server) {
  */
 int smaxConnect() {
   static const char *fn = "smaxConnect";
-  static int isInitialized = FALSE;
 
   int status;
 
@@ -455,7 +454,7 @@ int smaxConnect() {
   }
 
   // START one-time-only initialization ------>
-  if(!isInitialized) {
+  if(!redis) {
     xvprintf("SMA-X> Initializing...\n");
 
     smaxGetProgramID();
@@ -469,6 +468,7 @@ int smaxConnect() {
       return x_trace(fn, NULL, X_NO_INIT);
     }
 
+    // Configuration...
     if(!sentinel) redisxSetPort(redis, serverPort);
 
     redisxSetTcpBuf(redis, tcpBufSize);
@@ -476,6 +476,12 @@ int smaxConnect() {
     if(user) redisxSetUser(redis, user);
     if(auth) redisxSetPassword(redis, auth);
     if(dbIndex) redisxSelectDB(redis, dbIndex);
+
+    status = smaxConfigTLSAsync(redis);
+    if(status) {
+      smaxUnlockConfig();
+      return x_trace(fn, NULL, status);
+    }
 
     redisxSetSocketErrorHandler(redis, smaxSocketErrorHandler);
 
@@ -486,8 +492,6 @@ int smaxConnect() {
     notifySize = 80;
     notifyID = (char *) calloc(1, notifySize);
     x_check_alloc(notifyID);
-
-    isInitialized = TRUE;
   }
   // END one-time-only initialization <--------
 
@@ -565,6 +569,31 @@ int smaxReconnect() {
 
   while(redisxReconnect(redis, usePipeline) != X_SUCCESS) if(SMAX_RECONNECT_RETRY_SECONDS > 0)
     sleep(SMAX_RECONNECT_RETRY_SECONDS);
+
+  return X_SUCCESS;
+}
+
+/**
+ * Resets the Redis server for SMA-X. SMA-X must be disconnected when this function is called,
+ * or else it will return an error. Resetting SMA-X allows to change configuration settings
+ * before the next connection.
+ *
+ * @return    X_SUCCESS (0) if successful or else X_ALREADY_OPEN if we are currently connected
+ *            to SMA-X.
+ *
+ * @sa smaxConnect()
+ */
+int smaxReset() {
+  smaxLockConfig();
+  if(smaxIsConnected()) {
+    smaxUnlockConfig();
+    return x_error(X_ALREADY_OPEN, EBUSY, "smaxReset", "cannot reset while connected");
+  }
+
+  redisxDestroy(redis);
+  redis = NULL;
+
+  smaxUnlockConfig();
 
   return X_SUCCESS;
 }

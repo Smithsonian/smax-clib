@@ -209,6 +209,15 @@ int smaxSetAuth(const char *username, const char *password);
 int smaxSetDB(int idx);
 int smaxSetTcpBuf(int size);
 
+int smaxSetTLS(const char *ca_path, const char *ca_file);
+int smaxDisableTLS();
+int smaxSetTLSVerify(boolean value);
+int smaxSetMutualTLS(const char *cert_file, const char *key_file);
+int smaxSetTLSServerName(const char *host);
+int smaxSetTLSCiphers(const char *cipher_list);
+int smaxSetTLSCipherSuites(const char *list);
+int smaxSetDHCipherParams(const char *dh_params_file);
+
 int smaxConnect();
 int smaxConnectTo(const char *server);
 int smaxDisconnect();

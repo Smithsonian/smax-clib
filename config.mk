@@ -73,11 +73,28 @@ CHECKOPTS += --inline-suppr $(CHECKEXTRA)
 # Specific Doxygen to use if not the default one
 #DOXYGEN ?= /opt/bin/doxygen
 
+# Whether to build with TLS support (via OpenSSL). If not defined, we'll
+# enable it automatically if libssl is available
+#WITH_TLS = 1
+
 # ============================================================================
 # END of user config section. 
 #
 # Below are some generated constants based on the one that were set above
 # ============================================================================
+
+ifneq ($(shell which ldconfig), )
+  # Detect OpenSSL automatically, and enable TLS support if present
+  ifndef WITH_TLS 
+    ifneq ($(shell ldconfig -p | grep libssl), )
+      $(info INFO: TLS support is enabled automatically.)
+      WITH_TLS = 1
+    else
+      $(info INFO: optional TLS support is not enabled.)
+      WITH_TLS = 0
+    endif
+  endif
+endif
 
 ifeq ($(NO_PROCNAME),1)
   CPPFLAGS += -DNO_PROCNAME=1
@@ -89,6 +106,11 @@ endif
 
 ifdef NETFLAGS
   LDFLAGS += $(NETFLAGS)
+endif
+
+ifeq ($(WITH_TLS),1)
+  CPPFLAGS += -DWITH_TLS=1
+  LDFLAGS += -lssl
 endif
 
 # Link against pthread and dependencies
