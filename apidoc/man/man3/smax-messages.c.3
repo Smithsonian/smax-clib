@@ -1,4 +1,4 @@
-.TH "src/smax-messages.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-messages.c" 3 "Version v1.0" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -11,9 +11,9 @@ src/smax-messages.c \- Simple API for sending and receiving program broadcast me
 
 .in +1c
 .ti -1c
-.RI "#define \fB_BSD_SOURCE\fP"
+.RI "#define \fB_ISOC99_SOURCE\fP"
 .br
-.RI "vsnprinf() feature macro for glibc <= 2\&.19 "
+.RI "vsnprintf() feature macro starting glibc 2\&.20 (2014-09-08) "
 .ti -1c
 .RI "#define \fBMESSAGES_ID\fP   'messages'"
 .br

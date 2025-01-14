@@ -1,4 +1,4 @@
-.TH "src/smax-easy.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-easy.c" 3 "Version v1.0" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -56,6 +56,9 @@ src/smax-easy.c \- A set of functions for simplified access to SMA-X for specifi
 .RI "double * \fBsmaxPullDoubles\fP (const char *table, const char *key, \fBXMeta\fP *meta, int *n)"
 .br
 .ti -1c
+.RI "\fBXField\fP * \fBsmaxPullField\fP (const char *id, \fBXMeta\fP *meta, int *status)"
+.br
+.ti -1c
 .RI "int \fBsmaxPullInt\fP (const char *table, const char *key, int defaultValue)"
 .br
 .ti -1c
@@ -96,9 +99,6 @@ src/smax-easy.c \- A set of functions for simplified access to SMA-X for specifi
 .br
 .ti -1c
 .RI "int \fBsmaxShareFloats\fP (const char *table, const char *key, const float *values, int n)"
-.br
-.ti -1c
-.RI "int \fBsmaxShareHex\fP (const char *table, const char *key, long long value)"
 .br
 .ti -1c
 .RI "int \fBsmaxShareInt\fP (const char *table, const char *key, long long value)"
@@ -514,6 +514,31 @@ smaxPullFloats()
 
 .PP
 References \fBX_DOUBLE\fP, and \fBx_trace_null()\fP\&.
+.SS "\fBXField\fP * smaxPullField (const char * id, \fBXMeta\fP * meta, int * status)"
+Returns a dynamically allocated deserialized \fBXField\fP for the specified node in SMA-X\&. You should use this function with great care, as it might retrieve very large data from SMA-X, and therefore block access to the database for a long time\&. It's OK to use to retrieve data for smaller sub-hierarchies, but you should probably stay away from using to to pull large hierarchies\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIid\fP The aggregate SMA-X ID of the node 
+.br
+\fImeta\fP Pointer to where to return metadata, or NULL if metadata is not required\&. 
+.br
+\fIstatus\fP Pointer to integer in which to return status, or NULL if not required\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+A field containing the data for the node, or NULL if there was an error\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxShareField()\fP 
+.RE
+.PP
+
+.PP
+References \fBredisxGetStringValue()\fP, \fBsmax2xField()\fP, \fBSMAX_DIMS\fP, \fBSMAX_TYPES\fP, \fBsmaxGetRedis()\fP, \fBsmaxPull()\fP, \fBsmaxTypeForString()\fP, \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_MAX_DIMS\fP, \fBX_SUCCESS\fP, \fBx_trace_null()\fP, \fBX_TYPE_INVALID\fP, \fBX_UNKNOWN\fP, \fBxCreateField()\fP, \fBxElementSizeOf()\fP, \fBxGetElementCount()\fP, \fBxParseDims()\fP, \fBxSplitID()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxPullInt (const char * table, const char * key, int defaultValue)"
 Returns a single integer value for a given SMA-X variable, or a default value if the value could not be retrieved\&.
 .PP
@@ -739,6 +764,8 @@ Pointer to an \fBXStructure\fP, or NULL\&.
 \fBsmaxLazyPullStruct()\fP 
 .PP
 \fBxDestroyStruct()\fP 
+.PP
+smaxPullNode() 
 .RE
 .PP
 
@@ -914,31 +941,6 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 
 .PP
 References \fBsmaxShare()\fP, \fBX_FLOAT\fP, and \fBX_SUCCESS\fP\&.
-.SS "int smaxShareHex (const char * table, const char * key, long long value)"
-Shares a single integer value to SMA-X in a hexadecimal representatin\&.
-.PP
-\fBParameters\fP
-.RS 4
-\fItable\fP The hash table name\&. 
-.br
-\fIkey\fP The variable name under which the data is stored\&. 
-.br
-\fIvalue\fP Integer value\&.
-.RE
-.PP
-\fBReturns\fP
-.RS 4
-X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBsmaxShareInt()\fP 
-.RE
-.PP
-
-.PP
-References \fBsmaxShare()\fP, \fBX_LONG_HEX\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxShareInt (const char * table, const char * key, long long value)"
 Shares a single integer value to SMA-X\&.
 .PP
@@ -958,7 +960,7 @@ X_SUCCESS (0), or else an appropriate error code (<0) from \fBsmaxShare()\fP\&.
 .PP
 \fBSee also\fP
 .RS 4
-\fBsmaxShareHex()\fP 
+smaxShareHex() 
 .PP
 \fBsmaxShareInts()\fP 
 .RE

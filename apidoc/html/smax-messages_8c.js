@@ -1,6 +1,6 @@
 var smax_messages_8c =
 [
-    [ "_BSD_SOURCE", "smax-messages_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73", null ],
+    [ "_ISOC99_SOURCE", "smax-messages_8c.html#a04ec2c53aa9fcdb5b58dc8e9d552dec0", null ],
     [ "MESSAGES_ID", "smax-messages_8c.html#a7b2e3f4ba6d955bd23ae56f2a2d9a3e3", null ],
     [ "MESSAGES_PREFIX", "smax-messages_8c.html#a309d33601440402f7f3fb5175864b62b", null ],
     [ "smaxAddDefaultMessageProcessor", "smax-messages_8c.html#aa3e777f85e81ffb9b02dc8cc3d124a94", null ],

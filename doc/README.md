@@ -1,6 +1,6 @@
 <img src="/smax-clib/resources/CfA-logo.png" alt="CfA logo" width="400" height="67" align="right">
 <br clear="all">
-C/C++ client library and toolkit for the 
+A free C/C++ client library and toolkit for the 
 [SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
 structured real-time database
 
@@ -14,26 +14,26 @@ Last Updated: 18 September 2024
 
 ## Table of Contents
 
- - [Introduction](#introduction)
- - [Prerequisites](#prerequisites)
- - [Building the SMA-X C library](#building)
- - [Linking your application against `smax-clib`](#linking)
+ - [Introduction](#smax-introduction)
+ - [Prerequisites](#smax-prerequisites)
+ - [Building the SMA-X C library](#building-smax)
+ - [Linking your application against `smax-clib`](#smax-linking)
  - [Command-line tools](#command-line-tools)
- - [Initial configuration](#configuration)
- - [Connecting to / disconnecting from SMA-X](#connecting)
+ - [Initial configuration](#smax-configuration)
+ - [Connecting to / disconnecting from SMA-X](#smax-connecting)
  - [Sharing and pulling data](#sharing-and-pulling)
  - [Lazy pulling (high-frequency queries)](#lazy-pulling)
  - [Pipelined pulls (high volume queries)](#pipelined-pulls)
  - [Custom update handling](#update-handling)
  - [Program status / error messages via SMA-X](#status-messages)
  - [Optional metadata](#optional-metadata)
- - [Error handling](#error-handling)
- - [Debug support](#debug-support)
- - [Future plans](#future-plans)
+ - [Error handling](#smax-error-handling)
+ - [Debug support](#smax-debug-support)
+ - [Future plans](#smax-future-plans)
 
 ------------------------------------------------------------------------------
 
-<a name="introduction"></a>
+<a name="smax-introduction"></a>
 ## Introduction
 
 The [SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
@@ -61,7 +61,7 @@ Before then the API may undergo slight changes and tweaks. Use the repository as
 
 ------------------------------------------------------------------------------
 
-<a name="prerequisites"></a>
+<a name="smax-prerequisites"></a>
 ## Prerequisites
 
 The SMA-X C/C++ library has a build and runtime dependency on the __xchange__ and __RedisX__ libraries also available
@@ -76,7 +76,7 @@ Additionally, to configure your Redis (or Valkey / Dragonfly) servers for SMA-X,
 
 ------------------------------------------------------------------------------
 
-<a name="building"></a>
+<a name="building-smax"></a>
 ## Building the SMA-X C library
 
 The __smax-clib__ library can be built either as a shared (`libsmax.so[.1]`) and as a static (`libsmax.a`) library, 
@@ -89,14 +89,16 @@ prior to invoking `make`. The following build variables can be configured:
 
  - `CPPFLAGS`: C preprocessor flags, such as externally defined compiler constants.
  
- - `CFLAGS`: Flags to pass onto the C compiler (default: `-Os -Wall -std=c99`). Note, `-Iinclude` will be added 
-   automatically.
-   
- - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm -lredisx -lxchange -pthread` will be added 
+ - `CFLAGS`: Flags to pass onto the C compiler (default: `-g -Os -Wall`). Note, `-Iinclude` will be added 
    automatically.
  
- - `BUILD_MODE`: You can set it to `debug` to enable debugging features: it will initialize the global `xDebug` 
-   variable to `TRUE` and add `-g` to `CFLAGS`.
+ - `CSTANDARD`: Optionally, specify the C standard to compile for, e.g. `c99` to compile for the C99 standard. If
+   defined then `-std=$(CSTANDARD)` is added to `CFLAGS` automatically.
+   
+ - `WEXTRA`: If set to 1, `-Wextra` is added to `CFLAGS` automatically.
+   
+ - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm  -lpthread -lredisx -lxchange` will be added 
+   automatically.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
 
@@ -109,6 +111,9 @@ prior to invoking `make`. The following build variables can be configured:
    system (e.g. under `/usr`) set `REDISX` to where the distribution can be found. The build will expect to find 
    `redisx.h` under `$(REDISX)/include` and `libredisx.so` / `libredisx.a` under `$(REDISX)/lib` or else in the 
    default `LD_LIBRARY_PATH`.
+   
+ - `STATICLINK`: Set to 1 to prefer linking tools statically against `libsmax.a`. (It may still link dynamically if 
+   `libsmax.so` is also available.
  
 After configuring, you can simply run `make`, which will build the `shared` (`lib/libsmax.so[.1]`) and `static` 
 (`lib/libsmax.a`) libraries, local HTML documentation (provided `doxygen` is available), and performs static
@@ -137,7 +142,7 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 
 -----------------------------------------------------------------------------
 
-<a name="linking"></a>
+<a name="smax-linking"></a>
 ## Linking your application against `smax-clib`
 
 Provided you have installed the shared (`libsmax.so`, `libredisx.so`, and `libxchange.so`) or static (`libsmax.a`, 
@@ -147,7 +152,7 @@ look like:
 
 ```make
 myprog: ...
-	cc -o $@ $^ $(LDFLAGS) -lsmax -lredisx -lxchange 
+	$(CC) -o $@ $^ $(LDFLAGS) -lsmax -lredisx -lxchange 
 ```
 
 (Or, you might simply add `-lsmax -lredisx -lxchange` to `LDFLAGS` and use a more standard recipe.) And, in if you 
@@ -177,7 +182,7 @@ as `bash`, or `perl` (also `python` though we recommend to use the native
 
 ------------------------------------------------------------------------------
 
-<a name="configuration"></a>
+<a name="smax-configuration"></a>
 ## Initial configuration
 
 Bu default, the library assumes that the Redis server used for SMA-X runs on a machine called `smax` (e.g. you may assign
@@ -220,9 +225,63 @@ network errors (and keep track of changes locally until then):
   smaxSetResilient(TRUE);
 ```
 
+### TLS configuration
+
+You can also use SMA-X with a TLS encrypted connection. (We don't recommend using TLS with SMA-X in general though, 
+since it may adversely affect the performance / throughput of the database.) When enabled, Redis normally uses mutual 
+TLS (mTLS), but it may be configured otherwise also. Depending on the server configuration, and the level of security 
+required, you may configure some or all of the following options:
+
+```c
+  int status;
+
+  // Use TLS with the specified CA certificate file and path
+  status = smaxSetTLS("path/to/certificates", "ca.crt");
+  if(status) {
+    // Oops, the CA certificate is not accessible...
+    ...
+  }
+  
+  // (optional) If servers requires mutual TLS, you will need to provide 
+  // a certificate and private key also
+  status = smaxSetMutualTLS("path/to/redis.crt", "path/to/redis.key");
+  if(status) {
+    // Oops, the certificate or key file is not accessible...
+    ...
+  }
+
+  // (optional) Skip verification of the certificate (insecure!)
+  smaxSetTLSVerify(FALSE);
+
+  // (optional) Set server name for SNI
+  smaxSetTLSServerName("my.smax-server.com");
+
+  // (optional) Set ciphers to use (TLSv1.2 and earlier)
+  smaxSetTLSCiphers("HIGH:!aNULL:!kRSA:!PSK:!SRP:!MD5:!RC4");
+  
+  // (optional) Set cipher suites to use (TLSv1.3 and later)
+  smaxSetTLSCipherSuites("ECDHE-RSA-AES256-GCM-SHA384:TLS_AES_256_GCM_SHA384");
+  
+  // (optional) Set parameters for DH-based ciphers
+  status = smaxSetDHCypherParams("path/to/redis.dh");
+  if(status) {
+    // Oops, the parameter file is not accessible...
+    ...
+  }
+```
+
+### Reconfiguration
+
+The SMA-X configuration is activated at the time of connection (see below), after which it persists, through 
+successive connections also. That means, that once you have connected to the server, you cannot alter the 
+configuration prior to another connection attempt, unless you call `smaxReset()` first while disconnected. 
+`smaxReset()` will discard the currently configured Redis instance, so the next connection will create a new one, with 
+the current configuration.
+
+
 ------------------------------------------------------------------------------
 
-<a name="connecting"></a>
+<a name="smax-connecting"></a>
 ## Connecting to / disconnecting from SMA-X 
 
 Once you have configured the connection parameters, you can connect to the server by:
@@ -241,7 +300,7 @@ And, when you are done, you should disconnect with:
   smaxDisconnect();
 ```
 
-<a name="connection-hooks"></a>
+<a name="smax-connection-hooks"></a>
 ### Connection / disconnection hooks
 
 The user of the __smax-clib__ library might want to know when connections to the SMA-X server are established, or when 
@@ -272,14 +331,14 @@ The same goes for disconnect hooks, using `smaxAddDisconnectHook()` instead.
 <a name="sharing-and-pulling"></a>
 ## Sharing and pulling data
 
- - [The basics](#basics)
+ - [The basics](#smax-basics)
  - [Standard metadata](#metadata)
  - [Flexible types and sizes](#flexible-types-and-sizes)
  - [Scalar quantities](#scalars)
  - [Arrays](#arrays)
  - [Structures / substructures](#structures)
 
-<a name="basics"></a>
+<a name="smax-basics"></a>
 ### The basics
 
 For SMA-X we use the terms sharing and pulling, instead of the more generic get/set terminology. The intention is to
@@ -972,7 +1031,7 @@ passing its ID number (&lt;0) to `smaxRemoveMessageProcessor()`.
 
 -----------------------------------------------------------------------------
 
-<a name="error-handling"></a>
+<a name="smax-error-handling"></a>
 ## Error handling
 
 The principal error handling of the library is an extension of that of __xchange__, with further error codes defined 
@@ -990,7 +1049,7 @@ by a pointer argument), can be inspected by `smaxErrorDescription()`, e.g.:
 
 -----------------------------------------------------------------------------
 
-<a name="debug-support"></a>
+<a name="smax-debug-support"></a>
 ## Debug support
 
 You can enable verbose output of the library with `smaxSetVerbose(boolean)`. When enabled, it will produce status 
@@ -1010,7 +1069,7 @@ settings.
 
 -----------------------------------------------------------------------------
 
-<a name="future-plans"></a>
+<a name="smax-future-plans"></a>
 ## Future plans
 
 Some obvious ways the library could evolve and grow in the not too distant future:

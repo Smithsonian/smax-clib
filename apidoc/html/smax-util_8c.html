@@ -47,7 +47,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">smax-clib<span id="projectnumber">&#160;v0.9</span>
+   <div id="projectname">smax-clib<span id="projectnumber">&#160;v1.0</span>
    </div>
    <div id="projectbrief">A C/C++ client library for SMA-X</div>
   </td>
@@ -124,10 +124,10 @@ $(document).ready(function(){initNavTree('smax-util_8c.html',''); initResizable(
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ad3d8a3bd0c0b677acef144f2c2ef6d73" id="r_ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="memItemLeft" align="right" valign="top"><a id="ad3d8a3bd0c0b677acef144f2c2ef6d73" name="ad3d8a3bd0c0b677acef144f2c2ef6d73"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_BSD_SOURCE</b></td></tr>
-<tr class="memdesc:ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">strtoll() feature macro for glibc &lt;= 2.19 <br /></td></tr>
-<tr class="separator:ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ec2c53aa9fcdb5b58dc8e9d552dec0" id="r_a04ec2c53aa9fcdb5b58dc8e9d552dec0"><td class="memItemLeft" align="right" valign="top"><a id="a04ec2c53aa9fcdb5b58dc8e9d552dec0" name="a04ec2c53aa9fcdb5b58dc8e9d552dec0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_ISOC99_SOURCE</b></td></tr>
+<tr class="memdesc:a04ec2c53aa9fcdb5b58dc8e9d552dec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">strtoll() feature macro starting glibc 2.20 (2014-09-08) <br /></td></tr>
+<tr class="separator:a04ec2c53aa9fcdb5b58dc8e9d552dec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3024ccd4a9af5109d24e6c57565d74a1" id="r_a3024ccd4a9af5109d24e6c57565d74a1"><td class="memItemLeft" align="right" valign="top"><a id="a3024ccd4a9af5109d24e6c57565d74a1" name="a3024ccd4a9af5109d24e6c57565d74a1"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>_POSIX_C_SOURCE</b>&#160;&#160;&#160;199309</td></tr>
 <tr class="memdesc:a3024ccd4a9af5109d24e6c57565d74a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">For clock_gettime() <br /></td></tr>
@@ -167,6 +167,8 @@ Functions</h2></td></tr>
 <tr class="separator:af3acc2100069feec3a52475cdb24d479"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9802443ba0d569c3614f5dcf8b0cfc4b" id="r_a9802443ba0d569c3614f5dcf8b0cfc4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#a9802443ba0d569c3614f5dcf8b0cfc4b">smaxSetOrigin</a> (<a class="el" href="structXMeta.html">XMeta</a> *m, const char *origin)</td></tr>
 <tr class="separator:a9802443ba0d569c3614f5dcf8b0cfc4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1095d82ecfbad50d4b05f876f2c344d" id="r_ac1095d82ecfbad50d4b05f876f2c344d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#ac1095d82ecfbad50d4b05f876f2c344d">smaxSocketErrorHandler</a> (<a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> *redis, enum <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5349b7340813fbd1e32d04ed650bc3d9">redisx_channel</a> channel, const char *op)</td></tr>
+<tr class="separator:ac1095d82ecfbad50d4b05f876f2c344d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9e3c024a1db97e7adc8a40694c657fd1" id="r_a9e3c024a1db97e7adc8a40694c657fd1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1">smaxStringToValues</a> (const char *str, void *value, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1c7e02eda23566a7891310fd09307a70">XType</a> type, int eCount, int *pos)</td></tr>
 <tr class="separator:a9e3c024a1db97e7adc8a40694c657fd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d9d92ad8825d4adad4d6288a5681351" id="r_a8d9d92ad8825d4adad4d6288a5681351"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#a8d9d92ad8825d4adad4d6288a5681351">smaxStringType</a> (<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1c7e02eda23566a7891310fd09307a70">XType</a> type)</td></tr>
@@ -176,8 +178,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a1c29c7229e7006aea4fc3eb6d4b4ee0e" id="r_a1c29c7229e7006aea4fc3eb6d4b4ee0e"><td class="memItemLeft" align="right" valign="top">__inline__ int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#a1c29c7229e7006aea4fc3eb6d4b4ee0e">smaxTimeToString</a> (const struct timespec *time, char *buf)</td></tr>
 <tr class="memdesc:a1c29c7229e7006aea4fc3eb6d4b4ee0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">*&zwj;/  <br /></td></tr>
 <tr class="separator:a1c29c7229e7006aea4fc3eb6d4b4ee0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a164a9c0f870cf0a1fa4f7e66f25452e5" id="r_a164a9c0f870cf0a1fa4f7e66f25452e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#a164a9c0f870cf0a1fa4f7e66f25452e5">smaxTransmitErrorHandler</a> (<a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> *redis, enum <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5349b7340813fbd1e32d04ed650bc3d9">redisx_channel</a> channel, const char *op)</td></tr>
-<tr class="separator:a164a9c0f870cf0a1fa4f7e66f25452e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af6a70e896526629e2130009882a1bff8" id="r_af6a70e896526629e2130009882a1bff8"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1c7e02eda23566a7891310fd09307a70">XType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#af6a70e896526629e2130009882a1bff8">smaxTypeForString</a> (const char *type)</td></tr>
 <tr class="separator:af6a70e896526629e2130009882a1bff8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5665cd4f5087ab7a07239c30bc561173" id="r_a5665cd4f5087ab7a07239c30bc561173"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173">smaxUnpackStrings</a> (const char *data, int len, int count, char **dst)</td></tr>
@@ -221,7 +221,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c">smax2xStruct()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="el" href="smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c">smax2xStruct()</a>, <a class="el" href="smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1">smaxStringToValues()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aecc19edf892709b39a9c0d3d944f8f9a">X_TYPE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1720e156de63fd0585224738ccbb5688">xGetFieldCount()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="el" href="smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c">smax2xStruct()</a>, <a class="el" href="smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1">smaxStringToValues()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aecc19edf892709b39a9c0d3d944f8f9a">X_TYPE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1720e156de63fd0585224738ccbb5688">xGetFieldCount()</a>.</p>
 
 </div>
 </div>
@@ -299,7 +299,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a generic field of a given name and type and dimensions using the specified native values. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a53346d6823b4e0d0d135bc794279e818">xCreateField()</a></code> except that the field is created in serialized form for SMA-X.</p>
+<p>Creates a generic field of a given name and type and dimensions using the specified native values. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a42e4e75cbf8f721ef4b251c692dcd7cb">xCreateField()</a></code> except that the field is created in serialized form for SMA-X.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -311,9 +311,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created field with the supplied data, or NULL if there was an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="el" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b">smaxValuesToString()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a53346d6823b4e0d0d135bc794279e818">xCreateField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad35e0d8c0ebbb4948c233f96c54bd8d6">xGetElementCount()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a8816199a4473325a942e14057dcd9ab8">xStringElementSizeOf()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="el" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b">smaxValuesToString()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a42e4e75cbf8f721ef4b251c692dcd7cb">xCreateField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad35e0d8c0ebbb4948c233f96c54bd8d6">xGetElementCount()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a8816199a4473325a942e14057dcd9ab8">xStringElementSizeOf()</a>.</p>
 
 </div>
 </div>
@@ -429,7 +429,7 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a857ba6ddab98ddb2e74ce6ec196a98fa">redisxErrorDescription()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a38f3de77ad5a48d37b302bce2e3cd25b">redisxErrorDescription()</a>.</p>
 
 </div>
 </div>
@@ -496,7 +496,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>String buffer with the SHA1 key or NULL if it could not be retrieved. (The caller is responsible freeing the buffer after use.) </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a67b8bd13975dd286600f20dc80bdb462">redisxCheckDestroyRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aa4e23a7454f7055711915ec430599011">redisxDestroyRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0d67814f75d9f610153f4c22a8f9c6b6">redisxRequest()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a980fc225ec0392474ff67e319a33f028">RESP_BULK_STRING</a>, <a class="el" href="smax_8h.html#a23dedcaf9704eed433cf3920af5e5e1c">SMAX_SCRIPTS</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../redisx/apidoc/html/structRESP.html#a0f61d63b009d0880a89c843bd50d8d76">RESP::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a9849f4fb9156f3a3f4f4b3021993d4ce">redisxCheckDestroyRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aa4e23a7454f7055711915ec430599011">redisxDestroyRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a09092bd97eead5c5fa73fa0d9241018c">redisxRequest()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#afa5c90630d37c2f77e5d7985932941a0a36dd81166f9ba91db70b1571b25fec9f">RESP_BULK_STRING</a>, <a class="el" href="smax_8h.html#a23dedcaf9704eed433cf3920af5e5e1c">SMAX_SCRIPTS</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../redisx/apidoc/html/structRESP.html#a0f61d63b009d0880a89c843bd50d8d76">RESP::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -522,7 +522,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or X_NO_INIT if not connected to SMA-X, or X_NULL if either argument is NULL, or X_PARSE_ERROR if could not parse the response, or another error returned by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a2d3ffb89129ab04483e3966835a5ff71">redisxCheckRESP()</a>. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or X_NO_INIT if not connected to SMA-X, or X_NULL if either argument is NULL, or X_PARSE_ERROR if could not parse the response, or another error returned by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4b5674d08da07250c0ca6116a4c48ccf">redisxCheckRESP()</a>. </dd></dl>
 
 <p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5dbdb6bef9c8ac3a4a8e901abe505d30">redisxGetTime()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 
@@ -750,6 +750,54 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ac1095d82ecfbad50d4b05f876f2c344d" name="ac1095d82ecfbad50d4b05f876f2c344d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1095d82ecfbad50d4b05f876f2c344d">&#9670;&#160;</a></span>smaxSocketErrorHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void smaxSocketErrorHandler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> *&#160;</td>
+          <td class="paramname"><em>redis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">enum <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5349b7340813fbd1e32d04ed650bc3d9">redisx_channel</a>&#160;</td>
+          <td class="paramname"><em>channel</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>op</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The SMA-X error handler for <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> transmit (send or receive) errors. It prints a message to stderr, then depending on whether SMA-X is in resilient mode, it will try to reconnect to SMA-X in the background, or else exits the program with X_NO_SERVICE.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">redis</td><td>The <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> instance in which the error occurred. In case of SMA-X this will always be the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> instance used by SMA-X. </td></tr>
+    <tr><td class="paramname">channel</td><td>The <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> channel index on which the error occured, such as REDIS_INTERAVTIVE_CHANNEL </td></tr>
+    <tr><td class="paramname">op</td><td>The operation during which the error occurred, e.g. 'send' or 'read'.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient()</a> </dd>
+<dd>
+redisxSetTrasmitErrorHandler() </dd></dl>
+
+<p class="reference">References <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax-resilient_8c.html#a5f5e00f0fd063ac8e36827c852131358">smaxIsResilient()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1d4a0c99f979fd0ecf0e9dcb7191a8d7">X_FAILURE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>.</p>
+
+</div>
+</div>
 <a id="a9e3c024a1db97e7adc8a40694c657fd1" name="a9e3c024a1db97e7adc8a40694c657fd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9e3c024a1db97e7adc8a40694c657fd1">&#9670;&#160;</a></span>smaxStringToValues()</h2>
 
@@ -810,7 +858,7 @@ Functions</h2></td></tr>
                         X_PARSE_ERROR        If the tokens could not be parsed in the format expected
 </pre> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173">smaxUnpackStrings()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#acbf44ad33891c1171b17aa6ab0616e82">X_BYTE_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abad9f4f63b244d716e52eb254da594b2">X_INT_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad4a1893b1ededc4c1d627405736d00ff">X_LONG_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a52dcae6bbd1a52f73bda43847fc4d943">X_SHORT_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aecc19edf892709b39a9c0d3d944f8f9a">X_TYPE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adcc86baacb3ddebcc529e269223274b8">xIsCharSequence()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a994ae91adbbffc3b55b47b0219338282">xParseBoolean()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7e2e177c11fe7f44ca5ce11f316c0ad9">xParseDouble()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3605bad086ec39e14f97e42e25334227">xZero()</a>.</p>
+<p class="reference">References <a class="el" href="smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173">smaxUnpackStrings()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aecc19edf892709b39a9c0d3d944f8f9a">X_TYPE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adcc86baacb3ddebcc529e269223274b8">xIsCharSequence()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a994ae91adbbffc3b55b47b0219338282">xParseBoolean()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7e2e177c11fe7f44ca5ce11f316c0ad9">xParseDouble()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3605bad086ec39e14f97e42e25334227">xZero()</a>.</p>
 
 </div>
 </div>
@@ -839,7 +887,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Corresponding string type, e.g. "float". (Default is "string" &ndash; since typically anything can be represented as strings.)</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-util_8c.html#af6a70e896526629e2130009882a1bff8">smaxTypeForString()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#acbf44ad33891c1171b17aa6ab0616e82">X_BYTE_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abad9f4f63b244d716e52eb254da594b2">X_INT_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad4a1893b1ededc4c1d627405736d00ff">X_LONG_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a52dcae6bbd1a52f73bda43847fc4d943">X_SHORT_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>.</p>
 
 </div>
 </div>
@@ -909,54 +957,6 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Number of characters printed, not including the terminating '\0', or else an error code (&lt;0) if the <code>buf</code> argument is NULL. </dd></dl>
 
 <p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>.</p>
-
-</div>
-</div>
-<a id="a164a9c0f870cf0a1fa4f7e66f25452e5" name="a164a9c0f870cf0a1fa4f7e66f25452e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a164a9c0f870cf0a1fa4f7e66f25452e5">&#9670;&#160;</a></span>smaxTransmitErrorHandler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void smaxTransmitErrorHandler </td>
-          <td>(</td>
-          <td class="paramtype"><a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> *&#160;</td>
-          <td class="paramname"><em>redis</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">enum <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5349b7340813fbd1e32d04ed650bc3d9">redisx_channel</a>&#160;</td>
-          <td class="paramname"><em>channel</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>op</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>The SMA-X error handler for <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> transmit (send or receive) errors. It prints a message to stderr, then depending on whether SMA-X is in resilient mode, it will try to reconnect to SMA-X in the background, or else exits the program with X_NO_SERVICE.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">redis</td><td>The <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> instance in which the error occurred. In case of SMA-X this will always be the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> instance used by SMA-X. </td></tr>
-    <tr><td class="paramname">channel</td><td>The <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> channel index on which the error occured, such as REDIS_INTERAVTIVE_CHANNEL </td></tr>
-    <tr><td class="paramname">op</td><td>The operation during which the error occurred, e.g. 'send' or 'read'.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient()</a> </dd>
-<dd>
-redisxSetTrasmitErrorHandler() </dd></dl>
-
-<p class="reference">References <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax-resilient_8c.html#a5f5e00f0fd063ac8e36827c852131358">smaxIsResilient()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1d4a0c99f979fd0ecf0e9dcb7191a8d7">X_FAILURE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>.</p>
 
 </div>
 </div>
@@ -1098,7 +1098,7 @@ redisxSetTrasmitErrorHandler() </dd></dl>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The pointer to the string buffer holding the ASCII values. It may be the supplied buffer (if sufficient), the input value (if type is X_RAW) or else a dynamically allocated buffer, or NULL if the key is malformed. If the returned value is neither the input value nor trybuf, then the caller is responsible for calling free() on the dynamically allocated buffer after use. </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#acbf44ad33891c1171b17aa6ab0616e82">X_BYTE_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abad9f4f63b244d716e52eb254da594b2">X_INT_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad4a1893b1ededc4c1d627405736d00ff">X_LONG_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a52dcae6bbd1a52f73bda43847fc4d943">X_SHORT_HEX</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adcc86baacb3ddebcc529e269223274b8">xIsCharSequence()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3eb8c827cfc2139687d175649284f7be">xPrintDouble()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9ee406a1c0c8d1076620ae4f77695216">xPrintFloat()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a8816199a4473325a942e14057dcd9ab8">xStringElementSizeOf()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adcc86baacb3ddebcc529e269223274b8">xIsCharSequence()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3eb8c827cfc2139687d175649284f7be">xPrintDouble()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9ee406a1c0c8d1076620ae4f77695216">xPrintFloat()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a8816199a4473325a942e14057dcd9ab8">xStringElementSizeOf()</a>.</p>
 
 </div>
 </div>
@@ -1129,7 +1129,7 @@ redisxSetTrasmitErrorHandler() </dd></dl>
 <dd>
 <a class="el" href="smax-util_8c.html#a65cc6cdad09f861b968e2d492abed977">x2smaxStruct()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="el" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b">smaxValuesToString()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, <a class="el" href="smax-util_8c.html#a65cc6cdad09f861b968e2d492abed977">x2smaxStruct()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1720e156de63fd0585224738ccbb5688">xGetFieldCount()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXStructure.html#a501ae8af2201d9cfaa60e3af21ff58fc">XStructure::firstField</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a5ac083a645d964373f022d03df4849c8">XField::name</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#ae1ebaf87eb62e6266b14908eee28e565">XField::next</a>, <a class="el" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b">smaxValuesToString()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="el" href="smax-util_8c.html#a76bd110891905fe4bdae6628547c50d1">x2smaxField()</a>, <a class="el" href="smax-util_8c.html#a65cc6cdad09f861b968e2d492abed977">x2smaxStruct()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7e4c8b651428f090a441804bd8b7673e">X_FIELD</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2b81d2bbe48788a9741e815cdaa336eb">xClearField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a12112584a34e07f9ef7b08f6ef1bc865">xCreateStruct()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1720e156de63fd0585224738ccbb5688">xGetFieldCount()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>

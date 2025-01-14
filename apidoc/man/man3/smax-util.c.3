@@ -1,4 +1,4 @@
-.TH "src/smax-util.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax-util.c" 3 "Version v1.0" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -11,9 +11,9 @@ src/smax-util.c \- A collection of commonly used functions for the SMA-X library
 
 .in +1c
 .ti -1c
-.RI "#define \fB_BSD_SOURCE\fP"
+.RI "#define \fB_ISOC99_SOURCE\fP"
 .br
-.RI "strtoll() feature macro for glibc <= 2\&.19 "
+.RI "strtoll() feature macro starting glibc 2\&.20 (2014-09-08) "
 .ti -1c
 .RI "#define \fB_POSIX_C_SOURCE\fP   199309"
 .br
@@ -71,6 +71,9 @@ src/smax-util.c \- A collection of commonly used functions for the SMA-X library
 .RI "void \fBsmaxSetOrigin\fP (\fBXMeta\fP *m, const char *origin)"
 .br
 .ti -1c
+.RI "void \fBsmaxSocketErrorHandler\fP (\fBRedis\fP *redis, enum \fBredisx_channel\fP channel, const char *op)"
+.br
+.ti -1c
 .RI "int \fBsmaxStringToValues\fP (const char *str, void *value, \fBXType\fP type, int eCount, int *pos)"
 .br
 .ti -1c
@@ -83,9 +86,6 @@ src/smax-util.c \- A collection of commonly used functions for the SMA-X library
 .RI "__inline__ int \fBsmaxTimeToString\fP (const struct timespec *time, char *buf)"
 .br
 .RI "*/ "
-.ti -1c
-.RI "void \fBsmaxTransmitErrorHandler\fP (\fBRedis\fP *redis, enum \fBredisx_channel\fP channel, const char *op)"
-.br
 .ti -1c
 .RI "\fBXType\fP \fBsmaxTypeForString\fP (const char *type)"
 .br
@@ -412,6 +412,28 @@ Sets the 'origin' field of an SMA-X metadata to the specified value, truncating 
 
 .PP
 References \fBXMeta::origin\fP, and \fBSMAX_ORIGIN_LENGTH\fP\&.
+.SS "void smaxSocketErrorHandler (\fBRedis\fP * redis, enum \fBredisx_channel\fP channel, const char * op)"
+The SMA-X error handler for \fBRedis\fP transmit (send or receive) errors\&. It prints a message to stderr, then depending on whether SMA-X is in resilient mode, it will try to reconnect to SMA-X in the background, or else exits the program with X_NO_SERVICE\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIredis\fP The \fBRedis\fP instance in which the error occurred\&. In case of SMA-X this will always be the \fBRedis\fP instance used by SMA-X\&. 
+.br
+\fIchannel\fP The \fBRedis\fP channel index on which the error occured, such as REDIS_INTERAVTIVE_CHANNEL 
+.br
+\fIop\fP The operation during which the error occurred, e\&.g\&. 'send' or 'read'\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetResilient()\fP 
+.PP
+redisxSetTrasmitErrorHandler() 
+.RE
+.PP
+
+.PP
+References \fBsmaxGetRedis()\fP, \fBsmaxIsResilient()\fP, \fBTRUE\fP, \fBX_FAILURE\fP, and \fBX_NO_SERVICE\fP\&.
 .SS "int smaxStringToValues (const char * str, void * value, \fBXType\fP type, int eCount, int * pos)"
 Deserializes a string to binary values\&.
 .PP
@@ -445,7 +467,7 @@ Number of elements successfully parsed, or a negative error code:
 .PP
 
 .PP
-References \fBsmaxUnpackStrings()\fP, \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_BYTE_HEX\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_INT_HEX\fP, \fBX_LONG\fP, \fBX_LONG_HEX\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_SHORT_HEX\fP, \fBX_SIZE_INVALID\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, \fBx_trace()\fP, \fBX_TYPE_INVALID\fP, \fBxElementSizeOf()\fP, \fBxIsCharSequence()\fP, \fBxParseBoolean()\fP, \fBxParseDouble()\fP, and \fBxZero()\fP\&.
+References \fBsmaxUnpackStrings()\fP, \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_LONG\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_SIZE_INVALID\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, \fBx_trace()\fP, \fBX_TYPE_INVALID\fP, \fBxElementSizeOf()\fP, \fBxIsCharSequence()\fP, \fBxParseBoolean()\fP, \fBxParseDouble()\fP, and \fBxZero()\fP\&.
 .SS "char * smaxStringType (\fBXType\fP type)"
 Returns the string type for a given XType argument as a constant expression\&. For examples X_LONG -> 'int64'\&.
 .PP
@@ -466,7 +488,7 @@ Corresponding string type, e\&.g\&. 'float'\&. (Default is 'string' -- since typ
 .PP
 
 .PP
-References \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_BYTE_HEX\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_INT_HEX\fP, \fBX_LONG\fP, \fBX_LONG_HEX\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_SHORT_HEX\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, and \fBX_UNKNOWN\fP\&.
+References \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_LONG\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, and \fBX_UNKNOWN\fP\&.
 .SS "int smaxTimestamp (char * buf)"
 Prints the current time into the supplied buffer with subsecond precision\&.
 .PP
@@ -503,28 +525,6 @@ Number of characters printed, not including the terminating '\\0', or else an er
 
 .PP
 References \fBx_error()\fP, and \fBX_NULL\fP\&.
-.SS "void smaxTransmitErrorHandler (\fBRedis\fP * redis, enum \fBredisx_channel\fP channel, const char * op)"
-The SMA-X error handler for \fBRedis\fP transmit (send or receive) errors\&. It prints a message to stderr, then depending on whether SMA-X is in resilient mode, it will try to reconnect to SMA-X in the background, or else exits the program with X_NO_SERVICE\&.
-.PP
-\fBParameters\fP
-.RS 4
-\fIredis\fP The \fBRedis\fP instance in which the error occurred\&. In case of SMA-X this will always be the \fBRedis\fP instance used by SMA-X\&. 
-.br
-\fIchannel\fP The \fBRedis\fP channel index on which the error occured, such as REDIS_INTERAVTIVE_CHANNEL 
-.br
-\fIop\fP The operation during which the error occurred, e\&.g\&. 'send' or 'read'\&.
-.RE
-.PP
-\fBSee also\fP
-.RS 4
-\fBsmaxSetResilient()\fP 
-.PP
-redisxSetTrasmitErrorHandler() 
-.RE
-.PP
-
-.PP
-References \fBsmaxGetRedis()\fP, \fBsmaxIsResilient()\fP, \fBTRUE\fP, \fBX_FAILURE\fP, and \fBX_NO_SERVICE\fP\&.
 .SS "\fBXType\fP smaxTypeForString (const char * type)"
 Returns the XType for a given case-sensitive type string\&. For example 'float' -> X_FLOAT\&. The value 'raw' will return X_RAW\&.
 .PP
@@ -591,7 +591,7 @@ The pointer to the string buffer holding the ASCII values\&. It may be the suppl
 .PP
 
 .PP
-References \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_BYTE_HEX\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_INT_HEX\fP, \fBX_LONG\fP, \fBX_LONG_HEX\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_SHORT_HEX\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, \fBx_trace_null()\fP, \fBX_UNKNOWN\fP, \fBxElementSizeOf()\fP, \fBxIsCharSequence()\fP, \fBxPrintDouble()\fP, \fBxPrintFloat()\fP, and \fBxStringElementSizeOf()\fP\&.
+References \fBX_BOOLEAN\fP, \fBX_BYTE\fP, \fBX_DOUBLE\fP, \fBx_error()\fP, \fBX_FLOAT\fP, \fBX_INT\fP, \fBX_LONG\fP, \fBX_RAW\fP, \fBX_SHORT\fP, \fBX_STRING\fP, \fBX_STRUCT\fP, \fBx_trace_null()\fP, \fBX_UNKNOWN\fP, \fBxElementSizeOf()\fP, \fBxIsCharSequence()\fP, \fBxPrintDouble()\fP, \fBxPrintFloat()\fP, and \fBxStringElementSizeOf()\fP\&.
 .SS "int x2smaxField (\fBXField\fP * f)"
 Converts a standard xchange field (with a native value storage) to an SMA-X field with serialized string value storage\&.
 .PP
@@ -614,7 +614,7 @@ X_SUCCESS (0) if successful, or X_NULL if the input field or the serialized valu
 .PP
 
 .PP
-References \fBXField::isSerialized\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx2smaxStruct()\fP, \fBx_error()\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetFieldCount()\fP\&.
+References \fBXStructure::firstField\fP, \fBXField::isSerialized\fP, \fBXField::name\fP, \fBXField::next\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx2smaxField()\fP, \fBx2smaxStruct()\fP, \fBx_error()\fP, \fBX_FIELD\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, \fBxClearField()\fP, \fBxCreateStruct()\fP, \fBxGetFieldCount()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int x2smaxStruct (\fBXStructure\fP * s)"
 Converts a standard xchange structure (with a native value storage) to an SMA-X structure with serialized string value storage\&.
 .PP

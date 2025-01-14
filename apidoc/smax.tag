@@ -206,6 +206,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>SMAX_SENTINEL_SERVICENAME</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a71b50c2439080feef06b0b9509194eae</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>SMAX_TIMESTAMPS</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>ab5e13a0e5a3b57b087a2c875a01317b4</anchor>
@@ -413,6 +420,13 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a97ace8424abf924b8ae0397ae83177f2</anchor>
       <arglist>(XSyncPoint *sync)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxDisableTLS</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>aa3381437ca8fee95fcd7988f5254d3a9</anchor>
+      <arglist>()</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -709,6 +723,13 @@
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
+      <type>XField *</type>
+      <name>smaxPullField</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a2578dcc96adc801e454fa50c13943a98</anchor>
+      <arglist>(const char *id, XMeta *meta, int *status)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>smaxPullInt</name>
       <anchorfile>smax_8h.html</anchorfile>
@@ -940,6 +961,13 @@
       <arglist>(const char *table, const char *key, const char *description)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>smaxSetDHCipherParams</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>afa0d8bed0100a16185ff56e1d8998a40</anchor>
+      <arglist>(const char *dh_file)</arglist>
+    </member>
+    <member kind="function">
       <type>void</type>
       <name>smaxSetHostName</name>
       <anchorfile>smax_8h.html</anchorfile>
@@ -959,6 +987,13 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>af3e8295bb941f68cf3177c79cd5fb4d3</anchor>
       <arglist>(const char *id)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetMutualTLS</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>ac7385688291238dd14238d6b9ee793e1</anchor>
+      <arglist>(const char *cert_file, const char *key_file)</arglist>
     </member>
     <member kind="function">
       <type>void</type>
@@ -997,6 +1032,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxSetSentinel</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>ad0b27aae9c96f8170fce10909aa694c9</anchor>
+      <arglist>(const RedisServer *servers, int nServers)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxSetServer</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a78cf94f007034f63b609cbe72b8047b0</anchor>
@@ -1008,6 +1050,41 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>ac42ee8e8128aac0695c68660f04fd196</anchor>
       <arglist>(int size)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLS</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a03689785b23ceb007563dccc14700d89</anchor>
+      <arglist>(const char *ca_path, const char *ca_file)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSCiphers</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>ac45cc01724d9ac296a0fa013f6df8f22</anchor>
+      <arglist>(const char *list)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSCipherSuites</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a46dee27f13791648e77acbc4d16a418a</anchor>
+      <arglist>(const char *list)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSServerName</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a0a0b81f56cc0e441188e86f42d286599</anchor>
+      <arglist>(const char *host)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSVerify</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>af88940251a55a6716412ab6e8e8209f4</anchor>
+      <arglist>(boolean value)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1085,13 +1162,6 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>ace410207bfb5ba9211dc644f7dd2768d</anchor>
       <arglist>(const char *table, const char *key, const float *values, int n)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxShareHex</name>
-      <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a9efb328571eb7aac0cec75b55676c4e0</anchor>
-      <arglist>(const char *table, const char *key, long long value)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1373,6 +1443,13 @@
       <arglist>(const char *table, const char *key, XMeta *meta, int *n)</arglist>
     </member>
     <member kind="function">
+      <type>XField *</type>
+      <name>smaxPullField</name>
+      <anchorfile>smax-easy_8c.html</anchorfile>
+      <anchor>a2578dcc96adc801e454fa50c13943a98</anchor>
+      <arglist>(const char *id, XMeta *meta, int *status)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>smaxPullInt</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
@@ -1469,13 +1546,6 @@
       <anchorfile>smax-easy_8c.html</anchorfile>
       <anchor>ace410207bfb5ba9211dc644f7dd2768d</anchor>
       <arglist>(const char *table, const char *key, const float *values, int n)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxShareHex</name>
-      <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a9efb328571eb7aac0cec75b55676c4e0</anchor>
-      <arglist>(const char *table, const char *key, long long value)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1638,9 +1708,9 @@
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
     <member kind="define">
       <type>#define</type>
-      <name>_BSD_SOURCE</name>
+      <name>_ISOC99_SOURCE</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>ad3d8a3bd0c0b677acef144f2c2ef6d73</anchor>
+      <anchor>a04ec2c53aa9fcdb5b58dc8e9d552dec0</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -1929,15 +1999,77 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>smax-tls.c</name>
+    <path>src/</path>
+    <filename>smax-tls_8c.html</filename>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxDisableTLS</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>aa3381437ca8fee95fcd7988f5254d3a9</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetDHCipherParams</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>afa0d8bed0100a16185ff56e1d8998a40</anchor>
+      <arglist>(const char *dh_file)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetMutualTLS</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>ac7385688291238dd14238d6b9ee793e1</anchor>
+      <arglist>(const char *cert_file, const char *key_file)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLS</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>a03689785b23ceb007563dccc14700d89</anchor>
+      <arglist>(const char *ca_path, const char *ca_file)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSCiphers</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>ac45cc01724d9ac296a0fa013f6df8f22</anchor>
+      <arglist>(const char *list)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSCipherSuites</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>a46dee27f13791648e77acbc4d16a418a</anchor>
+      <arglist>(const char *list)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSServerName</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>a0a0b81f56cc0e441188e86f42d286599</anchor>
+      <arglist>(const char *host)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetTLSVerify</name>
+      <anchorfile>smax-tls_8c.html</anchorfile>
+      <anchor>af88940251a55a6716412ab6e8e8209f4</anchor>
+      <arglist>(boolean value)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>smax-util.c</name>
     <path>src/</path>
     <filename>smax-util_8c.html</filename>
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
     <member kind="define">
       <type>#define</type>
-      <name>_BSD_SOURCE</name>
+      <name>_ISOC99_SOURCE</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>ad3d8a3bd0c0b677acef144f2c2ef6d73</anchor>
+      <anchor>a04ec2c53aa9fcdb5b58dc8e9d552dec0</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -2060,6 +2192,13 @@
       <arglist>(XMeta *m, const char *origin)</arglist>
     </member>
     <member kind="function">
+      <type>void</type>
+      <name>smaxSocketErrorHandler</name>
+      <anchorfile>smax-util_8c.html</anchorfile>
+      <anchor>ac1095d82ecfbad50d4b05f876f2c344d</anchor>
+      <arglist>(Redis *redis, enum redisx_channel channel, const char *op)</arglist>
+    </member>
+    <member kind="function">
       <type>int</type>
       <name>smaxStringToValues</name>
       <anchorfile>smax-util_8c.html</anchorfile>
@@ -2086,13 +2225,6 @@
       <anchorfile>smax-util_8c.html</anchorfile>
       <anchor>a1c29c7229e7006aea4fc3eb6d4b4ee0e</anchor>
       <arglist>(const struct timespec *time, char *buf)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>smaxTransmitErrorHandler</name>
-      <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a164a9c0f870cf0a1fa4f7e66f25452e5</anchor>
-      <arglist>(Redis *redis, enum redisx_channel channel, const char *op)</arglist>
     </member>
     <member kind="function">
       <type>XType</type>
@@ -2284,6 +2416,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxReset</name>
+      <anchorfile>smax_8c.html</anchorfile>
+      <anchor>ad598a39e5e05479546b24da6d2d5506b</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxSetAuth</name>
       <anchorfile>smax_8c.html</anchorfile>
       <anchor>a097b12d3bbb43175084b0b0a2f55339c</anchor>
@@ -2316,6 +2455,13 @@
       <anchorfile>smax_8c.html</anchorfile>
       <anchor>a8d7a3f57360d8e505baa78e445a53875</anchor>
       <arglist>(boolean isEnabled)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetSentinel</name>
+      <anchorfile>smax_8c.html</anchorfile>
+      <anchor>ad0b27aae9c96f8170fce10909aa694c9</anchor>
+      <arglist>(const RedisServer *servers, int nServers)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2602,16 +2748,16 @@
     <title>smax-clib</title>
     <filename>index.html</filename>
     <docanchor file="index.html">md_README-smax</docanchor>
-    <docanchor file="index.html">introduction</docanchor>
-    <docanchor file="index.html">prerequisites</docanchor>
-    <docanchor file="index.html">building</docanchor>
-    <docanchor file="index.html">linking</docanchor>
+    <docanchor file="index.html">smax-introduction</docanchor>
+    <docanchor file="index.html">smax-prerequisites</docanchor>
+    <docanchor file="index.html">building-smax</docanchor>
+    <docanchor file="index.html">smax-linking</docanchor>
     <docanchor file="index.html">command-line-tools</docanchor>
-    <docanchor file="index.html">configuration</docanchor>
-    <docanchor file="index.html">connecting</docanchor>
-    <docanchor file="index.html">connection-hooks</docanchor>
+    <docanchor file="index.html">smax-configuration</docanchor>
+    <docanchor file="index.html">smax-connecting</docanchor>
+    <docanchor file="index.html">smax-connection-hooks</docanchor>
     <docanchor file="index.html">sharing-and-pulling</docanchor>
-    <docanchor file="index.html">basics</docanchor>
+    <docanchor file="index.html">smax-basics</docanchor>
     <docanchor file="index.html">metadata</docanchor>
     <docanchor file="index.html">flexible-types-and-sizes</docanchor>
     <docanchor file="index.html">scalars</docanchor>
@@ -2630,8 +2776,8 @@
     <docanchor file="index.html">broadcasting-messages</docanchor>
     <docanchor file="index.html">processing-messages</docanchor>
     <docanchor file="index.html">optional-metadata</docanchor>
-    <docanchor file="index.html">error-handling</docanchor>
-    <docanchor file="index.html">debug-support</docanchor>
-    <docanchor file="index.html">future-plans</docanchor>
+    <docanchor file="index.html">smax-error-handling</docanchor>
+    <docanchor file="index.html">smax-debug-support</docanchor>
+    <docanchor file="index.html">smax-future-plans</docanchor>
   </compound>
 </tagfile>

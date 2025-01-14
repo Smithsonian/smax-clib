@@ -6,41 +6,44 @@
     <topic label="Building the SMA-X C library" href="index.html#autotoc_md10"/>
     <topic label="Linking your application against &lt;tt&gt;smax-clib&lt;/tt&gt;" href="index.html#autotoc_md12"/>
     <topic label="Command-line tools" href="index.html#autotoc_md14"/>
-    <topic label="Initial configuration" href="index.html#autotoc_md16"/>
-    <topic label="Connecting to / disconnecting from SMA-X" href="index.html#autotoc_md18">
-      <topic label="Connection / disconnection hooks" href="index.html#autotoc_md19"/>
+    <topic label="Initial configuration" href="index.html#autotoc_md16">
+      <topic label="TLS configuration" href="index.html#autotoc_md17"/>
+      <topic label="Reconfiguration" href="index.html#autotoc_md18"/>
     </topic>
-    <topic label="Sharing and pulling data" href="index.html#autotoc_md21">
-      <topic label="The basics" href="index.html#autotoc_md22"/>
-      <topic label="Standard metadata" href="index.html#autotoc_md23"/>
-      <topic label="Flexible types and sizes" href="index.html#autotoc_md24"/>
-      <topic label="Scalar quantities" href="index.html#autotoc_md25"/>
-      <topic label="Arrays" href="index.html#autotoc_md26"/>
-      <topic label="Structures / substructures..." href="index.html#autotoc_md27"/>
+    <topic label="Connecting to / disconnecting from SMA-X" href="index.html#autotoc_md20">
+      <topic label="Connection / disconnection hooks" href="index.html#autotoc_md21"/>
     </topic>
-    <topic label="Lazy pulling (high-frequency queries)" href="index.html#autotoc_md29"/>
-    <topic label="Pipelined pulling (high volume queries)" href="index.html#autotoc_md31">
-      <topic label="Synchronization points and waiting" href="index.html#autotoc_md32"/>
-      <topic label="Callbacks" href="index.html#autotoc_md33"/>
-      <topic label="Finishing up" href="index.html#autotoc_md34"/>
+    <topic label="Sharing and pulling data" href="index.html#autotoc_md23">
+      <topic label="The basics" href="index.html#autotoc_md24"/>
+      <topic label="Standard metadata" href="index.html#autotoc_md25"/>
+      <topic label="Flexible types and sizes" href="index.html#autotoc_md26"/>
+      <topic label="Scalar quantities" href="index.html#autotoc_md27"/>
+      <topic label="Arrays" href="index.html#autotoc_md28"/>
+      <topic label="Structures / substructures..." href="index.html#autotoc_md29"/>
     </topic>
-    <topic label="Custom update handling" href="index.html#autotoc_md36">
-      <topic label="Monitoring updates" href="index.html#autotoc_md37"/>
-      <topic label="Waiting for updates" href="index.html#autotoc_md38"/>
-      <topic label="Update callbacks" href="index.html#autotoc_md39"/>
+    <topic label="Lazy pulling (high-frequency queries)" href="index.html#autotoc_md31"/>
+    <topic label="Pipelined pulling (high volume queries)" href="index.html#autotoc_md33">
+      <topic label="Synchronization points and waiting" href="index.html#autotoc_md34"/>
+      <topic label="Callbacks" href="index.html#autotoc_md35"/>
+      <topic label="Finishing up" href="index.html#autotoc_md36"/>
     </topic>
-    <topic label="Program status / error messages via SMA-X" href="index.html#autotoc_md41">
-      <topic label="Broadcasting status messages from an application" href="index.html#autotoc_md42"/>
-      <topic label="Processing program messages" href="index.html#autotoc_md43"/>
+    <topic label="Custom update handling" href="index.html#autotoc_md38">
+      <topic label="Monitoring updates" href="index.html#autotoc_md39"/>
+      <topic label="Waiting for updates" href="index.html#autotoc_md40"/>
+      <topic label="Update callbacks" href="index.html#autotoc_md41"/>
     </topic>
-    <topic label="Optional metadata" href="index.html#autotoc_md45">
-      <topic label="Descriptions" href="index.html#autotoc_md46"/>
-      <topic label="Coordinate Systems" href="index.html#autotoc_md47"/>
-      <topic label="Physical units" href="index.html#autotoc_md48"/>
+    <topic label="Program status / error messages via SMA-X" href="index.html#autotoc_md43">
+      <topic label="Broadcasting status messages from an application" href="index.html#autotoc_md44"/>
+      <topic label="Processing program messages" href="index.html#autotoc_md45"/>
     </topic>
-    <topic label="Error handling" href="index.html#autotoc_md50"/>
-    <topic label="Debug support" href="index.html#autotoc_md52"/>
-    <topic label="Future plans" href="index.html#autotoc_md54"/>
+    <topic label="Optional metadata" href="index.html#autotoc_md47">
+      <topic label="Descriptions" href="index.html#autotoc_md48"/>
+      <topic label="Coordinate Systems" href="index.html#autotoc_md49"/>
+      <topic label="Physical units" href="index.html#autotoc_md50"/>
+    </topic>
+    <topic label="Error handling" href="index.html#autotoc_md52"/>
+    <topic label="Debug support" href="index.html#autotoc_md54"/>
+    <topic label="Future plans" href="index.html#autotoc_md56"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
     <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>
@@ -154,6 +157,7 @@
           <topic label="SMAX_RELEASE_STRING" href="smax_8h.html#aad744859d63c95706ad84435b46efdc1"/>
           <topic label="SMAX_RESTORE_QUEUE_ON_RECONNECT" href="smax_8h.html#a2f111386ac4b76cd858de99478720b29"/>
           <topic label="SMAX_SCRIPTS" href="smax_8h.html#a23dedcaf9704eed433cf3920af5e5e1c"/>
+          <topic label="SMAX_SENTINEL_SERVICENAME" href="smax_8h.html#a71b50c2439080feef06b0b9509194eae"/>
           <topic label="SMAX_TIMESTAMPS" href="smax_8h.html#ab5e13a0e5a3b57b087a2c875a01317b4"/>
           <topic label="SMAX_TYPES" href="smax_8h.html#a6933f3dab1f1de96cca777d65cdd5c40"/>
           <topic label="SMAX_UPDATES" href="smax_8h.html#a341a9de00cacd431dcd8ac8622b0bf7d"/>
@@ -184,6 +188,7 @@
           <topic label="smaxCreateSyncPoint" href="smax_8h.html#a30e2e1eb462ed2274a55016830b9abc1"/>
           <topic label="smaxDestroyCoordinateSystem" href="smax_8h.html#a92cf6cd3b3f123e21a1cee437f87126d"/>
           <topic label="smaxDestroySyncPoint" href="smax_8h.html#a97ace8424abf924b8ae0397ae83177f2"/>
+          <topic label="smaxDisableTLS" href="smax_8h.html#aa3381437ca8fee95fcd7988f5254d3a9"/>
           <topic label="smaxDisconnect" href="smax_8h.html#a9d1e6ffa837d3582a8165e326cc44bea"/>
           <topic label="smaxError" href="smax_8h.html#aefcb16af3690ffe9c77224af6b394869"/>
           <topic label="smaxErrorDescription" href="smax_8h.html#a51856e0dc0261f8e44c8635d31d6193c"/>
@@ -226,6 +231,7 @@
           <topic label="smaxPullDouble" href="smax_8h.html#aa143c2385f210cdd772f014939e1411e"/>
           <topic label="smaxPullDoubleDefault" href="smax_8h.html#a1d30cb3f0a48b567657975a104a1088f"/>
           <topic label="smaxPullDoubles" href="smax_8h.html#a6e5df36b7eee3944b1ef07edb7f9647d"/>
+          <topic label="smaxPullField" href="smax_8h.html#a2578dcc96adc801e454fa50c13943a98"/>
           <topic label="smaxPullInt" href="smax_8h.html#a42685e249ca24359b0f3f2a04a99b16b"/>
           <topic label="smaxPullInts" href="smax_8h.html#a8cdf0e4d01eaa160b8c96593ce32f4ff"/>
           <topic label="smaxPullLong" href="smax_8h.html#aebedc01880d4253e74b8bde565de00d5"/>
@@ -259,16 +265,24 @@
           <topic label="smaxSetCoordinateSystem" href="smax_8h.html#a04c3b8ea7ff6b8117d2dba9bf9edd52f"/>
           <topic label="smaxSetDB" href="smax_8h.html#a79fba7411b5afa132457a6828ff5ed9f"/>
           <topic label="smaxSetDescription" href="smax_8h.html#adcc70ef29ab29f28068ac57e40497b85"/>
+          <topic label="smaxSetDHCipherParams" href="smax_8h.html#afa0d8bed0100a16185ff56e1d8998a40"/>
           <topic label="smaxSetHostName" href="smax_8h.html#a886e2ed23987201a9808f1c99806b44a"/>
           <topic label="smaxSetMaxPendingPulls" href="smax_8h.html#a7b7ff182bf54594d796d52e7d6a1a41d"/>
           <topic label="smaxSetMessageSenderID" href="smax_8h.html#af3e8295bb941f68cf3177c79cd5fb4d3"/>
+          <topic label="smaxSetMutualTLS" href="smax_8h.html#ac7385688291238dd14238d6b9ee793e1"/>
           <topic label="smaxSetOrigin" href="smax_8h.html#a9802443ba0d569c3614f5dcf8b0cfc4b"/>
           <topic label="smaxSetPipelineConsumer" href="smax_8h.html#a542b4c264a49b61a6cd25881290df1d1"/>
           <topic label="smaxSetPipelined" href="smax_8h.html#a8d7a3f57360d8e505baa78e445a53875"/>
           <topic label="smaxSetResilient" href="smax_8h.html#a469095a9a74a8ce5d6bbae347d7194e5"/>
           <topic label="smaxSetResilientExit" href="smax_8h.html#ae638a5b4c82119eea5ef7a0ba2cd40c1"/>
+          <topic label="smaxSetSentinel" href="smax_8h.html#ad0b27aae9c96f8170fce10909aa694c9"/>
           <topic label="smaxSetServer" href="smax_8h.html#a78cf94f007034f63b609cbe72b8047b0"/>
           <topic label="smaxSetTcpBuf" href="smax_8h.html#ac42ee8e8128aac0695c68660f04fd196"/>
+          <topic label="smaxSetTLS" href="smax_8h.html#a03689785b23ceb007563dccc14700d89"/>
+          <topic label="smaxSetTLSCiphers" href="smax_8h.html#ac45cc01724d9ac296a0fa013f6df8f22"/>
+          <topic label="smaxSetTLSCipherSuites" href="smax_8h.html#a46dee27f13791648e77acbc4d16a418a"/>
+          <topic label="smaxSetTLSServerName" href="smax_8h.html#a0a0b81f56cc0e441188e86f42d286599"/>
+          <topic label="smaxSetTLSVerify" href="smax_8h.html#af88940251a55a6716412ab6e8e8209f4"/>
           <topic label="smaxSetUnits" href="smax_8h.html#a23e6627339f6bf58e87150aa9ff0c964"/>
           <topic label="smaxSetVerbose" href="smax_8h.html#ac43709380b9ad92133a22ae0d52d107c"/>
           <topic label="smaxShare" href="smax_8h.html#aee07f085e12283ad96f42c4d77430880"/>
@@ -280,7 +294,6 @@
           <topic label="smaxShareDoubles" href="smax_8h.html#a1195017071e3733c0ff9c9f6e704e593"/>
           <topic label="smaxShareField" href="smax_8h.html#a0da1227278e6bc105c7dbdba14fd884a"/>
           <topic label="smaxShareFloats" href="smax_8h.html#ace410207bfb5ba9211dc644f7dd2768d"/>
-          <topic label="smaxShareHex" href="smax_8h.html#a9efb328571eb7aac0cec75b55676c4e0"/>
           <topic label="smaxShareInt" href="smax_8h.html#adeb667a3e72acedee7d03eb246b8e1ae"/>
           <topic label="smaxShareInts" href="smax_8h.html#acc2181d635e635e330f6e01b7643dadb"/>
           <topic label="smaxShareLongs" href="smax_8h.html#a179730ae8cc7517c96b3e7efb81411fb"/>
@@ -324,6 +337,7 @@
           <topic label="smaxPullDouble" href="smax-easy_8c.html#aa143c2385f210cdd772f014939e1411e"/>
           <topic label="smaxPullDoubleDefault" href="smax-easy_8c.html#a1d30cb3f0a48b567657975a104a1088f"/>
           <topic label="smaxPullDoubles" href="smax-easy_8c.html#a6e5df36b7eee3944b1ef07edb7f9647d"/>
+          <topic label="smaxPullField" href="smax-easy_8c.html#a2578dcc96adc801e454fa50c13943a98"/>
           <topic label="smaxPullInt" href="smax-easy_8c.html#a42685e249ca24359b0f3f2a04a99b16b"/>
           <topic label="smaxPullInts" href="smax-easy_8c.html#a8cdf0e4d01eaa160b8c96593ce32f4ff"/>
           <topic label="smaxPullLong" href="smax-easy_8c.html#aebedc01880d4253e74b8bde565de00d5"/>
@@ -338,7 +352,6 @@
           <topic label="smaxShareDouble" href="smax-easy_8c.html#acfbfd2b9a23305d75e45541c5177e42a"/>
           <topic label="smaxShareDoubles" href="smax-easy_8c.html#a1195017071e3733c0ff9c9f6e704e593"/>
           <topic label="smaxShareFloats" href="smax-easy_8c.html#ace410207bfb5ba9211dc644f7dd2768d"/>
-          <topic label="smaxShareHex" href="smax-easy_8c.html#a9efb328571eb7aac0cec75b55676c4e0"/>
           <topic label="smaxShareInt" href="smax-easy_8c.html#adeb667a3e72acedee7d03eb246b8e1ae"/>
           <topic label="smaxShareInts" href="smax-easy_8c.html#acc2181d635e635e330f6e01b7643dadb"/>
           <topic label="smaxShareLongs" href="smax-easy_8c.html#a179730ae8cc7517c96b3e7efb81411fb"/>
@@ -364,7 +377,7 @@
           <topic label="smaxLazyPullStruct" href="smax-lazy_8c.html#af96429709d1b029a8db74cb7407f9ffb"/>
         </topic>
         <topic label="smax-messages.c" href="smax-messages_8c.html">
-          <topic label="_BSD_SOURCE" href="smax-messages_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73"/>
+          <topic label="_ISOC99_SOURCE" href="smax-messages_8c.html#a04ec2c53aa9fcdb5b58dc8e9d552dec0"/>
           <topic label="MESSAGES_ID" href="smax-messages_8c.html#a7b2e3f4ba6d955bd23ae56f2a2d9a3e3"/>
           <topic label="MESSAGES_PREFIX" href="smax-messages_8c.html#a309d33601440402f7f3fb5175864b62b"/>
           <topic label="smaxAddDefaultMessageProcessor" href="smax-messages_8c.html#aa3e777f85e81ffb9b02dc8cc3d124a94"/>
@@ -410,8 +423,18 @@
           <topic label="smaxSetResilient" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5"/>
           <topic label="smaxSetResilientExit" href="smax-resilient_8c.html#ae638a5b4c82119eea5ef7a0ba2cd40c1"/>
         </topic>
+        <topic label="smax-tls.c" href="smax-tls_8c.html">
+          <topic label="smaxDisableTLS" href="smax-tls_8c.html#aa3381437ca8fee95fcd7988f5254d3a9"/>
+          <topic label="smaxSetDHCipherParams" href="smax-tls_8c.html#afa0d8bed0100a16185ff56e1d8998a40"/>
+          <topic label="smaxSetMutualTLS" href="smax-tls_8c.html#ac7385688291238dd14238d6b9ee793e1"/>
+          <topic label="smaxSetTLS" href="smax-tls_8c.html#a03689785b23ceb007563dccc14700d89"/>
+          <topic label="smaxSetTLSCiphers" href="smax-tls_8c.html#ac45cc01724d9ac296a0fa013f6df8f22"/>
+          <topic label="smaxSetTLSCipherSuites" href="smax-tls_8c.html#a46dee27f13791648e77acbc4d16a418a"/>
+          <topic label="smaxSetTLSServerName" href="smax-tls_8c.html#a0a0b81f56cc0e441188e86f42d286599"/>
+          <topic label="smaxSetTLSVerify" href="smax-tls_8c.html#af88940251a55a6716412ab6e8e8209f4"/>
+        </topic>
         <topic label="smax-util.c" href="smax-util_8c.html">
-          <topic label="_BSD_SOURCE" href="smax-util_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73"/>
+          <topic label="_ISOC99_SOURCE" href="smax-util_8c.html#a04ec2c53aa9fcdb5b58dc8e9d552dec0"/>
           <topic label="_POSIX_C_SOURCE" href="smax-util_8c.html#a3024ccd4a9af5109d24e6c57565d74a1"/>
           <topic label="smax2xField" href="smax-util_8c.html#abfe751f22aa718133911ffdee848f64a"/>
           <topic label="smax2xStruct" href="smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c"/>
@@ -429,11 +452,11 @@
           <topic label="smaxScriptError" href="smax-util_8c.html#a3385ed559f3866d76ec4efaa2885daa4"/>
           <topic label="smaxScriptErrorAsync" href="smax-util_8c.html#af3acc2100069feec3a52475cdb24d479"/>
           <topic label="smaxSetOrigin" href="smax-util_8c.html#a9802443ba0d569c3614f5dcf8b0cfc4b"/>
+          <topic label="smaxSocketErrorHandler" href="smax-util_8c.html#ac1095d82ecfbad50d4b05f876f2c344d"/>
           <topic label="smaxStringToValues" href="smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1"/>
           <topic label="smaxStringType" href="smax-util_8c.html#a8d9d92ad8825d4adad4d6288a5681351"/>
           <topic label="smaxTimestamp" href="smax-util_8c.html#ae56da599747b207813a710efc07dd47d"/>
           <topic label="smaxTimeToString" href="smax-util_8c.html#a1c29c7229e7006aea4fc3eb6d4b4ee0e"/>
-          <topic label="smaxTransmitErrorHandler" href="smax-util_8c.html#a164a9c0f870cf0a1fa4f7e66f25452e5"/>
           <topic label="smaxTypeForString" href="smax-util_8c.html#af6a70e896526629e2130009882a1bff8"/>
           <topic label="smaxUnpackStrings" href="smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173"/>
           <topic label="smaxValuesToString" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b"/>
@@ -462,11 +485,13 @@
           <topic label="smaxRemoveConnectHook" href="smax_8c.html#a4708c3c699781abec237045c48719f3d"/>
           <topic label="smaxRemoveDisconnectHook" href="smax_8c.html#a70cdc3f1bf6b97248b5b8ba6df4dc044"/>
           <topic label="smaxRemoveSubscribers" href="smax_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71"/>
+          <topic label="smaxReset" href="smax_8c.html#ad598a39e5e05479546b24da6d2d5506b"/>
           <topic label="smaxSetAuth" href="smax_8c.html#a097b12d3bbb43175084b0b0a2f55339c"/>
           <topic label="smaxSetDB" href="smax_8c.html#a79fba7411b5afa132457a6828ff5ed9f"/>
           <topic label="smaxSetHostName" href="smax_8c.html#a886e2ed23987201a9808f1c99806b44a"/>
           <topic label="smaxSetPipelineConsumer" href="smax_8c.html#a542b4c264a49b61a6cd25881290df1d1"/>
           <topic label="smaxSetPipelined" href="smax_8c.html#a8d7a3f57360d8e505baa78e445a53875"/>
+          <topic label="smaxSetSentinel" href="smax_8c.html#ad0b27aae9c96f8170fce10909aa694c9"/>
           <topic label="smaxSetServer" href="smax_8c.html#a78cf94f007034f63b609cbe72b8047b0"/>
           <topic label="smaxSetTcpBuf" href="smax_8c.html#ac42ee8e8128aac0695c68660f04fd196"/>
           <topic label="smaxSetVerbose" href="smax_8c.html#ac43709380b9ad92133a22ae0d52d107c"/>

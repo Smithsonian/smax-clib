@@ -1,6 +1,6 @@
 var smax_util_8c =
 [
-    [ "_BSD_SOURCE", "smax-util_8c.html#ad3d8a3bd0c0b677acef144f2c2ef6d73", null ],
+    [ "_ISOC99_SOURCE", "smax-util_8c.html#a04ec2c53aa9fcdb5b58dc8e9d552dec0", null ],
     [ "_POSIX_C_SOURCE", "smax-util_8c.html#a3024ccd4a9af5109d24e6c57565d74a1", null ],
     [ "smax2xField", "smax-util_8c.html#abfe751f22aa718133911ffdee848f64a", null ],
     [ "smax2xStruct", "smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c", null ],
@@ -18,11 +18,11 @@ var smax_util_8c =
     [ "smaxScriptError", "smax-util_8c.html#a3385ed559f3866d76ec4efaa2885daa4", null ],
     [ "smaxScriptErrorAsync", "smax-util_8c.html#af3acc2100069feec3a52475cdb24d479", null ],
     [ "smaxSetOrigin", "smax-util_8c.html#a9802443ba0d569c3614f5dcf8b0cfc4b", null ],
+    [ "smaxSocketErrorHandler", "smax-util_8c.html#ac1095d82ecfbad50d4b05f876f2c344d", null ],
     [ "smaxStringToValues", "smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1", null ],
     [ "smaxStringType", "smax-util_8c.html#a8d9d92ad8825d4adad4d6288a5681351", null ],
     [ "smaxTimestamp", "smax-util_8c.html#ae56da599747b207813a710efc07dd47d", null ],
     [ "smaxTimeToString", "smax-util_8c.html#a1c29c7229e7006aea4fc3eb6d4b4ee0e", null ],
-    [ "smaxTransmitErrorHandler", "smax-util_8c.html#a164a9c0f870cf0a1fa4f7e66f25452e5", null ],
     [ "smaxTypeForString", "smax-util_8c.html#af6a70e896526629e2130009882a1bff8", null ],
     [ "smaxUnpackStrings", "smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173", null ],
     [ "smaxValuesToString", "smax-util_8c.html#a4a80ebd309352379d3691f264282d96b", null ],

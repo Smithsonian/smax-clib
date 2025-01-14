@@ -6,6 +6,7 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "smax-meta.c", "smax-meta_8c.html", "smax-meta_8c" ],
     [ "smax-queue.c", "smax-queue_8c.html", "smax-queue_8c" ],
     [ "smax-resilient.c", "smax-resilient_8c.html", "smax-resilient_8c" ],
+    [ "smax-tls.c", "smax-tls_8c.html", "smax-tls_8c" ],
     [ "smax-util.c", "smax-util_8c.html", "smax-util_8c" ],
     [ "smax.c", "smax_8c.html", "smax_8c" ]
 ];

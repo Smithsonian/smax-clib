@@ -47,7 +47,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">smax-clib<span id="projectnumber">&#160;v0.9</span>
+   <div id="projectname">smax-clib<span id="projectnumber">&#160;v1.0</span>
    </div>
    <div id="projectbrief">A C/C++ client library for SMA-X</div>
   </td>
@@ -153,6 +153,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1d30cb3f0a48b567657975a104a1088f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e5df36b7eee3944b1ef07edb7f9647d" id="r_a6e5df36b7eee3944b1ef07edb7f9647d"><td class="memItemLeft" align="right" valign="top">double *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#a6e5df36b7eee3944b1ef07edb7f9647d">smaxPullDoubles</a> (const char *table, const char *key, <a class="el" href="structXMeta.html">XMeta</a> *meta, int *n)</td></tr>
 <tr class="separator:a6e5df36b7eee3944b1ef07edb7f9647d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2578dcc96adc801e454fa50c13943a98" id="r_a2578dcc96adc801e454fa50c13943a98"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="../../xchange/apidoc/html/structXField.html">XField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#a2578dcc96adc801e454fa50c13943a98">smaxPullField</a> (const char *id, <a class="el" href="structXMeta.html">XMeta</a> *meta, int *status)</td></tr>
+<tr class="separator:a2578dcc96adc801e454fa50c13943a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42685e249ca24359b0f3f2a04a99b16b" id="r_a42685e249ca24359b0f3f2a04a99b16b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#a42685e249ca24359b0f3f2a04a99b16b">smaxPullInt</a> (const char *table, const char *key, int defaultValue)</td></tr>
 <tr class="separator:a42685e249ca24359b0f3f2a04a99b16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cdf0e4d01eaa160b8c96593ce32f4ff" id="r_a8cdf0e4d01eaa160b8c96593ce32f4ff"><td class="memItemLeft" align="right" valign="top">int *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#a8cdf0e4d01eaa160b8c96593ce32f4ff">smaxPullInts</a> (const char *table, const char *key, <a class="el" href="structXMeta.html">XMeta</a> *meta, int *n)</td></tr>
@@ -181,8 +183,6 @@ Functions</h2></td></tr>
 <tr class="separator:a1195017071e3733c0ff9c9f6e704e593"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace410207bfb5ba9211dc644f7dd2768d" id="r_ace410207bfb5ba9211dc644f7dd2768d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#ace410207bfb5ba9211dc644f7dd2768d">smaxShareFloats</a> (const char *table, const char *key, const float *values, int n)</td></tr>
 <tr class="separator:ace410207bfb5ba9211dc644f7dd2768d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9efb328571eb7aac0cec75b55676c4e0" id="r_a9efb328571eb7aac0cec75b55676c4e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#a9efb328571eb7aac0cec75b55676c4e0">smaxShareHex</a> (const char *table, const char *key, long long value)</td></tr>
-<tr class="separator:a9efb328571eb7aac0cec75b55676c4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adeb667a3e72acedee7d03eb246b8e1ae" id="r_adeb667a3e72acedee7d03eb246b8e1ae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#adeb667a3e72acedee7d03eb246b8e1ae">smaxShareInt</a> (const char *table, const char *key, long long value)</td></tr>
 <tr class="separator:adeb667a3e72acedee7d03eb246b8e1ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acc2181d635e635e330f6e01b7643dadb" id="r_acc2181d635e635e330f6e01b7643dadb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax-easy_8c.html#acc2181d635e635e330f6e01b7643dadb">smaxShareInts</a> (const char *table, const char *key, const int *values, int n)</td></tr>
@@ -244,7 +244,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a field for 1-D array of a given name and type using specified native values. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a472d4aa5ba0867acf07c1c1c444a5756">xCreate1DField()</a></code> except that the field is created in serialized form.</p>
+<p>Creates a field for 1-D array of a given name and type using specified native values. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9897f06ef8a22d5ddb8538d5fe223ae2">xCreate1DField()</a></code> except that the field is created in serialized form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -255,9 +255,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created field with the supplied data, or NULL if there was an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-util_8c.html#a9871356984c4794a9f9caa3870dc6794">smaxCreateField()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-util_8c.html#a9871356984c4794a9f9caa3870dc6794">smaxCreateField()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -286,7 +286,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a field holding a single boolean value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a891a7ec1714120bfc1ef4150119e7c42">xCreateBooleanField()</a></code> except that the field is created in serialized form.</p>
+<p>Creates a field holding a single boolean value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad2fa86a7d296f1efa6b41079bc2a6b65">xCreateBooleanField()</a></code> except that the field is created in serialized form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -295,9 +295,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created field with the supplied data, or NULL if there was an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -326,7 +326,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a field holding a single double-precision value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af1eee2a9b892e5a671e8690ca06c2706">xCreateDoubleField()</a></code> except that the field is created in serialized form.</p>
+<p>Creates a field holding a single double-precision value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab7ac206d0ec3608a0872f09c7f7bc189">xCreateDoubleField()</a></code> except that the field is created in serialized form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -335,9 +335,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created field with the supplied data, or NULL if there was an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -366,7 +366,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a field holding a single integer value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a924d21c6caef4e8e61a9610aeeb5ec56">xCreateIntField()</a></code> except that the field is created in serialized form.</p>
+<p>Creates a field holding a single integer value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa4405d56659397e044b6d4fdda394dfa">xCreateIntField()</a></code> except that the field is created in serialized form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -375,9 +375,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created field with the supplied data, or NULL if there was an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -406,7 +406,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a field holding a single wide (64-bit) integer value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a22ab80821cf25ff0c7ab7b2e8ebaaaa7">xCreateLongField()</a></code> except that the field is created in serialized form.</p>
+<p>Creates a field holding a single wide (64-bit) integer value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4587dcd0157acce30373288e19f1237d">xCreateLongField()</a></code> except that the field is created in serialized form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -415,9 +415,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created field with the supplied data, or NULL if there was an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -452,7 +452,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a scalar field of a given name and type using the specified native value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a75b44dd534ee67e1c10f17f9d52586f9">xCreateScalarField()</a></code> except that the field is created in serialized form.</p>
+<p>Creates a scalar field of a given name and type using the specified native value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a965f7e58fd1c10570c6f6a472599b08f">xCreateScalarField()</a></code> except that the field is created in serialized form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -462,9 +462,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created scalar field with the supplied data, or NULL if there was an error.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-easy_8c.html#afba357d35d2a1f13d0cf06f5ff708a99">smaxCreate1DField()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-easy_8c.html#afba357d35d2a1f13d0cf06f5ff708a99">smaxCreate1DField()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -493,7 +493,7 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Creates a field holding a single string value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7df7a9a00fd45afd19e8861162596174">xCreateStringField()</a></code> except that the field is created in serialized form.</p>
+<p>Creates a field holding a single string value. It is like <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9dc77bed0d8b738ba615019721a6a2b6">xCreateStringField()</a></code> except that the field is created in serialized form.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">name</td><td>Field name </td></tr>
@@ -503,7 +503,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A newly created field referencing the supplied string, or NULL if there was an error. </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-easy_8c.html#a61a3760159e6867cdb55b5995435633c">smaxCreateScalarField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -563,7 +563,7 @@ Functions</h2></td></tr>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or X_STRUCT_INVALID if the input structure is NULL, X_NULL if dst is NULL, X_SIZE_INVALID if n is 0 or negative, X_NAME_INVALID if the structure does not have a field by the specified name, or else an error returned by smaxStringtoValues(). </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1">smaxStringToValues()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af4b6e6d9baf3e6767041faa3e356af7a">X_STRUCT_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a>.</p>
+<p class="reference">References <a class="el" href="smax-util_8c.html#a9e3c024a1db97e7adc8a40694c657fd1">smaxStringToValues()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af4b6e6d9baf3e6767041faa3e356af7a">X_STRUCT_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a>.</p>
 
 </div>
 </div>
@@ -608,9 +608,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The (first) field value as a long long, or the default value if there is no such field.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a994ae91adbbffc3b55b47b0219338282">xParseBoolean()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a994ae91adbbffc3b55b47b0219338282">xParseBoolean()</a>.</p>
 
 </div>
 </div>
@@ -655,9 +655,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The (first) field value as a double, or the specified default if there is no such field.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a>.</p>
 
 </div>
 </div>
@@ -702,9 +702,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The (first) field value as a long long, or the default value if there is no such field.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a>.</p>
 
 </div>
 </div>
@@ -749,9 +749,9 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The field's string (raw) value, or the specified default if there is no such field.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a>.</p>
 
 </div>
 </div>
@@ -898,7 +898,54 @@ Functions</h2></td></tr>
 <dd>
 smaxPullFloats() </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
+
+</div>
+</div>
+<a id="a2578dcc96adc801e454fa50c13943a98" name="a2578dcc96adc801e454fa50c13943a98"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2578dcc96adc801e454fa50c13943a98">&#9670;&#160;</a></span>smaxPullField()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="elRef" href="../../xchange/apidoc/html/structXField.html">XField</a> * smaxPullField </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structXMeta.html">XMeta</a> *&#160;</td>
+          <td class="paramname"><em>meta</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int *&#160;</td>
+          <td class="paramname"><em>status</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Returns a dynamically allocated deserialized <a class="elRef" href="../../xchange/apidoc/html/structXField.html">XField</a> for the specified node in SMA-X. You should use this function with great care, as it might retrieve very large data from SMA-X, and therefore block access to the database for a long time. It's OK to use to retrieve data for smaller sub-hierarchies, but you should probably stay away from using to to pull large hierarchies.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">id</td><td>The aggregate SMA-X ID of the node </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">meta</td><td>Pointer to where to return metadata, or NULL if metadata is not required. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">status</td><td>Pointer to integer in which to return status, or NULL if not required. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A field containing the data for the node, or NULL if there was an error.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a0da1227278e6bc105c7dbdba14fd884a">smaxShareField()</a> </dd></dl>
+
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#afc875f142146282860b6a8a3ac2f0fc8">redisxGetStringValue()</a>, <a class="el" href="smax-util_8c.html#abfe751f22aa718133911ffdee848f64a">smax2xField()</a>, <a class="el" href="smax_8h.html#a59b5959fb0859d4dbe98408f2cc2f1d0">SMAX_DIMS</a>, <a class="el" href="smax_8h.html#a6933f3dab1f1de96cca777d65cdd5c40">SMAX_TYPES</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a>, <a class="el" href="smax-util_8c.html#af6a70e896526629e2130009882a1bff8">smaxTypeForString()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1d4a0c99f979fd0ecf0e9dcb7191a8d7">X_FAILURE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a910ee1c8cd983bf127f7ca2c705d7894">X_MAX_DIMS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aecc19edf892709b39a9c0d3d944f8f9a">X_TYPE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a42e4e75cbf8f721ef4b251c692dcd7cb">xCreateField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad35e0d8c0ebbb4948c233f96c54bd8d6">xGetElementCount()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a309b9ae681c40121517672ca50ba665b">xParseDims()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#acd6af91336f4b5501d0a0e3d5cf88ad3">xSplitID()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>
@@ -1007,7 +1054,7 @@ smaPullLong() </dd></dl>
 <dd>
 <a class="el" href="smax-easy_8c.html#a42685e249ca24359b0f3f2a04a99b16b">smaxPullInt()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -1116,7 +1163,7 @@ smaxPullShorts() </dd>
 <dd>
 <a class="el" href="smax-easy_8c.html#aebedc01880d4253e74b8bde565de00d5">smaxPullLong()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -1170,7 +1217,7 @@ smaxPullShorts() </dd>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to C array containing the elements of the specified type, or NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-easy_8c.html#abc833f0d89e672507e0baeb146e8776b">smaxPullStrings()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -1212,7 +1259,7 @@ smaxPullShorts() </dd>
 <dd>
 <a class="el" href="smax-easy_8c.html#abc833f0d89e672507e0baeb146e8776b">smaxPullStrings()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -1269,7 +1316,7 @@ smaxPullShorts() </dd>
 <dd>
 <a class="el" href="smax-easy_8c.html#a0de71a90fdf235a8aee084543591244f">smaxPullRaw()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-util_8c.html#ac6d47a508669e4ee215cb72c5366fc52">smaxGetMetaCount()</a>, <a class="el" href="smax-easy_8c.html#a0de71a90fdf235a8aee084543591244f">smaxPullRaw()</a>, <a class="el" href="structXMeta.html#a766b48fdc93d03992939adfa91766703">XMeta::storeBytes</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="el" href="smax_8h.html#a793fead1eb30470e219192befc88b3c9">X_META_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax-util_8c.html#ac6d47a508669e4ee215cb72c5366fc52">smaxGetMetaCount()</a>, <a class="el" href="smax-easy_8c.html#a0de71a90fdf235a8aee084543591244f">smaxPullRaw()</a>, <a class="el" href="structXMeta.html#a766b48fdc93d03992939adfa91766703">XMeta::storeBytes</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="el" href="smax_8h.html#a793fead1eb30470e219192befc88b3c9">X_META_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -1316,9 +1363,11 @@ smaxPullShorts() </dd>
 <dl class="section return"><dt>Returns</dt><dd>Pointer to an <a class="elRef" href="../../xchange/apidoc/html/structXStructure.html">XStructure</a>, or NULL.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-lazy_8c.html#af96429709d1b029a8db74cb7407f9ffb">smaxLazyPullStruct()</a> </dd>
 <dd>
-<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afe3fda2f392bae11e136e8c0c90f086d">xDestroyStruct()</a> </dd></dl>
+<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afe3fda2f392bae11e136e8c0c90f086d">xDestroyStruct()</a> </dd>
+<dd>
+smaxPullNode() </dd></dl>
 
-<p class="reference">References <a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>.</p>
+<p class="reference">References <a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -1644,53 +1693,6 @@ smaxPullShorts() </dd>
 
 </div>
 </div>
-<a id="a9efb328571eb7aac0cec75b55676c4e0" name="a9efb328571eb7aac0cec75b55676c4e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9efb328571eb7aac0cec75b55676c4e0">&#9670;&#160;</a></span>smaxShareHex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int smaxShareHex </td>
-          <td>(</td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>table</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>key</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">long long&#160;</td>
-          <td class="paramname"><em>value</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Shares a single integer value to SMA-X in a hexadecimal representatin.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">table</td><td>The hash table name. </td></tr>
-    <tr><td class="paramname">key</td><td>The variable name under which the data is stored. </td></tr>
-    <tr><td class="paramname">value</td><td>Integer value.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0), or else an appropriate error code (&lt;0) from <a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-easy_8c.html#adeb667a3e72acedee7d03eb246b8e1ae">smaxShareInt()</a> </dd></dl>
-
-<p class="reference">References <a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad4a1893b1ededc4c1d627405736d00ff">X_LONG_HEX</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
-
-</div>
-</div>
 <a id="adeb667a3e72acedee7d03eb246b8e1ae" name="adeb667a3e72acedee7d03eb246b8e1ae"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#adeb667a3e72acedee7d03eb246b8e1ae">&#9670;&#160;</a></span>smaxShareInt()</h2>
 
@@ -1732,7 +1734,7 @@ smaxPullShorts() </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0), or else an appropriate error code (&lt;0) from <a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a>.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-easy_8c.html#a9efb328571eb7aac0cec75b55676c4e0">smaxShareHex()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd>smaxShareHex() </dd>
 <dd>
 <a class="el" href="smax-easy_8c.html#acc2181d635e635e330f6e01b7643dadb">smaxShareInts()</a> </dd></dl>
 

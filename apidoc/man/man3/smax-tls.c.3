@@ -1,0 +1,252 @@
+.TH "src/smax-tls.c" 3 "Version v1.0" "smax-clib" \" -*- nroff -*-
+.ad l
+.nh
+.SH NAME
+src/smax-tls.c \- TLS configuration for SMA-X\&.  
+
+.SH SYNOPSIS
+.br
+.PP
+.SS "Functions"
+
+.in +1c
+.ti -1c
+.RI "int \fBsmaxDisableTLS\fP ()"
+.br
+.ti -1c
+.RI "int \fBsmaxSetDHCipherParams\fP (const char *dh_file)"
+.br
+.ti -1c
+.RI "int \fBsmaxSetMutualTLS\fP (const char *cert_file, const char *key_file)"
+.br
+.ti -1c
+.RI "int \fBsmaxSetTLS\fP (const char *ca_path, const char *ca_file)"
+.br
+.ti -1c
+.RI "int \fBsmaxSetTLSCiphers\fP (const char *list)"
+.br
+.ti -1c
+.RI "int \fBsmaxSetTLSCipherSuites\fP (const char *list)"
+.br
+.ti -1c
+.RI "int \fBsmaxSetTLSServerName\fP (const char *host)"
+.br
+.ti -1c
+.RI "int \fBsmaxSetTLSVerify\fP (\fBboolean\fP value)"
+.br
+.in -1c
+.SH "Detailed Description"
+.PP 
+TLS configuration for SMA-X\&. 
+
+
+.PP
+\fBDate\fP
+.RS 4
+Created on Jan 13, 2025 
+.RE
+.PP
+\fBAuthor\fP
+.RS 4
+Attila Kovacs 
+.RE
+.PP
+
+.SH "Function Documentation"
+.PP 
+.SS "int smaxDisableTLS ()"
+Disables a previously enabled TLS configuration for SMA-X\&.
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetTLS()\fP 
+.RE
+.PP
+
+.PP
+References \fBFALSE\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxSetDHCipherParams (const char * dh_file)"
+Sets parameters for DH-based cyphers when using a TLS encrypted connection\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIdh_file\fP Path to the DH-based cypher parameters file (in PEM format; we don't support the old DER format), or NULL for no params\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or X_NAME_INVALID if the file is not accessible, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetTLS()\fP 
+.PP
+\fBsmaxSetTLSCiphers()\fP 
+.PP
+\fBsmaxSetTLSCipherSuites()\fP 
+.RE
+.PP
+
+.PP
+References \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_NAME_INVALID\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
+.SS "int smaxSetMutualTLS (const char * cert_file, const char * key_file)"
+Set a TLS certificate and private key for mutual TLS\&. You will still need to call \fBsmaxSetTLS()\fP also to create a complete TLS configuration\&. \fBRedis\fP normally uses mutual TLS, which requires both the client and the server to authenticate themselves\&. For this you need the server's TLS certificate and private key also\&. It is possible to configure \fBRedis\fP servers to verify one way only with a CA certificate, in which case you don't need to call this to configure the client\&.
+.PP
+To disable mutual TLS, set both file name arguments to NULL\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIcert_file\fP Path to the server's certificate file\&. 
+.br
+\fIkey_file\fP Path to the server'sprivate key file\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or, X_NAME_INVALID if the certificate or private key file is not accessible, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetTLS()\fP 
+.RE
+.PP
+
+.PP
+References \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_NAME_INVALID\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
+.SS "int smaxSetTLS (const char * ca_path, const char * ca_file)"
+Configures a TLS-encrypted connection to thr SMA-X server with the specified CA certificate file\&. Normally you will want to set up mutual TLS with \fBsmaxSetMutualTLS()\fP also, unless the server is not requiring mutual authentication\&. Additionally, you might also want to set parameters for DH-based cyphers if needed using smaxSetDHCypherParams()\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIca_path\fP Directory containing CA certificates\&. It may be NULL to use the default locations\&. 
+.br
+\fIca_file\fP CA certificate file relative to specified directory\&. It may be NULL to use default certificate\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or X_NAME_INVALID if the path or CA certificate file is not accessible, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxDisableTLS()\fP 
+.PP
+\fBsmaxSetMutualTLS()\fP 
+.PP
+\fBsmaxSetDHCipherParams()\fP 
+.PP
+\fBsmaxSetTLSCiphers()\fP 
+.PP
+\fBsmaxSetTLSCipherSuites()\fP 
+.PP
+\fBsmaxSetTLSServerName()\fP 
+.PP
+\fBsmaxSetTLSVerify()\fP 
+.RE
+.PP
+
+.PP
+References \fBTRUE\fP, \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_NAME_INVALID\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
+.SS "int smaxSetTLSCiphers (const char * list)"
+Sets the TLS ciphers to try (TLSv1\&.2 and earlier)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIlist\fP a colon (:) separated list of ciphers, or NULL for default ciphers\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetTLSCipherSuites()\fP 
+.PP
+\fBsmaxSetTLS()\fP 
+.PP
+smaSetDHCipherParams() 
+.RE
+.PP
+
+.PP
+References \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
+.SS "int smaxSetTLSCipherSuites (const char * list)"
+Sets the TLS ciphers suites to try (TLSv1\&.3 and later)\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIlist\fP a colon (:) separated list of cipher suites, or NULL for default cipher suites\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetTLSCiphers()\fP 
+.PP
+\fBsmaxSetTLS()\fP 
+.PP
+\fBsmaxSetDHCipherParams()\fP 
+.RE
+.PP
+
+.PP
+References \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
+.SS "int smaxSetTLSServerName (const char * host)"
+Sets the Server name for TLS Server Name Indication (SNI), an optional extra later of security\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIhost\fP server name to use for SNI\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetTLS()\fP 
+.RE
+.PP
+
+.PP
+References \fBx_error()\fP, \fBX_FAILURE\fP, \fBX_SUCCESS\fP, and \fBxStringCopyOf()\fP\&.
+.SS "int smaxSetTLSVerify (\fBboolean\fP value)"
+Sets whether to verify the the certificate\&. Certificates are verified by default\&.
+.PP
+\fBParameters\fP
+.RS 4
+\fIvalue\fP TRUE (non-zero) to verify certificates, or else FALSE (0)\&. 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built without TLS support\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxSetTLS()\fP 
+.RE
+.PP
+
+.PP
+References \fBx_error()\fP, \fBX_FAILURE\fP, and \fBX_SUCCESS\fP\&.
+.SH "Author"
+.PP 
+Generated automatically by Doxygen for smax-clib from the source code\&.

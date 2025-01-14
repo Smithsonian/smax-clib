@@ -47,7 +47,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">smax-clib<span id="projectnumber">&#160;v0.9</span>
+   <div id="projectname">smax-clib<span id="projectnumber">&#160;v1.0</span>
    </div>
    <div id="projectbrief">A C/C++ client library for SMA-X</div>
   </td>
@@ -172,6 +172,8 @@ Functions</h2></td></tr>
 <tr class="separator:a70cdc3f1bf6b97248b5b8ba6df4dc044"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77d04f4fbb447f169d40b2a24fa7cf71" id="r_a77d04f4fbb447f169d40b2a24fa7cf71"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71">smaxRemoveSubscribers</a> (<a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aeb7d6976a06d6b51780b1c9d3f927ef8">RedisSubscriberCall</a> f)</td></tr>
 <tr class="separator:a77d04f4fbb447f169d40b2a24fa7cf71"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad598a39e5e05479546b24da6d2d5506b" id="r_ad598a39e5e05479546b24da6d2d5506b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#ad598a39e5e05479546b24da6d2d5506b">smaxReset</a> ()</td></tr>
+<tr class="separator:ad598a39e5e05479546b24da6d2d5506b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a097b12d3bbb43175084b0b0a2f55339c" id="r_a097b12d3bbb43175084b0b0a2f55339c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#a097b12d3bbb43175084b0b0a2f55339c">smaxSetAuth</a> (const char *username, const char *password)</td></tr>
 <tr class="separator:a097b12d3bbb43175084b0b0a2f55339c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a79fba7411b5afa132457a6828ff5ed9f" id="r_a79fba7411b5afa132457a6828ff5ed9f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#a79fba7411b5afa132457a6828ff5ed9f">smaxSetDB</a> (int idx)</td></tr>
@@ -182,6 +184,8 @@ Functions</h2></td></tr>
 <tr class="separator:a542b4c264a49b61a6cd25881290df1d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d7a3f57360d8e505baa78e445a53875" id="r_a8d7a3f57360d8e505baa78e445a53875"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#a8d7a3f57360d8e505baa78e445a53875">smaxSetPipelined</a> (<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a> isEnabled)</td></tr>
 <tr class="separator:a8d7a3f57360d8e505baa78e445a53875"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0b27aae9c96f8170fce10909aa694c9" id="r_ad0b27aae9c96f8170fce10909aa694c9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#ad0b27aae9c96f8170fce10909aa694c9">smaxSetSentinel</a> (const <a class="elRef" href="../../redisx/apidoc/html/structRedisServer.html">RedisServer</a> *servers, int nServers)</td></tr>
+<tr class="separator:ad0b27aae9c96f8170fce10909aa694c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78cf94f007034f63b609cbe72b8047b0" id="r_a78cf94f007034f63b609cbe72b8047b0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#a78cf94f007034f63b609cbe72b8047b0">smaxSetServer</a> (const char *host, int port)</td></tr>
 <tr class="separator:a78cf94f007034f63b609cbe72b8047b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac42ee8e8128aac0695c68660f04fd196" id="r_ac42ee8e8128aac0695c68660f04fd196"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8c.html#ac42ee8e8128aac0695c68660f04fd196">smaxSetTcpBuf</a> (int size)</td></tr>
@@ -328,7 +332,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS if successful, or else an approriate error code by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4c268c33f23438af67117b09c26ec615">redisxAddSubscriber()</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4c268c33f23438af67117b09c26ec615">redisxAddSubscriber()</a>, <a class="el" href="smax_8h.html#abfefd74fb72fc51e4577d1fa5fa832f4">SMAX_UPDATES_ROOT</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af9c0c39ccbb317dd262b81473de4c171">xGetAggregateID()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4c268c33f23438af67117b09c26ec615">redisxAddSubscriber()</a>, <a class="el" href="smax_8h.html#abfefd74fb72fc51e4577d1fa5fa832f4">SMAX_UPDATES_ROOT</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32e104d7a23090f8ae0e6ea3cc55a84f">xGetAggregateID()</a>.</p>
 
 </div>
 </div>
@@ -350,6 +354,8 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sharing was already open. X_NO_SERVICE If the there was an issue establishing the necessary network connection(s). X_NAME_INVALID If the redis server name lookup failed. X_NULL If the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> IP address is NULL</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a78cf94f007034f63b609cbe72b8047b0">smaxSetServer()</a> </dd>
 <dd>
+<a class="el" href="smax_8c.html#ad0b27aae9c96f8170fce10909aa694c9">smaxSetSentinel()</a> </dd>
+<dd>
 <a class="el" href="smax_8c.html#a097b12d3bbb43175084b0b0a2f55339c">smaxSetAuth()</a> </dd>
 <dd>
 <a class="el" href="smax_8c.html#ad960c22b119ff2493a319945a9dd55a5">smaxConnectTo()</a> </dd>
@@ -360,7 +366,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dd>
 <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ad71822356ffd40ed4b1c71d065f48809">redisxConnect()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a022f58298ffcedf5dd8bc629e9dbcc55">redisxInit()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aec99fb8b19d6751038bf9c4c6d04f8d0">redisxSelectDB()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0e9eda38aa6f084ac151cbebe2886c2f">redisxSetPassword()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a37f39ede48014a2463e4c72bf6eb5a3e">redisxSetPort()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a83fce113d042490e77efdc574e64d76f">redisxSetTcpBuf()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ae060c9e745fe25f8cb742d7e82cf586e">redisxSetTransmitErrorHandler()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a3beff3a9e373a0f1de626a8e64da98cf">redisxSetUser()</a>, <a class="el" href="smax_8h.html#a0fe198db49d87d696072c261e49f7cce">SMAX_DEFAULT_HOSTNAME</a>, <a class="el" href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30">smaxAddConnectHook()</a>, <a class="el" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c">smaxAddDisconnectHook()</a>, <a class="el" href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>, <a class="el" href="smax_8c.html#abc07a7599e0bac1be15bbcb6b63d4710">smaxGetProgramID()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="el" href="smax-lazy_8c.html#af3d0cff3f8a6ab745907f4544981fdd1">smaxLazyFlush()</a>, <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a>, <a class="el" href="smax_8c.html#a542b4c264a49b61a6cd25881290df1d1">smaxSetPipelineConsumer()</a>, <a class="el" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient()</a>, <a class="el" href="smax-util_8c.html#a164a9c0f870cf0a1fa4f7e66f25452e5">smaxTransmitErrorHandler()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ad71822356ffd40ed4b1c71d065f48809">redisxConnect()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5c78c2189a76a077231016564a0cecd5">redisxInit()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a993ae780daeae021fba1866d752ba9c5">redisxInitSentinel()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aec99fb8b19d6751038bf9c4c6d04f8d0">redisxSelectDB()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0e9eda38aa6f084ac151cbebe2886c2f">redisxSetPassword()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a37f39ede48014a2463e4c72bf6eb5a3e">redisxSetPort()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ad3aaa3b6fb5353a52a7013421baa9b89">redisxSetSocketErrorHandler()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a648557774b354ff99e279d3dcf94d240">redisxSetTcpBuf()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a3beff3a9e373a0f1de626a8e64da98cf">redisxSetUser()</a>, <a class="el" href="smax_8h.html#a0fe198db49d87d696072c261e49f7cce">SMAX_DEFAULT_HOSTNAME</a>, <a class="el" href="smax_8h.html#a71b50c2439080feef06b0b9509194eae">SMAX_SENTINEL_SERVICENAME</a>, <a class="el" href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30">smaxAddConnectHook()</a>, <a class="el" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c">smaxAddDisconnectHook()</a>, <a class="el" href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>, <a class="el" href="smax_8c.html#abc07a7599e0bac1be15bbcb6b63d4710">smaxGetProgramID()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="el" href="smax-lazy_8c.html#af3d0cff3f8a6ab745907f4544981fdd1">smaxLazyFlush()</a>, <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a>, <a class="el" href="smax_8c.html#a542b4c264a49b61a6cd25881290df1d1">smaxSetPipelineConsumer()</a>, <a class="el" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient()</a>, <a class="el" href="smax-util_8c.html#ac1095d82ecfbad50d4b05f876f2c344d">smaxSocketErrorHandler()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
 
 </div>
 </div>
@@ -447,7 +453,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dl class="section return"><dt>Returns</dt><dd>The host name string (leading part only).</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a886e2ed23987201a9808f1c99806b44a">smaxSetHostName()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>
@@ -480,7 +486,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir"></td><td class="paramname">table</td><td>Host name or owner ID whose variable to count. </td></tr>
-    <tr><td class="paramdir">[out]</td><td class="paramname">n</td><td>Pointer to which the number of keys (&gt;=0) or an error (&lt;0) is returned. An error returned by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ac29a8294bc0c3b74802a617df796fa13">redisxGetKeys()</a>, or else:</td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">n</td><td>Pointer to which the number of keys (&gt;=0) or an error (&lt;0) is returned. An error returned by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aaa45af252b10e19c647d2cd5b51d7c05">redisxGetKeys()</a>, or else:</td></tr>
   </table>
   </dd>
 </dl>
@@ -488,7 +494,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dl class="section return"><dt>Returns</dt><dd>An array of pointers to the names of <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> keys.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a7030106bbe70220c97b1e9e3a4633ff4">smaxKeyCount()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ac29a8294bc0c3b74802a617df796fa13">redisxGetKeys()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a41806ac77d095ef2029f26a689ba8b20">x_trace_null()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aaa45af252b10e19c647d2cd5b51d7c05">redisxGetKeys()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
 
 </div>
 </div>
@@ -509,7 +515,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <p>Returns the SMA-X program ID.</p>
 <dl class="section return"><dt>Returns</dt><dd>The SMA-X program ID as &lt;hostname&gt;:&lt;programname&gt;, e.g. "hal9000:statusServer". </dd></dl>
 
-<p class="reference">References <a class="el" href="smax_8c.html#ac704fea3e664905af780d2566e3c74b6">smaxGetHostName()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af9c0c39ccbb317dd262b81473de4c171">xGetAggregateID()</a>.</p>
+<p class="reference">References <a class="el" href="smax_8c.html#ac704fea3e664905af780d2566e3c74b6">smaxGetHostName()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32e104d7a23090f8ae0e6ea3cc55a84f">xGetAggregateID()</a>.</p>
 
 </div>
 </div>
@@ -628,10 +634,10 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The number of keys (fields) in the specified table (&gt;= 0), or an error code (&lt;0), such as: X_NO_INIT if the SMA-X sharing was not initialized, e.g. via smaConnect(). X_GROUP_INVALID if the table name is invalid. or one of the errors (&lt;0) returned by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0d67814f75d9f610153f4c22a8f9c6b6">redisxRequest()</a>.</dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The number of keys (fields) in the specified table (&gt;= 0), or an error code (&lt;0), such as: X_NO_INIT if the SMA-X sharing was not initialized, e.g. via smaConnect(). X_GROUP_INVALID if the table name is invalid. or one of the errors (&lt;0) returned by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a09092bd97eead5c5fa73fa0d9241018c">redisxRequest()</a>.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a2544d1fa602e812004e1d68500024ae0">smaxGetKeys()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/structRESP.html#a76f11d9a0a47b94f72c2d0e77fb32240">RESP::n</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a2d3ffb89129ab04483e3966835a5ff71">redisxCheckRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aa4e23a7454f7055711915ec430599011">redisxDestroyRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0d67814f75d9f610153f4c22a8f9c6b6">redisxRequest()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aea77070444458837e0955ae1e89bd9d0">RESP_INT</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/structRESP.html#a76f11d9a0a47b94f72c2d0e77fb32240">RESP::n</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4b5674d08da07250c0ca6116a4c48ccf">redisxCheckRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aa4e23a7454f7055711915ec430599011">redisxDestroyRESP()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a09092bd97eead5c5fa73fa0d9241018c">redisxRequest()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#afa5c90630d37c2f77e5d7985932941a0a503265f716490a963125ade1e6646e0a">RESP_INT</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
 
 </div>
 </div>
@@ -701,7 +707,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dd>
 <a class="el" href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5349b7340813fbd1e32d04ed650bc3d9a65b4f2926885665960480d008ab2a456">REDISX_INTERACTIVE_CHANNEL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af9c0c39ccbb317dd262b81473de4c171">xGetAggregateID()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5349b7340813fbd1e32d04ed650bc3d9a65b4f2926885665960480d008ab2a456">REDISX_INTERACTIVE_CHANNEL</a>, <a class="el" href="smax-easy_8c.html#a2578dcc96adc801e454fa50c13943a98">smaxPullField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7e4c8b651428f090a441804bd8b7673e">X_FIELD</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32e104d7a23090f8ae0e6ea3cc55a84f">xGetAggregateID()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>
@@ -853,6 +859,28 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 
 </div>
 </div>
+<a id="ad598a39e5e05479546b24da6d2d5506b" name="ad598a39e5e05479546b24da6d2d5506b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad598a39e5e05479546b24da6d2d5506b">&#9670;&#160;</a></span>smaxReset()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int smaxReset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Resets the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server for SMA-X. SMA-X must be disconnected when this function is called, or else it will return an error. Resetting SMA-X allows to change configuration settings before the next connection.</p>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful or else X_ALREADY_OPEN if we are currently connected to SMA-X.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a> </dd></dl>
+
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ac54dd4c46d8615db4da02702c18f062b">redisxDestroy()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9e947ab368178c7e248b3cf8b26defa1">X_ALREADY_OPEN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
+
+</div>
+</div>
 <a id="a097b12d3bbb43175084b0b0a2f55339c" name="a097b12d3bbb43175084b0b0a2f55339c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a097b12d3bbb43175084b0b0a2f55339c">&#9670;&#160;</a></span>smaxSetAuth()</h2>
 
@@ -891,7 +919,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dd>
 <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9e947ab368178c7e248b3cf8b26defa1">X_ALREADY_OPEN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>.</p>
+<p class="reference">References <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9e947ab368178c7e248b3cf8b26defa1">X_ALREADY_OPEN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>
@@ -950,7 +978,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 </dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#ac704fea3e664905af780d2566e3c74b6">smaxGetHostName()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>
@@ -969,19 +997,19 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Change the pipeline response consumer function (from it's default or other previous consumer). It is a wrapper for <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a27bfc0692f6023f413912129871fed56">redisxSetPipelineConsumer()</a>.</p>
+<p>Change the pipeline response consumer function (from it's default or other previous consumer). It is a wrapper for <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0799a0a79705d1a7579bdf57879d1fec">redisxSetPipelineConsumer()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">f</td><td>The function to process ALL pipeline responses from <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a>. </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or else an error by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a27bfc0692f6023f413912129871fed56">redisxSetPipelineConsumer()</a></dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or else an error by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0799a0a79705d1a7579bdf57879d1fec">redisxSetPipelineConsumer()</a></dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a8d7a3f57360d8e505baa78e445a53875">smaxSetPipelined()</a> </dd>
 <dd>
 <a class="el" href="smax_8c.html#af6f57a699b784fc67534cff0abd9573b">smaxIsPipelined()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a27bfc0692f6023f413912129871fed56">redisxSetPipelineConsumer()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0799a0a79705d1a7579bdf57879d1fec">redisxSetPipelineConsumer()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 
 </div>
 </div>
@@ -1015,6 +1043,46 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <a class="el" href="smax_8c.html#a542b4c264a49b61a6cd25881290df1d1">smaxSetPipelineConsumer()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9e947ab368178c7e248b3cf8b26defa1">X_ALREADY_OPEN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
+
+</div>
+</div>
+<a id="ad0b27aae9c96f8170fce10909aa694c9" name="ad0b27aae9c96f8170fce10909aa694c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0b27aae9c96f8170fce10909aa694c9">&#9670;&#160;</a></span>smaxSetSentinel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int smaxSetSentinel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="elRef" href="../../redisx/apidoc/html/structRedisServer.html">RedisServer</a> *&#160;</td>
+          <td class="paramname"><em>servers</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nServers</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Configure SMA-X to use a high availability <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> Sentinel configuration</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">servers</td><td>An array of known Sentinel servers </td></tr>
+    <tr><td class="paramname">nServers</td><td>The number of servers in the array </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful or else an error code &lt;0.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a> </dd></dl>
+
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ace7dcf75a6f60817e1b3be00fb15658b">redisxValidateSentinel()</a>, <a class="el" href="smax_8h.html#a71b50c2439080feef06b0b9509194eae">SMAX_SENTINEL_SERVICENAME</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1d4a0c99f979fd0ecf0e9dcb7191a8d7">X_FAILURE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 
 </div>
 </div>
@@ -1058,7 +1126,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dd>
 <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aecec1b5bff8cfc6bd9407b848b09f20d">REDISX_TCP_PORT</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9e947ab368178c7e248b3cf8b26defa1">X_ALREADY_OPEN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aecec1b5bff8cfc6bd9407b848b09f20d">REDISX_TCP_PORT</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9e947ab368178c7e248b3cf8b26defa1">X_ALREADY_OPEN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>
@@ -1248,7 +1316,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initialized. X_GROUP_INVALID if the table name is invalid. X_NAME_INVALID if the 'key' argument is invalid. X_SIZE_INVALID if ndim or sizes are invalid. X_NULL if the 'value' argument is NULL. X_NO_SERVICE if there was no connection to the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server. X_FAILURE if there was an underlying failure.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a5ac083a645d964373f022d03df4849c8">XField::name</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0d9c8cbc461c7cf86cad8e548f195bd1">XField::ndim</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a7e2b05b584b2b1b7af9430657679fe65">REDISX_CMDBUF_SIZE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#af743830ee6c7d5e81a0206b07238ca5d">XField::sizes</a>, <a class="el" href="smax_8c.html#a0da1227278e6bc105c7dbdba14fd884a">smaxShareField()</a>, <a class="el" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b">smaxValuesToString()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7a5743ece908b043528077f499c42d57">X_MAX_ELEMENTS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad35e0d8c0ebbb4948c233f96c54bd8d6">xGetElementCount()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341">XField::isSerialized</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a5ac083a645d964373f022d03df4849c8">XField::name</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0d9c8cbc461c7cf86cad8e548f195bd1">XField::ndim</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a7e2b05b584b2b1b7af9430657679fe65">REDISX_CMDBUF_SIZE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#af743830ee6c7d5e81a0206b07238ca5d">XField::sizes</a>, <a class="el" href="smax_8c.html#a0da1227278e6bc105c7dbdba14fd884a">smaxShareField()</a>, <a class="el" href="smax-util_8c.html#a4a80ebd309352379d3691f264282d96b">smaxValuesToString()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abf5d02e3f3ec45ae6fe1e6afd09690a5">X_FIELD_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7a5743ece908b043528077f499c42d57">X_MAX_ELEMENTS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad35e0d8c0ebbb4948c233f96c54bd8d6">xGetElementCount()</a>.</p>
 
 </div>
 </div>
@@ -1292,11 +1360,11 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dd>
 <a class="el" href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct()</a> </dd>
 <dd>
-<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a57fc08f8a664b827c9f82f4f1ae6ec2d">xSetField()</a> </dd>
+<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab1cb91bd6aa14c0dae9d24bfbe7b76f4">xSetField()</a> </dd>
 <dd>
-<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3542000858b6d71bc291cd927160bd68">xGetField()</a> </dd></dl>
+<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ad3f1d50fc0f1553b806bedbd17d2206e">xGetField()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a5ac083a645d964373f022d03df4849c8">XField::name</a>, <a class="el" href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a4e9aec275e566b978a3ccb4e043d8c61">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af9c0c39ccbb317dd262b81473de4c171">xGetAggregateID()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a5ac083a645d964373f022d03df4849c8">XField::name</a>, <a class="el" href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a6535ecc7e6d29e64f0d34cd926823fd9">XField::type</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32e104d7a23090f8ae0e6ea3cc55a84f">xGetAggregateID()</a>.</p>
 
 </div>
 </div>
@@ -1338,7 +1406,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dd>
 <a class="el" href="smax_8c.html#a0da1227278e6bc105c7dbdba14fd884a">smaxShareField()</a> </dd>
 <dd>
-<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a70cf587bdb719027e22497dbc778f9fb">xCreateStruct()</a> </dd></dl>
+<a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a12112584a34e07f9ef7b08f6ef1bc865">xCreateStruct()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="smax-util_8c.html#a9871356984c4794a9f9caa3870dc6794">smaxCreateField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 
@@ -1485,7 +1553,7 @@ char *&#160;</td><td class="memItemRight" valign="bottom"><b>HSET_WITH_META</b><
 <dd>
 <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9">RELEASEID</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a888dbfa464548f0b65794e172713160b">X_INCOMPLETE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3942401de37f774e72393ffa73c9fb9f">X_INTERRUPTED</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a28120364666ec6054159012a58ba27af">X_SEP_LENGTH</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2b0edfea798e9e08122f09dba5f189f8">xdprintf</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a941088e711a62c2d5bba888b69e10ca1">xLastSeparator()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
+<p class="reference">References <a class="el" href="smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9">RELEASEID</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a888dbfa464548f0b65794e172713160b">X_INCOMPLETE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3942401de37f774e72393ffa73c9fb9f">X_INTERRUPTED</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a28120364666ec6054159012a58ba27af">X_SEP_LENGTH</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2b0edfea798e9e08122f09dba5f189f8">xdprintf</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab9a9fbc1235164bfeed5fbba1f7d8692">xLastSeparator()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
 
 </div>
 </div>

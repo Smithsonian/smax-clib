@@ -1,4 +1,4 @@
-.TH "src/smax.c" 3 "Version v0.9" "smax-clib" \" -*- nroff -*-
+.TH "src/smax.c" 3 "Version v1.0" "smax-clib" \" -*- nroff -*-
 .ad l
 .nh
 .SH NAME
@@ -79,6 +79,9 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .RI "int \fBsmaxRemoveSubscribers\fP (\fBRedisSubscriberCall\fP f)"
 .br
 .ti -1c
+.RI "int \fBsmaxReset\fP ()"
+.br
+.ti -1c
 .RI "int \fBsmaxSetAuth\fP (const char *username, const char *password)"
 .br
 .ti -1c
@@ -92,6 +95,9 @@ src/smax.c \- SMA-X is a software implementation for SMA shared data, and is the
 .br
 .ti -1c
 .RI "int \fBsmaxSetPipelined\fP (\fBboolean\fP isEnabled)"
+.br
+.ti -1c
+.RI "int \fBsmaxSetSentinel\fP (const \fBRedisServer\fP *servers, int nServers)"
 .br
 .ti -1c
 .RI "int \fBsmaxSetServer\fP (const char *host, int port)"
@@ -247,6 +253,8 @@ X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sh
 .RS 4
 \fBsmaxSetServer()\fP 
 .PP
+\fBsmaxSetSentinel()\fP 
+.PP
 \fBsmaxSetAuth()\fP 
 .PP
 \fBsmaxConnectTo()\fP 
@@ -260,7 +268,7 @@ X_SUCCESS If the library was successfully initialized X_ALREADY_OPEN If SMA-X sh
 .PP
 
 .PP
-References \fBFALSE\fP, \fBredisxConnect()\fP, \fBredisxInit()\fP, \fBredisxSelectDB()\fP, \fBredisxSetPassword()\fP, \fBredisxSetPort()\fP, \fBredisxSetTcpBuf()\fP, \fBredisxSetTransmitErrorHandler()\fP, \fBredisxSetUser()\fP, \fBSMAX_DEFAULT_HOSTNAME\fP, \fBsmaxAddConnectHook()\fP, \fBsmaxAddDisconnectHook()\fP, \fBsmaxAddSubscriber()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxIsConnected()\fP, \fBsmaxLazyFlush()\fP, \fBsmaxReleaseWaits()\fP, \fBsmaxSetPipelineConsumer()\fP, \fBsmaxSetResilient()\fP, \fBsmaxTransmitErrorHandler()\fP, \fBTRUE\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
+References \fBredisxConnect()\fP, \fBredisxInit()\fP, \fBredisxInitSentinel()\fP, \fBredisxSelectDB()\fP, \fBredisxSetPassword()\fP, \fBredisxSetPort()\fP, \fBredisxSetSocketErrorHandler()\fP, \fBredisxSetTcpBuf()\fP, \fBredisxSetUser()\fP, \fBSMAX_DEFAULT_HOSTNAME\fP, \fBSMAX_SENTINEL_SERVICENAME\fP, \fBsmaxAddConnectHook()\fP, \fBsmaxAddDisconnectHook()\fP, \fBsmaxAddSubscriber()\fP, \fBsmaxGetProgramID()\fP, \fBsmaxIsConnected()\fP, \fBsmaxLazyFlush()\fP, \fBsmaxReleaseWaits()\fP, \fBsmaxSetPipelineConsumer()\fP, \fBsmaxSetResilient()\fP, \fBsmaxSocketErrorHandler()\fP, \fBTRUE\fP, \fBX_NO_INIT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxvprintf\fP\&.
 .SS "int smaxConnectTo (const char * server)"
 Initializes the SMA-X sharing library in this runtime instance with the specified \fBRedis\fP server\&. SMA-X is initialized in resilient mode, so that we'll automatically attempt to reconnect to the \fBRedis\fP server if the connection is severed (once it was established)\&. If that is not the desired behavior, you should call \fCsmaxSetResilient(FALSE)\fP after connecting\&.
 .PP
@@ -482,7 +490,7 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .PP
 
 .PP
-References \fBREDISX_INTERACTIVE_CHANNEL\fP, \fBX_NULL\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, \fBxGetAggregateID()\fP, and \fBxStringCopyOf()\fP\&.
+References \fBREDISX_INTERACTIVE_CHANNEL\fP, \fBsmaxPullField()\fP, \fBx_error()\fP, \fBX_FIELD\fP, \fBX_NULL\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, \fBxGetAggregateID()\fP, and \fBxStringCopyOf()\fP\&.
 .SS "int smaxReconnect ()"
 Reconnects to the SMA-X server\&. It will try connecting repeatedly at regular intervals until the connection is made\&. If resilient mode is enabled, then locally accumulated shares will be sent to the \fBRedis\fP server upon reconnection\&. However, subscriptions are not automatically re-established\&. The caller is responsible for reinstate any necessary subscriptions after the reconnection or via an approproate connection hook\&.
 .PP
@@ -596,6 +604,22 @@ X_SUCCESS (0) if successful, or else an error (<0) returned by redisxRemoveSubsc
 
 .PP
 References \fBredisxRemoveSubscribers()\fP, \fBsmaxError()\fP, \fBsmaxGetRedis()\fP, \fBX_NO_INIT\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxReset ()"
+Resets the \fBRedis\fP server for SMA-X\&. SMA-X must be disconnected when this function is called, or else it will return an error\&. Resetting SMA-X allows to change configuration settings before the next connection\&.
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful or else X_ALREADY_OPEN if we are currently connected to SMA-X\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxConnect()\fP 
+.RE
+.PP
+
+.PP
+References \fBredisxDestroy()\fP, \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetAuth (const char * username, const char * password)"
 Sets the SMA-X database authentication parameters (if any) before connecting to the SMA-X server\&.
 .PP
@@ -710,6 +734,29 @@ X_SUCCESS (0) if successful, or X_ALREADY_OPEN if cannot alter the server config
 
 .PP
 References \fBsmaxIsConnected()\fP, \fBX_ALREADY_OPEN\fP, \fBx_error()\fP, and \fBX_SUCCESS\fP\&.
+.SS "int smaxSetSentinel (const \fBRedisServer\fP * servers, int nServers)"
+Configure SMA-X to use a high availability \fBRedis\fP Sentinel configuration
+.PP
+\fBParameters\fP
+.RS 4
+\fIservers\fP An array of known Sentinel servers 
+.br
+\fInServers\fP The number of servers in the array 
+.RE
+.PP
+\fBReturns\fP
+.RS 4
+X_SUCCESS (0) if successful or else an error code <0\&.
+.RE
+.PP
+\fBSee also\fP
+.RS 4
+\fBsmaxConnect()\fP 
+.RE
+.PP
+
+.PP
+References \fBredisxValidateSentinel()\fP, \fBSMAX_SENTINEL_SERVICENAME\fP, \fBx_error()\fP, \fBX_FAILURE\fP, and \fBX_SUCCESS\fP\&.
 .SS "int smaxSetServer (const char * host, int port)"
 Configures the SMA-X server before connecting\&.
 .PP
@@ -834,7 +881,7 @@ X_SUCCESS (0) if successful, or X_NO_INIT if the SMA-X library was not initializ
 .PP
 
 .PP
-References \fBXField::isSerialized\fP, \fBXField::name\fP, \fBXField::ndim\fP, \fBREDISX_CMDBUF_SIZE\fP, \fBXField::sizes\fP, \fBsmaxShareField()\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx_error()\fP, \fBX_MAX_ELEMENTS\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SIZE_INVALID\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetElementCount()\fP\&.
+References \fBXField::isSerialized\fP, \fBXField::name\fP, \fBXField::ndim\fP, \fBREDISX_CMDBUF_SIZE\fP, \fBXField::sizes\fP, \fBsmaxShareField()\fP, \fBsmaxValuesToString()\fP, \fBTRUE\fP, \fBXField::type\fP, \fBXField::value\fP, \fBx_error()\fP, \fBX_FIELD_INIT\fP, \fBX_MAX_ELEMENTS\fP, \fBX_NULL\fP, \fBX_RAW\fP, \fBX_SIZE_INVALID\fP, \fBX_STRUCT\fP, \fBX_SUCCESS\fP, \fBx_trace()\fP, and \fBxGetElementCount()\fP\&.
 .SS "int smaxShareField (const char * table, const \fBXField\fP * f)"
 Share a field object, which may contain any SMA-X data type\&.
 .PP

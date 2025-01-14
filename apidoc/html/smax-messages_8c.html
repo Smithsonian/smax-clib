@@ -47,7 +47,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="smithsonian-logo-55x55.png"/></td>
   <td id="projectalign">
-   <div id="projectname">smax-clib<span id="projectnumber">&#160;v0.9</span>
+   <div id="projectname">smax-clib<span id="projectnumber">&#160;v1.0</span>
    </div>
    <div id="projectbrief">A C/C++ client library for SMA-X</div>
   </td>
@@ -124,10 +124,10 @@ $(document).ready(function(){initNavTree('smax-messages_8c.html',''); initResiza
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ad3d8a3bd0c0b677acef144f2c2ef6d73" id="r_ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="memItemLeft" align="right" valign="top"><a id="ad3d8a3bd0c0b677acef144f2c2ef6d73" name="ad3d8a3bd0c0b677acef144f2c2ef6d73"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>_BSD_SOURCE</b></td></tr>
-<tr class="memdesc:ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="mdescLeft">&#160;</td><td class="mdescRight">vsnprinf() feature macro for glibc &lt;= 2.19 <br /></td></tr>
-<tr class="separator:ad3d8a3bd0c0b677acef144f2c2ef6d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04ec2c53aa9fcdb5b58dc8e9d552dec0" id="r_a04ec2c53aa9fcdb5b58dc8e9d552dec0"><td class="memItemLeft" align="right" valign="top"><a id="a04ec2c53aa9fcdb5b58dc8e9d552dec0" name="a04ec2c53aa9fcdb5b58dc8e9d552dec0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>_ISOC99_SOURCE</b></td></tr>
+<tr class="memdesc:a04ec2c53aa9fcdb5b58dc8e9d552dec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">vsnprintf() feature macro starting glibc 2.20 (2014-09-08) <br /></td></tr>
+<tr class="separator:a04ec2c53aa9fcdb5b58dc8e9d552dec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b2e3f4ba6d955bd23ae56f2a2d9a3e3" id="r_a7b2e3f4ba6d955bd23ae56f2a2d9a3e3"><td class="memItemLeft" align="right" valign="top"><a id="a7b2e3f4ba6d955bd23ae56f2a2d9a3e3" name="a7b2e3f4ba6d955bd23ae56f2a2d9a3e3"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>MESSAGES_ID</b>&#160;&#160;&#160;&quot;messages&quot;</td></tr>
 <tr class="memdesc:a7b2e3f4ba6d955bd23ae56f2a2d9a3e3"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> PUB_SUB channel head used for program messages. <br /></td></tr>
@@ -263,7 +263,7 @@ Functions</h2></td></tr>
 <dl class="section return"><dt>Returns</dt><dd>Serial ID number (&gt; 0) of the message processor, or X_NULL if callback function is null, or X_FAILURE if malloc failed.</dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-messages_8c.html#a1550f0f7aed841d5576d47ec7e62e0c4">smaxRemoveMessageProcessor()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-messages_8c.html#a309d33601440402f7f3fb5175864b62b">MESSAGES_PREFIX</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4c268c33f23438af67117b09c26ec615">redisxAddSubscriber()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a789f711733a55601cd71a2c0f61ec2db">redisxSubscribe()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax-messages_8c.html#a1550f0f7aed841d5576d47ec7e62e0c4">smaxRemoveMessageProcessor()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a923cd66e2074f32817a3468c5617a440">X_SEP</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a28120364666ec6054159012a58ba27af">X_SEP_LENGTH</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>.</p>
+<p class="reference">References <a class="el" href="smax-messages_8c.html#a309d33601440402f7f3fb5175864b62b">MESSAGES_PREFIX</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4c268c33f23438af67117b09c26ec615">redisxAddSubscriber()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a789f711733a55601cd71a2c0f61ec2db">redisxSubscribe()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax-messages_8c.html#a1550f0f7aed841d5576d47ec7e62e0c4">smaxRemoveMessageProcessor()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a923cd66e2074f32817a3468c5617a440">X_SEP</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a28120364666ec6054159012a58ba27af">X_SEP_LENGTH</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>
@@ -602,7 +602,7 @@ sendStatus() </dd></dl>
   </dd>
 </dl>
 
-<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adf424f5965e2c2bdda4da520548a0c67">xStringCopyOf()</a>.</p>
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
 
 </div>
 </div>

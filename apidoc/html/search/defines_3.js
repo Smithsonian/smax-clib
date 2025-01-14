@@ -22,11 +22,12 @@ var searchData=
   ['smax_5frelease_5fstring_19',['SMAX_RELEASE_STRING',['../smax_8h.html#aad744859d63c95706ad84435b46efdc1',1,'smax.h']]],
   ['smax_5frestore_5fqueue_5fon_5freconnect_20',['SMAX_RESTORE_QUEUE_ON_RECONNECT',['../smax_8h.html#a2f111386ac4b76cd858de99478720b29',1,'smax.h']]],
   ['smax_5fscripts_21',['SMAX_SCRIPTS',['../smax_8h.html#a23dedcaf9704eed433cf3920af5e5e1c',1,'smax.h']]],
-  ['smax_5ftimestamps_22',['SMAX_TIMESTAMPS',['../smax_8h.html#ab5e13a0e5a3b57b087a2c875a01317b4',1,'smax.h']]],
-  ['smax_5ftypes_23',['SMAX_TYPES',['../smax_8h.html#a6933f3dab1f1de96cca777d65cdd5c40',1,'smax.h']]],
-  ['smax_5fupdates_24',['SMAX_UPDATES',['../smax_8h.html#a341a9de00cacd431dcd8ac8622b0bf7d',1,'smax.h']]],
-  ['smax_5fupdates_5flength_25',['SMAX_UPDATES_LENGTH',['../smax_8h.html#ac59ccff9171d5b4e9545fd1ceef027b8',1,'smax.h']]],
-  ['smax_5fupdates_5froot_26',['SMAX_UPDATES_ROOT',['../smax_8h.html#abfefd74fb72fc51e4577d1fa5fa832f4',1,'smax.h']]],
-  ['smax_5fversion_5fstring_27',['SMAX_VERSION_STRING',['../smax_8h.html#ae03823c71a349f98a176d1eb1af7a583',1,'smax.h']]],
-  ['smax_5fwrites_28',['SMAX_WRITES',['../smax_8h.html#af6088c6c91a1f0089000288f0214f67c',1,'smax.h']]]
+  ['smax_5fsentinel_5fservicename_22',['SMAX_SENTINEL_SERVICENAME',['../smax_8h.html#a71b50c2439080feef06b0b9509194eae',1,'smax.h']]],
+  ['smax_5ftimestamps_23',['SMAX_TIMESTAMPS',['../smax_8h.html#ab5e13a0e5a3b57b087a2c875a01317b4',1,'smax.h']]],
+  ['smax_5ftypes_24',['SMAX_TYPES',['../smax_8h.html#a6933f3dab1f1de96cca777d65cdd5c40',1,'smax.h']]],
+  ['smax_5fupdates_25',['SMAX_UPDATES',['../smax_8h.html#a341a9de00cacd431dcd8ac8622b0bf7d',1,'smax.h']]],
+  ['smax_5fupdates_5flength_26',['SMAX_UPDATES_LENGTH',['../smax_8h.html#ac59ccff9171d5b4e9545fd1ceef027b8',1,'smax.h']]],
+  ['smax_5fupdates_5froot_27',['SMAX_UPDATES_ROOT',['../smax_8h.html#abfefd74fb72fc51e4577d1fa5fa832f4',1,'smax.h']]],
+  ['smax_5fversion_5fstring_28',['SMAX_VERSION_STRING',['../smax_8h.html#ae03823c71a349f98a176d1eb1af7a583',1,'smax.h']]],
+  ['smax_5fwrites_29',['SMAX_WRITES',['../smax_8h.html#af6088c6c91a1f0089000288f0214f67c',1,'smax.h']]]
 ];
