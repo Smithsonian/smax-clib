@@ -2760,9 +2760,9 @@
     <docanchor file="index.html">smax-basics</docanchor>
     <docanchor file="index.html">metadata</docanchor>
     <docanchor file="index.html">flexible-types-and-sizes</docanchor>
-    <docanchor file="index.html">scalars</docanchor>
-    <docanchor file="index.html">arrays</docanchor>
-    <docanchor file="index.html">structures</docanchor>
+    <docanchor file="index.html">smax-scalars</docanchor>
+    <docanchor file="index.html">smax-arrays</docanchor>
+    <docanchor file="index.html">smax-structures</docanchor>
     <docanchor file="index.html">lazy-pulling</docanchor>
     <docanchor file="index.html">pipelined-pulls</docanchor>
     <docanchor file="index.html">lazy-synchronization</docanchor>

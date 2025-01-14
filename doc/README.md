@@ -334,9 +334,9 @@ The same goes for disconnect hooks, using `smaxAddDisconnectHook()` instead.
  - [The basics](#smax-basics)
  - [Standard metadata](#metadata)
  - [Flexible types and sizes](#flexible-types-and-sizes)
- - [Scalar quantities](#scalars)
- - [Arrays](#arrays)
- - [Structures / substructures](#structures)
+ - [Scalar quantities](#smax-scalars)
+ - [Arrays](#smax-arrays)
+ - [Structures / substructures](#smax-structures)
 
 <a name="smax-basics"></a>
 ### The basics
@@ -431,7 +431,7 @@ the metadata, and make decisions based on it. Otherwise, the library will just t
 data in the format you expect.
 
 
-<a name="scalars"></a>
+<a name="smax-scalars"></a>
 ### Scalar quantities
 
 Often enough we deal with scalar quantities (not arrays), such as a single number, boolean value, or a
@@ -483,7 +483,7 @@ Or pulling them from SMA-X:
 
 ```
 
-<a name="arrays"></a>
+<a name="smax-arrays"></a>
 ### Arrays
 
 The generic `smaxShare()` function readily handles 1D arrays, and the `smaxPull()` handles native (monolithic) arrays
@@ -553,7 +553,7 @@ size and shape of the data is returned in the metadata that was also supplied wi
 data (and ensuring that it is not `NULL`), you should always call `free()` on it to avoid memory leaks in your
 application.
 
-<a name="structures"></a>
+<a name="smax-structures"></a>
 ### Structures / substructures...
 
 You can share entire data structures, represented by an appropriate `XStructure` type (see the __xchange__ library for 

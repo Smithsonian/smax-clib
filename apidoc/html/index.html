@@ -312,9 +312,9 @@ Sharing and pulling data</h2>
 <li><a class="el" href="index.html#smax-basics">The basics</a></li>
 <li><a class="el" href="index.html#metadata">Standard metadata</a></li>
 <li><a class="el" href="index.html#flexible-types-and-sizes">Flexible types and sizes</a></li>
-<li><a class="el" href="index.html#scalars">Scalar quantities</a></li>
-<li><a class="el" href="index.html#arrays">Arrays</a></li>
-<li><a class="el" href="index.html#structures">Structures / substructures</a></li>
+<li><a class="el" href="index.html#smax-scalars">Scalar quantities</a></li>
+<li><a class="el" href="index.html#smax-arrays">Arrays</a></li>
+<li><a class="el" href="index.html#smax-structures">Structures / substructures</a></li>
 </ul>
 <p><a class="anchor" id="smax-basics"></a> </p>
 <h3><a class="anchor" id="autotoc_md24"></a>
@@ -377,7 +377,7 @@ Flexible types and sizes</h3>
 <p>The point is that if your consumer application was written to expect ten 32-bit floating floating point values, it can get that even if the producer changed the exact type or element count since you have written your client. The library will simply apply the necessary type conversion automatically, and then truncate, or else pad (with zeroes), the data as necessary to get what you want.</p>
 <p>The type conversion can be both widening or narrowing. Strings and numerical values can be converted to one another through the expected string representation of numbers and vice versa. Boolean <code>true</code> values are treated equivalently to a numerical value of 1 and all non-zero numerical values will convert to boolean <code>true</code>.</p>
 <p>And, if you are concerned about the actual type or size (or shape) of the data stored, you have the option to inspect the metadata, and make decisions based on it. Otherwise, the library will just take care of giving you the available data in the format you expect.</p>
-<p><a class="anchor" id="scalars"></a> </p>
+<p><a class="anchor" id="smax-scalars"></a> </p>
 <h3><a class="anchor" id="autotoc_md27"></a>
 Scalar quantities</h3>
 <p>Often enough we deal with scalar quantities (not arrays), such as a single number, boolean value, or a string (yes, we treat strings i.e., <code>char *</code>, as a scalar too!).</p>
@@ -424,7 +424,7 @@ Scalar quantities</h3>
 <div class="line">free(str)</div>
 <div class="ttc" id="asmax-easy_8c_html_a42685e249ca24359b0f3f2a04a99b16b"><div class="ttname"><a href="smax-easy_8c.html#a42685e249ca24359b0f3f2a04a99b16b">smaxPullInt</a></div><div class="ttdeci">int smaxPullInt(const char *table, const char *key, int defaultValue)</div><div class="ttdef"><b>Definition</b> smax-easy.c:428</div></div>
 <div class="ttc" id="asmax-easy_8c_html_aa143c2385f210cdd772f014939e1411e"><div class="ttname"><a href="smax-easy_8c.html#aa143c2385f210cdd772f014939e1411e">smaxPullDouble</a></div><div class="ttdeci">double smaxPullDouble(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-easy.c:466</div></div>
-</div><!-- fragment --><p><a class="anchor" id="arrays"></a> </p>
+</div><!-- fragment --><p><a class="anchor" id="smax-arrays"></a> </p>
 <h3><a class="anchor" id="autotoc_md28"></a>
 Arrays</h3>
 <p>The generic <code><a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a></code> function readily handles 1D arrays, and the <code><a class="el" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6">smaxPull()</a></code> handles native (monolithic) arrays of all types (e.g. <code>double[][]</code>, or <code>boolean[][][]</code>). However, you may want to share multidimensional arrays, noting their specific shapes, or else pull array data for which you may not know in advance what size (or shape) of the storage needed locally for the values stored in SMA-X for some variable. For these reasons, the library provides a set of functions to make the handling of arrays a simpler too.</p>
@@ -468,7 +468,7 @@ Arrays</h3>
 <div class="line">free(data);</div>
 <div class="ttc" id="asmax-easy_8c_html_a6e5df36b7eee3944b1ef07edb7f9647d"><div class="ttname"><a href="smax-easy_8c.html#a6e5df36b7eee3944b1ef07edb7f9647d">smaxPullDoubles</a></div><div class="ttdeci">double * smaxPullDoubles(const char *table, const char *key, XMeta *meta, int *n)</div><div class="ttdef"><b>Definition</b> smax-easy.c:313</div></div>
 </div><!-- fragment --><p>As illustrated, the above will return a dynamically allocated array with the required size to hold the data, and the size and shape of the data is returned in the metadata that was also supplied with the call. After using the returned data (and ensuring that it is not <code>NULL</code>), you should always call <code>free()</code> on it to avoid memory leaks in your application.</p>
-<p><a class="anchor" id="structures"></a> </p>
+<p><a class="anchor" id="smax-structures"></a> </p>
 <h3><a class="anchor" id="autotoc_md29"></a>
 Structures / substructures...</h3>
 <p>You can share entire data structures, represented by an appropriate <code><a class="elRef" href="../../xchange/apidoc/html/structXStructure.html">XStructure</a></code> type (see the <b>xchange</b> library for a description and usage):</p>
