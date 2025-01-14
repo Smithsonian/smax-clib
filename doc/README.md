@@ -917,13 +917,13 @@ yours.
 <a name="status-messages"></a>  
 ## Program status / error messages via SMA-X
 
- - [Broadcasting status messages from an application](#broadcasting-messages)
- - [Processing program messages](#processing-messages)
+ - [Broadcasting status messages from an application](#smax-broadcasting)
+ - [Processing program messages](#smax-processing-messages)
 
 SMA-X also provides a standard for reporting program status, warning, and error messages via the Redis PUB/SUB 
 infrastructure. 
  
-<a name="broadcasting-messages"></a>
+<a name="smax-broadcasting"></a>
 ### Broadcasting status messages from an application
 
 Broadcasting program messages to SMA-X is very simple using a set of dedicated messaging functions by message
@@ -955,7 +955,7 @@ that produced the message. You can override that, and define a custom sender ID 
   int status = smaxSendWarning("Something did not work" %s", explanation);
 ```
 
-<a name="processing-messages"></a>
+<a name="smax-processing-messages"></a>
 ### Processing program messages
 
 On the receiving end, other applications can process such program messages, for a selection of hosts, programs, and 

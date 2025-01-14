@@ -696,11 +696,11 @@ Update callbacks</h3>
 <h2><a class="anchor" id="autotoc_md43"></a>
 Program status / error messages via SMA-X</h2>
 <ul>
-<li><a class="el" href="index.html#broadcasting-messages">Broadcasting status messages from an application</a></li>
-<li><a class="el" href="index.html#processing-messages">Processing program messages</a></li>
+<li><a class="el" href="index.html#smax-broadcasting">Broadcasting status messages from an application</a></li>
+<li><a class="el" href="index.html#smax-processing-messages">Processing program messages</a></li>
 </ul>
 <p>SMA-X also provides a standard for reporting program status, warning, and error messages via the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> PUB/SUB infrastructure.</p>
-<p><a class="anchor" id="broadcasting-messages"></a> </p>
+<p><a class="anchor" id="smax-broadcasting"></a> </p>
 <h3><a class="anchor" id="autotoc_md44"></a>
 Broadcasting status messages from an application</h3>
 <p>Broadcasting program messages to SMA-X is very simple using a set of dedicated messaging functions by message type. These are:</p>
@@ -716,7 +716,7 @@ Broadcasting status messages from an application</h3>
 <div class="line">int status = <a class="code hl_function" href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a>(<span class="stringliteral">&quot;Something did not work&quot;</span> %s<span class="stringliteral">&quot;, explanation);</span></div>
 <div class="ttc" id="asmax-messages_8c_html_a1c90a439b48a53555e9cfb60ce1b9102"><div class="ttname"><a href="smax-messages_8c.html#a1c90a439b48a53555e9cfb60ce1b9102">smaxSendWarning</a></div><div class="ttdeci">int smaxSendWarning(const char *msg,...)</div><div class="ttdef"><b>Definition</b> smax-messages.c:222</div></div>
 <div class="ttc" id="asmax-messages_8c_html_af3e8295bb941f68cf3177c79cd5fb4d3"><div class="ttname"><a href="smax-messages_8c.html#af3e8295bb941f68cf3177c79cd5fb4d3">smaxSetMessageSenderID</a></div><div class="ttdeci">void smaxSetMessageSenderID(const char *id)</div><div class="ttdef"><b>Definition</b> smax-messages.c:121</div></div>
-</div><!-- fragment --><p><a class="anchor" id="processing-messages"></a> </p>
+</div><!-- fragment --><p><a class="anchor" id="smax-processing-messages"></a> </p>
 <h3><a class="anchor" id="autotoc_md45"></a>
 Processing program messages</h3>
 <p>On the receiving end, other applications can process such program messages, for a selection of hosts, programs, and message types. You need to prepare you message processor function(s) first, e.g.:</p>

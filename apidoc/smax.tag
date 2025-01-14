@@ -2773,8 +2773,8 @@
     <docanchor file="index.html">waiting-for-updates</docanchor>
     <docanchor file="index.html">update-callbacks</docanchor>
     <docanchor file="index.html">status-messages</docanchor>
-    <docanchor file="index.html">broadcasting-messages</docanchor>
-    <docanchor file="index.html">processing-messages</docanchor>
+    <docanchor file="index.html">smax-broadcasting</docanchor>
+    <docanchor file="index.html">smax-processing-messages</docanchor>
     <docanchor file="index.html">optional-metadata</docanchor>
     <docanchor file="index.html">smax-error-handling</docanchor>
     <docanchor file="index.html">smax-debug-support</docanchor>
