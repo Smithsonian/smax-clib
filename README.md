@@ -30,26 +30,26 @@ Last Updated: 18 September 2024
 
 ## Table of Contents
 
- - [Introduction](#introduction)
- - [Prerequisites](#prerequisites)
- - [Building the SMA-X C library](#building)
- - [Linking your application against `smax-clib`](#linking)
+ - [Introduction](#smax-introduction)
+ - [Prerequisites](#smax-prerequisites)
+ - [Building the SMA-X C library](#building-smax)
+ - [Linking your application against `smax-clib`](#smax-linking)
  - [Command-line tools](#command-line-tools)
- - [Initial configuration](#configuration)
- - [Connecting to / disconnecting from SMA-X](#connecting)
+ - [Initial configuration](#smax-configuration)
+ - [Connecting to / disconnecting from SMA-X](#smax-connecting)
  - [Sharing and pulling data](#sharing-and-pulling)
  - [Lazy pulling (high-frequency queries)](#lazy-pulling)
  - [Pipelined pulls (high volume queries)](#pipelined-pulls)
  - [Custom update handling](#update-handling)
  - [Program status / error messages via SMA-X](#status-messages)
  - [Optional metadata](#optional-metadata)
- - [Error handling](#error-handling)
- - [Debug support](#debug-support)
- - [Future plans](#future-plans)
+ - [Error handling](#smax-error-handling)
+ - [Debug support](#smax-debug-support)
+ - [Future plans](#smax-future-plans)
 
 ------------------------------------------------------------------------------
 
-<a name="introduction"></a>
+<a name="smax-introduction"></a>
 ## Introduction
 
 The [SMA Exchange (SMA-X)](https://docs.google.com/document/d/1eYbWDClKkV7JnJxv4MxuNBNV47dFXuUWu7C4Ve_YTf0/edit?usp=sharing) 
@@ -77,7 +77,7 @@ Before then the API may undergo slight changes and tweaks. Use the repository as
 
 ------------------------------------------------------------------------------
 
-<a name="prerequisites"></a>
+<a name="smax-prerequisites"></a>
 ## Prerequisites
 
 The SMA-X C/C++ library has a build and runtime dependency on the __xchange__ and __RedisX__ libraries also available
@@ -92,7 +92,7 @@ Additionally, to configure your Redis (or Valkey / Dragonfly) servers for SMA-X,
 
 ------------------------------------------------------------------------------
 
-<a name="building"></a>
+<a name="building-smax"></a>
 ## Building the SMA-X C library
 
 The __smax-clib__ library can be built either as a shared (`libsmax.so[.1]`) and as a static (`libsmax.a`) library, 
@@ -158,7 +158,7 @@ Or, to stage the installation (to `/usr`) under a 'build root':
 
 -----------------------------------------------------------------------------
 
-<a name="linking"></a>
+<a name="smax-linking"></a>
 ## Linking your application against `smax-clib`
 
 Provided you have installed the shared (`libsmax.so`, `libredisx.so`, and `libxchange.so`) or static (`libsmax.a`, 
@@ -198,7 +198,7 @@ as `bash`, or `perl` (also `python` though we recommend to use the native
 
 ------------------------------------------------------------------------------
 
-<a name="configuration"></a>
+<a name="smax-configuration"></a>
 ## Initial configuration
 
 Bu default, the library assumes that the Redis server used for SMA-X runs on a machine called `smax` (e.g. you may assign
@@ -297,7 +297,7 @@ the current configuration.
 
 ------------------------------------------------------------------------------
 
-<a name="connecting"></a>
+<a name="smax-connecting"></a>
 ## Connecting to / disconnecting from SMA-X 
 
 Once you have configured the connection parameters, you can connect to the server by:
@@ -316,7 +316,7 @@ And, when you are done, you should disconnect with:
   smaxDisconnect();
 ```
 
-<a name="connection-hooks"></a>
+<a name="smax-connection-hooks"></a>
 ### Connection / disconnection hooks
 
 The user of the __smax-clib__ library might want to know when connections to the SMA-X server are established, or when 
@@ -347,14 +347,14 @@ The same goes for disconnect hooks, using `smaxAddDisconnectHook()` instead.
 <a name="sharing-and-pulling"></a>
 ## Sharing and pulling data
 
- - [The basics](#basics)
+ - [The basics](#smax-basics)
  - [Standard metadata](#metadata)
  - [Flexible types and sizes](#flexible-types-and-sizes)
- - [Scalar quantities](#scalars)
- - [Arrays](#arrays)
- - [Structures / substructures](#structures)
+ - [Scalar quantities](#smax-scalars)
+ - [Arrays](#smax-arrays)
+ - [Structures / substructures](#smax-structures)
 
-<a name="basics"></a>
+<a name="smax-basics"></a>
 ### The basics
 
 For SMA-X we use the terms sharing and pulling, instead of the more generic get/set terminology. The intention is to
@@ -447,7 +447,7 @@ the metadata, and make decisions based on it. Otherwise, the library will just t
 data in the format you expect.
 
 
-<a name="scalars"></a>
+<a name="smax-scalars"></a>
 ### Scalar quantities
 
 Often enough we deal with scalar quantities (not arrays), such as a single number, boolean value, or a
@@ -499,7 +499,7 @@ Or pulling them from SMA-X:
 
 ```
 
-<a name="arrays"></a>
+<a name="smax-arrays"></a>
 ### Arrays
 
 The generic `smaxShare()` function readily handles 1D arrays, and the `smaxPull()` handles native (monolithic) arrays
@@ -569,7 +569,7 @@ size and shape of the data is returned in the metadata that was also supplied wi
 data (and ensuring that it is not `NULL`), you should always call `free()` on it to avoid memory leaks in your
 application.
 
-<a name="structures"></a>
+<a name="smax-structures"></a>
 ### Structures / substructures...
 
 You can share entire data structures, represented by an appropriate `XStructure` type (see the __xchange__ library for 
@@ -933,13 +933,13 @@ yours.
 <a name="status-messages"></a>  
 ## Program status / error messages via SMA-X
 
- - [Broadcasting status messages from an application](#broadcasting-messages)
- - [Processing program messages](#processing-messages)
+ - [Broadcasting status messages from an application](#smax-broadcasting)
+ - [Processing program messages](#smax-processing-messages)
 
 SMA-X also provides a standard for reporting program status, warning, and error messages via the Redis PUB/SUB 
 infrastructure. 
  
-<a name="broadcasting-messages"></a>
+<a name="smax-broadcasting"></a>
 ### Broadcasting status messages from an application
 
 Broadcasting program messages to SMA-X is very simple using a set of dedicated messaging functions by message
@@ -971,7 +971,7 @@ that produced the message. You can override that, and define a custom sender ID 
   int status = smaxSendWarning("Something did not work" %s", explanation);
 ```
 
-<a name="processing-messages"></a>
+<a name="smax-processing-messages"></a>
 ### Processing program messages
 
 On the receiving end, other applications can process such program messages, for a selection of hosts, programs, and 
@@ -1047,7 +1047,7 @@ passing its ID number (&lt;0) to `smaxRemoveMessageProcessor()`.
 
 -----------------------------------------------------------------------------
 
-<a name="error-handling"></a>
+<a name="smax-error-handling"></a>
 ## Error handling
 
 The principal error handling of the library is an extension of that of __xchange__, with further error codes defined 
@@ -1065,7 +1065,7 @@ by a pointer argument), can be inspected by `smaxErrorDescription()`, e.g.:
 
 -----------------------------------------------------------------------------
 
-<a name="debug-support"></a>
+<a name="smax-debug-support"></a>
 ## Debug support
 
 You can enable verbose output of the library with `smaxSetVerbose(boolean)`. When enabled, it will produce status 
@@ -1085,7 +1085,7 @@ settings.
 
 -----------------------------------------------------------------------------
 
-<a name="future-plans"></a>
+<a name="smax-future-plans"></a>
 ## Future plans
 
 Some obvious ways the library could evolve and grow in the not too distant future:
