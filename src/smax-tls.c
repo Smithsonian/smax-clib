@@ -4,12 +4,13 @@
  * @date Created  on Jan 13, 2025
  * @author Attila Kovacs
  *
- *  TLS configuration for SMA-X.
+ * @brief TLS configuration for SMA-X.
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <errno.h>
 
 #include "smax-private.h"
@@ -63,7 +64,6 @@ int smaxConfigTLSAsync(Redis *redis) {
 }
 /// \endcond
 
-
 /**
  * Configures a TLS-encrypted connection to thr SMA-X server with the specified CA certificate file.
  * Normally you will want to set up mutual TLS with smaxSetMutualTLS() also, unless the server is not
@@ -73,7 +73,8 @@ int smaxConfigTLSAsync(Redis *redis) {
  * @param ca_path   Directory containing CA certificates. It may be NULL to use the default locations.
  * @param ca_file   CA certificate file relative to specified directory. It may be NULL to use default
  *                  certificate.
- * @return          X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built
+ * @return          X_SUCCESS (0) if successful, or X_NAME_INVALID if the path or CA certificate file
+ *                  is not accessible, or else X_FAILURE (-1) if the SMA-X library was built
  *                  without TLS support.
  *
  * @sa smaxDisableTLS()
@@ -85,7 +86,12 @@ int smaxConfigTLSAsync(Redis *redis) {
  * @sa smaxSetTLSVerify()
  */
 int smaxSetTLS(const char *ca_path, const char *ca_file) {
+  static const char *fn = "smaxSetTLS";
+
 #if WITH_TLS
+  if(ca_path) if(access(ca_path, R_OK) != 0) return x_error(X_NAME_INVALID, EINVAL, fn, "certificate directory not accessible: %s", ca_path);
+  if(ca_file) if(access(ca_file, R_OK) != 0) return x_error(X_NAME_INVALID, EINVAL, fn, "CA certificate not accessible: %s", ca_file);
+
   smaxLockConfig();
   if(config.ca_path) free(config.ca_path);
   config.ca_path = xStringCopyOf(ca_path);
@@ -97,7 +103,7 @@ int smaxSetTLS(const char *ca_path, const char *ca_file) {
 #else
   (void) ca_path;
   (void) ca_file;
-  return x_error(X_FAILURE, ENOSYS, "smaxSetTLS", "smax-clib was built without TLS support");
+  return x_error(X_FAILURE, ENOSYS, fn, "smax-clib was built without TLS support");
 #endif
 }
 
@@ -139,7 +145,6 @@ int smaxSetTLSVerify(boolean value) {
 #endif
 }
 
-
 /**
  * Set a TLS certificate and private key for mutual TLS. You will still need to call smaxSetTLS() also to create a
  * complete TLS configuration. Redis normally uses mutual TLS, which requires both the client and the server to
@@ -151,13 +156,18 @@ int smaxSetTLSVerify(boolean value) {
  *
  * @param cert_file   Path to the server's certificate file.
  * @param key_file    Path to the server'sprivate key file.
- * @return            X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built without TLS
- *                    support.
+ * @return            X_SUCCESS (0) if successful, or, X_NAME_INVALID if the certificate or private key file is not
+ *                    accessible, or else X_FAILURE (-1) if the SMA-X library was built without TLS support.
  *
  * @sa smaxSetTLS()
  */
 int smaxSetMutualTLS(const char *cert_file, const char *key_file) {
+  static const char *fn = "smaxSetMutualTLS";
+
 #if WITH_TLS
+  if(cert_file) if(access(cert_file, R_OK) != 0) return x_error(X_NAME_INVALID, EINVAL, fn, "certificate not accessible: %s", cert_file);
+  if(key_file) if(access(key_file, R_OK) != 0) return x_error(X_NAME_INVALID, EINVAL, fn, "private key not accessible: %s", key_file);
+
   smaxLockConfig();
   if(config.certificate) free(config.certificate);
   config.certificate = xStringCopyOf(cert_file);
@@ -168,7 +178,7 @@ int smaxSetMutualTLS(const char *cert_file, const char *key_file) {
 #else
   (void) cert_file;
   (void) key_file;
-  return x_error(X_FAILURE, ENOSYS, "smaxSetMutualTLS", "smax-clib was built without TLS support");
+  return x_error(X_FAILURE, ENOSYS, fn, "smax-clib was built without TLS support");
 #endif
 }
 
@@ -189,7 +199,7 @@ int smaxSetTLSServerName(const char *host) {
   smaxUnlockConfig();
   return X_SUCCESS;
 #else
-  (void) serverName;
+  (void) host;
   return x_error(X_FAILURE, ENOSYS, "smaxSetTLSServerName", "smax-clib was built without TLS support");
 #endif
 }
@@ -197,23 +207,23 @@ int smaxSetTLSServerName(const char *host) {
 /**
  * Sets the TLS ciphers to try (TLSv1.2 and earlier).
  *
- * @param cipher_list      a colon (:) separated list of ciphers, or NULL for default ciphers.
- * @return                 X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built
- *                         without TLS support.
+ * @param list      a colon (:) separated list of ciphers, or NULL for default ciphers.
+ * @return          X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built
+ *                  without TLS support.
  *
  * @sa smaxSetTLSCipherSuites()
  * @sa smaxSetTLS()
  * @sa smaSetDHCipherParams()
  */
-int smaxSetTLSCiphers(const char *cipher_list) {
+int smaxSetTLSCiphers(const char *list) {
 #if WITH_TLS
   smaxLockConfig();
   if(config.ciphers) free(config.ciphers);
-  config.ciphers = xStringCopyOf(cipher_list);
+  config.ciphers = xStringCopyOf(list);
   smaxUnlockConfig();
   return X_SUCCESS;
 #else
-  (void) cipher_list;
+  (void) list;
   return x_error(X_FAILURE, ENOSYS, "smaxSetTLSCiphers", "smax-clib was built without TLS support");
 #endif
 }
@@ -245,24 +255,26 @@ int smaxSetTLSCipherSuites(const char *list) {
 /**
  * Sets parameters for DH-based cyphers when using a TLS encrypted connection.
  *
- * @param dh_params_file   Path to the DH-based cypher parameters file (in PEM format; we don't support
- *                         the old DER format), or NULL for no params.
- * @return                 X_SUCCESS (0) if successful, or else X_FAILURE (-1) if the SMA-X library was built
- *                         without TLS support.
+ * @param dh_file     Path to the DH-based cypher parameters file (in PEM format; we don't support
+ *                    the old DER format), or NULL for no params.
+ * @return            X_SUCCESS (0) if successful, or X_NAME_INVALID if the file is not accessible, or else
+ *                    X_FAILURE (-1) if the SMA-X library was built without TLS support.
  *
  * @sa smaxSetTLS()
  * @sa smaxSetTLSCiphers()
  * @sa smaxSetTLSCipherSuites()
  */
-int smaxSetDHCipherParams(const char *dh_params_file) {
+int smaxSetDHCipherParams(const char *dh_file) {
 #if WITH_TLS
+  if(dh_file) if(access(dh_file, R_OK) != 0) return x_error(X_NAME_INVALID, EINVAL, "smaxSetDHCipherParams", "DH parameters not accessible: %s", dh_file);
+
   smaxLockConfig();
   if(config.dh_params) free(config.dh_params);
-  config.dh_params = xStringCopyOf(dh_params_file);
+  config.dh_params = xStringCopyOf(dh_file);
   smaxUnlockConfig();
   return X_SUCCESS;
 #else
-  (void) dh_params_file;
+  (void) dh_file;
   return x_error(X_FAILURE, ENOSYS, "smaxSetDHCipherParams", "smax-clib was built without TLS support");
 #endif
 }

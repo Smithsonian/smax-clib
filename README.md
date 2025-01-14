@@ -241,6 +241,60 @@ network errors (and keep track of changes locally until then):
   smaxSetResilient(TRUE);
 ```
 
+### TLS configuration
+
+You can also use SMA-X with a TLS encrypted connection. (We don't recommend using TLS with SMA-X in general though, 
+since it may adversely affect the performance / throughput of the database.) When enabled, Redis normally uses mutual 
+TLS (mTLS), but it may be configured otherwise also. Depending on the server configuration, and the level of security 
+required, you may configure some or all of the following options:
+
+```c
+  int status;
+
+  // Use TLS with the specified CA certificate file and path
+  status = smaxSetTLS("path/to/certificates", "ca.crt");
+  if(status) {
+    // Oops, the CA certificate is not accessible...
+    ...
+  }
+  
+  // (optional) If servers requires mutual TLS, you will need to provide 
+  // a certificate and private key also
+  status = smaxSetMutualTLS("path/to/redis.crt", "path/to/redis.key");
+  if(status) {
+    // Oops, the certificate or key file is not accessible...
+    ...
+  }
+
+  // (optional) Skip verification of the certificate (insecure!)
+  smaxSetTLSVerify(FALSE);
+
+  // (optional) Set server name for SNI
+  smaxSetTLSServerName("my.smax-server.com");
+
+  // (optional) Set ciphers to use (TLSv1.2 and earlier)
+  smaxSetTLSCiphers("HIGH:!aNULL:!kRSA:!PSK:!SRP:!MD5:!RC4");
+  
+  // (optional) Set cipher suites to use (TLSv1.3 and later)
+  smaxSetTLSCipherSuites("ECDHE-RSA-AES256-GCM-SHA384:TLS_AES_256_GCM_SHA384");
+  
+  // (optional) Set parameters for DH-based ciphers
+  status = smaxSetDHCypherParams("path/to/redis.dh");
+  if(status) {
+    // Oops, the parameter file is not accessible...
+    ...
+  }
+```
+
+### Reconfiguration
+
+The SMA-X configuration is activated at the time of connection (see below), after which it persists, through 
+successive connections also. That means, that once you have connected to the server, you cannot alter the 
+configuration prior to another connection attempt, unless you call `smaxReset()` first while disconnected. 
+`smaxReset()` will discard the currently configured Redis instance, so the next connection will create a new one, with 
+the current configuration.
+
+
 ------------------------------------------------------------------------------
 
 <a name="connecting"></a>

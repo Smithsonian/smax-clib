@@ -3,6 +3,12 @@
  *
  * \date Jan 26, 2018
  * \author Attila Kovacs
+ * \version 1.0
+ *
+ *  smax-clib C/C++ client library to an SMA-X database, available on GitHub as:
+ *
+ *   https://github.com/Smithsonian/redisx
+ *
  */
 
 #ifndef SMAX_H_
@@ -214,9 +220,9 @@ int smaxDisableTLS();
 int smaxSetTLSVerify(boolean value);
 int smaxSetMutualTLS(const char *cert_file, const char *key_file);
 int smaxSetTLSServerName(const char *host);
-int smaxSetTLSCiphers(const char *cipher_list);
+int smaxSetTLSCiphers(const char *list);
 int smaxSetTLSCipherSuites(const char *list);
-int smaxSetDHCipherParams(const char *dh_params_file);
+int smaxSetDHCipherParams(const char *dh_file);
 
 int smaxConnect();
 int smaxConnectTo(const char *server);
