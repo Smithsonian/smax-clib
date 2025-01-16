@@ -1064,6 +1064,18 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
   return k;
 }
 
+static char *smaxStringForIntSize(int n) {
+  switch(n) {
+    case 1: return "int8";
+    case 2: return "int16";
+    case 4: return "int32";
+    case 8: return "int64";
+    default:
+      x_error(0, EINVAL, "smaxStringForIntSize", "invalid SMA-X int type: %d", (8 * n));
+      return "unknown";
+  }
+}
+
 /**
  * Returns the string type for a given XType argument as a constant expression. For examples X_LONG -> "int64".
  *
@@ -1079,10 +1091,10 @@ char *smaxStringType(XType type) {
 
   switch(type) {
     case X_BOOLEAN: return "boolean";
-    case X_BYTE: return "int8";
-    case X_SHORT: return "int16";
-    case X_INT: return "int32";
-    case X_LONG: return "int64";
+    case X_BYTE: return smaxStringForIntSize(sizeof(char));
+    case X_SHORT: return smaxStringForIntSize(sizeof(short));
+    case X_INT: return smaxStringForIntSize(sizeof(int));
+    case X_LONG: return smaxStringForIntSize(sizeof(long long));
     case X_FLOAT: return "float";
     case X_DOUBLE: return "double";
     case X_STRING: return "string";
@@ -1093,6 +1105,13 @@ char *smaxStringType(XType type) {
       x_error(0, EINVAL, "smaxStringType", "invalid SMA-X type: %d", type);
       return "unknown";
   }
+}
+
+static XType smaxIntTypeForBytes(int n) {
+  if(n > sizeof(int)) return X_LONG;
+  if(n > sizeof(short)) return X_INT;
+  if(n > sizeof(char)) return X_SHORT;
+  return X_BYTE;
 }
 
 /**
@@ -1110,10 +1129,10 @@ XType smaxTypeForString(const char *type) {
   if(!type) return X_RAW;
   if(!strcmp("int", type) || !strcmp("integer", type)) return X_INT;
   if(!strcmp("boolean", type) || !strcmp("bool", type)) return X_BOOLEAN;
-  if(!strcmp("int8", type)) return X_BYTE;
-  if(!strcmp("int16", type)) return X_SHORT;
-  if(!strcmp("int32", type)) return X_INT;
-  if(!strcmp("int64", type)) return X_LONG;
+  if(!strcmp("int8", type)) return smaxIntTypeForBytes(1);
+  if(!strcmp("int16", type)) return smaxIntTypeForBytes(2);
+  if(!strcmp("int32", type)) return smaxIntTypeForBytes(4);
+  if(!strcmp("int64", type)) return smaxIntTypeForBytes(8);
   if(!strcmp("float", type)) return X_FLOAT;
   if(!strcmp("float32", type)) return X_FLOAT;
   if(!strcmp("float64", type)) return X_DOUBLE;
