@@ -424,7 +424,9 @@ int smaxConnectTo(const char *server) {
 }
 
 /**
- * Initializes the SMA-X sharing library in this runtime instance.
+ * Initializes the SMA-X sharing library in this runtime instance, and connects to the SMA-X server.
+ * If the server was not explicitly configure previously it will try the default server
+ * (SMAX_DEFAULT_HOSTNAME = "smax"), or else localhost (127.0.0.1).
  *
  *
  * \return      X_SUCCESS           If the library was successfully initialized
@@ -507,6 +509,14 @@ int smaxConnect() {
   smaxAddDisconnectHook((void (*)) smaxReleaseWaits);
 
   status = redisxConnect(redis, usePipeline);
+
+  // If failed on default host, then try localhost...
+  if(status && !server) {
+    xvprintf("Trying localhost...\n");
+    redisxSetHostname(redis, "127.0.0.1");
+    status = redisxConnect(redis, usePipeline);
+  }
+
   if(status) {
     smaxUnlockConfig();
     return x_trace(fn, NULL, status);
