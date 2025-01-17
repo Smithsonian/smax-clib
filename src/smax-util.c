@@ -1107,7 +1107,7 @@ char *smaxStringType(XType type) {
   }
 }
 
-static XType smaxIntTypeForBytes(int n) {
+static XType smaxIntTypeForBytes(size_t n) {
   if(n > sizeof(int)) return X_LONG;
   if(n > sizeof(short)) return X_INT;
   if(n > sizeof(char)) return X_SHORT;
