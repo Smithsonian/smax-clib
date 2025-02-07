@@ -37,6 +37,7 @@ typedef struct LazyMonitor {
   XMeta *meta;              ///< (optional) metadata
   boolean isCached;         ///< Whether the variable is continuously caching 'current' data.
   boolean isCurrent;        ///< If the locally stored data is current.
+  boolean isPending;        ///< Whether already queued for an update.
   time_t updateTime;        ///< Time of last update.
   int updateCount;          ///< Number of times the variable was updated.
   int unpulledCount;        ///< Number of updates since last pull...
@@ -144,6 +145,7 @@ static void ApplyUpdate(void *arg) {
 
   if(m) {
     ApplyUpdateAsync(update, m);
+    m->isPending = FALSE;
     Release(m);
   }
 
@@ -208,7 +210,8 @@ static int UpdateCachedAsync(LazyMonitor *m, boolean background) {
     ptr = staging->data;
   }
 
-  if(background && smaxIsPipelined()) {
+  if(background && smaxIsPipelined() && !m->isPending) {
+    m->isPending = TRUE;
     status = smaxQueue(m->table, m->key, type, 1, ptr, staging->meta);
     if(!status) {
       m->users++;
@@ -682,7 +685,7 @@ int smaxLazyFlush() {
  */
 int smaxGetLazyUpdateCount(const char *table, const char *key) {
   LazyMonitor *m;
-  int n;
+  int n = -1;
 
   if(!table) return -1;
   if(!key) return -1;
