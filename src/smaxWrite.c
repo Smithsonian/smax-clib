@@ -151,7 +151,7 @@ int main(int argc, const char *argv[]) {
 
     f.value = calloc(xGetFieldCount(&f), xElementSizeOf(f.type));
     if(!f.value) {
-      fprintf(stderr, "ERROR! alloc error (%d x %d): %s\n", xGetFieldCount(&f), xElementSizeOf(f.type), strerror(errno));
+      fprintf(stderr, "ERROR! alloc error (%ld x %d): %s\n", xGetFieldCount(&f), xElementSizeOf(f.type), strerror(errno));
     }
 
     if(f.type == X_STRING || f.type == X_RAW) f.value = (char *) &value;

@@ -611,11 +611,14 @@ int x2smaxField(XField *f) {
       char fname[20];
 
       XField *e = (XField *) calloc(1, sizeof(XField));
+      x_check_alloc(e);
+
       *e = array[i];    // shallow copy the array field
       prop_error(fn, x2smaxField(e));   // then convert the copy to smax
 
       sprintf(fname, ".%d", (i + 1)); // Label each field with the array index
       e->name = xStringCopyOf(fname);
+      x_check_alloc(e->name);
 
       e->next = s->firstField; // As to the structure...
       s->firstField = e;

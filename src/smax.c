@@ -1711,6 +1711,7 @@ static int ParseStructData(XStructure *s, RESP *names, RESP *data, XMeta *meta) 
 
   for(i=0; i<names->n; i++) {
     XField *f = (XField *) calloc(1, sizeof(XField));
+    x_check_alloc(f);
 
     f->isSerialized = TRUE;
     f->name = keys[i]->value;
