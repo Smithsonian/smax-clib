@@ -447,7 +447,7 @@ int smaxPullInt(const char *table, const char *key, int defaultValue) {
  */
 long long smaxPullLong(const char *table, const char *key, long long defaultValue) {
   long long l=0;
-  int status = smaxPull(table, key, X_LONG, 1, &l, NULL);
+  int status = smaxPull(table, key, X_LLONG, 1, &l, NULL);
   return status ? defaultValue : l;
 }
 
@@ -499,7 +499,7 @@ double smaxPullDoubleDefault(const char *table, const char *key, double defaultV
  * @sa smaxShareInts()
  */
 int smaxShareInt(const char *table, const char *key, long long value) {
-  prop_error("smaxShareInt", smaxShareLongs(table, key, &value, 1));
+  prop_error("smaxShareInt", smaxShareLLongs(table, key, &value, 1));
   return X_SUCCESS;
 }
 
@@ -566,6 +566,7 @@ int smaxShareString(const char *table, const char *key, const char *sValue) {
  * @sa smaxShareShorts()
  * @sa smaxShareInts()
  * @sa smaxShareLongs()
+ * @sa smaxShareLLongs()
  * @sa smaxShareInt()
  */
 int smaxShareBytes(const char *table, const char *key, const char *values, int n) {
@@ -578,7 +579,7 @@ int smaxShareBytes(const char *table, const char *key, const char *values, int n
  *
  * \param table     The hash table name.
  * \param key       The variable name under which the data is stored.
- * \param values    Pointer to short[] array.
+ * \param values    Pointer to `short[]` array.
  * \param n         Number of elements in array to share.
  *
  * \return      X_SUCCESS(0), or else an appropriate error code (&lt;0) from smaxShare().
@@ -587,6 +588,7 @@ int smaxShareBytes(const char *table, const char *key, const char *values, int n
  * @sa smaxShareBytes()
  * @sa smaxShareInts()
  * @sa smaxShareLongs()
+ * @sa smaxShareLLongs()
  *
  */
 int smaxShareShorts(const char *table, const char *key, const short *values, int n) {
@@ -595,22 +597,44 @@ int smaxShareShorts(const char *table, const char *key, const short *values, int
 }
 
 /**
- * Shares an array of wide integers to SMA-X.
+ * Shares an array of `long` integers to SMA-X.
  *
  * \param table     The hash table name.
  * \param key       The variable name under which the data is stored.
- * \param values    Pointer to long long[] array.
+ * \param values    Pointer to `long[]` array.
  * \param n         Number of elements in array to share.
  *
  * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
+ * @sa smaxShareInt()
+ * @sa smaxShareLLongs()
+ * @sa smaxShareInts()
+ * @sa smaxShareShorts()
+ * @sa smaxShareBytes()
+ */
+int smaxShareLongs(const char *table, const char *key, const long *values, int n) {
+  prop_error("smaxShareLongs", smaxShare(table, key, values, X_LONG, n));
+  return X_SUCCESS;
+}
+
+/**
+ * Shares an array of `long long` integers to SMA-X.
+ *
+ * \param table     The hash table name.
+ * \param key       The variable name under which the data is stored.
+ * \param values    Pointer to `long long[]` array.
+ * \param n         Number of elements in array to share.
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxShareLongs()
  * @sa smaxShareInts()
  * @sa smaxShareShorts()
  * @sa smaxShareBytes()
  * @sa smaxShareInt()
  */
-int smaxShareLongs(const char *table, const char *key, const long long *values, int n) {
-  prop_error("smaxShareLongs", smaxShare(table, key, values, X_LONG, n));
+int smaxShareLLongs(const char *table, const char *key, const long long *values, int n) {
+  prop_error("smaxShareLongs", smaxShare(table, key, values, X_LLONG, n));
   return X_SUCCESS;
 }
 
@@ -619,11 +643,12 @@ int smaxShareLongs(const char *table, const char *key, const long long *values, 
  *
  * \param table     The hash table name.
  * \param key       The variable name under which the data is stored.
- * \param values    Pointer to int[] array.
+ * \param values    Pointer to `int[]` array.
  * \param n         Number of elements in array to share.
  *
  * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
+ * @sa smaxShareLLongs()
  * @sa smaxShareLongs()
  * @sa smaxShareShorts()
  * @sa smaxShareBytes()
@@ -640,7 +665,7 @@ int smaxShareInts(const char *table, const char *key, const int *values, int n) 
  *
  * \param table     Hash table name.
  * \param key       Variable name under which the data is stored.
- * \param values    Pointer to boolean[] array.
+ * \param values    Pointer to `boolean[]` array.
  * \param n         Number of elements in array to share.
  *
  * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
@@ -657,7 +682,7 @@ int smaxShareBooleans(const char *table, const char *key, const boolean *values,
  *
  * \param table     The hash table name.
  * \param key       The variable name under which the data is stored.
- * \param values    Pointer to float[] array.
+ * \param values    Pointer to `float[]` array.
  * \param n         Number of elements in array to share.
  *
  * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
@@ -675,7 +700,7 @@ int smaxShareFloats(const char *table, const char *key, const float *values, int
  *
  * \param table     The hash table name.
  * \param key       The variable name under which the data is stored.
- * \param values    Pointer to double[] array.
+ * \param values    Pointer to `double[]` array.
  * \param n         Number of elements in array to share.
  *
  * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
@@ -802,7 +827,7 @@ XField *smaxCreateDoubleField(const char *name, double value) {
  * @sa xSetField()
  */
 XField *smaxCreateLongField(const char *name, long long value) {
-  XField *f = smaxCreateScalarField(name, X_LONG, &value);
+  XField *f = smaxCreateScalarField(name, X_LLONG, &value);
   return f ? f : x_trace_null("smaxCreateLongField", NULL);
 }
 

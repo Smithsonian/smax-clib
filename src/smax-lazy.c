@@ -505,7 +505,7 @@ long long smaxLazyPullLong(const char *table, const char *key, long long default
   long long l;
   int s;
 
-  s = smaxLazyPull(table, key, X_LONG, 1, &l, NULL);
+  s = smaxLazyPull(table, key, X_LLONG, 1, &l, NULL);
   if(s) return defaultValue;
 
   return l;

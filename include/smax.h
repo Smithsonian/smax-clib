@@ -296,7 +296,8 @@ int smaxShareBooleans(const char *table, const char *key, const boolean *values,
 int smaxShareBytes(const char *table, const char *key, const char *values, int n);
 int smaxShareShorts(const char *table, const char *key, const short *values, int n);
 int smaxShareInts(const char *table, const char *key, const int *values, int n);
-int smaxShareLongs(const char *table, const char *key, const long long *values, int n);
+int smaxShareLongs(const char *table, const char *key, const long *values, int n);
+int smaxShareLLongs(const char *table, const char *key, const long long *values, int n);
 int smaxShareFloats(const char *table, const char *key, const float *values, int n);
 int smaxShareDoubles(const char *table, const char *key, const double *values, int n);
 int smaxShareStrings(const char *table, const char *key, const char **sValues, int n);

@@ -800,16 +800,8 @@ int smaxGetServerTime(struct timespec *t) {
 char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf, int trylength) {
   static const char *fn = "smaxValuedToString";
 
-  int eSize=1, k, stringSize;
+  int eSize = 1, k, stringSize;
   char *sValue, *next;
-
-  const double *d = (double *) value;
-  const float *f = (float *) value;
-  const int *i = (int *) value;
-  const long long *l = (long long *) value;
-  const short *s = (short *) value;
-  char *c = (char *) value;
-  char **S = (char **) value;
 
   if(value == NULL) type = X_UNKNOWN;                   // Print zero(es) for null value.
   if(type == X_STRUCT) {
@@ -821,6 +813,7 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
   // Figure out how big the serialized string might be...
   if(type == X_UNKNOWN) stringSize = 2 * eCount;
   else if(type == X_STRING) {
+    char **S = (char **) value;
     stringSize = 1;
     for(k = 0; k < eCount; k++) stringSize += (S[k] ? strlen(S[k]) : 0) + 1;
   }
@@ -853,6 +846,8 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
   }
 
   else if(xIsCharSequence(type)) {
+    char *c = (char *) value;
+
     *sValue = '\0';         // Default empty string...
 
     for(k=0; k<eCount; k++) {
@@ -870,38 +865,62 @@ char *smaxValuesToString(const void *value, XType type, int eCount, char *trybuf
 
   // For all the types...
   else switch(type) {
-    case X_BOOLEAN:
-      for(k=0; k<eCount; k++) next += sprintf(next, "%c ", (i[k] != 0 ? '1' : '0'));
+    case X_BOOLEAN: {
+      const boolean *b = (boolean *) value;
+      for(k=0; k<eCount; k++) next += sprintf(next, "%c ", (b[k] != 0 ? '1' : '0'));
       break;
-    case X_BYTE:
+    }
+
+    case X_BYTE: {
+      const char *c = (const char *) value;
       for(k=0; k<eCount; k++) next += sprintf(next, "%hhd ", c[k]);
       break;
-    case X_SHORT:
-      for(k=0; k<eCount; k++) next += sprintf(next, "%hd ", s[k]);
-      break;
-    case X_INT:
-      for(k=0; k<eCount; k++) next += sprintf(next, "%d ", i[k]);
-      break;
-    case X_LONG:
-      for(k=0; k<eCount; k++) next += sprintf(next, "%lld ", l[k]);
-      break;
-    case X_FLOAT:
+    }
+
+    case X_FLOAT: {
+      const float *f = (const float *) value;
       for(k=0; k<eCount; k++) {
         next += xPrintFloat(next, f[k]);
         *(next++) = ' ';
       }
       break;
-    case X_DOUBLE:
+    }
+
+    case X_DOUBLE: {
+      const double *d = (const double *) value;
       for(k=0; k<eCount; k++) {
         next += xPrintDouble(next, d[k]);
         *(next++) = ' ';
       }
       break;
-    case X_STRING:
+    }
+
+    case X_STRING: {
+      char **S = (char **) value;
       for(k=0; k<eCount; k++) next += sprintf(next, "%s\r", S[k] ? S[k] : "");
       break;
+    }
+
     default:
-      for(k=0; k<eCount; k++) next += sprintf(next, "0 ");
+      // Check for possibly overlapping types
+      if(type == X_SHORT) {
+        const short *s = (const short *) value;
+        for(k=0; k<eCount; k++) next += sprintf(next, "%hd ", s[k]);
+      }
+      else if(type == X_INT) {
+        const int *i = (const int *) value;
+        for(k=0; k<eCount; k++) next += sprintf(next, "%d ", i[k]);
+      }
+      else if(type == X_LONG) {
+        const long *l = (const long *) value;
+        for(k=0; k<eCount; k++) next += sprintf(next, "%ld ", l[k]);
+      }
+      else if(type == X_LLONG) {
+        const long long *ll = (const long long *) value;
+        for(k=0; k<eCount; k++) next += sprintf(next, "%lld ", ll[k]);
+      }
+      else
+        for(k=0; k<eCount; k++) next += sprintf(next, "0 ");
   }
 
   // Replace trailing item separator with string termination.
@@ -955,16 +974,9 @@ static __inline__ void CheckParseError(char **next, int *status) {
 int smaxStringToValues(const char *str, void *value, XType type, int eCount, int *pos) {
   static const char *fn = "smaxStringToValues";
 
-  char *next;
+  char *next, *c = (char *) value;
   int status = 0, eSize, k;
 
-  double *d = (double *) value;
-  float *f = (float *) value;
-  int *i = (int *) value;
-  long long *l = (long long *) value;
-  short *s = (short *) value;
-  char *c = (char *) value;
-  boolean *b = (boolean *) value;
 
   if(value == NULL) return x_error(X_NULL, EINVAL, fn, "value is NULL");
   if(eCount <= 0) return x_error(X_SIZE_INVALID, EINVAL, fn, "invalid count: %d", eCount);
@@ -1007,12 +1019,15 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
   else {
     // Parse numerical type
     switch(type) {
-      case X_BOOLEAN:
+      case X_BOOLEAN: {
+        boolean *b = (boolean *) value;
         for(k=0; k<eCount && *next; k++) {
           b[k] = xParseBoolean(next, &next);
           CheckParseError(&next, &status);
         }
         break;
+      }
+
       case X_BYTE:
         for(k=0; k<eCount && *next; k++) {
           errno = 0;
@@ -1020,42 +1035,62 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
           CheckParseError(&next, &status);
         }
         break;
-      case X_SHORT:
-        for(k=0; k<eCount && *next; k++) {
-          errno = 0;
-          s[k] = (short) strtol(next, &next, 0);
-          CheckParseError(&next, &status);
-        }
-        break;
-      case X_INT:
-        for(k=0; k<eCount && *next; k++) {
-          errno = 0;
-          i[k] = (int) strtol(next, &next, 0);
-          CheckParseError(&next, &status);
-        }
-        break;
-      case X_LONG:
-        for(k=0; k<eCount && *next; k++) {
-          errno = 0;
-          l[k] = (int) strtoll(next, &next, 0);
-          CheckParseError(&next, &status);
-        }
-        break;
-      case X_FLOAT:
+
+      case X_FLOAT: {
+        float *f = (float *) value;
         for(k=0; k<eCount && *next; k++) {
           f[k] = (float) xParseDouble(next, &next);
           CheckParseError(&next, &status);
         }
         break;
-      case X_DOUBLE:
+      }
+
+      case X_DOUBLE: {
+        double *d = (double *) value;
         for(k=0; k<eCount && *next; k++) {
           d[k] = xParseDouble(next, &next);
           CheckParseError(&next, &status);
         }
         break;
-      default: return x_error(X_TYPE_INVALID, EINVAL, fn, "unsupported type: %d", type);         // Unknown type...
-    }
+      }
 
+      default:
+        // Check for possibly overlapping types...
+        if(type == X_SHORT) {
+          short *s = (short *) value;
+          for(k=0; k<eCount && *next; k++) {
+            errno = 0;
+            s[k] = (short) strtol(next, &next, 0);
+            CheckParseError(&next, &status);
+          }
+        }
+        else if(type == X_INT) {
+          int *i = (int *) value;
+          for(k=0; k<eCount && *next; k++) {
+            errno = 0;
+            i[k] = (int) strtol(next, &next, 0);
+            CheckParseError(&next, &status);
+          }
+        }
+        else if(type == X_LONG) {
+          long *l = (long *) value;
+          for(k=0; k<eCount && *next; k++) {
+            errno = 0;
+            l[k] = strtol(next, &next, 0);
+            CheckParseError(&next, &status);
+          }
+        }
+        else if(type == X_LLONG) {
+          long long *ll = (long long *) value;
+          for(k=0; k<eCount && *next; k++) {
+            errno = 0;
+            ll[k] = (int) strtoll(next, &next, 0);
+            CheckParseError(&next, &status);
+          }
+        }
+        else
+          return x_error(X_TYPE_INVALID, EINVAL, fn, "unsupported type: %d", type);         // Unknown type...
+    }
     // Zero out the remaining elements...
     if(k < eCount) xZero(&c[k], type, eCount - k);
   }
@@ -1095,9 +1130,9 @@ char *smaxStringType(XType type) {
   switch(type) {
     case X_BOOLEAN: return "boolean";
     case X_BYTE: return smaxStringForIntSize(sizeof(char));
-    case X_SHORT: return smaxStringForIntSize(sizeof(short));
-    case X_INT: return smaxStringForIntSize(sizeof(int));
-    case X_LONG: return smaxStringForIntSize(sizeof(long long));
+    case X_INT16: return smaxStringForIntSize(sizeof(int16_t));
+    case X_INT32: return smaxStringForIntSize(sizeof(int32_t));
+    case X_INT64: return smaxStringForIntSize(sizeof(int64_t));
     case X_FLOAT: return "float";
     case X_DOUBLE: return "double";
     case X_STRING: return "string";
@@ -1111,9 +1146,9 @@ char *smaxStringType(XType type) {
 }
 
 static XType smaxIntTypeForBytes(size_t n) {
-  if(n > sizeof(int)) return X_LONG;
-  if(n > sizeof(short)) return X_INT;
-  if(n > sizeof(char)) return X_SHORT;
+  if(n > sizeof(int32_t)) return X_INT64;
+  if(n > sizeof(int16_t)) return X_INT32;
+  if(n > sizeof(int8_t)) return X_INT16;
   return X_BYTE;
 }
 
