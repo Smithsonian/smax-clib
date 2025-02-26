@@ -124,8 +124,7 @@ int main(int argc, const char *argv[]) {
   if(printErrors) xjsonSetErrorStream(stderr);
 
   if(json) {
-    int line = 0;
-    XField *f1 = xjsonParseFieldAt(&value, &line);
+    XField *f1 = xjsonParseField(value, NULL);
     if(!f1) {
       fprintf(stderr, "ERROR! JSON parse error.\n");
       exit(1);

@@ -1091,6 +1091,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
         else
           return x_error(X_TYPE_INVALID, EINVAL, fn, "unsupported type: %d", type);         // Unknown type...
     }
+
     // Zero out the remaining elements...
     if(k < eCount) xZero(&c[k], type, eCount - k);
   }
