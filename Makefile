@@ -28,6 +28,13 @@ else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
+# Build static or shared libs
+ifeq ($(STATICLINK),1)
+  LIBSTYLE = static
+else
+  LIBSTYLE = shared
+endif
+
 # Build for distribution
 .PHONY: distro
 distro: shared tools $(DOC_TARGETS)
@@ -65,16 +72,7 @@ infer: clean
 
 # Command-line tools
 .PHONY: tools
-
-# Link tools against the static or shared libs
-ifeq ($(STATICLINK),1)
-tools: static
-else
-tools: shared
-endif
-
-# The actual tools to build
-tools: $(BIN)/smaxValue $(BIN)/smaxWrite
+tools: $(LIBSTYLE) $(BIN)/smaxValue $(BIN)/smaxWrite
 
 # Remove intermediates
 .PHONY: clean

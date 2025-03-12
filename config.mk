@@ -119,21 +119,18 @@ LDFLAGS += -lpthread -lredisx -lxchange
 # Search for libraries under LIB
 ifneq ($(findstring $(LIB),$(LD_LIBRARY_PATH)),$LIB)
   LDFLAGS += -L$(LIB)
-  LD_LIBRARY_PATH := $(LIB):$(LD_LIBRARY_PATH)
 endif
 
 # Compile and link against a specific redisx library (if defined)
 ifdef REDISX
   CPPFLAGS += -I$(REDISX)/include
   LDFLAGS += -L$(REDISX)/lib
-  LD_LIBRARY_PATH := $(REDISX)/lib:$(LD_LIBRARY_PATH)
 endif
 
 # Compile and link against a specific xchange library (if defined)
 ifdef XCHANGE
   CPPFLAGS += -I$(XCHANGE)/include
   LDFLAGS += -L$(XCHANGE)/lib
-  LD_LIBRARY_PATH := $(XCHANGE)/lib:$(LD_LIBRARY_PATH)
 endif
 
 
