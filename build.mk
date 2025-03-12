@@ -26,12 +26,9 @@ $(LIB)/%.a:
 	ranlib $@
 
 # Simple binaries
-$(BIN)/%: $(OBJ)/%.o
+$(BIN)/%: $(OBJ)/%.o $(LIBSMAX)
 	@$(MAKE) $(BIN)
-	$(CC) -o $@ $< $(LDFLAGS) 
-
-# Link binaries against smax lib
-$(BIN)/%: LDFLAGS := $(LDFLAGS) -lpopt -lsmax
+	$(CC) -o $@ $< $(LDFLAGS) -lpopt -lsmax
 
 # Create sub-directories for build targets
 dep $(OBJ) $(LIB) $(BIN) apidoc:

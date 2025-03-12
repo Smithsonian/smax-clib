@@ -28,16 +28,9 @@ else
   $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
 endif
 
-# Build static or shared libs
-ifeq ($(STATICLINK),1)
-  LIBSTYLE = static
-else
-  LIBSTYLE = shared
-endif
-
 # Build for distribution
 .PHONY: distro
-distro: shared tools $(DOC_TARGETS)
+distro: $(LIBSMAX) tools $(DOC_TARGETS)
 
 # Build everything...
 .PHONY: all
@@ -103,9 +96,6 @@ $(LIB)/libsmax.so.$(SO_VERSION): $(SOURCES)
 
 # Static library
 $(LIB)/libsmax.a: $(OBJECTS)
-
-# Binaries need libsmax (static or shared)
-$(BIN)/%: $(LIBSTYLE)
 
 README-smax.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@

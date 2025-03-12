@@ -133,6 +133,13 @@ ifdef XCHANGE
   LDFLAGS += -L$(XCHANGE)/lib
 endif
 
+# Build static or shared libs
+ifeq ($(STATICLINK),1)
+  LIBSMAX = $(LIB)/libsmax.a
+else
+  LIBSMAX = $(LIB)/libsmax.so
+endif
+
 
 # Search for files in the designated locations
 vpath %.h $(INC)
