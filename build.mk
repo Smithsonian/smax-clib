@@ -28,7 +28,7 @@ $(LIB)/%.a:
 # Simple binaries
 $(BIN)/%: $(OBJ)/%.o
 	@$(MAKE) $(BIN)
-	$(CC) -o $@ $^ $(LDFLAGS) 
+	$(CC) -o $@ $< $(LDFLAGS) 
 
 # Link binaries against smax lib
 $(BIN)/%: LDFLAGS := $(LDFLAGS) -lpopt -lsmax

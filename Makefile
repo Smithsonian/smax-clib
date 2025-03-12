@@ -72,7 +72,7 @@ infer: clean
 
 # Command-line tools
 .PHONY: tools
-tools: $(LIBSTYLE) $(BIN)/smaxValue $(BIN)/smaxWrite
+tools: $(BIN)/smaxValue $(BIN)/smaxWrite
 
 # Remove intermediates
 .PHONY: clean
@@ -103,6 +103,9 @@ $(LIB)/libsmax.so.$(SO_VERSION): $(SOURCES)
 
 # Static library
 $(LIB)/libsmax.a: $(OBJECTS)
+
+# Binaries need libsmax (static or shared)
+$(BIN)/%: $(LIBSTYLE)
 
 README-smax.md: README.md
 	LINE=`sed -n '/\# /{=;q;}' $<` && tail -n +$$((LINE+2)) $< > $@
