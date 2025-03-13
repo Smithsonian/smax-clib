@@ -34,7 +34,7 @@ distro: $(LIBSMAX) tools $(DOC_TARGETS)
 
 # Build everything...
 .PHONY: all
-all: shared static tools $(DOC_TARGETS) check
+all: $(LIBSMAX) tools $(DOC_TARGETS) check
 
 # Shared libraries (versioned and unversioned)
 .PHONY: shared
@@ -61,7 +61,7 @@ check: test analyze
 # Static code analysis via Facebook's infer
 .PHONY: infer
 infer: clean
-	infer run -- $(MAKE) shared
+	infer run -- $(MAKE) $(LIBSMAX)
 
 # Command-line tools
 .PHONY: tools

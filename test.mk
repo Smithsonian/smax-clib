@@ -30,5 +30,4 @@ benchmark: $(BIN)/benchmark
 
 $(BIN)/benchmark: LDFLAGS += -lpopt -lbsd
 
-
 include build.mk
