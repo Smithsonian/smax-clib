@@ -8,16 +8,8 @@
  *      A collection of commonly used functions for the SMA-X library.
  */
 
-/// For clock_gettime()
-#define _POSIX_C_SOURCE 199309
-
-// We'll use gcc major version as a proxy for the glibc library to decide which feature macro to use.
-// gcc 5.1 was released 2015-04-22...
-#if __GNUC__ > 0 && __GNUC__ < 5
-#  define _BSD_SOURCE           ///< strtoll() feature macro for glibc <= 2.19
-#else
-#  define _ISOC99_SOURCE        ///< strtoll() feature macro starting glibc 2.20 (2014-09-08)
-#endif
+#define _GNU_SOURCE               ///< for strcasecmp()
+#define _POSIX_C_SOURCE 199309    ///< for clock_gettime()
 
 #include <stdio.h>
 #include <stdlib.h>
