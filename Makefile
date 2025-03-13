@@ -46,12 +46,12 @@ static: $(LIB)/libsmax.a
 
 # Run regression tests
 .PHONY: test
-test: shared static
+test: $(LIBSMAX)
 	$(MAKE) -f test.mk
 
 # Build benchmark program
 .PHONY: benchmark
-benchmark: shared static
+benchmark: $(LIBSMAX)
 	$(MAKE) -f test.mk benchmark
 
 # 'test' + 'analyze'
