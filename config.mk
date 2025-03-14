@@ -45,6 +45,11 @@ ifeq ($(WEXTRA), 1)
   CFLAGS += -Wextra
 endif
 
+# Add source code fortification checks
+ifdef FORTIFY 
+  CFLAGS += -D_FORTIFY_SOURCE=$(FORTIFY)
+endif
+
 # On some old platforms __progname is not provided by libc. We have a 
 # workaround in place for LynxOS/PowerPCs. For other platforms without
 # __progname, uncomment the line below to use a default program name
