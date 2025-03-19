@@ -25,7 +25,9 @@ endif
 ifeq ($(.SHELLSTATUS),0)
   DOC_TARGETS += local-dox
 else
-  $(info WARNING! Doxygen is not available. Will skip 'dox' target) 
+  ifneq ($(DOXYGEN),none)
+    $(info WARNING! Doxygen is not available. Will skip 'dox' target)
+  endif
 endif
 
 # Build for distribution
