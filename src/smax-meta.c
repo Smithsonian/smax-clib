@@ -68,20 +68,21 @@ int smaxPushMeta(const char *meta, const char *table, const char *key, const cha
 /**
  * Retrieves a metadata string value for a given variable from the database
  *
- * \param meta      Root meta table name, usually something like "<metaname>".
- * \param table     Hash table name.
- * \param key       Variable / field name in table.
- * \param status    Pointer to int in which to return a X_SUCCESS or an error code.
+ * \param meta        Root meta table name, usually something like "<metaname>".
+ * \param table       Hash table name.
+ * \param key         Variable / field name in table.
+ * \param[out] len    The length of the returned string (&gt;=0), or else an error code (&lt;0).
  *
- * \return          The string metadata value or NULL.
+ * \return            The string metadata value or NULL.
  *
  * \sa setPushMeta()
  */
-char *smaxPullMeta(const char *meta, const char *table, const char *key, int *status) {
+char *smaxPullMeta(const char *meta, const char *table, const char *key, int *len) {
   static const char *fn = "smaxPullMeta";
 
   Redis *redis = smaxGetRedis();
   char *var, *value;
+  int l = -1;
 
   if(meta == NULL) {
     x_error(X_GROUP_INVALID, EINVAL, fn, "meta name is NULL");
@@ -101,10 +102,13 @@ char *smaxPullMeta(const char *meta, const char *table, const char *key, int *st
   var = xGetAggregateID(table, key);
   if(var == NULL) return x_trace_null(fn, NULL);
 
-  value = redisxGetStringValue(redis, meta, var, status);
+  value = redisxGetStringValue(redis, meta, var, &l);
   free(var);
 
-  if(status) x_trace_null(fn, NULL);
+  if(len)
+    *len = l;
+
+  if(l < 0) x_trace_null(fn, NULL);
 
   return value;
 }

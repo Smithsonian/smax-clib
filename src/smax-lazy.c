@@ -975,7 +975,7 @@ static void ProcessLazyUpdates(const char *pattern, const char *channel, const c
     // Find the monitor point for this update, and deal with it quickly!.
     m = monitorTable[GetChannelLookupIndex(id)];
 
-    // Check through the monitors with the sam hash, to finf a match
+    // Check through the monitors with the same hash, to find a match
     for( ; m != NULL; m = m->next) if(!strcmp(id, m->channel)) {
       xdprintf("SMA-X: Found lazy match for %s:%s.\n", m->table, m->key ? m->key : "");
       m->isCurrent = FALSE;
