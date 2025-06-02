@@ -495,13 +495,33 @@ double smaxPullDoubleDefault(const char *table, const char *key, double defaultV
  *
  * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
+ * @sa smaxShareLong()
  * \sa smaxShareHex()
  * @sa smaxShareInts()
  */
-int smaxShareInt(const char *table, const char *key, long long value) {
-  prop_error("smaxShareInt", smaxShareLLongs(table, key, &value, 1));
+int smaxShareInt(const char *table, const char *key, int value) {
+  prop_error("smaxShareInt", smaxShareInts(table, key, &value, 1));
   return X_SUCCESS;
 }
+
+/**
+ * Shares a single 64-bit integer value to SMA-X.
+ *
+ * \param table     Hash table name.
+ * \param key       Variable name under which the data is stored.
+ * \param value     Integer value.
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxShareInt()
+ * \sa smaxShareHex()
+ * @sa smaxShareInts()
+ */
+int smaxShareLong(const char *table, const char *key, long long value) {
+  prop_error("smaxShareLong", smaxShareLLongs(table, key, &value, 1));
+  return X_SUCCESS;
+}
+
 
 /**
  * Shares a single boolean value to SMA-X. All non-zero values are mapped
