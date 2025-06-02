@@ -289,12 +289,14 @@ int smaxGetLazyUpdateCount(const char *table, const char *key);
 
 // Some convenience methods for simpler shares ----------->
 int smaxShareBoolean(const char *table, const char *key, boolean value);
+int smaxShareByte(const char *table, const char *key, signed char value);
+int smaxShareShort(const char *table, const char *key, short value);
 int smaxShareInt(const char *table, const char *key, int value);
 int smaxShareLong(const char *table, const char *key, long long value);
 int smaxShareDouble(const char *table, const char *key, double value);
 int smaxShareString(const char *table, const char *key, const char *sValue);
 int smaxShareBooleans(const char *table, const char *key, const boolean *values, int n);
-int smaxShareBytes(const char *table, const char *key, const char *values, int n);
+int smaxShareBytes(const char *table, const char *key, const signed char *values, int n);
 int smaxShareShorts(const char *table, const char *key, const short *values, int n);
 int smaxShareInts(const char *table, const char *key, const int *values, int n);
 int smaxShareLongs(const char *table, const char *key, const long *values, int n);

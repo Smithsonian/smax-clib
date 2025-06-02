@@ -487,6 +487,41 @@ double smaxPullDoubleDefault(const char *table, const char *key, double defaultV
 }
 
 /**
+ * Shares a single signed byte value to SMA-X.
+ *
+ * \param table     Hash table name.
+ * \param key       Variable name under which the data is stored.
+ * \param value     Integer value.
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxShareShort()
+ * @sa smaxShareBytes()
+ */
+int smaxShareByte(const char *table, const char *key, signed char value) {
+  prop_error("smaxShareInt", smaxShareBytes(table, key, &value, 1));
+  return X_SUCCESS;
+}
+
+/**
+ * Shares a single short integer value to SMA-X.
+ *
+ * \param table     Hash table name.
+ * \param key       Variable name under which the data is stored.
+ * \param value     Integer value.
+ *
+ * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
+ *
+ * @sa smaxShareByte()
+ * @sa smaxShareInt()
+ * @sa smaxShareShorts()
+ */
+int smaxShareShort(const char *table, const char *key, short value) {
+  prop_error("smaxShareInt", smaxShareShorts(table, key, &value, 1));
+  return X_SUCCESS;
+}
+
+/**
  * Shares a single integer value to SMA-X.
  *
  * \param table     Hash table name.
@@ -495,6 +530,7 @@ double smaxPullDoubleDefault(const char *table, const char *key, double defaultV
  *
  * \return      X_SUCCESS (0), or else an appropriate error code (&lt;0) from smaxShare().
  *
+ * @sa smaxShareShort()
  * @sa smaxShareLong()
  * \sa smaxShareHex()
  * @sa smaxShareInts()
@@ -589,7 +625,7 @@ int smaxShareString(const char *table, const char *key, const char *sValue) {
  * @sa smaxShareLLongs()
  * @sa smaxShareInt()
  */
-int smaxShareBytes(const char *table, const char *key, const char *values, int n) {
+int smaxShareBytes(const char *table, const char *key, const signed char *values, int n) {
   prop_error("smaxShareBytes", smaxShare(table, key, values, X_BYTE, n));
   return X_SUCCESS;
 }
