@@ -605,7 +605,7 @@ int smaxShareDouble(const char *table, const char *key, double value) {
  * @sa smaxShareStrings()
  */
 int smaxShareString(const char *table, const char *key, const char *sValue) {
-  prop_error("smaxShareString", smaxShare(table, key, &sValue, X_STRING, 1));
+  prop_error("smaxShareString", smaxShare(table, key, &sValue, X_RAW, 1));
   return X_SUCCESS;
 }
 
