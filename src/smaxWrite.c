@@ -112,6 +112,12 @@ int main(int argc, const char *argv[]) {
     exit(1);
   }
 
+  f.type = smaxTypeForString(sType);
+  if(f.type == X_UNKNOWN) {
+    fprintf(stderr, "ERROR! unrecognised type: '%s'.\n", sType);
+    exit(1);
+  }
+
   delims = xjsonUnescape(delims);
 
   smaxSetPipelined(FALSE);
