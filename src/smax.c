@@ -846,8 +846,8 @@ int smaxShareArray(const char *table, const char *key, const void *ptr, XType ty
 
   if(count < 1 || count > X_MAX_ELEMENTS) return x_error(X_SIZE_INVALID, EINVAL, fn, "invalid element count: %d", count);
 
-  f.value = (type == X_RAW || type == X_STRUCT) ?
-          (char *) ptr : smaxValuesToString(ptr, type, count, trybuf, REDISX_CMDBUF_SIZE);
+  f.value = (type == X_STRUCT) ?
+          (void *) ptr : smaxValuesToString(ptr, type, count, trybuf, REDISX_CMDBUF_SIZE);
 
   if(f.value == NULL) return x_trace(fn, NULL, X_NULL);
 
