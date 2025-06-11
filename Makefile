@@ -84,8 +84,9 @@ distclean: clean
 # ----------------------------------------------------------------------------
 
 SOURCES = $(SRC)/smax.c $(SRC)/smax-easy.c $(SRC)/smax-lazy.c $(SRC)/smax-queue.c \
-          $(SRC)/smax-meta.c $(SRC)/smax-messages.c $(SRC)/smax-resilient.c \
-          $(SRC)/smax-util.c $(SRC)/smax-tls.c $(SRC)/procname.c
+          $(SRC)/smax-meta.c $(SRC)/smax-messages.c \
+          $(SRC)/smax-resilient.c $(SRC)/smax-control.c $(SRC)/smax-util.c \
+          $(SRC)/smax-tls.c $(SRC)/procname.c
 
 # Generate a list of object (obj/*.o) files from the input sources
 OBJECTS := $(subst $(SRC),$(OBJ),$(SOURCES))
