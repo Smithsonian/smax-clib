@@ -141,12 +141,14 @@ double smaxPullTime(const char *table, const char *key) {
 
   errno = 0;
   ts = strtod(str, NULL);
+
   if(errno) {
     x_error(0, errno, fn, "invalid time: %s", str);
+    free(str);
     return NAN;
   }
-  free(str);
 
+  free(str);
   return ts;
 }
 
