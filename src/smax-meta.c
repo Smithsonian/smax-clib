@@ -127,11 +127,11 @@ char *smaxPullMeta(const char *meta, const char *table, const char *key, int *le
 double smaxPullTime(const char *table, const char *key) {
   static const char *fn = "smaxPullTime";
 
-  int status = X_SUCCESS;
-  char *str = smaxPullMeta(SMAX_TIMESTAMPS, table, key, &status);
+  int l = 0;
+  char *str = smaxPullMeta(SMAX_TIMESTAMPS, table, key, &l);
   double ts;
 
-  if(status) {
+  if(l < 0) {
     x_trace_null(fn, NULL);
     if(str) free(str);
     return NAN;
@@ -169,10 +169,10 @@ XType smaxPullTypeDimension(const char *table, const char *key, int *ndim, int *
   static const char *fn = "smaxPullTYpeDimension";
 
   XType type;
-  int status = X_SUCCESS;
-  char *str = smaxPullMeta(SMAX_TYPES, table, key, &status);
+  int l = 0;
+  char *str = smaxPullMeta(SMAX_TYPES, table, key, &l);
 
-  if(status) {
+  if(l < 0) {
     type = x_trace(fn, NULL, X_UNKNOWN);
   }
   else {
@@ -183,8 +183,8 @@ XType smaxPullTypeDimension(const char *table, const char *key, int *ndim, int *
   if(str) free(str);
 
   if(ndim && sizes) {
-    str = smaxPullMeta(SMAX_DIMS, table, key, &status);
-    if(status) *ndim = *sizes = 0;
+    str = smaxPullMeta(SMAX_DIMS, table, key, &l);
+    if(l < 0) *ndim = *sizes = 0;
     else *ndim = xParseDims(str, sizes);
     if(str) free(str);
   }
@@ -220,9 +220,9 @@ int smaxSetDescription(const char *table, const char *key, const char *descripti
  * \sa smaxSetDescription()
  */
 char *smaxGetDescription(const char *table, const char *key) {
-  int status = X_SUCCESS;
-  char *desc = smaxPullMeta(META_DESCRIPTION, table, key, &status);
-  if(status) x_trace_null("smaxGetDescription", NULL);
+  int l = 0;
+  char *desc = smaxPullMeta(META_DESCRIPTION, table, key, &l);
+  if(l < 0) x_trace_null("smaxGetDescription", NULL);
   return desc;
 }
 
@@ -254,9 +254,9 @@ int smaxSetUnits(const char *table, const char *key, const char *unit) {
  * \sa smaxSetUnits()
  */
 char *smaxGetUnits(const char *table, const char *key) {
-  int status = X_SUCCESS;
-  char *unit = smaxPullMeta(META_UNIT, table, key, &status);
-  if(status) x_trace_null("smaxGetUnits", NULL);
+  int l = 0;
+  char *unit = smaxPullMeta(META_UNIT, table, key, &l);
+  if(l < 0) x_trace_null("smaxGetUnits", NULL);
   return unit;
 }
 
