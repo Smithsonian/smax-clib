@@ -12,8 +12,12 @@
 #include <pthread.h>
 #include <errno.h>
 
-
 #include "smax-private.h"
+
+/// \cond PRIVATE
+#define SMAX_SUBSCRIPTION_LOOKUP_SIZE   1024      ///< Hash lookup slots for tracking subscriptions
+/// \endcond
+
 
 // A lock for ensuring exlusive access for the monitor list...
 // and the variables that it controls, e.g. via lockNotify()
@@ -24,7 +28,8 @@ static pthread_cond_t notifyBlock = PTHREAD_COND_INITIALIZER;
 static char *notifyID;
 static int notifySize;
 
-
+static XLookupTable *lookup;
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 
 /// \cond PRIVATE
@@ -69,6 +74,12 @@ void smaxInitNotify() {
 
 /// \endcond
 
+static void DiscardLookup() {
+  pthread_mutex_lock(&mutex);
+  xDestroyLookupAndData(lookup);
+  lookup = NULL;
+  pthread_mutex_unlock(&mutex);
+}
 
 /**
  * Subscribes to a specific key(s) in specific group(s). Both the group and key names may contain Redis
@@ -76,9 +87,6 @@ void smaxInitNotify() {
  * subscription only enables receiving update notifications from Redis for the specified variable or
  * variables. After subscribing, you can either wait on the subscribed variables to change, or add
  * callback functions to process subscribed variables changes, via smaxAddSubscriber().
- *
- *
- *
  *
  * \param table         Variable group pattern, i.e. hash-table names. (NULL is the same as '*').
  * \param key           Variable name pattern. (if NULL then subscribes only to the table stem).
@@ -98,16 +106,38 @@ void smaxInitNotify() {
 int smaxSubscribe(const char *table, const char *key) {
   static const char *fn = "smaxSubscribe";
   Redis *r = smaxGetRedis();
+  XField *f;
   char *p;
-  int status;
+  int status = X_SUCCESS;
 
   if(!r) return smaxError(fn, X_NO_INIT);
 
-  // TODO manage subscriber lists with call counter...
+  p = smaxGetUpdateChannelPattern(table, key);
+
+  pthread_mutex_lock(&mutex);
+
+  // manage subscriber lists with call counter...
   //  - Redis subscribe only if new
   //  - Redis unsubscribe only when last user unsubscribes
-  p = smaxGetUpdateChannelPattern(table, key);
-  status = redisxSubscribe(r, p);
+  if(!lookup) {
+    // Create lookup table to track the number of active subscribers to each pattern
+    lookup = xAllocLookup(SMAX_SUBSCRIPTION_LOOKUP_SIZE);
+    x_check_alloc(lookup);
+
+    // Disconnect from the Redis server will discard all active subscriptions.
+    smaxAddDisconnectHook(DiscardLookup);
+  }
+
+  f = xLookupField(lookup, p);
+  if(f) (*(int *) f->value)++; // Increment the number of subscribers...
+  else {
+    // We are the first subscriber to this pattern so subscribe on Redis....
+    status = redisxSubscribe(r, p);
+    if(status == X_SUCCESS) xLookupPut(lookup, p, xCreateIntField(p, 1), NULL);
+  }
+
+  pthread_mutex_unlock(&mutex);
+
   free(p);
   prop_error(fn, status);
   return X_SUCCESS;
@@ -135,13 +165,32 @@ int smaxSubscribe(const char *table, const char *key) {
 int smaxUnsubscribe(const char *table, const char *key) {
   static const char *fn = "smaxUnsubscribe";
   Redis *r = smaxGetRedis();
+
   char *p;
-  int status;
+  int status = X_SUCCESS;
 
   if(!r) return smaxError(fn, X_NO_INIT);
   p = smaxGetUpdateChannelPattern(table, key);
-  status = redisxUnsubscribe(r, p);
+
+  pthread_mutex_lock(&mutex);
+
+  if(lookup) {
+    XField *f = xLookupField(lookup, p);
+    if(f != NULL) {
+      // Descrement the number of subscribers to the pattern,
+      // and unsubscribe from Redis of no subsciber reamins for
+      // the pattern.
+      int *count = (int *) f->value;
+      if(--(*count) <= 0) {
+        status = redisxUnsubscribe(r, p);
+        if(status == X_SUCCESS) xDestroyField(xLookupRemove(lookup, p));
+      }
+    }
+  }
+
+  pthread_mutex_unlock(&mutex);
   free(p);
+
   prop_error(fn, status);
   return X_SUCCESS;
 }
