@@ -141,7 +141,7 @@ boolean smaxControlBoolean(const char *table, const char *key, boolean value, co
  *
  * @since 1.1
  */
-char *smaxControlString(const char *table, const char *key, char *value, const char *replyKey, int timeout) {
+char *smaxControlString(const char *table, const char *key, const char *value, const char *replyKey, int timeout) {
   static const char *fn = "smaxControlBoolean";
 
   char *reply = smaxControl(table, key, &value, X_STRING, 1, replyKey, timeout);
