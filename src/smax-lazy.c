@@ -112,6 +112,8 @@ static void ApplyUpdateAsync(LazyMonitor *update, LazyMonitor *m) {
 
   if(!m) return;
 
+  xdprintf("SMA: Applying update for %s" X_SEP "%s\n", m->table, m->key);
+
   // Update the stored data 'atomically'
   pthread_mutex_lock(&dataLock);
   oldData = m->data;
@@ -196,8 +198,13 @@ static int QueueUpdateAsync(LazyMonitor *m) {
   void *ptr;
   int status = X_SUCCESS;
 
+  xdprintf("SMA-X: Initiate queueing aync update for %s" X_SEP "%s\n", m->table, m->key);
+
   if(!m) return x_error(X_NULL, EINVAL, fn, "input parameter 'm' is NULL");
-  if(!m->isPending) return X_SUCCESS;
+  if(m->isPending) {
+    xdprintf("SMA-X: An update is already pending for %s" X_SEP "%s\n", m->table, m->key);
+    return X_SUCCESS;
+  }
 
   staging = CreateStaging(m);
   if(!staging) return x_trace(fn, NULL, X_NULL);
@@ -210,6 +217,9 @@ static int QueueUpdateAsync(LazyMonitor *m) {
     type = X_STRUCT;
     ptr = staging->data;
   }
+
+
+  xdprintf("SMA-X: Queueing async update for %s" X_SEP "%s\n", m->table, m->key);
 
   m->isPending = TRUE;
   status = smaxQueue(m->table, m->key, type, 1, ptr, staging->meta);
