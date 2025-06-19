@@ -385,11 +385,11 @@ XField *smaxCreateBooleanField(const char *name, boolean value);
 XField *smaxCreateStringField(const char *name, const char *value);
 
 // Controls / Commands via SMA-X (since 1.1)
-char *smaxControl(const char *table, const char *key, const void *value, XType type, int count, const char *replyKey, int timeout);
-boolean smaxControlBoolean(const char *table, const char *key, boolean value, const char *replyKey, boolean defaultReply, int timeout);
-char *smaxControlString(const char *table, const char *key, const char *value, const char *replyKey, int timeout);
-int smaxControlInt(const char *table, const char *key, int value, const char *replyKey, int defaultReply, int timeout);
-double smaxControlDouble(const char *table, const char *key, double value, const char *replyKey, int timeout);
+char *smaxControl(const char *table, const char *key, const void *value, XType type, int count, const char *replyTable, const char *replyKey, int timeout);
+boolean smaxControlBoolean(const char *table, const char *key, boolean value, const char *replyTable, const char *replyKey, boolean defaultReply, int timeout);
+char *smaxControlString(const char *table, const char *key, const char *value, const char *replyTable, const char *replyKey, int timeout);
+int smaxControlInt(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout);
+double smaxControlDouble(const char *table, const char *key, double value, const char *replyTable, const char *replyKey, int timeout);
 
 // Helpers / Controls ----------------------------------------->
 Redis *smaxGetRedis();

@@ -4,7 +4,22 @@
  * @date Created  on Jun 11, 2025
  * @author Attila Kovacs
  *
- * @since 1.1
+ *  Send control 'commands' via SMA-X by setting a variable that is monitored by some other application,
+ *  and waiting for a response in another variable. The controlled application is expected to
+ *  act on the request passed in the control variable, and post the result (such as the actual value)
+ *  after the request was processed in the designated 'reply' variable.
+ *
+ *  For example, we set `system:subsystem:control_voltage` to 0.123456 to request that the given subsystem
+ *  outputs the desired voltage. The program that controls the subsystem, monitors the `control_voltage`
+ *  for requests ('commands'), and then sets the output voltage to the nearest possible value, then
+ *  posts the actual value that was applied in `system:subsystem:voltage`. Suppose, it's DAC has a
+ *  resolution of 0.01 V. In that case, it might 'reply' with `voltage` set to 0.12.
+ *
+ *  It is important that for every request received, the control program should post exactly one reply.
+ *  This module will simply wait for an update of the reply variable, and return the value set by
+ *  the control program after the request is sent.
+ *
+ * @since 1.0
  */
 
 #include <stdio.h>
@@ -23,8 +38,8 @@
 typedef struct {
   const char *table;    ///< Redis hash table name of SMA-X variable to monitor for update
   const char *key;      ///< Redis hash field to monitor for update
-  int timeout;    ///< [s] Timeout
-  int status;     ///< Return status
+  int timeout;          ///< [s] Timeout
+  int status;           ///< Return status
 } ControlVar;
 
 /// \endcond
@@ -37,27 +52,29 @@ static void *MonitorThread(void *arg) {
 }
 
 /**
- * Sets an SMA-X control variable, and returns the response to the monitored reply value
+ * Sets an SMA-X control variable, and returns the response to the monitored reply value.
  *
- * @param table     SMA-X table name
- * @param key       The command keyword
- * @param value     Pointer to the value to set
- * @param type      The type of the value
- * @param count     Number of elements in value
- * @param replyKey  The keyword to monitor for responses.
- * @param timeout   [s] Maximum time to wait for a response before returning NULL.
- * @return          The raw value of the replyKey after it has changed, or NULL if there was
- *                  an error (errno will indicate the type of error).
+ * @param table       SMA-X table name
+ * @param key         The command keyword
+ * @param value       Pointer to the value to set
+ * @param type        The type of the value
+ * @param count       Number of elements in value
+ * @param replyTable  SMA-X table in which the reply is expected. It may also be NULL if it's the
+ *                    same as the table in which the control variable was set.
+ * @param replyKey    The keyword to monitor for responses.
+ * @param timeout     [s] Maximum time to wait for a response before returning NULL.
+ * @return            The raw value of the replyKey after it has changed, or NULL if there was
+ *                    an error (errno will indicate the type of error).
  *
  * @sa smaxControlBoolean()
  * @sa smaxControlInt()
  * @sa smaxControlDouble()
  * @sa smaxControlString()
  */
-char *smaxControl(const char *table, const char *key, const void *value, XType type, int count, const char *replyKey, int timeout) {
+char *smaxControl(const char *table, const char *key, const void *value, XType type, int count, const char *replyTable, const char *replyKey, int timeout) {
   static const char *fn = "smaxControl";
 
-  ControlVar control = {};
+  ControlVar reply = {};
   pthread_t tid;
   char *response = NULL;
 
@@ -66,16 +83,17 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
     return NULL;
   }
 
-  // TODO aggregate and re-split table/keys in case of hierarchical key arguments, e.g. "commanded:value" and "actual:value"
-  control.table = table;
-  control.key = key;
-  control.timeout = timeout;
+  reply.table = replyTable;
+  reply.key = replyKey;
+  reply.timeout = timeout;
 
   // To catch responses reliably, start monitoring
   if(smaxSubscribe(table, key) != X_SUCCESS) return x_trace_null(fn, NULL);
 
+  errno = 0;
+
   // Launch monitoring thread with timeout
-  if(pthread_create(&tid, NULL, MonitorThread, &control) < 0) {
+  if(pthread_create(&tid, NULL, MonitorThread, &reply) < 0) {
     smaxUnsubscribe(table, key);
     return x_trace_null(fn, NULL);
   }
@@ -90,6 +108,8 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   // Wait for the response
   pthread_join(tid, (void **) &response);
 
+  if(errno) x_warn(fn, "Got no response: %s", strerror(errno));
+
   return response;
 }
 
@@ -100,6 +120,8 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
  * @param table         SMA-X table name
  * @param key           The command keyword
  * @param value         Pointer to the value to set
+ * @param replyTable    SMA-X table in which the reply is expected. It may also be NULL if it's the
+ *                      same as the table in which the control variable was set.
  * @param replyKey      The keyword to monitor for responses.
  * @param defaultReply  The value to return in case of an error
  * @param timeout       [s] Maximum time to wait for a response before returning NULL.
@@ -111,10 +133,10 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
  * @sa smaxControlDouble()
  * @sa smaxControlString()
  */
-boolean smaxControlBoolean(const char *table, const char *key, boolean value, const char *replyKey, boolean defaultReply, int timeout) {
+boolean smaxControlBoolean(const char *table, const char *key, boolean value, const char *replyTable, const char *replyKey, boolean defaultReply, int timeout) {
   static const char *fn = "smaxControlBoolean";
 
-  char *reply = smaxControl(table, key, &value, X_BOOLEAN, 1, replyKey, timeout);
+  char *reply = smaxControl(table, key, &value, X_BOOLEAN, 1, replyTable, replyKey, timeout);
   if(!reply) return x_trace(fn, NULL, defaultReply);
 
   defaultReply = xParseBoolean(reply, NULL);
@@ -130,6 +152,8 @@ boolean smaxControlBoolean(const char *table, const char *key, boolean value, co
  * @param table         SMA-X table name
  * @param key           The command keyword
  * @param value         Pointer to the value to set
+ * @param replyTable    SMA-X table in which the reply is expected. It may also be NULL if it's the
+ *                      same as the table in which the control variable was set.
  * @param replyKey      The keyword to monitor for responses.
  * @param timeout       [s] Maximum time to wait for a response before returning NULL.
  * @return              The raw string value of the monitored keyword after it updated, or
@@ -141,22 +165,24 @@ boolean smaxControlBoolean(const char *table, const char *key, boolean value, co
  *
  * @since 1.1
  */
-char *smaxControlString(const char *table, const char *key, const char *value, const char *replyKey, int timeout) {
+char *smaxControlString(const char *table, const char *key, const char *value, const char *replyTable, const char *replyKey, int timeout) {
   static const char *fn = "smaxControlBoolean";
 
-  char *reply = smaxControl(table, key, &value, X_STRING, 1, replyKey, timeout);
+  char *reply = smaxControl(table, key, &value, X_STRING, 1, replyTable, replyKey, timeout);
   if(!reply) return x_trace_null(fn, NULL);
 
   return reply;
 }
 
 /**
- * Sets an integer-type SMA-X control variable, and returns the integer response to the monitored reply,
- * or the specified default value in case of an error.
+ * Sets an integer-type SMA-X control variable, and returns the integer response to the monitored
+ * reply, or the specified default value in case of an error.
  *
  * @param table         SMA-X table name
  * @param key           The command keyword
  * @param value         Pointer to the value to set
+ * @param replyTable    SMA-X table in which the reply is expected. It may also be NULL if it's the
+ *                      same as the table in which the control variable was set.
  * @param replyKey      The keyword to monitor for responses.
  * @param defaultReply  The value to return in case of an error
  * @param timeout       [s] Maximum time to wait for a response before returning NULL.
@@ -168,10 +194,10 @@ char *smaxControlString(const char *table, const char *key, const char *value, c
  * @sa smaxControlInt()
  * @sa smaxControlString()
  */
-int smaxControlInt(const char *table, const char *key, int value, const char *replyKey, int defaultReply, int timeout) {
+int smaxControlInt(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout) {
   static const char *fn = "smaxControlInt";
 
-  char *reply = smaxControl(table, key, &value, X_INT, 1, replyKey, timeout);
+  char *reply = smaxControl(table, key, &value, X_INT, 1, replyTable, replyKey, timeout);
   if(!reply) return x_trace(fn, NULL, defaultReply);
 
   if(sscanf(reply, "%d", &defaultReply) < 1) {
@@ -190,6 +216,8 @@ int smaxControlInt(const char *table, const char *key, int value, const char *re
  * @param table         SMA-X table name
  * @param key           The command keyword
  * @param value         Pointer to the value to set
+ * @param replyTable    SMA-X table in which the reply is expected. It may also be NULL if it's the
+ *                      same as the table in which the control variable was set.
  * @param replyKey      The keyword to monitor for responses.
  * @param timeout       [s] Maximum time to wait for a response before returning NAN.
  * @return              The double-precision value of the monitored keyword after it updated, or
@@ -199,10 +227,10 @@ int smaxControlInt(const char *table, const char *key, int value, const char *re
  * @sa smaxControlInt()
  * @sa smaxControlDouble()
  */
-double smaxControlDouble(const char *table, const char *key, double value, const char *replyKey, int timeout) {
+double smaxControlDouble(const char *table, const char *key, double value, const char *replyTable, const char *replyKey, int timeout) {
   static const char *fn = "smaxControlDouble";
 
-  char *reply = smaxControl(table, key, &value, X_DOUBLE, 1, replyKey, timeout);
+  char *reply = smaxControl(table, key, &value, X_DOUBLE, 1, replyTable, replyKey, timeout);
   if(!reply) {
     x_trace_null(fn, NULL);
     return NAN;
