@@ -183,7 +183,7 @@ static int printValue(const char *group, const char *key) {
     status = smaxConnect();
 
     if(status) {
-      fprintf(stderr, "ERROR! SMA-X init: %d", status);
+      fprintf(stderr, "ERROR! SMA-X init: %s\n", smaxErrorDescription(status));
       return status;
     }
 
