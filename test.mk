@@ -9,11 +9,7 @@ LDFLAGS += -L$(LIB) -lsmax
 LD_LIBRARY_PATH := $(LIB):$(LD_LIBRARY_PATH)
 
 TESTS = $(BIN)/simpleIntTest $(BIN)/simpleIntsTest $(BIN)/structTest $(BIN)/queueTest $(BIN)/lazyTest \
-		$(BIN)/waitTest $(BIN)/resilientTest
-
-# Top level make targets...
-.PHONY: build
-build: $(TESTS)
+		$(BIN)/lazyCacheTest $(BIN)/waitTest $(BIN)/resilientTest
 
 .PHONY: run
 run: build
@@ -22,8 +18,16 @@ run: build
 	$(BIN)/structTest
 	$(BIN)/queueTest
 	$(BIN)/lazyTest
+	$(BIN)/lazyCacheTest
 	$(BIN)/waitTest
+
+.PHONY: run2
+run2: run
 	$(BIN)/resilientTest
+
+# Top level make targets...
+.PHONY: build
+build: $(TESTS)
 
 .PHONY: benchmark
 benchmark: $(BIN)/benchmark
