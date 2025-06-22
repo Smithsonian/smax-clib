@@ -761,8 +761,8 @@
       <type>char *</type>
       <name>smaxPullMeta</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a0d29e7a895c1d5fdc6258ff7426b3521</anchor>
-      <arglist>(const char *meta, const char *table, const char *key, int *status)</arglist>
+      <anchor>a63559d0095a109281b9efa13550cd7c2</anchor>
+      <arglist>(const char *meta, const char *table, const char *key, int *len)</arglist>
     </member>
     <member kind="function">
       <type>char *</type>
@@ -1130,10 +1130,17 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxShareByte</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>acba3fd83167e46cc44668c1c2ff01318</anchor>
+      <arglist>(const char *table, const char *key, signed char value)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxShareBytes</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a9274e66d69bf41bbe291bbadbb619acc</anchor>
-      <arglist>(const char *table, const char *key, const char *values, int n)</arglist>
+      <anchor>a24a82f613224dc4f03b093ea610eab12</anchor>
+      <arglist>(const char *table, const char *key, const signed char *values, int n)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1167,8 +1174,8 @@
       <type>int</type>
       <name>smaxShareInt</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>adeb667a3e72acedee7d03eb246b8e1ae</anchor>
-      <arglist>(const char *table, const char *key, long long value)</arglist>
+      <anchor>a77cdf4adba06f9233dd0403d973f03e1</anchor>
+      <arglist>(const char *table, const char *key, int value)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1179,10 +1186,31 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxShareLLongs</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>acecb8a5b3303f3a050a529caf2ba7273</anchor>
+      <arglist>(const char *table, const char *key, const long long *values, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxShareLong</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a07c51cbd03141b070f3acbc230781ea3</anchor>
+      <arglist>(const char *table, const char *key, long long value)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxShareLongs</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a179730ae8cc7517c96b3e7efb81411fb</anchor>
-      <arglist>(const char *table, const char *key, const long long *values, int n)</arglist>
+      <anchor>a6075fac468a3251cd6cdd5c4d279fc0e</anchor>
+      <arglist>(const char *table, const char *key, const long *values, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxShareShort</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a68f21c0f6684ee9f1c0f844e8073218b</anchor>
+      <arglist>(const char *table, const char *key, short value)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1521,10 +1549,17 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxShareByte</name>
+      <anchorfile>smax-easy_8c.html</anchorfile>
+      <anchor>acba3fd83167e46cc44668c1c2ff01318</anchor>
+      <arglist>(const char *table, const char *key, signed char value)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxShareBytes</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a9274e66d69bf41bbe291bbadbb619acc</anchor>
-      <arglist>(const char *table, const char *key, const char *values, int n)</arglist>
+      <anchor>a24a82f613224dc4f03b093ea610eab12</anchor>
+      <arglist>(const char *table, const char *key, const signed char *values, int n)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1551,8 +1586,8 @@
       <type>int</type>
       <name>smaxShareInt</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>adeb667a3e72acedee7d03eb246b8e1ae</anchor>
-      <arglist>(const char *table, const char *key, long long value)</arglist>
+      <anchor>a77cdf4adba06f9233dd0403d973f03e1</anchor>
+      <arglist>(const char *table, const char *key, int value)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1563,10 +1598,31 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxShareLLongs</name>
+      <anchorfile>smax-easy_8c.html</anchorfile>
+      <anchor>acecb8a5b3303f3a050a529caf2ba7273</anchor>
+      <arglist>(const char *table, const char *key, const long long *values, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxShareLong</name>
+      <anchorfile>smax-easy_8c.html</anchorfile>
+      <anchor>a07c51cbd03141b070f3acbc230781ea3</anchor>
+      <arglist>(const char *table, const char *key, long long value)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxShareLongs</name>
       <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a179730ae8cc7517c96b3e7efb81411fb</anchor>
-      <arglist>(const char *table, const char *key, const long long *values, int n)</arglist>
+      <anchor>a6075fac468a3251cd6cdd5c4d279fc0e</anchor>
+      <arglist>(const char *table, const char *key, const long *values, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxShareShort</name>
+      <anchorfile>smax-easy_8c.html</anchorfile>
+      <anchor>a68f21c0f6684ee9f1c0f844e8073218b</anchor>
+      <arglist>(const char *table, const char *key, short value)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1708,9 +1764,9 @@
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
     <member kind="define">
       <type>#define</type>
-      <name>_ISOC99_SOURCE</name>
+      <name>_GNU_SOURCE</name>
       <anchorfile>smax-messages_8c.html</anchorfile>
-      <anchor>a04ec2c53aa9fcdb5b58dc8e9d552dec0</anchor>
+      <anchor>a369266c24eacffb87046522897a570d5</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -1856,8 +1912,8 @@
       <type>char *</type>
       <name>smaxPullMeta</name>
       <anchorfile>smax-meta_8c.html</anchorfile>
-      <anchor>a0d29e7a895c1d5fdc6258ff7426b3521</anchor>
-      <arglist>(const char *meta, const char *table, const char *key, int *status)</arglist>
+      <anchor>a63559d0095a109281b9efa13550cd7c2</anchor>
+      <arglist>(const char *meta, const char *table, const char *key, int *len)</arglist>
     </member>
     <member kind="function">
       <type>double</type>
@@ -2067,9 +2123,9 @@
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
     <member kind="define">
       <type>#define</type>
-      <name>_ISOC99_SOURCE</name>
+      <name>_GNU_SOURCE</name>
       <anchorfile>smax-util_8c.html</anchorfile>
-      <anchor>a04ec2c53aa9fcdb5b58dc8e9d552dec0</anchor>
+      <anchor>a369266c24eacffb87046522897a570d5</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">

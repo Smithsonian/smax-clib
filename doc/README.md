@@ -96,11 +96,18 @@ prior to invoking `make`. The following build variables can be configured:
    defined then `-std=$(CSTANDARD)` is added to `CFLAGS` automatically.
    
  - `WEXTRA`: If set to 1, `-Wextra` is added to `CFLAGS` automatically.
-   
+
+ - `FORTIFY`: If set it will set the `_FORTIFY_SOURCE` macro to the specified value (`gcc` supports values 1 
+   through 3). It affords varying levels of extra compile time / runtime checks.
+
  - `LDFLAGS`: Extra linker flags (default: _not set_). Note, `-lm  -lpthread -lredisx -lxchange` will be added 
    automatically.
 
  - `CHECKEXTRA`: Extra options to pass to `cppcheck` for the `make check` target
+
+ - `DOXYGEN`: Specify the `doxygen` executable to use for generating documentation. If not set (default), `make` will
+   use `doxygen` in your `PATH` (if any). You can also set it to `none` to disable document generation and the
+   checking for a usable `doxygen` version entirely.
 
  - `XCHANGE`: If the [Smithsonian/xchange](https://github.com/Smithsonian/xchange) library is not installed on your
    system (e.g. under `/usr`) set `XCHANGE` to where the distribution can be found. The build will expect to find 
@@ -1081,5 +1088,5 @@ If you have an idea for a must have feature, please let me (Attila) know. Pull r
 existing ones, are especially welcome! 
  
 -----------------------------------------------------------------------------
-Copyright (C) 2024 Attila Kovács
+Copyright (C) 2025 Attila Kovács
 

@@ -1,6 +1,6 @@
 var smax_util_8c =
 [
-    [ "_ISOC99_SOURCE", "smax-util_8c.html#a04ec2c53aa9fcdb5b58dc8e9d552dec0", null ],
+    [ "_GNU_SOURCE", "smax-util_8c.html#a369266c24eacffb87046522897a570d5", null ],
     [ "_POSIX_C_SOURCE", "smax-util_8c.html#a3024ccd4a9af5109d24e6c57565d74a1", null ],
     [ "smax2xField", "smax-util_8c.html#abfe751f22aa718133911ffdee848f64a", null ],
     [ "smax2xStruct", "smax-util_8c.html#a50fef3b0daf40f7de6f52b05abd2963c", null ],
