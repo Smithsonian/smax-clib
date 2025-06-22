@@ -1,4 +1,7 @@
 name: API documentation
+permissions:
+  contents: write
+  pull-requests: write
 
 on:
   release:
@@ -83,7 +86,7 @@ jobs:
       run: make -C smax-clib README-smax.md
 
     - name: Generate smax-clib apidocs
-      uses: mattnotmitt/doxygen-action@v1.12.0
+      uses: mattnotmitt/doxygen-action@v1.9.8
       with:
         additional-packages: font-roboto
         working-directory: ./smax-clib
