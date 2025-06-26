@@ -9,7 +9,7 @@ structured real-time database
 
 Author: Attila Kovacs
 
-Last Updated: 18 September 2024
+Updated for version 1.0 and later releases.
 
 
 ## Table of Contents
