@@ -42,7 +42,7 @@ static void *PollingThread(void *arg) {
   int initial;
 
   // Lazy pull including metadata, but meta argument may be NULL if we don't need it.
-  smaxGetLazyCached(TABLE, NAME, X_INT, 1, &initial, &meta);
+  smaxGetCached(TABLE, NAME, X_INT, 1, &initial, &meta);
 
   for(;; nQueries++) {
     int status, value;
@@ -51,7 +51,7 @@ static void *PollingThread(void *arg) {
     // We can pund on the data as much as we want locally without having
     // to worry about network traffic. There will be no network traffic as long
     // as the data is unchanged in SMA-X.
-    status = smaxGetLazyCached(TABLE, NAME, X_INT, 1, &value, NULL);
+    status = smaxGetCached(TABLE, NAME, X_INT, 1, &value, NULL);
     if(status) {
       smaxError("PollingThread", status);
       continue;
