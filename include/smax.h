@@ -280,8 +280,14 @@ double smaxLazyPullDoubleDefault(const char *table, const char *key, double defa
 int smaxLazyPullChars(const char *table, const char *key, char *buf, int n);
 char *smaxLazyPullString(const char *table, const char *key);
 int smaxLazyPullStruct(const char *id, XStructure *s);
-int smaxLazyCache(const char *table, const char *key, XType type);
-int smaxGetLazyCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta);
+int smaxCache(const char *table, const char *key, XType type);
+int smaxGetCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta);
+long long smaxGetCachedLong(const char *table, const char *key, long long defaultValue);
+double smaxGetCachedDouble(const char *table, const char *key);
+double smaxGetCachedDoubleDefault(const char *table, const char *key, double defaultValue);
+int smaxGetCachedChars(const char *table, const char *key, char *buf, int n);
+char *smaxGetCachedString(const char *table, const char *key);
+int smaxGetCachedStruct(const char *id, XStructure *s);
 int smaxLazyEnd(const char *table, const char *key);
 int smaxLazyFlush();
 int smaxGetLazyUpdateCount(const char *table, const char *key);

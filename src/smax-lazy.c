@@ -398,7 +398,7 @@ static int FetchDataAsync(LazyMonitor *m, XType type, int count, void *value, XM
  * variables that change frequently (ans used less frequently), lazy caching is not a great choice since it consumes
  * network bandwidth even when the variable is not being accessed.
  *
- * Once a variable is lazy cached, it can be accessed instantaneously via smaxGetLazyCached() without any blocking
+ * Once a variable is lazy cached, it can be accessed instantaneously via smaxGetCached() without any blocking
  * network operations.
  *
  * @param table   The hash table name.
@@ -406,13 +406,13 @@ static int FetchDataAsync(LazyMonitor *m, XType type, int count, void *value, XM
  * @param type    The SMA-X variable type, e.g. X_FLOAT or X_CHARS(40), of the buffer.
  * @return        X_SUCCESS (0) or X_NO_SERVICE.
  *
- * @sa smaxGetLazyCached()
+ * @sa smaxGetCached()
  */
-int smaxLazyCache(const char *table, const char *key, XType type) {
+int smaxCache(const char *table, const char *key, XType type) {
   LazyMonitor *m;
 
   m = GetCreateMonitor(table, key, type, TRUE);
-  if(!m) return x_trace("smaxLazyCache", NULL, X_NO_SERVICE);
+  if(!m) return x_trace("smaxCache", NULL, X_NO_SERVICE);
 
   UpdateCachedAsync(m);
   m->isCached = TRUE;
@@ -436,11 +436,11 @@ int smaxLazyCache(const char *table, const char *key, XType type) {
  * @return        X_SUCCESS (0), or X_NO_SERVICE is SMA-X is not accessible, or another error (&lt;0)
  *                from smax.h or xchange.h.
  *
- * @sa sa smaxLazyCache()
+ * @sa sa smaxCache()
  * @sa sa smaxLaxyPull()
  */
-int smaxGetLazyCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta) {
-  static const char *fn = "smaxGetLazyCached";
+int smaxGetCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta) {
+  static const char *fn = "smaxGetCached";
 
   LazyMonitor *m;
   int status;
@@ -509,6 +509,7 @@ int smaxLazyPull(const char *table, const char *key, XType type, int count, void
  *
  * \return      The long integer value stored in SMA-X, or the specified default if the value could not be retrieved.
  *
+ * @sa smaxGetCachedLong()
  * @sa smaxPullLong()
  */
 long long smaxLazyPullLong(const char *table, const char *key, long long defaultValue) {
@@ -531,6 +532,7 @@ long long smaxLazyPullLong(const char *table, const char *key, long long default
  * \return      The floating-point value stored in SMA-X, or NaN if the value could not be retrieved.
  *
  * @sa smaxLazyPullDoubleDefault()
+ * @sa smaxGetCachedDouble()
  * @sa smaxPullDouble()
  */
 double smaxLazyPullDouble(const char *table, const char *key) {
@@ -548,6 +550,7 @@ double smaxLazyPullDouble(const char *table, const char *key) {
  * \return      The floating-point value stored in SMA-X, or the specified default if the value could not be retrieved.
  *
  * @sa smaxLazyPullDouble()
+ * @sa smaxGetCachedDoubleDefault()
  * @sa smaxPullDoubleDefault()
  */
 double smaxLazyPullDoubleDefault(const char *table, const char *key, double defaultValue) {
@@ -564,6 +567,8 @@ double smaxLazyPullDoubleDefault(const char *table, const char *key, double defa
  * @param buf           Buffer to fill with stored data
  * @param n             Number of bytes to fill in buffer. The retrieved data will be truncated as necessary.
  * @return              X_SUCCESS (0) if successful, or the error code (&lt;0) returned by smaxLazyPull().
+ *
+ * @sa smaxGetCachedChars()
  */
 int smaxLazyPullChars(const char *table, const char *key, char *buf, int n) {
   prop_error("smaxLazyPullChars", smaxLazyPull(table, key, X_CHARS(n), 1, buf, NULL));
@@ -579,6 +584,7 @@ int smaxLazyPullChars(const char *table, const char *key, char *buf, int n) {
  *
  * \return      Pointer to the string value stored in SMA-X, or NULL if the value could not be retrieved.
  *
+ * @sa smaxGetCachedString()
  * @sa smaxPullString()
  */
 char *smaxLazyPullString(const char *table, const char *key) {
@@ -606,6 +612,140 @@ char *smaxLazyPullString(const char *table, const char *key) {
  */
 int smaxLazyPullStruct(const char *id, XStructure *s) {
   prop_error("smaxLazyPullStruct", smaxLazyPull(id, NULL, X_STRUCT, 1, s, NULL));
+  return X_SUCCESS;
+}
+
+/**
+ * Returns a single cached integer value for a given SMA-X variable, or a default value if the
+ * value could not be retrieved. If the data is not yet cached, it will pull the value from
+ * SMA-X, and will begin updating the cache automatically in the background so successive calls will
+ * return promptly without blocking. That is until `smaxLaxyFlush()` is called or
+ * else `smaxLaxyEnd()` for the variable.
+ *
+ * \param table           The hash table name.
+ * \param key             The variable name under which the data is stored.
+ * \param defaultValue    The value to return in case of an error.
+ *
+ * \return      The long integer value stored in SMA-X, or the specified default if the value could not be retrieved.
+ *
+ * @sa smaxLazyPullLong()
+ * @sa smaxPullLong()
+ */
+long long smaxGetCachedLong(const char *table, const char *key, long long defaultValue) {
+  long long l;
+  int s;
+
+  s = smaxGetCached(table, key, X_LLONG, 1, &l, NULL);
+  if(s) return defaultValue;
+
+  return l;
+}
+
+/**
+ * Returns a single cached double-precision value for a given SMA-X variable, or NAN if the
+ * value could not be retrieved. If the data is not yet cached, it will pull the value from
+ * SMA-X, and will begin updating the cache automatically in the background so successive calls
+ * will return promptly without blocking. That is until `smaxLaxyFlush()` is called or
+ * else `smaxLaxyEnd()` for the variable.
+ *
+ * \param table           The hash table name.
+ * \param key             The variable name under which the data is stored.
+ *
+ * \return      The floating-point value stored in SMA-X, or NaN if the value could not be retrieved.
+ *
+ * @sa smaxGetCachedDoubleDefault()
+ * @sa smaxLazyPullDouble()
+ * @sa smaxPullDouble()
+ */
+double smaxGetCachedDouble(const char *table, const char *key) {
+  return smaxGetCachedDoubleDefault(table, key, NAN);
+}
+
+/**
+ * Returns a single cached double-precision value for a given SMA-X variable, or a default value if the
+ * value could not be retrieved. If the data is not yet cached, it will pull the value from
+ * SMA-X, and will begin updating the cache automatically in the background so successive calls will
+ * return promptly without blocking. That is until `smaxLaxyFlush()` is called or
+ * else `smaxLaxyEnd()` for the variable.
+ *
+ * \param table           The hash table name.
+ * \param key             The variable name under which the data is stored.
+ * \param defaultValue    The value to return in case of an error.
+ *
+ * \return      The floating-point value stored in SMA-X, or the specified default if the value could not be retrieved.
+ *
+ * @sa smaxGetCachedDouble()
+ * @sa smaxLazyPullDoubleDefault()
+ * @sa smaxPullDoubleDefault()
+ */
+double smaxGetCachedDoubleDefault(const char *table, const char *key, double defaultValue) {
+  double d;
+  int s = smaxGetCached(table, key, X_DOUBLE, 1, &d, NULL);
+  return s ? defaultValue : d;
+}
+
+/**
+ * Returns a cached string value into the specified string buffer. If the data is not yet cached, it
+ * will pull the value from SMA-X, and will begin updating the cache automatically in the background so
+ * successive calls will return promptly without blocking. That is until `smaxLaxyFlush()` is called or
+ * else `smaxLaxyEnd()` for the variable.
+ *
+ * @param table         The hash table name.
+ * @param key           The variable name under which the data is stored.
+ * @param buf           Buffer to fill with stored data
+ * @param n             Number of bytes to fill in buffer. The retrieved data will be truncated as necessary.
+ * @return              X_SUCCESS (0) if successful, or the error code (&lt;0) returned by smaxLazyPull().
+ *
+ * @sa smaxLazyPullChars()
+ */
+int smaxGetCachedChars(const char *table, const char *key, char *buf, int n) {
+  prop_error("smaxGetCachedChars", smaxGetCached(table, key, X_CHARS(n), 1, buf, NULL));
+  return X_SUCCESS;
+}
+
+/**
+ * Returns a single cached string value for a given SMA-X variable, or a NULL if the
+ * value could not be retrieved. If the data is not yet cached, it will pull the value from
+ * SMA-X, and will begin updating the cache automatically in the background so successive calls
+ * will return promptly without blocking. That is until `smaxLaxyFlush()` is called or
+ * else `smaxLaxyEnd()` for the variable.
+ *
+ * \param table           Hash table name.
+ * \param key             Variable name under which the data is stored.
+ *
+ * \return      Pointer to the string value stored in SMA-X, or NULL if the value could not be retrieved.
+ *
+ * @sa smaxLazyPullString()
+ * @sa smaxPullString()
+ */
+char *smaxGetCachedString(const char *table, const char *key) {
+  char *str = NULL;
+  int status;
+
+  status = smaxGetCached(table, key, X_STRING, 1, &str, NULL);
+  if(status) {
+    if(str) free(str);
+    return x_trace_null("smaxLazyPullString", NULL);
+  }
+
+  return str;
+}
+
+/**
+ * Copies cached data data into a structure, discarding any prior data that the structure might contain.
+ * If the data is not yet cached, it will pull the value from SMA-X, and will update the cache automatically
+ * in the background so successive calls will return promptly without blocking. That is until
+ * `smaxLaxyFlush()` is called or else `smaxLaxyEnd()` for the variable.
+ *
+ * @param[in]  id       Aggregate structure ID.
+ * @param[out] s        Destination structure to populate with the retrieved fields
+ * @return              X_SUCCESS (0) if successful, or the error code (&lt;0) returned by smaxLazyPull().
+ *
+ * @sa smaxPullStruct()
+ * @sa xCreateStruct()
+ */
+int smaxGetCachedStruct(const char *id, XStructure *s) {
+  prop_error("smaxGetCachedStruct", smaxGetCached(id, NULL, X_STRUCT, 1, s, NULL));
   return X_SUCCESS;
 }
 
