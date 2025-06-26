@@ -318,6 +318,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxCache</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>ad8121d1e9b6ee720bc2762aa33340bf1</anchor>
+      <arglist>(const char *table, const char *key, XType type)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxConnect</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a146fb2ed8512919dc91ecad6d08c74d1</anchor>
@@ -464,6 +471,55 @@
       <arglist>(const XStructure *s, const char *name, boolean defaultValue)</arglist>
     </member>
     <member kind="function">
+      <type>int</type>
+      <name>smaxGetCached</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>ac6c4d66145f9aa2e9fe7646538d9c1bf</anchor>
+      <arglist>(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxGetCachedChars</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>aec28c724a4903431a99318a0438ea5e1</anchor>
+      <arglist>(const char *table, const char *key, char *buf, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>smaxGetCachedDouble</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>aa67e6c36108756c4a9ef9708ff1472f2</anchor>
+      <arglist>(const char *table, const char *key)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>smaxGetCachedDoubleDefault</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>adf1eff3e8451afc97bbc7a45061c0e40</anchor>
+      <arglist>(const char *table, const char *key, double defaultValue)</arglist>
+    </member>
+    <member kind="function">
+      <type>long long</type>
+      <name>smaxGetCachedLong</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a1333099138d6d33cfbb9b3196e42a33e</anchor>
+      <arglist>(const char *table, const char *key, long long defaultValue)</arglist>
+    </member>
+    <member kind="function">
+      <type>char *</type>
+      <name>smaxGetCachedString</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>aee7126a7619eda468edc016caec97dce</anchor>
+      <arglist>(const char *table, const char *key)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxGetCachedStruct</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>afc92364467acaed551aa67dae89429c3</anchor>
+      <arglist>(const char *id, XStructure *s)</arglist>
+    </member>
+    <member kind="function">
       <type>XCoordinateAxis *</type>
       <name>smaxGetCoordinateAxis</name>
       <anchorfile>smax_8h.html</anchorfile>
@@ -504,13 +560,6 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a2544d1fa602e812004e1d68500024ae0</anchor>
       <arglist>(const char *table, int *n)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxGetLazyCached</name>
-      <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a42c08f13c70400dc1225d4097342ded0</anchor>
-      <arglist>(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -616,13 +665,6 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a7030106bbe70220c97b1e9e3a4633ff4</anchor>
       <arglist>(const char *table)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxLazyCache</name>
-      <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a18027e41c40722011815bc878857e3d0</anchor>
-      <arglist>(const char *table, const char *key, XType type)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1674,10 +1716,59 @@
     <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
     <member kind="function">
       <type>int</type>
-      <name>smaxGetLazyCached</name>
+      <name>smaxCache</name>
       <anchorfile>smax-lazy_8c.html</anchorfile>
-      <anchor>a42c08f13c70400dc1225d4097342ded0</anchor>
+      <anchor>ad8121d1e9b6ee720bc2762aa33340bf1</anchor>
+      <arglist>(const char *table, const char *key, XType type)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxGetCached</name>
+      <anchorfile>smax-lazy_8c.html</anchorfile>
+      <anchor>ac6c4d66145f9aa2e9fe7646538d9c1bf</anchor>
       <arglist>(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxGetCachedChars</name>
+      <anchorfile>smax-lazy_8c.html</anchorfile>
+      <anchor>aec28c724a4903431a99318a0438ea5e1</anchor>
+      <arglist>(const char *table, const char *key, char *buf, int n)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>smaxGetCachedDouble</name>
+      <anchorfile>smax-lazy_8c.html</anchorfile>
+      <anchor>aa67e6c36108756c4a9ef9708ff1472f2</anchor>
+      <arglist>(const char *table, const char *key)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>smaxGetCachedDoubleDefault</name>
+      <anchorfile>smax-lazy_8c.html</anchorfile>
+      <anchor>adf1eff3e8451afc97bbc7a45061c0e40</anchor>
+      <arglist>(const char *table, const char *key, double defaultValue)</arglist>
+    </member>
+    <member kind="function">
+      <type>long long</type>
+      <name>smaxGetCachedLong</name>
+      <anchorfile>smax-lazy_8c.html</anchorfile>
+      <anchor>a1333099138d6d33cfbb9b3196e42a33e</anchor>
+      <arglist>(const char *table, const char *key, long long defaultValue)</arglist>
+    </member>
+    <member kind="function">
+      <type>char *</type>
+      <name>smaxGetCachedString</name>
+      <anchorfile>smax-lazy_8c.html</anchorfile>
+      <anchor>aee7126a7619eda468edc016caec97dce</anchor>
+      <arglist>(const char *table, const char *key)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxGetCachedStruct</name>
+      <anchorfile>smax-lazy_8c.html</anchorfile>
+      <anchor>afc92364467acaed551aa67dae89429c3</anchor>
+      <arglist>(const char *id, XStructure *s)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1685,13 +1776,6 @@
       <anchorfile>smax-lazy_8c.html</anchorfile>
       <anchor>aeca4aa02259278b240e4131f7edea816</anchor>
       <arglist>(const char *table, const char *key)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxLazyCache</name>
-      <anchorfile>smax-lazy_8c.html</anchorfile>
-      <anchor>a18027e41c40722011815bc878857e3d0</anchor>
-      <arglist>(const char *table, const char *key, XType type)</arglist>
     </member>
     <member kind="function">
       <type>int</type>

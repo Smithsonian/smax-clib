@@ -1,8 +1,14 @@
 var smax_lazy_8c =
 [
-    [ "smaxGetLazyCached", "smax-lazy_8c.html#a42c08f13c70400dc1225d4097342ded0", null ],
+    [ "smaxCache", "smax-lazy_8c.html#ad8121d1e9b6ee720bc2762aa33340bf1", null ],
+    [ "smaxGetCached", "smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf", null ],
+    [ "smaxGetCachedChars", "smax-lazy_8c.html#aec28c724a4903431a99318a0438ea5e1", null ],
+    [ "smaxGetCachedDouble", "smax-lazy_8c.html#aa67e6c36108756c4a9ef9708ff1472f2", null ],
+    [ "smaxGetCachedDoubleDefault", "smax-lazy_8c.html#adf1eff3e8451afc97bbc7a45061c0e40", null ],
+    [ "smaxGetCachedLong", "smax-lazy_8c.html#a1333099138d6d33cfbb9b3196e42a33e", null ],
+    [ "smaxGetCachedString", "smax-lazy_8c.html#aee7126a7619eda468edc016caec97dce", null ],
+    [ "smaxGetCachedStruct", "smax-lazy_8c.html#afc92364467acaed551aa67dae89429c3", null ],
     [ "smaxGetLazyUpdateCount", "smax-lazy_8c.html#aeca4aa02259278b240e4131f7edea816", null ],
-    [ "smaxLazyCache", "smax-lazy_8c.html#a18027e41c40722011815bc878857e3d0", null ],
     [ "smaxLazyEnd", "smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5", null ],
     [ "smaxLazyFlush", "smax-lazy_8c.html#af3d0cff3f8a6ab745907f4544981fdd1", null ],
     [ "smaxLazyPull", "smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce", null ],

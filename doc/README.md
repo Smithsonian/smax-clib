@@ -649,13 +649,19 @@ When the variable is updated in SMA-X, our client library will be notified, and 
     value promptly.
     
 The choice between the two is yours, and you can control which suits your need best. The default behavior for lazy pulls
-is (1), but you may call `smaxLazyCache()` after the first pull of a variable, to indicate that you want to enable 
+is (1), but you may call `smaxCache()` after the first pull of a variable, to indicate that you want to enable 
 background cache updates (2) for it. The advantage of (1) is that it will never serve you outdated data even if there
 are significant network latencies -- but you may have to wait a little to fetch updates. On the other hand (2) will
 always provide a recent value with effectively no latency, but this value may be outdated if there are delays on the
 network updating the cache. The difference is typically at the micro-seconds level on a local LAN. However, (2) may 
 be preferable when you need to access SMA-X data from timing critical code blocks, where it is more important to ensure
 that the value is returned quickly, rather than whether it is a millisecond too old or not.
+
+You can also explicitly select the second behavior by using `smaxGetCached()` instead of `smaxLaxyPull()`:
+
+```c
+  int status = smaxGetCached("some_table", "some_data", X_INT, 3, sizes, data, &meta);
+```
 
 In either case, when you are done using lazy variables, you should let the library know that it no longer needs to watch
 updates for these, by calling either `smaxLazyEnd()` on specific variables, or else `smaxLazyFlush()` to stop watching
@@ -937,6 +943,7 @@ Broadcasting program messages to SMA-X is very simple using a set of dedicated m
 type. These are:
 
  | __smax_clib__ function                                     | Description                                |
+ |------------------------------------------------------------|--------------------------------------------|
  | `smaxSendStatus(const char *msg, ...)`                     | sends a status message                     |
  | `smaxSendInfo(const char *msg, ...)`                       | sends an informational message             |
  | `smaxSendDetail(const char *msg, ...)`                     | sends optional status/information detail   |
@@ -1011,7 +1018,7 @@ The processor function can also inspect what type of message it received by comp
 one of the predefined constant expressions in `smax.h`:
 
  | `XMessage` `type`          | Description                                     |
- | -------------------------- | ----------------------------------------------- |
+ |----------------------------|-------------------------------------------------|
  | `SMAX_MSG_STATUS`          | status update                                   |
  | `SMAX_MSG_INFO`            | informational program message                   |
  | `SMAX_MSG_DETAIL`          | additional detail (e.g. for verbose messages).  |
