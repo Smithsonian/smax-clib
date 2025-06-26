@@ -25,7 +25,7 @@ structured real-time database
 
 Author: Attila Kovacs
 
-Last Updated: 18 September 2024
+Updated for version 1.0 and later releases.
 
 
 ## Table of Contents
@@ -959,6 +959,7 @@ Broadcasting program messages to SMA-X is very simple using a set of dedicated m
 type. These are:
 
  | __smax_clib__ function                                     | Description                                |
+ |------------------------------------------------------------|--------------------------------------------|
  | `smaxSendStatus(const char *msg, ...)`                     | sends a status message                     |
  | `smaxSendInfo(const char *msg, ...)`                       | sends an informational message             |
  | `smaxSendDetail(const char *msg, ...)`                     | sends optional status/information detail   |
