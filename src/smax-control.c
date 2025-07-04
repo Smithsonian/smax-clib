@@ -4,10 +4,12 @@
  * @date Created  on Jun 11, 2025
  * @author Attila Kovacs
  *
- *  Send control 'commands' via SMA-X by setting a variable that is monitored by some other application,
- *  and waiting for a response in another variable. The controlled application is expected to
- *  act on the request passed in the control variable, and post the result (such as the actual value)
- *  after the request was processed in the designated 'reply' variable.
+ *  Send and process control 'commands' via SMA-X by setting or monitored designated control variables
+ *  Clients will set these and wait for a response in another variable, while servers will monitor the
+ *  control variables and execute designated control functions when these variables are updated.
+ *  The controlled application is expected to act on the request passed in the control variable, and post
+ *  the result (such as the actual value) after the request was processed in the designated 'reply'
+ *  variable.
  *
  *  For example, we set `system:subsystem:control_voltage` to 0.123456 to request that the given subsystem
  *  outputs the desired voltage. The program that controls the subsystem, monitors the `control_voltage`
@@ -15,9 +17,11 @@
  *  posts the actual value that was applied in `system:subsystem:voltage`. Suppose, it's DAC has a
  *  resolution of 0.01 V. In that case, it might 'reply' with `voltage` set to 0.12.
  *
- *  It is important that for every request received, the control program should post exactly one reply.
- *  This module will simply wait for an update of the reply variable, and return the value set by
- *  the control program after the request is sent.
+ *  It is important that for every request received, the control program should post exactly one reply in
+ *  the designated response variable.
+ *
+ *  The control calls of this module will simply wait for an update of the reply variable, and return the
+ *  value set by the control program after the request is sent.
  *
  * @since 1.0
  */
@@ -32,6 +36,8 @@
 #include "smax-private.h"
 
 /// \cond PRIVATE
+#define SMAX_CONTROL_TABLE_SIZE   256   ///< Hash table size for control functions.
+
 /**
  * Structure for monitoring a response to a control variable 'command'.
  */
@@ -42,7 +48,20 @@ typedef struct {
   int status;           ///< Return status
 } ControlVar;
 
+/**
+ * Call arguments for threaded control calls.
+ */
+typedef struct {
+  char *id;                   ///< The aggregated ID of the control variable
+  SMAXControlFunction func;   ///< The control function to call for the variable.
+} ControlSet;
+
+
+static XLookupTable *controls;      ///< Lookup table of currently configured control functions.
+static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
 /// \endcond
+
 
 static void *MonitorThread(void *arg) {
   ControlVar *control = (ControlVar *) arg;
@@ -245,3 +264,146 @@ double smaxControlDouble(const char *table, const char *key, double value, const
 
   return value;
 }
+
+// -----------------------------------------------------------------------------------------------
+// For server side processing of control calls:
+
+static void *ControlThread(void *arg) {
+  ControlSet *control = (ControlSet *) arg;
+  char *key = NULL;
+
+  // We won't join this thread...
+  pthread_detach(pthread_self());
+
+  // Call the control function
+  xSplitID(control->id, &key);
+  control->func(control->id, key);
+
+  // Cleanup
+  free(control->id);
+  free(control);
+
+  return NULL;
+}
+
+static void ProcessControls(const char *pattern, const char *channel, const char *msg, long length) {
+  XField *f;
+  SMAXControlFunction call = NULL;
+  const char *id;
+
+  (void) pattern; // unused
+  (void) msg; // unused
+  (void) length; // unused
+
+  if(strncmp(channel, SMAX_UPDATES, sizeof(SMAX_UPDATES) - 1) != 0) return;
+
+  id = &channel[sizeof(SMAX_UPDATES) - 1];
+
+  pthread_mutex_lock(&mutex);
+
+  f = xLookupField(controls, id);
+  if(f) call = (SMAXControlFunction) f->value;
+
+  pthread_mutex_unlock(&mutex);
+
+  if(call) {
+    ControlSet *control;
+    pthread_t tid;
+
+    control = (ControlSet *) calloc(1, sizeof(ControlSet));
+    x_check_alloc(control);
+
+    control->id = xStringCopyOf(id);
+    control->func = call;
+
+    // Call the control function from a dedicated thread, so we may return here without delay.
+    if(pthread_create(&tid, NULL, ControlThread, &control) < 0) {
+      perror("ERROR! Failed to call control function");
+      exit(errno);
+    }
+  }
+}
+
+/**
+ * Configures an SMA-X control function. The designated function will be called every time the
+ * monitored control variable is updated in the database, so it may act on the update as
+ * appropriate. If another control functions was already defined for the variable, it will be
+ * replaced with the new function. The same control function may be used with multiple control
+ * variables, given that the triggering control variable is passed to it as arguments.
+ *
+ * When the control variables are updated, the associated control functions will be called
+ * asynchronously, such that previous control calls may be executing still while new ones are
+ * called. The design allows for control functions to take their sweet time executing, without
+ * holding up other time-sensitive SMA-X processing. If simultaneous execution of control
+ * functions is undesired, the control function(s) should implement mutexing as necessary to
+ * avoid conflicts / clobbering.
+ *
+ * As a result of the asynchronous execution, there is also no guarantee of maintaining call order
+ * with respect to the order in which the control variables are updated. If two updates arrive in
+ * quick succession, it is possible that the asynchronous thread of the second one will make its
+ * call to its control function before the first one gets a chance. Thus, if order is important,
+ * you might want to process updates with a custom lower-level `RedisxSubscriberCall` wrapper
+ * instead (see `smaxAddSubscriber()`).
+ *
+ * @param table   The hash table in which the control variable resides
+ * @param key     the control variable to monitor. It may not contain a sepatator
+ * @param func    The new function to call if the monitored control variable receives an update,
+ *                or NULL to clear a previously configured function for the given variable.
+ * @return        X_SUCCESS (0)
+ */
+int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func) {
+  static const char *fn = "smaxSetControlCall";
+
+  char *id;
+  XField *prior = NULL;
+
+  if(!table) return x_error(X_GROUP_INVALID, EINVAL, fn, "Table name is NULL");
+  if(!table[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "Table name is empty");
+  if(!key) return x_error(X_NAME_INVALID, EINVAL, fn, "Control variable name is NULL");
+  if(!key[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "Control variable name is empty");
+
+  id = (char *) malloc(sizeof(SMAX_UPDATES) + strlen(table) + strlen(key) + X_SEP_LENGTH);
+  x_check_alloc(id);
+
+  sprintf(id, SMAX_UPDATES "%s" X_SEP "%s", table, key);
+
+  pthread_mutex_lock(&mutex);
+
+  // Remove and destroy any prior entry for the table, and unsubscribe updates for the control
+  // variable if no new function replaces it.
+  if(controls) {
+    prior = xLookupRemove(controls, id);
+    if(prior) {
+      xDestroyField(prior);
+      if(!func) smaxUnsubscribe(table, key);
+    }
+  }
+
+  if(func) {
+    const XField *f;
+
+    // Create controls lookup table as necessary, and set up subscriber to process updates
+    if(!controls) {
+      controls = xAllocLookup(SMAX_CONTROL_TABLE_SIZE);
+      x_check_alloc(controls);
+
+      // Start processing control calls...
+      smaxAddSubscriber(SMAX_UPDATES, ProcessControls);
+    }
+
+    xSplitID(id, NULL);
+    f = xCreateField(key, X_UNKNOWN, 0, NULL, func);
+    x_check_alloc(f);
+
+    // Add the new control and subscribe for updates as necessary
+    xLookupPut(controls, id, f, NULL);
+    if(!prior) smaxSubscribe(table, key);
+  }
+
+  pthread_mutex_unlock(&mutex);
+
+  if(id) free(id);
+
+  return X_SUCCESS;
+}
+
