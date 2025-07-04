@@ -639,8 +639,8 @@ Monitoring updates</h3>
 <div class="line">  ...</div>
 <div class="line">}</div>
 <div class="ttc" id="asmax_8c_html_a53614ba57a594135c13b64a2d89eaa43"><div class="ttname"><a href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe</a></div><div class="ttdeci">int smaxSubscribe(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax.c:1017</div></div>
-</div><!-- fragment --><p>and/or pattern(s)</p>
-<div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe</a>(<span class="stringliteral">&quot;watch_*&quot;</span>, <span class="stringliteral">&quot;watch_[a-z]_*&quot;</span>);</div>
+</div><!-- fragment --><p>and/or pattern(s):</p>
+<div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe</a>(<span class="stringliteral">&quot;*&quot;</span>, <span class="stringliteral">&quot;b[a-c]?&quot;</span>);</div>
 <div class="line"><span class="keywordflow">if</span> (status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Ooops something did not go to plan</span></div>
 <div class="line">  ...</div>
@@ -649,9 +649,9 @@ Monitoring updates</h3>
 <p><a class="anchor" id="waiting-for-updates"></a> </p>
 <h3><a class="anchor" id="autotoc_md40"></a>
 Waiting for updates</h3>
-<p>The first option for executing code conditional on some variable update is to block execution in the current thread and wait until the variable(s) of interest change(s) (or until some timeout limit is reached). There is a group of functions <code>smaxWaitOn...()</code> that do exactly that. For example:</p>
-<div class="fragment"><div class="line"><span class="comment">// Wait for watch_foo:watch_h_bar to update, or wait at most 500 ms</span></div>
-<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-easy_8c.html#af54b8b5d2e79eda86b3349c3c138331c">smaxWaitOnSubscribedVar</a>(<span class="stringliteral">&quot;watch_foo&quot;</span>, <span class="stringliteral">&quot;watch_h_bar&quot;</span>, 500);</div>
+<p>The first option for executing code conditional on some variable update is to block execution in the current thread and wait until the variable(s) of interest change(s) (or until some timeout limit is reached). There is a group of functions <code>smaxWaitOn...()</code> that do exactly that, provided you have already subscribed to receiving updates for the desired variables / patterns. For example:</p>
+<div class="fragment"><div class="line"><span class="comment">// Wait for foo:bar to update, or wait at most 500 ms</span></div>
+<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-easy_8c.html#af54b8b5d2e79eda86b3349c3c138331c">smaxWaitOnSubscribedVar</a>(<span class="stringliteral">&quot;foo&quot;</span>, <span class="stringliteral">&quot;bar&quot;</span>, 500);</div>
 <div class="line"><span class="keywordflow">if</span> (status == X_TIMEDOUT) {</div>
 <div class="line">  <span class="comment">// Wait timed out, maybe we want to try again, or do something else...</span></div>
 <div class="line">  ...</div>

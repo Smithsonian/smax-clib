@@ -833,10 +833,10 @@ before updates can be processed, e.g.
   }
 ```
 
-and/or pattern(s)
+and/or pattern(s):
 
 ```c
-  int status = smaxSubscribe("watch_*", "watch_[a-z]_*");
+  int status = smaxSubscribe("*", "b[a-c]?");
   if (status < 0) {
     // Ooops something did not go to plan
     ...
@@ -851,11 +851,12 @@ notifications for all of them. (So beware of creating unnecessary network traffi
 
 The first option for executing code conditional on some variable update is to block execution in the current thread
 and wait until the variable(s) of interest change(s) (or until some timeout limit is reached). There is a group of
-functions `smaxWaitOn...()` that do exactly that. For example:
+functions `smaxWaitOn...()` that do exactly that, provided you have already subscribed to receiving updates for
+the desired variables / patterns. For example:
 
 ```c
-  // Wait for watch_foo:watch_h_bar to update, or wait at most 500 ms
-  int status = smaxWaitOnSubscribedVar("watch_foo", "watch_h_bar", 500);
+  // Wait for foo:bar to update, or wait at most 500 ms
+  int status = smaxWaitOnSubscribedVar("foo", "bar", 500);
   if (status == X_TIMEDOUT) {
     // Wait timed out, maybe we want to try again, or do something else...
     ...
