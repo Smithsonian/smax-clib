@@ -202,6 +202,19 @@ typedef struct {
   double timestamp;             ///< Message timestamp, if available (otherwise 0.0)
 } XMessage;
 
+
+/**
+ * A function which is executed when a designated control variable is updated in SMA-X.
+ * The function should pull the associated value and act on ot as desired, usually
+ * reporting completion (or an error) in an approriate related variable.
+ *
+ * @param table   Hash table in which the control variable resides.
+ * @param key     Name of the control variable.
+ * @return        X_SUCCESS (0) if successful, or else an appropriate error code
+ *                from `smax.h`, `redisx.h`, or `xchange.h`.
+ */
+typedef int (*SMAXControlFunction)(const char *table, const char *key);
+
 // Meta helpers ----------------------------------------------->
 XMeta *smaxCreateMeta();
 void smaxResetMeta(XMeta *m);
@@ -384,12 +397,13 @@ XField *smaxCreateIntField(const char *name, int value);
 XField *smaxCreateBooleanField(const char *name, boolean value);
 XField *smaxCreateStringField(const char *name, const char *value);
 
-// Controls / Commands via SMA-X (since 1.1)
+// Controls / Commands via SMA-X
 char *smaxControl(const char *table, const char *key, const void *value, XType type, int count, const char *replyTable, const char *replyKey, int timeout);
 boolean smaxControlBoolean(const char *table, const char *key, boolean value, const char *replyTable, const char *replyKey, boolean defaultReply, int timeout);
 char *smaxControlString(const char *table, const char *key, const char *value, const char *replyTable, const char *replyKey, int timeout);
 int smaxControlInt(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout);
 double smaxControlDouble(const char *table, const char *key, double value, const char *replyTable, const char *replyKey, int timeout);
+int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func);
 
 // Helpers / Controls ----------------------------------------->
 Redis *smaxGetRedis();
