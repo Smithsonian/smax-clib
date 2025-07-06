@@ -52,8 +52,9 @@ typedef struct {
  * Call arguments for threaded control calls.
  */
 typedef struct {
-  char *id;                   ///< The aggregated ID of the control variable
-  SMAXControlFunction func;   ///< The control function to call for the variable.
+  char *id;                   ///< Aggregate ID of control variable
+  SMAXControlFunction func;   ///< Control function to call for the variable.
+  void *parg;                 ///< Additional pointer argument to pass to control function
 } ControlSet;
 
 
@@ -277,9 +278,9 @@ static void *ControlThread(void *arg) {
 
   // Call the control function
   xSplitID(control->id, &key);
-  control->func(control->id, key);
+  control->func(control->id, key, control->parg);
 
-  // Cleanup
+  // Clean up out copy of the control set
   free(control->id);
   free(control);
 
@@ -287,8 +288,8 @@ static void *ControlThread(void *arg) {
 }
 
 static void ProcessControls(const char *pattern, const char *channel, const char *msg, long length) {
-  XField *f;
-  SMAXControlFunction call = NULL;
+  const XField *f;
+  ControlSet *control = NULL;
   const char *id;
 
   (void) pattern; // unused
@@ -302,22 +303,21 @@ static void ProcessControls(const char *pattern, const char *channel, const char
   pthread_mutex_lock(&mutex);
 
   f = xLookupField(controls, id);
-  if(f) call = (SMAXControlFunction) f->value;
+  if(f) {
+    control = (ControlSet *) calloc(1, sizeof(ControlSet));
+    x_check_alloc(control);
+    memcpy(control, f->value, sizeof(ControlSet));
+  }
 
   pthread_mutex_unlock(&mutex);
 
-  if(call) {
-    ControlSet *control;
+  if(f) {
     pthread_t tid;
 
-    control = (ControlSet *) calloc(1, sizeof(ControlSet));
-    x_check_alloc(control);
-
-    control->id = xStringCopyOf(id);
-    control->func = call;
+    control->id = xStringCopyOf(id); // We use a persistent and independent copy for the async call.
 
     // Call the control function from a dedicated thread, so we may return here without delay.
-    if(pthread_create(&tid, NULL, ControlThread, &control) < 0) {
+    if(pthread_create(&tid, NULL, ControlThread, control) < 0) {
       perror("ERROR! Failed to call control function");
       exit(errno);
     }
@@ -345,13 +345,15 @@ static void ProcessControls(const char *pattern, const char *channel, const char
  * you might want to process updates with a custom lower-level `RedisxSubscriberCall` wrapper
  * instead (see `smaxAddSubscriber()`).
  *
- * @param table   The hash table in which the control variable resides
- * @param key     the control variable to monitor. It may not contain a sepatator
+ * @param table   The hash table in which the control variable resides.
+ * @param key     the control variable to monitor. It may not contain a sepatator.
  * @param func    The new function to call if the monitored control variable receives an update,
  *                or NULL to clear a previously configured function for the given variable.
+ * @param parg    Optional pointer argument to pass along to the command procesing function, or
+ *                NULL if the control function does not need extra data.
  * @return        X_SUCCESS (0)
  */
-int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func) {
+int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func, void *parg) {
   static const char *fn = "smaxSetControlCall";
 
   char *id;
@@ -374,13 +376,21 @@ int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction f
   if(controls) {
     prior = xLookupRemove(controls, id);
     if(prior) {
+      ControlSet *control = (ControlSet *) prior->value;
+
+      free(control->id);
+      free(control);
+
+      prior->value = NULL;
       xDestroyField(prior);
+
       if(!func) smaxUnsubscribe(table, key);
     }
   }
 
   if(func) {
     const XField *f;
+    ControlSet *control;
 
     // Create controls lookup table as necessary, and set up subscriber to process updates
     if(!controls) {
@@ -391,8 +401,16 @@ int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction f
       smaxAddSubscriber(SMAX_UPDATES, ProcessControls);
     }
 
+    control = (ControlSet *) calloc(1, sizeof(ControlSet));
+    x_check_alloc(control);
+
+    control->id = xStringCopyOf(id);
+    control->func = func;
+    control->parg = parg;
+
     xSplitID(id, NULL);
-    f = xCreateField(key, X_UNKNOWN, 0, NULL, func);
+
+    f = xCreateField(key, X_UNKNOWN, 0, NULL, control);
     x_check_alloc(f);
 
     // Add the new control and subscribe for updates as necessary

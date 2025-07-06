@@ -210,10 +210,11 @@ typedef struct {
  *
  * @param table   Hash table in which the control variable resides.
  * @param key     Name of the control variable.
- * @return        X_SUCCESS (0) if successful, or else an appropriate error code
- *                from `smax.h`, `redisx.h`, or `xchange.h`.
+ * @param parg    Optional pointer argument to pass along with calls to the control function.
+ * @return        X_SUCCESS (0) if successful, or else an appropriate error code from `smax.h`,
+ *                `redisx.h`, or `xchange.h`.
  */
-typedef int (*SMAXControlFunction)(const char *table, const char *key);
+typedef int (*SMAXControlFunction)(const char *table, const char *key, void *parg);
 
 // Meta helpers ----------------------------------------------->
 XMeta *smaxCreateMeta();
@@ -403,7 +404,7 @@ boolean smaxControlBoolean(const char *table, const char *key, boolean value, co
 char *smaxControlString(const char *table, const char *key, const char *value, const char *replyTable, const char *replyKey, int timeout);
 int smaxControlInt(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout);
 double smaxControlDouble(const char *table, const char *key, double value, const char *replyTable, const char *replyKey, int timeout);
-int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func);
+int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func, void *parg);
 
 // Helpers / Controls ----------------------------------------->
 Redis *smaxGetRedis();
