@@ -128,7 +128,10 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
 
   smaxUnsubscribe(reply.table, reply.key);
 
-  if(reply.status) x_warn(fn, "Got no response: %s", strerror(errno));
+  if(reply.status) {
+    x_warn(fn, "Got no response: %s", strerror(reply.status));
+    errno = reply.status;
+  }
 
   return response;
 }
