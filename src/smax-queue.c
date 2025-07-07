@@ -19,6 +19,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "smax-private.h"
 
