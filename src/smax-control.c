@@ -353,7 +353,7 @@ static void ProcessControls(const char *pattern, const char *channel, const char
  *                NULL if the control function does not need extra data.
  * @return        X_SUCCESS (0)
  */
-int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func, void *parg) {
+int smaxSetControlFunction(const char *table, const char *key, SMAXControlFunction func, void *parg) {
   static const char *fn = "smaxSetControlCall";
 
   char *id;

@@ -409,7 +409,7 @@ int smaxControlInt(const char *table, const char *key, int value, const char *re
         const char *replyKey, int defaultReply, int timeout);
 double smaxControlDouble(const char *table, const char *key, double value, const char *replyTable,
         const char *replyKey, int timeout);
-int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction func, void *parg);
+int smaxSetControlFunction(const char *table, const char *key, SMAXControlFunction func, void *parg);
 
 // Helpers / Controls ----------------------------------------->
 Redis *smaxGetRedis();
