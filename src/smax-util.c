@@ -1031,7 +1031,7 @@ int smaxStringToValues(const char *str, void *value, XType type, int eCount, int
       case X_FLOAT: {
         float *f = (float *) value;
         for(k=0; k<eCount && *next; k++) {
-          f[k] = (float) xParseDouble(next, &next);
+          f[k] = xParseFloat(next, &next);
           CheckParseError(&next, &status);
         }
         break;

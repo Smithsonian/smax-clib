@@ -71,7 +71,7 @@ static int testStructFunc(XStructure *s) {
 }
 
 
-int main(int argc, const char *argv[]) {
+int main() {
   XStructure *s, *ss, *in;
   XMeta m = X_META_INIT;
   int status;

@@ -36,7 +36,7 @@ int main(int argc, const char *argv[]) {
   while(TRUE) {
     time_t t = time(NULL);
     int status = smaxShareInt(TABLE, NAME, t);
-    fprintf(stderr, " . %ld: status = %d, connected %d, pipe = %d, res = %d\n", t, status, smaxIsConnected(), smaxIsPipelined(), smaxIsResilient());
+    fprintf(stderr, " . %ld: status = %d, connected %d, pipe = %d, res = %d\n", (long) t, status, smaxIsConnected(), smaxIsPipelined(), smaxIsResilient());
     sleep(1);
   }
 

@@ -46,6 +46,12 @@ test-int32:
 	@$(BIN)/smaxWrite -t int32 "_test_:tools:int32" 20250707
 	@test `$(BIN)/smaxValue _test_:tools int32` -eq 20250707
 
+.PHONY: test-float
+test-double:
+	@echo $@
+	@$(BIN)/smaxWrite -t float "_test_:tools:float" 3.14
+	@test `$(BIN)/smaxValue _test_:tools float` = 3.14
+
 .PHONY: test-double
 test-double:
 	@echo $@

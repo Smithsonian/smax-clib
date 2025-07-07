@@ -25,7 +25,7 @@ static void checkStatus(char *op, int status) {
   exit(-1);
 }
 
-int main(int argc, const char *argv[]) {
+int main() {
   int out[] = { 1, 2, 3 };
   int nOut = sizeof(out) / sizeof(int), nIn;
   int i, *in;

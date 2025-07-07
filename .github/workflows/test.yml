@@ -86,7 +86,7 @@ jobs:
       run: |
         cd smax-server
         sudo ./install.sh auto
-        
+
     - name: Enable smax host lookup
       run: |
         sudo echo "127.0.0.1 smax" | sudo tee -a /etc/hosts
@@ -144,20 +144,22 @@ jobs:
           distro: ${{ matrix.distro }}
           env: |
             CC: gcc
-            CFLAGS: -Os -Wall -Wextra -Werror -std=c99
+            CFLAGS: -Os -Wall -Wextra -Werror
             LIB: ${{ github.workspace }}/lib
             LD_LIBRARY_PATH: ${{ github.workspace }}/lib
             XCHANGE: ${{ github.workspace }}/xchange
             REDISX: ${{ github.workspace }}/redisx
+            SMAX_HOST: localhost
           install: |
             apt-get update -q -y
             apt-get install -q -y make gcc libpopt-dev libreadline-dev libbsd-dev libssl-dev redis
             sed -i "s:^protected mode[[:blank:]]*yes:protected mode no:g" /etc/redis/redis.conf
-            echo "127.0.0.1 smax" | sudo tee -a /etc/hosts
           run: |
-            ( cd smax-server; ./install.sh auto )
-            systemctl start redis-server
-            systemctl start smax-scripts
+            service redis-server start
+            cd smax-server
+            sed -i "s:/usr/share/smax:.:g" smax-init.sh
+            ./smax-init.sh
+            cd ..
             make -C xchange shared
             make -C redisx shared
             make tools

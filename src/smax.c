@@ -118,7 +118,7 @@ int smaxSetServer(const char *host, int port) {
   }
 
   if(server) free(server);
-  server = xStringCopyOf(host);
+  server = xStringCopyOf(host ? host : SMAX_DEFAULT_HOSTNAME);
   serverPort = port > 0 ? port : REDISX_TCP_PORT;
 
   smaxUnlockConfig();
@@ -461,6 +461,11 @@ int smaxConnect() {
 
     smaxGetProgramID();
     xvprintf("SMA-X> program ID: %s\n", programID);
+
+    if(!server) {
+      server = getenv("SMAX_HOST");
+      if(server) xvprintf("SMA-X> server from SMAX_HOST: %s\n", server);
+    }
 
     if(sentinel) redis = redisxInitSentinel(SMAX_SENTINEL_SERVICENAME, sentinel, nSentinel);
     else redis = redisxInit(server ? server : SMAX_DEFAULT_HOSTNAME);

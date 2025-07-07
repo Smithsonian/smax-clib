@@ -36,7 +36,7 @@
 static boolean showMeta = FALSE, showList = FALSE, printErrors = FALSE, json = FALSE;
 static XType type = X_UNKNOWN;
 static int count = -1;
-static char *host = SMAX_DEFAULT_HOSTNAME;
+static char *host;
 
 static int printValue(const char *group, const char *key);
 static int listEntries(const char *group, const char *key);
@@ -115,10 +115,11 @@ int main(int argc, const char *argv[]) {
 
   smaxSetPipelined(FALSE);
 
+  if(!host) host = getenv("SMAX_HOST");
+  if(host || port > 0) smaxSetServer(host, port);
   if(verbose) smaxSetVerbose(TRUE);
   if(debug) xSetDebug(TRUE);
   if(user || password) smaxSetAuth(user, password);
-  if(port > 0) smaxSetServer(host, port);
 
   if(!group) {
     poptPrintUsage(optcon, stdout, 0);

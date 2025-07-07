@@ -17,7 +17,7 @@
 #include "smax.h"
 
 static XField f;
-static char *host = SMAX_DEFAULT_HOSTNAME;
+static char *host;
 static char *delims = ",;";
 static char *sType;
 static boolean printErrors = FALSE, json = FALSE;
@@ -169,7 +169,10 @@ int main(int argc, const char *argv[]) {
     }
   }
 
-  status = smaxConnectTo(host);
+  if(!host) host = getenv("SMAX_HOST");
+  if(host || port > 0) smaxSetServer(host, port);
+
+  status = smaxConnect();
   if(status) {
     fprintf(stderr, "ERROR! SMA-X connection error: %s\n", smaxErrorDescription(status));
     return status;
