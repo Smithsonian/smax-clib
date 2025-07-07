@@ -1073,7 +1073,7 @@ int smaxUnsubscribe(const char *table, const char *key) {
  *
  * @param idStem    Table name or ID stem for which the supplied callback function will be invoked as long
  *                  as the beginning of the PUB/SUB update channel matches the given stem.
- *                  Alternatively, it can be a fully qualified SMA-X ID (of the form table:key) f a single
+ *                  Alternatively, it can be a fully qualified SMA-X ID (of the form table:key) of a single
  *                  variable.
  * @param f         The function to call when there is an incoming PUB/SUB update to a channel starting with
  *                  stem.
@@ -1199,7 +1199,10 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout)
     status = timeout > 0 ? pthread_cond_timedwait(&notifyBlock, &notifyLock, &endTime) : pthread_cond_wait(&notifyBlock, &notifyLock);
     if(status) {
       // If the wait returns with an error, the mutex is uncloked.
-      if(status == ETIMEDOUT) return x_error(X_INCOMPLETE, status, fn, "wait timed out");
+      if(status == ETIMEDOUT) {
+        smaxUnlockNotify();
+        return x_error(X_INCOMPLETE, status, fn, "wait timed out");
+      }
       xdprintf("WARNING! SMA-X : pthread_cond_wait() error %d. Ignored.\n", status);
       continue;
     }

@@ -286,12 +286,13 @@ int smaxSync(XSyncPoint *sync, int timeoutMillis) {
     if(queued.first == NULL) sync->status = X_SUCCESS;  // If the queue is empty, then we are synchronized
   }
 
-  pthread_mutex_unlock(sync->lock);
-
   xvprintf("SMA-X> End wait for synchronization.\n");
 
+  // Release the lock in case of success or timeout
+  if(!status || status == ETIMEDOUT) pthread_mutex_unlock(sync->lock);
+
   // If timeout with an incomplete sync, then return X_TIMEDOUT
-  if(status == ETIMEDOUT) return x_error(X_TIMEDOUT, status, fn, "timed out");
+  if(status) return x_error(status == ETIMEDOUT ? X_TIMEDOUT : X_FAILURE, status, fn, "%s", strerror(errno));
 
   // If the queue is in an erroneous state, then set the sync status to indicate potential issues.
   // (The error may not have occured at any point prior to the synchronization, and even prior to
