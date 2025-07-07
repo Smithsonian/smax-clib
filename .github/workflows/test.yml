@@ -1,0 +1,172 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/test.yml'
+
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'include/**'
+      - 'Makefile'
+      - '*.mk'
+      - '.github/workflows/test.yml'
+
+jobs:
+
+  build:
+    name: Regression Tests
+
+    runs-on: ubuntu-latest
+    env:
+      CC: gcc
+      CFLAGS: -Os -Wall -Werror
+      FORTIFY: 3
+      LIB: ${{ github.workspace }}/lib
+      LD_LIBRARY_PATH: ${{ github.workspace }}/lib
+    steps:
+    - name: Check out smax-clib
+      uses: actions/checkout@v4
+
+    - name: Check out RedisX
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/redisx
+        path: redisx
+
+    - name: Check out xchange
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/xchange
+        path: xchange
+
+    - name: Check out smax-server
+      uses: actions/checkout@v4
+      with:
+        repository: Smithsonian/smax-server
+        path: smax-server
+
+    - name: Install build dependencies
+      run: sudo apt-get install libpopt-dev libreadline-dev libbsd-dev libssl-dev
+
+    - name: Build xchange dependency
+      run: make -C xchange shared
+
+    - name: Install xchange dependency
+      run: sudo make -C xchange install
+
+    - name: Build RedisX dependency
+      run: make -C redisx shared
+
+    - name: Install RedisX dependency
+      run: sudo make -C redisx install
+
+    - name: Build smax-clib and tools
+      run: make tools
+
+    - name: Install Redis
+      run: sudo apt-get install redis
+
+    - name: Configure Redis
+      run: sudo sed -i "s:^protected mode[[:blank:]]*yes:protected mode no:g" /etc/redis/redis.conf
+
+    - name: Start Redis
+      run: sudo systemctl start redis-server
+
+    - name: Install SMA-X scripts
+      run: |
+        cd smax-server
+        sudo ./install.sh auto
+        
+    - name: Enable smax host lookup
+      run: |
+        sudo echo "127.0.0.1 smax" | sudo tee -a /etc/hosts
+
+    - name: Check smaxWrite
+      run: bin/smaxWrite -t int32 "_test_:_int_" 2025
+
+    - name: Check smaxValue
+      run: test `bin/smaxValue "_test_" "_int_"` -eq 2025
+
+    - name: Run tests
+      run: make test
+
+  test-platforms:
+    name: ${{ matrix.arch }}
+    # The host should always be linux
+    runs-on: ubuntu-latest
+
+    # Run steps on a matrix of 4 arch/distro combinations
+    strategy:
+      matrix:
+        include:
+          - arch: armv7
+            distro: ubuntu_latest
+# ! Can't connect to redis server on aarch64, for some reason...
+#          - arch: aarch64
+#           distro: ubuntu_latest
+          - arch: riscv64
+            distro: ubuntu_latest
+          - arch: s390x
+            distro: ubuntu_latest
+          - arch: ppc64le
+            distro: ubuntu_latest
+    steps:
+      - name: Check out smax-clib
+        uses: actions/checkout@v4
+
+      - name: Check out RedisX
+        uses: actions/checkout@v4
+        with:
+          repository: Smithsonian/redisx
+          path: redisx
+
+      - name: Check out xchange
+        uses: actions/checkout@v4
+        with:
+          repository: Smithsonian/xchange
+          path: xchange
+
+      - name: Check out smax-server
+        uses: actions/checkout@v4
+        with:
+          repository: Smithsonian/smax-server
+          path: smax-server
+
+      - uses: uraimo/run-on-arch-action@v3
+        name: Run regression tests
+        id: test
+        with:
+          arch: ${{ matrix.arch }}
+          distro: ${{ matrix.distro }}
+          env: |
+            CC: gcc
+            CFLAGS: -Os -Wall -Wextra -Werror -std=c99
+            LIB: ${{ github.workspace }}/lib
+            LD_LIBRARY_PATH: ${{ github.workspace }}/lib
+            XCHANGE: ${{ github.workspace }}/xchange
+            REDISX: ${{ github.workspace }}/redisx
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y make gcc libpopt-dev libreadline-dev libbsd-dev libssl-dev redis
+            sed -i "s:^protected mode[[:blank:]]*yes:protected mode no:g" /etc/redis/redis.conf
+            (cd smax-server; ./install.sh auto)
+            echo "127.0.0.1 smax" | sudo tee -a /etc/hosts
+          run: |
+            systemctl start redis-server
+            systemctl start smax-scripts
+            make -C xchange shared
+            make -C redisx shared
+            make tools
+            bin/smaxWrite -t int32 "_test_:_int_" 2025
+            test `bin/smaxValue "_test_" "_int_"` -eq 2025
+            make test
