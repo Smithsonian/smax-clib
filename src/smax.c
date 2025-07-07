@@ -455,6 +455,11 @@ int smaxConnect() {
     smaxGetProgramID();
     xvprintf("SMA-X> program ID: %s\n", programID);
 
+    if(!server) {
+      server = getenv("SMAX_HOST");
+      if(server) xvprintf("SMA-X> server from SMAX_HOST: %s\n", server);
+    }
+
     if(sentinel) redis = redisxInitSentinel(SMAX_SENTINEL_SERVICENAME, sentinel, nSentinel);
     else redis = redisxInit(server ? server : SMAX_DEFAULT_HOSTNAME);
 
