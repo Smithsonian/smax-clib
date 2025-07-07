@@ -24,7 +24,7 @@
 
 // Variables updated by the polling thread and checked/reported by main()
 static int gotUpdate = FALSE;
-static int nQueries = 0;
+static long long nQueries = 0;
 static int nUpdates = 0;
 
 static void checkStatus(char *op, int status) {
@@ -41,10 +41,12 @@ static void *PollingThread(void *arg) {
   XMeta meta;
   int initial;
 
+  (void) arg; // unused
+
   // Lazy pull including metadata, but meta argument may be NULL if we don't need it.
   smaxLazyPull(TABLE, NAME, X_INT, 1, &initial, &meta);
 
-  for(;; nQueries++) {
+  while(1) {
     int status, value;
 
     // We don't care to update the meta over and over again (but we could...)
@@ -56,6 +58,8 @@ static void *PollingThread(void *arg) {
       smaxError("PollingThread", status);
       continue;
     }
+
+    nQueries++;
 
     if(value != initial) break;
   }
@@ -70,7 +74,7 @@ static void *PollingThread(void *arg) {
   return NULL;
 }
 
-int main(int argc, const char *argv[]) {
+int main() {
   pthread_t tid;
   int timeoutLoops = 100;
 
@@ -101,7 +105,7 @@ int main(int argc, const char *argv[]) {
     struct timespec interval = { 0, 10000000 }; // Check every 10ms
 
     if(gotUpdate) {
-      printf("lazy: OK (%d queries, %d update[s])\n", nQueries, nUpdates);
+      printf("lazy: OK (%lld queries, %d update[s])\n", nQueries, nUpdates);
       exit(0);
     }
 

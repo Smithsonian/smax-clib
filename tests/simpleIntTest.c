@@ -25,7 +25,7 @@ static void checkStatus(char *op, int status) {
   exit(-1);
 }
 
-int main(int argc, const char *argv[]) {
+int main() {
   int i;
 
   smaxSetPipelined(FALSE);

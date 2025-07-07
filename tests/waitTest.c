@@ -41,6 +41,8 @@ static void *WaitingThread(void *arg) {
   XMeta meta = X_META_INIT;
   int initial;
 
+  (void) arg; // unused
+
   // Lazy pull including metadata, but meta argument may be NULL if we don't need it.
   smaxPull(TABLE, NAME, X_INT, 1, &initial, &meta);
 
@@ -63,7 +65,7 @@ static void *WaitingThread(void *arg) {
   return NULL;
 }
 
-int main(int argc, const char *argv[]) {
+int main() {
   pthread_t tid;
   int timeoutLoops = 100;
 

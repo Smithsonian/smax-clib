@@ -38,7 +38,7 @@ static void checkStatus(char *op, int status) {
 }
 
 
-int main(int argc, const char *argv[]) {
+int main() {
   checkStatus("connect", smaxConnect());
 
   // Put some data into SMA-X we can pull and check on...

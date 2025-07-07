@@ -1,4 +1,5 @@
 ![Build Status](https://github.com/Smithsonian/smax-clib/actions/workflows/build.yml/badge.svg)
+![Test Status](https://github.com/Smithsonian/redisx/actions/workflows/test.yml/badge.svg)
 ![Static Analysis](https://github.com/Smithsonian/smax-clib/actions/workflows/analyze.yml/badge.svg)
 <a href="https://smithsonian.github.io/smax-clib/apidoc/html/files.html">
  ![API documentation](https://github.com/Smithsonian/smax-clib/actions/workflows/dox.yml/badge.svg)
@@ -208,9 +209,10 @@ as `bash`, or `perl` (also `python` though we recommend to use the native
 <a name="smax-configuration"></a>
 ## Initial configuration
 
-Bu default, the library assumes that the Redis server used for SMA-X runs on a machine called `smax` (e.g. you may assign
-`smax` to the IP address in `/etc/hosts`), and that the Redis is on the default port 6379/tcp. However, you can configure
-to use a specific host and/or an alternative Redis port number to use instead. 
+Bu default, the library assumes that the Redis server name used for SMA-X is either stored in the environment variable
+`SMAX_HOST` or is `smax` (e.g. you may assign `smax` to the IP address in `/etc/hosts`), and that the Redis is on 
+the default port 6379/tcp. However, you can configure to use a specific host and/or an alternative Redis port number 
+to use instead. 
 
 
 ```c
