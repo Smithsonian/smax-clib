@@ -50,7 +50,7 @@ static void *WaitingThread(void *arg) {
     char *key;
     int status;
 
-    status = smaxWaitOnSubscribedGroup(TABLE, &key, WAIT_TIMEOUT);
+    status = smaxWaitOnSubscribedGroup(TABLE, &key, WAIT_TIMEOUT, NULL);
     if(status) smaxError("WaitingThread", status);
     else if(!strcmp(key, NAME)) {                   // Check that it was indeed the key we are expecting that updated.
       int final;

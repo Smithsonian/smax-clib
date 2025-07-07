@@ -24,7 +24,7 @@
 #define TABLE           "_test_" X_SEP "control"
 #define NAME            "value"
 #define CONTROL_NAME    NAME "_control"
-#define CONTROL_TIMEOUT 10
+#define CONTROL_TIMEOUT 5
 
 static void checkStatus(char *op, int status) {
   if(!status) return;

@@ -19,7 +19,7 @@
 #include "smax-private.h"
 
 // Local prototypes ------------------------------------>
-static int WaitOn(const char *table, const char *key, int timeout, ...);
+static int WaitOn(const char *table, const char *key, int timeout, sem_t *sem, ...);
 
 /**
  * Returns a dynamically allocated buffer with the raw string value stored in SMA-X.
@@ -1061,9 +1061,14 @@ int smaxGetArrayField(const XStructure *s, const char *name, void *dst, XType ty
  * Waits for a specific pushed entry. There must be an active subscription that includes the specified
  * group & variable, or else the call will block indefinitely.
  *
- * \param table     Hash table name
- * \param key       Variable name to wait on.
- * \param timeout   (s) Timeout value. 0 or negative values result in an indefinite wait.
+ * \param table             Hash table name
+ * \param key               Variable name to wait on.
+ * \param timeout           (s) Timeout value. 0 or negative values result in an indefinite wait.
+ * \param[in,out] gating    Optional semaphore to post after thuis wait call gains exclusive access to the notification
+ *                          mutex. Another thread may wait on that semaphore before it too tries to get exclusive access
+ *                          to SMA-X notifications via some other library call, to ensure that the wait is entered (or
+ *                          else fails) in a timely manner, without unwittingly being blocked by the other thread.
+ *                          Typically, you can set it to NULL if such cross-thread gating is not required.
  *
  * \return      X_SUCCESS (0)       if the variable was updated on some host (or owner).
  *              X_NO_INIT           if the SMA-X sharing was not initialized via smaxConnect().
@@ -1078,7 +1083,7 @@ int smaxGetArrayField(const XStructure *s, const char *name, void *dst, XType ty
  * @sa smaxWaitOnAnySubscribed()
  * @sa smaxReleaseWaits()
  */
-int smaxWaitOnSubscribed(const char *table, const char *key, int timeout) {
+int smaxWaitOnSubscribed(const char *table, const char *key, int timeout, sem_t *gating) {
   static const char *fn = "smaxWaitOnSubscribed";
 
   if(table == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "table is NULL");
@@ -1086,7 +1091,7 @@ int smaxWaitOnSubscribed(const char *table, const char *key, int timeout) {
   if(key == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "key is NULL");
   if(!key[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "key is empty");
 
-  prop_error(fn, WaitOn(table, key, timeout));
+  prop_error(fn, WaitOn(table, key, timeout, gating));
   return X_SUCCESS;
 }
 
@@ -1099,6 +1104,11 @@ int smaxWaitOnSubscribed(const char *table, const char *key, int timeout) {
  *                           or which is set to NULL. The lease of the buffer is for the call only. The caller
  *                           should copy its content if persistent storage is required.
  * \param[in] timeout        (s) Timeout value. 0 or negative values result in an indefinite wait.
+ * \param[in,out] gating     Optional semaphore to post after thuis wait call gains exclusive access to the notification
+ *                           mutex. Another thread may wait on that semaphore before it too tries to get exclusive access
+ *                           to SMA-X notifications via some other library call, to ensure that the wait is entered (or
+ *                           else fails) in a timely manner, without unwittingly being blocked by the other thread.
+ *                           Typically, you can set it to NULL if such cross-thread gating is not required.
  *
  * \return      X_SUCCESS (0)       if a variable was updated on the host.
  *              X_NO_INIT           if the SMA-X sharing was not initialized via smaxConnect().
@@ -1111,13 +1121,13 @@ int smaxWaitOnSubscribed(const char *table, const char *key, int timeout) {
  * @sa smaxWaitOnAnySubscribed()
  * @sa smaxReleaseWaits()
  */
-int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int timeout) {
+int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int timeout, sem_t *gating) {
   static const char *fn = "smaxWaitOnSubscrivedGroup";
 
   if(matchTable == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "matchTable parameter is NULL");
   if(!matchTable[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "matchTable parameter is empty");
 
-  prop_error(fn, WaitOn(matchTable, NULL, timeout, changedKey));
+  prop_error(fn, WaitOn(matchTable, NULL, timeout, gating, changedKey));
   return X_SUCCESS;
 }
 
@@ -1130,6 +1140,11 @@ int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int tim
  *                           or which is set to NULL. The lease of the buffer is for the call only. The caller
  *                           should copy its content if persistent storage is required.
  * \param[in] timeout        (s) Timeout value. 0 or negative values result in an indefinite wait.
+ * \param[in,out] gating     Optional semaphore to post after thuis wait call gains exclusive access to the notification
+ *                           mutex. Another thread may wait on that semaphore before it too tries to get exclusive access
+ *                           to SMA-X notifications via some other library call, to ensure that the wait is entered (or
+ *                           else fails) in a timely manner, without unwittingly being blocked by the other thread.
+ *                           Typically, you can set it to NULL if such cross-thread gating is not required.
  *
  * \return      X_SUCCESS (0)       if the variable was updated on some host (or owner).
  *              X_NO_INIT           if the SMA-X sharing was not initialized via smaxConnect().
@@ -1142,13 +1157,13 @@ int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int tim
  * @sa smaxWaitOnAnySubscribed()
  * @sa smaxReleaseWaits()
  */
-int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeout) {
+int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeout, sem_t *gating) {
   static const char *fn = "smaxWaitOnSubscribedVar";
 
   if(matchKey == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "matchKey parameter is NULL");
   if(!matchKey[0]) return x_error(X_NAME_INVALID, EINVAL, fn, "matchKey parameter is empty");
 
-  prop_error(fn, WaitOn(NULL, matchKey, timeout, changedTable));
+  prop_error(fn, WaitOn(NULL, matchKey, timeout, gating, changedTable));
   return X_SUCCESS;
 }
 
@@ -1169,30 +1184,35 @@ int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeo
  * \endcode
  * will wait until any field is changed in "myTable". The triggering variable name will be store in the supplied 3rd argument.
  *
- * \param[in]  host      Host name on which to wait for updates, or NULL if any host.
- * \param[in]  key       Variable name to wait to be updated, or NULL if any variable.
- * \param[in]  timeout   (s) Timeout value. 0 or negative values result in an indefinite wait.
- * \param[out] ...       References to string pointers (char **) to which the triggering table name (if table is NULL) and/or
- *                       variable name (if key is NULL) is/are returned. These buffers have a lease for the call only.
- *                       The caller should copy their content if persistent storage is required.
+ * \param[in]  host       Host name on which to wait for updates, or NULL if any host.
+ * \param[in]  key        Variable name to wait to be updated, or NULL if any variable.
+ * \param[in]  timeout    (s) Timeout value. 0 or negative values result in an indefinite wait.
+ * \param[in,out] gating  Optional semaphore to post after thuis wait call gains exclusive access to the notification
+ *                        mutex. Another thread may wait on that semaphore before it too tries to get exclusive access
+ *                        to SMA-X notifications via some other library call, to ensure that the wait is entered (or
+ *                        else fails) in a timely manner, without unwittingly being blocked by the other thread.
+ *                        Typically, you can set it to NULL if such cross-thread gating is not required.
+ * \param[out] ...        References to string pointers (char **) to which the triggering table name (if table is NULL) and/or
+ *                        variable name (if key is NULL) is/are returned. These buffers have a lease for the call only.
+ *                        The caller should copy their content if persistent storage is required.
  *
  * \return      X_SUCCESS (0) if successful, or else the error returned by smaxWaitOnAnySubscribed()
  *
  * \sa smaxWaitOnAnySubscribed()
  * @sa smaxReleaseWaits()
  */
-static int WaitOn(const char *table, const char *key, int timeout, ...) {
+static int WaitOn(const char *table, const char *key, int timeout, sem_t *gating, ...) {
   static const char *fn = "WaitOn";
   char *gotTable = NULL, *gotKey = NULL;
   va_list args;
 
-  va_start(args, timeout);         /* Initialize the argument list. */
+  va_start(args, gating);         /* Initialize the argument list. */
 
   while(TRUE) {
     int status;
     char **ptr;
 
-    status = smaxWaitOnAnySubscribed(&gotTable, &gotKey, timeout);
+    status = smaxWaitOnAnySubscribed(&gotTable, &gotKey, timeout, gating);
     if(status) {
       va_end(args);
       return x_trace(fn, NULL, status);

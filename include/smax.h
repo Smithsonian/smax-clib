@@ -16,6 +16,7 @@
 
 #include <time.h>
 #include <math.h>
+#include <semaphore.h>
 
 #include <redisx.h>
 #include <xchange.h>
@@ -329,10 +330,10 @@ int smaxShareStruct(const char *id, const XStructure *s);
 // Notifications ---------------------------------------------->
 int smaxSubscribe(const char *table, const char *key);
 int smaxUnsubscribe(const char *table, const char *key);
-int smaxWaitOnSubscribed(const char *table, const char *key, int timeout);
-int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int timeout);
-int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeout);
-int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout);
+int smaxWaitOnSubscribed(const char *table, const char *key, int timeout, sem_t *gating);
+int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int timeout, sem_t *gating);
+int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeout, sem_t *gating);
+int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout, sem_t *gating);
 int smaxReleaseWaits();
 int smaxAddSubscriber(const char *stem, RedisSubscriberCall f);
 int smaxRemoveSubscribers(RedisSubscriberCall f);

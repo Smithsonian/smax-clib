@@ -46,6 +46,7 @@ typedef struct {
   const char *key;      ///< Redis hash field to monitor for update
   int timeout;          ///< [s] Timeout
   int status;           ///< Return status
+  sem_t sem;            ///< Sempahore for when response is ready.
 } ControlVar;
 
 /**
@@ -63,10 +64,9 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /// \endcond
 
-
 static void *MonitorThread(void *arg) {
   ControlVar *control = (ControlVar *) arg;
-  control->status = smaxWaitOnSubscribed(control->table, control->key, control->timeout);
+  control->status = smaxWaitOnSubscribed(control->table, control->key, control->timeout, &control->sem);
   if(control->status != X_SUCCESS) return NULL;
   return (void *) smaxPullRaw(control->table, control->key, NULL, &control->status);
 }
@@ -97,6 +97,7 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   ControlVar reply = {};
   pthread_t tid;
   char *response = NULL;
+  int status;
 
   if(!replyKey || !replyKey[0]) {
     smaxError(fn, X_NAME_INVALID);
@@ -106,6 +107,7 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   reply.table = replyTable ? replyTable : table;
   reply.key = replyKey;
   reply.timeout = timeout;
+  sem_init(&reply.sem, FALSE, 0);
 
   // To catch responses reliably, start monitoring
   if(smaxSubscribe(reply.table, reply.key) != X_SUCCESS) return x_trace_null(fn, NULL);
@@ -113,13 +115,30 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   // Launch monitoring thread with timeout
   if(pthread_create(&tid, NULL, MonitorThread, &reply) < 0) {
     smaxUnsubscribe(reply.table, reply.key);
-    return x_trace_null(fn, NULL);
+    sem_destroy(&reply.sem);
+    x_error(0, errno, fn, "could not create monitor thread");
+    return NULL;
   }
 
+  // Proceed only when the monitor is in waiting status...
+  if(sem_wait(&reply.sem) < 0) {;
+    smaxUnsubscribe(reply.table, reply.key);
+    sem_destroy(&reply.sem);
+    x_error(0, errno, fn, "sem_wait() gating error");
+    return NULL;
+  }
+
+  // By getting exclusive access to the notifications after the semaphore
+  // we ensure that the wait is already active, or else failed to activate.
+  smaxLockNotify();
+  status = smaxShare(table, key, value, type, count);
+  smaxUnlockNotify();
+
   // Now send the control command
-  if(smaxShare(table, key, value, type, count) != X_SUCCESS) {
+  if(status != X_SUCCESS) {
     pthread_cancel(tid);
     smaxUnsubscribe(reply.table, reply.key);
+    sem_destroy(&reply.sem);
     return x_trace_null(fn, NULL);
   }
 
@@ -127,6 +146,7 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   pthread_join(tid, (void **) &response);
 
   smaxUnsubscribe(reply.table, reply.key);
+  sem_destroy(&reply.sem);
 
   if(reply.status) x_warn(fn, "Got no response: %s", strerror(errno));
 
