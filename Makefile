@@ -48,7 +48,7 @@ static: $(LIB)/libsmax.a
 
 # Run regression tests
 .PHONY: test
-test: $(LIBSMAX)
+test: $(LIBSMAX) tools
 	$(MAKE) -f test.mk
 
 # Build benchmark program

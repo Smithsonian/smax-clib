@@ -91,12 +91,6 @@ jobs:
       run: |
         sudo echo "127.0.0.1 smax" | sudo tee -a /etc/hosts
 
-    - name: Check smaxWrite
-      run: bin/smaxWrite -t int32 "_test_:_int_" 2025
-
-    - name: Check smaxValue
-      run: test `bin/smaxValue "_test_" "_int_"` -eq 2025
-
     - name: Run tests
       run: make test
 
@@ -159,14 +153,12 @@ jobs:
             apt-get update -q -y
             apt-get install -q -y make gcc libpopt-dev libreadline-dev libbsd-dev libssl-dev redis
             sed -i "s:^protected mode[[:blank:]]*yes:protected mode no:g" /etc/redis/redis.conf
-            (cd smax-server; ./install.sh auto)
             echo "127.0.0.1 smax" | sudo tee -a /etc/hosts
           run: |
+            ( cd smax-server; ./install.sh auto )
             systemctl start redis-server
             systemctl start smax-scripts
             make -C xchange shared
             make -C redisx shared
             make tools
-            bin/smaxWrite -t int32 "_test_:_int_" 2025
-            test `bin/smaxValue "_test_" "_int_"` -eq 2025
             make test
