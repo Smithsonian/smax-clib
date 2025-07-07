@@ -103,32 +103,32 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
     return NULL;
   }
 
-  reply.table = replyTable;
+  reply.table = replyTable ? replyTable : table;
   reply.key = replyKey;
   reply.timeout = timeout;
 
   // To catch responses reliably, start monitoring
-  if(smaxSubscribe(table, key) != X_SUCCESS) return x_trace_null(fn, NULL);
-
-  errno = 0;
+  if(smaxSubscribe(reply.table, reply.key) != X_SUCCESS) return x_trace_null(fn, NULL);
 
   // Launch monitoring thread with timeout
   if(pthread_create(&tid, NULL, MonitorThread, &reply) < 0) {
-    smaxUnsubscribe(table, key);
+    smaxUnsubscribe(reply.table, reply.key);
     return x_trace_null(fn, NULL);
   }
 
   // Now send the control command
   if(smaxShare(table, key, value, type, count) != X_SUCCESS) {
     pthread_cancel(tid);
-    smaxUnsubscribe(table, key);
+    smaxUnsubscribe(reply.table, reply.key);
     return x_trace_null(fn, NULL);
   }
 
   // Wait for the response
   pthread_join(tid, (void **) &response);
 
-  if(errno) x_warn(fn, "Got no response: %s", strerror(errno));
+  smaxUnsubscribe(reply.table, reply.key);
+
+  if(reply.status) x_warn(fn, "Got no response: %s", strerror(errno));
 
   return response;
 }
@@ -389,7 +389,7 @@ int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction f
   }
 
   if(func) {
-    const XField *f;
+    XField *f;
     ControlSet *control;
 
     // Create controls lookup table as necessary, and set up subscriber to process updates
@@ -398,23 +398,23 @@ int smaxSetControlCall(const char *table, const char *key, SMAXControlFunction f
       x_check_alloc(controls);
 
       // Start processing control calls...
-      smaxAddSubscriber(SMAX_UPDATES, ProcessControls);
+      smaxAddSubscriber("", ProcessControls);
     }
 
     control = (ControlSet *) calloc(1, sizeof(ControlSet));
     x_check_alloc(control);
 
-    control->id = xStringCopyOf(id);
+    control->id = xGetAggregateID(table, key);
     control->func = func;
     control->parg = parg;
 
-    xSplitID(id, NULL);
-
-    f = xCreateField(key, X_UNKNOWN, 0, NULL, control);
+    f = xCreateField(key, X_UNKNOWN, 0, NULL, NULL);
     x_check_alloc(f);
 
+    f->value = control;
+
     // Add the new control and subscribe for updates as necessary
-    xLookupPut(controls, id, f, NULL);
+    xLookupPut(controls, table, f, NULL);
     if(!prior) smaxSubscribe(table, key);
   }
 

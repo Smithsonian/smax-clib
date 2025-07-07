@@ -9,7 +9,7 @@ LDFLAGS += -L$(LIB) -lsmax
 LD_LIBRARY_PATH := $(LIB):$(LD_LIBRARY_PATH)
 
 TESTS = $(BIN)/simpleIntTest $(BIN)/simpleIntsTest $(BIN)/structTest $(BIN)/queueTest $(BIN)/lazyTest \
-		$(BIN)/lazyCacheTest $(BIN)/waitTest $(BIN)/resilientTest
+		$(BIN)/lazyCacheTest $(BIN)/waitTest $(BIN)/controlTest $(BIN)/resilientTest
 
 .PHONY: run
 run: build test-tools
@@ -20,6 +20,7 @@ run: build test-tools
 	$(BIN)/lazyTest
 	$(BIN)/lazyCacheTest
 	$(BIN)/waitTest
+	$(BIN)/controlTest
 
 .PHONY: run2
 run2: run
