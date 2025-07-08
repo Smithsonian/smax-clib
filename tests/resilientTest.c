@@ -26,6 +26,8 @@ static void checkStatus(char *op, int status) {
 int main(int argc, const char *argv[]) {
   char *server = "smax";
 
+  xSetDebug(TRUE);
+
   //smaxSetPipelined(FALSE);
   smaxSetResilient(TRUE);
 

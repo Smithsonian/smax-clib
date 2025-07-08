@@ -19,6 +19,10 @@
 
 #include "smax.h"
 
+#ifndef SMAX_TEST_TIMEOUT
+#  define SMAX_TEST_TIMEOUT 3   ///< [s] Default timeout
+#endif
+
 #define TABLE   "_test_" X_SEP "queued"
 #define NAME1   "integer"
 #define NAME2   "float"
@@ -39,6 +43,8 @@ static void checkStatus(char *op, int status) {
 
 
 int main() {
+  xSetDebug(TRUE);
+
   checkStatus("connect", smaxConnect());
 
   // Put some data into SMA-X we can pull and check on...
@@ -135,7 +141,7 @@ static int testWaitComplete() {
   // Now wait for all queued transaction to finish, including ones that may be
   // submitted in the meantime.
   // A non-zero argument sets a timeout in milliseconds.
-  checkStatus("wait complete", smaxWaitQueueComplete(3000));
+  checkStatus("wait complete", smaxWaitQueueComplete(1000 * SMAX_TEST_TIMEOUT));
 
   // Let's check to see if the values are what we expect
   if(i != IVALUE) {

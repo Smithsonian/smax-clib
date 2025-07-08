@@ -20,9 +20,13 @@
 
 #include "smax.h"
 
+#ifndef SMAX_TEST_TIMEOUT
+#  define SMAX_TEST_TIMEOUT 3     ///< [s] Default timeout
+#endif
+
 #define TABLE   "_test_" X_SEP "wait"
 #define NAME    "value"
-#define WAIT_TIMEOUT        5
+
 
 // Variables updated by the polling thread and checked/reported by main()
 static int gotUpdate = FALSE;
@@ -50,7 +54,7 @@ static void *WaitingThread(void *arg) {
     char *key;
     int status;
 
-    status = smaxWaitOnSubscribedGroup(TABLE, &key, WAIT_TIMEOUT, NULL);
+    status = smaxWaitOnSubscribedGroup(TABLE, &key, SMAX_TEST_TIMEOUT, NULL);
     if(status) smaxError("WaitingThread", status);
     else if(!strcmp(key, NAME)) {                   // Check that it was indeed the key we are expecting that updated.
       int final;
@@ -67,7 +71,9 @@ static void *WaitingThread(void *arg) {
 
 int main() {
   pthread_t tid;
-  int timeoutLoops = 100;
+  int timeoutLoops = 100 * SMAX_TEST_TIMEOUT;
+
+  xSetDebug(TRUE);
 
   smaxSetPipelined(TRUE);
 
