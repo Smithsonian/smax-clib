@@ -124,12 +124,12 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   if(sem_wait(&reply.sem) < 0) {;
     smaxUnsubscribe(reply.table, reply.key);
     sem_destroy(&reply.sem);
-    x_error(0, errno, fn, "sem_wait() gating error");
+    x_error(0, errno, fn, "sem_wait() error: %s\n", strerror(errno));
     return NULL;
   }
 
   // By getting exclusive access to the notifications after the semaphore
-  // we ensure that the wait is already active, or else failed to activate.
+  // we ensure that the wait is already active, or else failed right away.
   smaxLockNotify();
   status = smaxShare(table, key, value, type, count);
   smaxUnlockNotify();
@@ -148,7 +148,7 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   smaxUnsubscribe(reply.table, reply.key);
   sem_destroy(&reply.sem);
 
-  if(reply.status) x_warn(fn, "Got no response: %s", strerror(errno));
+  if(reply.status) x_warn(fn, "Got no response: %s", smaxErrorDescription(reply.status));
 
   return response;
 }
@@ -378,6 +378,7 @@ int smaxSetControlFunction(const char *table, const char *key, SMAXControlFuncti
 
   char *id;
   XField *prior = NULL;
+  int status = X_SUCCESS;
 
   if(!table) return x_error(X_GROUP_INVALID, EINVAL, fn, "Table name is NULL");
   if(!table[0]) return x_error(X_GROUP_INVALID, EINVAL, fn, "Table name is empty");
@@ -418,7 +419,11 @@ int smaxSetControlFunction(const char *table, const char *key, SMAXControlFuncti
       x_check_alloc(controls);
 
       // Start processing control calls...
-      smaxAddSubscriber("", ProcessControls);
+      status = smaxAddSubscriber(NULL, ProcessControls);
+      if(status) {
+        pthread_mutex_unlock(&mutex);
+        return x_trace(fn, NULL, status);
+      }
     }
 
     control = (ControlSet *) calloc(1, sizeof(ControlSet));
@@ -429,20 +434,19 @@ int smaxSetControlFunction(const char *table, const char *key, SMAXControlFuncti
     control->parg = parg;
 
     f = xCreateField(key, X_UNKNOWN, 0, NULL, NULL);
-    x_check_alloc(f);
-
     f->value = control;
 
     // Add the new control and subscribe for updates as necessary
     xLookupPut(controls, table, f, NULL);
 
-    if(!prior) smaxSubscribe(table, key);
+    if(!prior) status = smaxSubscribe(table, key);
   }
 
   pthread_mutex_unlock(&mutex);
 
   if(id) free(id);
 
+  prop_error(fn, status);
   return X_SUCCESS;
 }
 

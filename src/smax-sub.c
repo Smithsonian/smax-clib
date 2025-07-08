@@ -208,8 +208,8 @@ int smaxUnsubscribe(const char *table, const char *key) {
  *
  * @param idStem    Table name or ID stem for which the supplied callback function will be invoked as long
  *                  as the beginning of the PUB/SUB update channel matches the given stem.
- *                  Alternatively, it can be a fully qualified SMA-X ID (of the form table:key) f a single
- *                  variable.
+ *                  Alternatively, it can be a fully qualified SMA-X ID (of the form table:key) of a single
+ *                  variable, or NULL to call with all updates
  * @param f         The function to call when there is an incoming PUB/SUB update to a channel starting with
  *                  stem.
  *
@@ -225,7 +225,7 @@ int smaxAddSubscriber(const char *idStem, RedisSubscriberCall f) {
 
   if(!r) return smaxError(fn, X_NO_INIT);
 
-  stem = xGetAggregateID(SMAX_UPDATES_ROOT, idStem);
+  stem = xGetAggregateID(SMAX_UPDATES_ROOT, idStem ? idStem : "");
   status = redisxAddSubscriber(r, stem, f);
   free(stem);
   prop_error(fn, status);
@@ -312,9 +312,7 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
  */
 int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout, sem_t *gating) {
   static const char *fn = "smaxWaitOnAnySubscribed";
-  int status = X_SUCCESS;
   struct timespec endTime = {};
-
 
   if(changedTable == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "'changedTable' parameter is NULL");
   if(changedKey == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "'changedKey' parameter is NULL");
@@ -327,7 +325,6 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout,
   *changedKey = NULL;
 
   smaxLockNotify();
-  if(gating) sem_post(gating);
 
   // Time the wait only from the point we obtained exclusive access to begin...
   if(timeout > 0) {
@@ -335,16 +332,20 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout,
     endTime.tv_sec += timeout;
   }
 
+  // Allow other threads to proceed with exclusive access to notifications as soon as we enter waiting
+  // (or fail to do so).
+  if(gating) sem_post(gating);
+
   // Waits for a notification...
   while(*changedTable == NULL) {
     const char *sep;
 
-    status = timeout > 0 ? pthread_cond_timedwait(&notifyBlock, &notifyLock, &endTime) : pthread_cond_wait(&notifyBlock, &notifyLock);
+    int status = timeout > 0 ? pthread_cond_timedwait(&notifyBlock, &notifyLock, &endTime) : pthread_cond_wait(&notifyBlock, &notifyLock);
     if(status) {
       // If the wait returns with an error, the mutex is unlocked.
       if(status == ETIMEDOUT) {
         smaxUnlockNotify();
-        return x_error(X_INCOMPLETE, status, fn, "wait timed out");
+        return x_error(X_INCOMPLETE, ETIMEDOUT, fn, "wait timed out");
       }
       return x_error(X_INCOMPLETE, status, fn, "pthread_cond_wait() error: %s", strerror(status));
     }
@@ -361,7 +362,7 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout,
     }
 
     if(notifyID[0] == '\0') {
-      xdprintf("WARNING! SMA-X : published message contained NULL. Ignored.\n");
+      x_warn(fn, "published message contained NULL. Ignored.\n");
       continue;
     }
 
@@ -383,8 +384,6 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout,
   }
 
   smaxUnlockNotify();
-
-  prop_error(fn, status);
 
   return X_SUCCESS;
 }
@@ -442,17 +441,21 @@ static int WaitOn(const char *table, const char *key, int timeout, sem_t *gating
 
     if(table != NULL) {
       if(!gotTable) {
-        xdprintf("WARNING! %s: got NULL table.\n", fn);
+        x_warn(fn, "got NULL table.\n", fn);
         continue;
       }
-      if(strcmp(gotTable, table)) continue;
+      if(strcmp(gotTable, table)) {
+        continue;
+      }
     }
     if(key != NULL) {
       if(!gotKey) {
-        xdprintf("WARNING! %s: got NULL key.\n", fn);
+        x_warn(fn, "got NULL key.\n", fn);
         continue;
       }
-      if(strcmp(gotKey, key)) continue;
+      if(strcmp(gotKey, key)) {
+        continue;
+      }
     }
 
     if(table == NULL) {

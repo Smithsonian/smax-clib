@@ -42,6 +42,7 @@ int main() {
   int reply;
 
   xSetDebug(TRUE);
+  redisxDebugTraffic(TRUE);
 
   checkStatus("connect", smaxConnect());
 
@@ -49,6 +50,8 @@ int main() {
   checkStatus("share", smaxShareInt(TABLE, CONTROL_NAME, 0));
 
   checkStatus("setControlCall", smaxSetControlFunction(TABLE, CONTROL_NAME, ControlFunction, NAME));
+
+  sleep(5);
 
   // We'll update the value here...
   // The waiting thread should set gotUpdate when it unblocks...

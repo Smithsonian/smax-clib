@@ -389,7 +389,7 @@ static void ProcessPipeResponseAsync(RESP *reply) {
     // Peek at the head of the queue (no lock needed as we aren't modifying the queue).
     PullRequest *req = (PullRequest *) queued.first;
 
-    xdprintf("pipe RESP: %s.\n", (char *) reply->value);
+    xvprintf("pipe RESP: %s.\n", (char *) reply->value);
 
     if(req == NULL) {
       fprintf(stderr, "ERROR! SMA-X : No pending read request for piped bulk string RESP.\n");
