@@ -366,7 +366,7 @@ Here is an example for a generic sharing of a `double[]` array from C/C++:
   double data[8] = ...   // your local data
 
   // Share (send) this data to SMA-X as "system:subsystem:some_data"
-  int status = smaxShare("system:subsystem", "some_data", X_DOUBLE, 8);
+  int status = smaxShare("system:subsystem", "some_data", data, X_DOUBLE, 8);
   if(status < 0) {
     // Ooops, that did not work...
     ...

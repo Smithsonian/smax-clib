@@ -328,7 +328,7 @@ The basics</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> data[8] = ...   <span class="comment">// your local data</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// Share (send) this data to SMA-X as &quot;system:subsystem:some_data&quot;</span></div>
-<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;some_data&quot;</span>, X_DOUBLE, 8);</div>
+<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;some_data&quot;</span>, data, X_DOUBLE, 8);</div>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Ooops, that did not work...</span></div>
 <div class="line">  ...</div>

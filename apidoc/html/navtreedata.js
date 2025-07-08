@@ -77,7 +77,7 @@ var NAVTREE =
       [ "Error handling", "index.html#autotoc_md57", null ],
       [ "Debug support", "index.html#autotoc_md59", null ],
       [ "Future plans", "index.html#autotoc_md61", null ],
-      [ "[1.0.1-rc1] - 2025-07-08", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
+      [ "[Unreleased]", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
     ] ],
     [ "Contributing to smax-clib", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
     [ "Data Structures", "annotated.html", [

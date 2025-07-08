@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['get_5fstruct_0',['GET_STRUCT',['../smax_8c.html#abc25cf33d9f3d6262a6fe3ffd94a85ae',1,'smax.c']]]
+  ['key_0',['key',['../../../redisx/apidoc/html/structRedisEntry.html#a5892a9181e6a332f84d27aecd41dcd12',1,'RedisEntry::key'],['../../../redisx/apidoc/html/structRedisMap.html#ab48749655da556e91b5286bb4d196eb1',1,'RedisMap::key']]]
 ];

@@ -1,6 +1,30 @@
 var searchData=
 [
-  ['of_20contents_0',['Table of Contents',['../index.html#autotoc_md3',1,'']]],
-  ['optional_20metadata_1',['Optional metadata',['../index.html#autotoc_md52',1,'']]],
-  ['origin_2',['origin',['../structXMeta.html#a124de75960ce49e7d4dcbdad9237e128',1,'XMeta']]]
+  ['reconfiguration_0',['Reconfiguration',['../index.html#autotoc_md18',1,'']]],
+  ['redis_1',['Redis',['../../../redisx/apidoc/html/structRedis.html',1,'']]],
+  ['redisclient_2',['RedisClient',['../../../redisx/apidoc/html/structRedisClient.html',1,'']]],
+  ['rediscluster_3',['RedisCluster',['../../../redisx/apidoc/html/structRedisCluster.html',1,'']]],
+  ['redisentry_4',['RedisEntry',['../../../redisx/apidoc/html/structRedisEntry.html',1,'']]],
+  ['redismap_5',['RedisMap',['../../../redisx/apidoc/html/structRedisMap.html',1,'']]],
+  ['redisserver_6',['RedisServer',['../../../redisx/apidoc/html/structRedisServer.html',1,'']]],
+  ['redisx_2dclient_2ec_7',['redisx-client.c',['../../../redisx/apidoc/html/redisx-client_8c.html',1,'']]],
+  ['redisx_2dcluster_2ec_8',['redisx-cluster.c',['../../../redisx/apidoc/html/redisx-cluster_8c.html',1,'']]],
+  ['redisx_2dhooks_2ec_9',['redisx-hooks.c',['../../../redisx/apidoc/html/redisx-hooks_8c.html',1,'']]],
+  ['redisx_2dnet_2ec_10',['redisx-net.c',['../../../redisx/apidoc/html/redisx-net_8c.html',1,'']]],
+  ['redisx_2dscript_2ec_11',['redisx-script.c',['../../../redisx/apidoc/html/redisx-script_8c.html',1,'']]],
+  ['redisx_2dsentinel_2ec_12',['redisx-sentinel.c',['../../../redisx/apidoc/html/redisx-sentinel_8c.html',1,'']]],
+  ['redisx_2dsub_2ec_13',['redisx-sub.c',['../../../redisx/apidoc/html/redisx-sub_8c.html',1,'']]],
+  ['redisx_2dtab_2ec_14',['redisx-tab.c',['../../../redisx/apidoc/html/redisx-tab_8c.html',1,'']]],
+  ['redisx_2dtls_2ec_15',['redisx-tls.c',['../../../redisx/apidoc/html/redisx-tls_8c.html',1,'']]],
+  ['redisx_2ec_16',['redisx.c',['../../../redisx/apidoc/html/redisx_8c.html',1,'']]],
+  ['redisx_2eh_17',['redisx.h',['../../../redisx/apidoc/html/redisx_8h.html',1,'']]],
+  ['refindex_18',['refIndex',['../structXCoordinateAxis.html#ad191af99a874bc633c0834d247427ea8',1,'XCoordinateAxis']]],
+  ['refvalue_19',['refValue',['../structXCoordinateAxis.html#ad56f22fc3fbf9639a29ed9f174c67ec2',1,'XCoordinateAxis']]],
+  ['related_20links_20',['Related links',['../index.html#autotoc_md6',1,'']]],
+  ['releaseid_21',['RELEASEID',['../smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9',1,'smax-private.h']]],
+  ['remote_20control_20calls_20and_20return_20values_22',['Complex remote control calls and return values',['../index.html#autotoc_md46',1,'']]],
+  ['remote_20program_20control_20via_20sma_20x_23',['Remote program control via SMA-X',['../index.html#autotoc_md43',1,'']]],
+  ['resp_24',['RESP',['../../../redisx/apidoc/html/structRESP.html',1,'']]],
+  ['resp_2ec_25',['resp.c',['../../../redisx/apidoc/html/resp_8c.html',1,'']]],
+  ['return_20values_26',['Complex remote control calls and return values',['../index.html#autotoc_md46',1,'']]]
 ];

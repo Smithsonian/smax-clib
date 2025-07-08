@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['0_201_20rc1_202025_2007_2008_0',['[1.0.1-rc1] - 2025-07-08',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
-  ['07_2008_1',['[1.0.1-rc1] - 2025-07-08',['../md_CHANGELOG.html#autotoc_md1',1,'']]],
-  ['08_2',['[1.0.1-rc1] - 2025-07-08',['../md_CHANGELOG.html#autotoc_md1',1,'']]]
+  ['_5f_5fxchange_5finternal_5fapi_5f_5f_0',['__XCHANGE_INTERNAL_API__',['../smax-private_8h.html#ac36bd75f87a1614fb477a0fbcd5df1f3',1,'smax-private.h']]],
+  ['_5fgnu_5fsource_1',['_gnu_source',['../smax-messages_8c.html#a369266c24eacffb87046522897a570d5',1,'_GNU_SOURCE:&#160;smax-messages.c'],['../smax-util_8c.html#a369266c24eacffb87046522897a570d5',1,'_GNU_SOURCE:&#160;smax-util.c']]],
+  ['_5fposix_5fc_5fsource_2',['_posix_c_source',['../smax-queue_8c.html#a3024ccd4a9af5109d24e6c57565d74a1',1,'_POSIX_C_SOURCE:&#160;smax-queue.c'],['../smax-util_8c.html#a3024ccd4a9af5109d24e6c57565d74a1',1,'_POSIX_C_SOURCE:&#160;smax-util.c'],['../smax_8c.html#a3024ccd4a9af5109d24e6c57565d74a1',1,'_POSIX_C_SOURCE:&#160;smax.c']]]
 ];
