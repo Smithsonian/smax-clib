@@ -435,7 +435,7 @@ Arrays</h3>
 <div class="fragment"><div class="line"><span class="keywordtype">float</span> data[4][2] = ...    <span class="comment">// Your local 2D data array</span></div>
 <div class="line"><span class="keywordtype">int</span> shape[] = { 4, 2 };   <span class="comment">// The array shape as stored in SMA-X</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#a1b116e8ffa85c30991ce6d8afb0319e0">smaxShareArray</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;my_2d_array&quot;</span>, X_FLOAT, 2, shape);</div>
+<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#a1b116e8ffa85c30991ce6d8afb0319e0">smaxShareArray</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;my_2d_array&quot;</span>, data, X_FLOAT, 2, shape);</div>
 <div class="line"><span class="keywordflow">if</span> (status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Oops, did not work...</span></div>
 <div class="line">  ...</div>
@@ -477,7 +477,7 @@ Structures / substructures...</h3>
 <p>You can share entire data structures, represented by an appropriate <code><a class="elRef" href="../../xchange/apidoc/html/structXStructure.html">XStructure</a></code> type (see the <b>xchange</b> library for a description and usage):</p>
 <div class="fragment"><div class="line"><a class="code hl_structRef" href="../../xchange/apidoc/html/structXStructure.html">XStructure</a> s = ...   <span class="comment">// The structured data you have prepared locally.</span></div>
 <div class="line"> </div>
-<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct</a>(<span class="stringliteral">&quot;syste:subsystem&quot;</span>, &amp;s);</div>
+<div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a">smaxShareStruct</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, &amp;s);</div>
 <div class="line"><span class="keywordflow">if</span>(status &lt; 0) {</div>
 <div class="line">  <span class="comment">// Oops, something did not work</span></div>
 <div class="line">  ...</div>

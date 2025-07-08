@@ -507,7 +507,7 @@ allows you to define the multi-dimensional shape of the data beyond just the num
   float data[4][2] = ...    // Your local 2D data array
   int shape[] = { 4, 2 };   // The array shape as stored in SMA-X
   
-  int status = smaxShareArray("system:subsystem", "my_2d_array", X_FLOAT, 2, shape);
+  int status = smaxShareArray("system:subsystem", "my_2d_array", data, X_FLOAT, 2, shape);
   if (status < 0) {
     // Oops, did not work...
     ...
@@ -570,7 +570,7 @@ a description and usage):
 ```c
   XStructure s = ...   // The structured data you have prepared locally.
   
-  int status = smaxShareStruct("syste:subsystem", &s);
+  int status = smaxShareStruct("system:subsystem", &s);
   if(status < 0) {
     // Oops, something did not work
     ...
