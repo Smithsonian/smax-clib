@@ -84,7 +84,7 @@ distclean: clean
 # ----------------------------------------------------------------------------
 
 SOURCES = $(SRC)/smax.c $(SRC)/smax-easy.c $(SRC)/smax-lazy.c $(SRC)/smax-queue.c \
-          $(SRC)/smax-meta.c $(SRC)/smax-messages.c \
+          $(SRC)/smax-meta.c $(SRC)/smax-sub.c $(SRC)/smax-messages.c \
           $(SRC)/smax-resilient.c $(SRC)/smax-control.c $(SRC)/smax-util.c \
           $(SRC)/smax-tls.c $(SRC)/procname.c
 

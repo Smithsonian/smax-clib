@@ -211,10 +211,9 @@ as `bash`, or `perl` (also `python` though we recommend to use the native
 ## Initial configuration
 
 Bu default, the library assumes that the Redis server name used for SMA-X is either stored in the environment variable
-`SMAX_HOST` or is `smax` (e.g. you may assign `smax` to the IP address in `/etc/hosts`), and that the Redis is on 
+`SMAX_HOST` or is `smax` (e.g. you may assign `smax` to an IP address in `/etc/hosts`), and that the Redis is on 
 the default port 6379/tcp. However, you can configure to use a specific host and/or an alternative Redis port number 
-to use instead. 
-
+also, e.g.:
 
 ```c
   smaxSetServer("my-smax.example.com", 7033);
@@ -310,7 +309,7 @@ the current configuration.
 <a name="smax-connecting"></a>
 ## Connecting to / disconnecting from SMA-X 
 
-Once you have configured the connection parameters, you can connect to the server by:
+Once you have configured the connection parameters, you can connect to the configured (or default) server by:
 
 ```c
   int status = smaxConnect();

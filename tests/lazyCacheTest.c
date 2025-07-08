@@ -78,6 +78,8 @@ int main() {
   pthread_t tid;
   int timeoutLoops = 100;
 
+  xSetDebug(TRUE);
+
   smaxSetPipelined(TRUE);
 
   checkStatus("connect", smaxConnect());

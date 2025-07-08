@@ -28,6 +28,8 @@ static void checkStatus(char *op, int status) {
 int main() {
   int i;
 
+  xSetDebug(TRUE);
+
   smaxSetPipelined(FALSE);
 
   checkStatus("connect", smaxConnect());

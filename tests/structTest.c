@@ -77,7 +77,7 @@ int main() {
   int status;
   float fValues[] = {1.0, 2.0, 3.0};
 
-  //smaxSetVerbose(TRUE);
+  xSetDebug(TRUE);
 
   // Set the fields of the parent structure.
   s = xCreateStruct();

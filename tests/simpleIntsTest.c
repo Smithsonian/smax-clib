@@ -31,6 +31,8 @@ int main() {
   int i, *in;
   XMeta meta = X_META_INIT;
 
+  xSetDebug(TRUE);
+
   smaxSetPipelined(FALSE);
 
   checkStatus("connect", smaxConnect());

@@ -21,10 +21,15 @@
 
 #include "smax.h"
 
+#ifndef SMAX_TEST_TIMEOUT
+#  define SMAX_TEST_TIMEOUT 3     ///< [s] Default timeout
+#endif
+
 #define TABLE           "_test_" X_SEP "control"
 #define NAME            "value"
 #define CONTROL_NAME    NAME "_control"
-#define CONTROL_TIMEOUT 5
+
+
 
 static void checkStatus(char *op, int status) {
   if(!status) return;
@@ -41,6 +46,9 @@ int ControlFunction(const char *table, const char *key, void *parg) {
 int main() {
   int reply;
 
+  xSetDebug(TRUE);
+  //redisxDebugTraffic(TRUE);
+
   checkStatus("connect", smaxConnect());
 
   // Initialize the value that we will control, and change at some later time...
@@ -51,15 +59,15 @@ int main() {
   // We'll update the value here...
   // The waiting thread should set gotUpdate when it unblocks...
   errno = 0;
-  reply = smaxControlInt(TABLE, CONTROL_NAME, 1, NULL, NAME, -1, CONTROL_TIMEOUT);
+  reply = smaxControlInt(TABLE, CONTROL_NAME, 1, NULL, NAME, -1, SMAX_TEST_TIMEOUT);
   if(reply != 1) {
     fprintf(stderr, "ERROR! Unexpected reply: expected %d, got %d.\n", 1, reply);
     if(errno) fprintf(stderr, "      errno = %d (%s)\n", errno, strerror(errno));
-    printf("control: FAILED\n");
+    fprintf(stderr, "control: FAILED\n");
     return -1;
   }
 
-  printf("control: OK\n");
+  fprintf(stderr, "control: OK\n");
 
   return 0;
 }

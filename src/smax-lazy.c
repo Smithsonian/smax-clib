@@ -112,7 +112,7 @@ static void ApplyUpdateAsync(LazyMonitor *update, LazyMonitor *m) {
 
   if(!m) return;
 
-  xdprintf("SMA: Applying update for %s" X_SEP "%s\n", m->table, m->key);
+  xvprintf("SMA: Applying update for %s" X_SEP "%s\n", m->table, m->key);
 
   // Update the stored data 'atomically'
   pthread_mutex_lock(&dataLock);
@@ -198,11 +198,11 @@ static int QueueUpdateAsync(LazyMonitor *m) {
   void *ptr;
   int status = X_SUCCESS;
 
-  xdprintf("SMA-X: Initiate queueing aync update for %s" X_SEP "%s\n", m->table, m->key);
+  xvprintf("SMA-X: Initiate queueing aync update for %s" X_SEP "%s\n", m->table, m->key);
 
   if(!m) return x_error(X_NULL, EINVAL, fn, "input parameter 'm' is NULL");
   if(m->isPending) {
-    xdprintf("SMA-X: An update is already pending for %s" X_SEP "%s\n", m->table, m->key);
+    xvprintf("SMA-X: An update is already pending for %s" X_SEP "%s\n", m->table, m->key);
     return X_SUCCESS;
   }
 
@@ -219,7 +219,7 @@ static int QueueUpdateAsync(LazyMonitor *m) {
   }
 
 
-  xdprintf("SMA-X: Queueing async update for %s" X_SEP "%s\n", m->table, m->key);
+  xvprintf("SMA-X: Queueing async update for %s" X_SEP "%s\n", m->table, m->key);
 
   m->isPending = TRUE;
   status = smaxQueue(m->table, m->key, type, 1, ptr, staging->meta);
@@ -1107,7 +1107,7 @@ static void ProcessLazyUpdates(const char *pattern, const char *channel, const c
 
   if(!channel) return;
 
-  xdprintf("SMA-X: lazy incoming on %s\n", channel);
+  xvprintf("SMA-X: lazy incoming on %s\n", channel);
 
   id = xStringCopyOf(channel);
 
@@ -1127,12 +1127,12 @@ static void ProcessLazyUpdates(const char *pattern, const char *channel, const c
 
     // Check through the monitors with the same hash, to find a match
     for( ; m != NULL; m = m->next) if(!strcmp(id, m->channel)) {
-      xdprintf("SMA-X: Found lazy match for %s:%s.\n", m->table, m->key ? m->key : "");
+      xvprintf("SMA-X: Found lazy match for %s:%s.\n", m->table, m->key ? m->key : "");
       m->isCurrent = FALSE;
       m->updateCount++;
 
       if(++m->unpulledCount > MAX_UNPULLED_LAZY_UPDATES) {              // garbage collect...
-        xdprintf("SMA-X: Unsubscribing from unused variable %s:%s.\n", m->table, m->key ? m->key : "");
+        xvprintf("SMA-X: Unsubscribing from unused variable %s:%s.\n", m->table, m->key ? m->key : "");
         RemoveMonitorAsync(m);
         DestroyMonitorAsync(m);
       }
