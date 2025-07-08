@@ -383,7 +383,7 @@ Here is an example for a generic sharing of a `double[]` array from C/C++:
   double data[8] = ...   // your local data
 
   // Share (send) this data to SMA-X as "system:subsystem:some_data"
-  int status = smaxShare("system:subsystem", "some_data", X_DOUBLE, 8);
+  int status = smaxShare("system:subsystem", "some_data", data, X_DOUBLE, 8);
   if(status < 0) {
     // Ooops, that did not work...
     ...
@@ -524,7 +524,7 @@ allows you to define the multi-dimensional shape of the data beyond just the num
   float data[4][2] = ...    // Your local 2D data array
   int shape[] = { 4, 2 };   // The array shape as stored in SMA-X
   
-  int status = smaxShareArray("system:subsystem", "my_2d_array", X_FLOAT, 2, shape);
+  int status = smaxShareArray("system:subsystem", "my_2d_array", data, X_FLOAT, 2, shape);
   if (status < 0) {
     // Oops, did not work...
     ...
@@ -587,7 +587,7 @@ a description and usage):
 ```c
   XStructure s = ...   // The structured data you have prepared locally.
   
-  int status = smaxShareStruct("syste:subsystem", &s);
+  int status = smaxShareStruct("system:subsystem", &s);
   if(status < 0) {
     // Oops, something did not work
     ...
