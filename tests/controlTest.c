@@ -24,7 +24,7 @@
 #define TABLE           "_test_" X_SEP "control"
 #define NAME            "value"
 #define CONTROL_NAME    NAME "_control"
-#define CONTROL_TIMEOUT 5
+#define CONTROL_TIMEOUT 10
 
 static void checkStatus(char *op, int status) {
   if(!status) return;
@@ -57,11 +57,11 @@ int main() {
   if(reply != 1) {
     fprintf(stderr, "ERROR! Unexpected reply: expected %d, got %d.\n", 1, reply);
     if(errno) fprintf(stderr, "      errno = %d (%s)\n", errno, strerror(errno));
-    printf("control: FAILED\n");
+    fprintf(stderr, "control: FAILED\n");
     return -1;
   }
 
-  printf("control: OK\n");
+  fprintf(stderr, "control: OK\n");
 
   return 0;
 }

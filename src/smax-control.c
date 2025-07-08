@@ -435,6 +435,7 @@ int smaxSetControlFunction(const char *table, const char *key, SMAXControlFuncti
 
     // Add the new control and subscribe for updates as necessary
     xLookupPut(controls, table, f, NULL);
+
     if(!prior) smaxSubscribe(table, key);
   }
 
