@@ -311,7 +311,8 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
 int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout, sem_t *gating) {
   static const char *fn = "smaxWaitOnAnySubscribed";
   int status = X_SUCCESS;
-  struct timespec endTime;
+  struct timespec endTime = {};
+
 
   if(changedTable == NULL) return x_error(X_GROUP_INVALID, EINVAL, fn, "'changedTable' parameter is NULL");
   if(changedKey == NULL) return x_error(X_NAME_INVALID, EINVAL, fn, "'changedKey' parameter is NULL");
@@ -323,13 +324,14 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout,
   *changedTable = NULL;
   *changedKey = NULL;
 
+
+  smaxLockNotify();
+  if(gating) sem_post(gating);
+
   if(timeout > 0) {
     clock_gettime(CLOCK_REALTIME, &endTime);
     endTime.tv_sec += timeout;
   }
-
-  smaxLockNotify();
-  if(gating) sem_post(gating);
 
   // Waits for a notification...
   while(*changedTable == NULL) {

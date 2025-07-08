@@ -41,6 +41,8 @@ int ControlFunction(const char *table, const char *key, void *parg) {
 int main() {
   int reply;
 
+  xSetDebug(TRUE);
+
   checkStatus("connect", smaxConnect());
 
   // Initialize the value that we will control, and change at some later time...
