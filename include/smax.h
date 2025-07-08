@@ -16,6 +16,7 @@
 
 #include <time.h>
 #include <math.h>
+#include <semaphore.h>
 
 #include <redisx.h>
 #include <xchange.h>
@@ -202,6 +203,20 @@ typedef struct {
   double timestamp;             ///< Message timestamp, if available (otherwise 0.0)
 } XMessage;
 
+
+/**
+ * A function which is executed when a designated control variable is updated in SMA-X.
+ * The function should pull the associated value and act on ot as desired, usually
+ * reporting completion (or an error) in an approriate related variable.
+ *
+ * @param table   Hash table in which the control variable resides.
+ * @param key     Name of the control variable.
+ * @param parg    Optional pointer argument to pass along with calls to the control function.
+ * @return        X_SUCCESS (0) if successful, or else an appropriate error code from `smax.h`,
+ *                `redisx.h`, or `xchange.h`.
+ */
+typedef int (*SMAXControlFunction)(const char *table, const char *key, void *parg);
+
 // Meta helpers ----------------------------------------------->
 XMeta *smaxCreateMeta();
 void smaxResetMeta(XMeta *m);
@@ -315,10 +330,10 @@ int smaxShareStruct(const char *id, const XStructure *s);
 // Notifications ---------------------------------------------->
 int smaxSubscribe(const char *table, const char *key);
 int smaxUnsubscribe(const char *table, const char *key);
-int smaxWaitOnSubscribed(const char *table, const char *key, int timeout);
-int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int timeout);
-int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeout);
-int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout);
+int smaxWaitOnSubscribed(const char *table, const char *key, int timeout, sem_t *gating);
+int smaxWaitOnSubscribedGroup(const char *matchTable, char **changedKey, int timeout, sem_t *gating);
+int smaxWaitOnSubscribedVar(const char *matchKey, char **changedTable, int timeout, sem_t *gating);
+int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout, sem_t *gating);
 int smaxReleaseWaits();
 int smaxAddSubscriber(const char *stem, RedisSubscriberCall f);
 int smaxRemoveSubscribers(RedisSubscriberCall f);
@@ -384,6 +399,18 @@ XField *smaxCreateIntField(const char *name, int value);
 XField *smaxCreateBooleanField(const char *name, boolean value);
 XField *smaxCreateStringField(const char *name, const char *value);
 
+// Controls / Commands via SMA-X
+char *smaxControl(const char *table, const char *key, const void *value, XType type, int count,
+        const char *replyTable, const char *replyKey, int timeout);
+boolean smaxControlBoolean(const char *table, const char *key, boolean value, const char *replyTable,
+        const char *replyKey, boolean defaultReply, int timeout);
+char *smaxControlString(const char *table, const char *key, const char *value, const char *replyTable,
+        const char *replyKey, int timeout);
+int smaxControlInt(const char *table, const char *key, int value, const char *replyTable,
+        const char *replyKey, int defaultReply, int timeout);
+double smaxControlDouble(const char *table, const char *key, double value, const char *replyTable,
+        const char *replyKey, int timeout);
+int smaxSetControlFunction(const char *table, const char *key, SMAXControlFunction func, void *parg);
 
 // Helpers / Controls ----------------------------------------->
 Redis *smaxGetRedis();

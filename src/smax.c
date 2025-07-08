@@ -1160,6 +1160,11 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
  * \param[out] changedKey       Pointer to the variable that points to the string buffer for the returned variable name or NULL.
  *                              The lease of the buffer is for the call only.
  * \param[in] timeout           (s) Timeout value. 0 or negative values result in an indefinite wait.
+ * \param[in,out] gating        Optional semaphore to post after thuis wait call gains exclusive access to the notification
+ *                              mutex. Another thread may wait on that semaphore before it too tries to get exclusive access
+ *                              to SMA-X notifications via some other library call, to ensure that the wait is entered (or
+ *                              else fails) in a timely manner, without unwittingly being blocked by the other thread.
+ *                              Typically, you can set it to NULL if such cross-thread gating is not required.
  *
  * \return      X_SUCCESS (0)       if a variable was pushed on a host.
  *              X_NO_INIT           if the SMA-X sharing was not initialized via smaxConnect().
@@ -1175,7 +1180,7 @@ char *smaxGetUpdateChannelPattern(const char *table, const char *key) {
  * \sa smaxReleaseWaits()
  *
  */
-int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout) {
+int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout, sem_t *gating) {
   static const char *fn = "smaxWaitOnAnySubscribed";
   int status = X_SUCCESS;
   struct timespec endTime;
@@ -1196,6 +1201,7 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout)
   }
 
   smaxLockNotify();
+  if(gating) sem_post(gating);
 
   // Waits for a notification...
   while(*changedTable == NULL) {
