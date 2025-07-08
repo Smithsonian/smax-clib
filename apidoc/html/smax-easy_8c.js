@@ -39,8 +39,5 @@ var smax_easy_8c =
     [ "smaxShareShort", "smax-easy_8c.html#a68f21c0f6684ee9f1c0f844e8073218b", null ],
     [ "smaxShareShorts", "smax-easy_8c.html#a007815fcac77e840c851a54f97d575ae", null ],
     [ "smaxShareString", "smax-easy_8c.html#a5c9657c01a9b8a324a9a1d318dd18e5b", null ],
-    [ "smaxShareStrings", "smax-easy_8c.html#a63c421116ca043f2d0899b83d8aa91f9", null ],
-    [ "smaxWaitOnSubscribed", "smax-easy_8c.html#a0e116b41cf8cfbca058dba8476b5d573", null ],
-    [ "smaxWaitOnSubscribedGroup", "smax-easy_8c.html#af6cae99a805bf84e98390e0bea2470b7", null ],
-    [ "smaxWaitOnSubscribedVar", "smax-easy_8c.html#af54b8b5d2e79eda86b3349c3c138331c", null ]
+    [ "smaxShareStrings", "smax-easy_8c.html#a63c421116ca043f2d0899b83d8aa91f9", null ]
 ];

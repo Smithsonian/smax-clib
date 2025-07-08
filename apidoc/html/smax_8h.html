@@ -115,6 +115,7 @@ $(document).ready(function(){initNavTree('smax_8h.html',''); initResizable(); })
   <div class="summary">
 <a href="#nested-classes">Data Structures</a> &#124;
 <a href="#define-members">Macros</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">smax.h File Reference</div></div>
 </div><!--header-->
@@ -229,7 +230,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a3e9baa458ae59eb26923d6ce863bf700"><td class="mdescLeft">&#160;</td><td class="mdescRight">(s) Time between reconnection attempts on lost SMA-X connections. <br /></td></tr>
 <tr class="separator:a3e9baa458ae59eb26923d6ce863bf700"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad744859d63c95706ad84435b46efdc1" id="r_aad744859d63c95706ad84435b46efdc1"><td class="memItemLeft" align="right" valign="top"><a id="aad744859d63c95706ad84435b46efdc1" name="aad744859d63c95706ad84435b46efdc1"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SMAX_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-devel&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>SMAX_RELEASE_STRING</b>&#160;&#160;&#160;&quot;-rc1&quot;</td></tr>
 <tr class="memdesc:aad744859d63c95706ad84435b46efdc1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Additional release information in version, e.g. "-1", or "-rc1". <br /></td></tr>
 <tr class="separator:aad744859d63c95706ad84435b46efdc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f111386ac4b76cd858de99478720b29" id="r_a2f111386ac4b76cd858de99478720b29"><td class="memItemLeft" align="right" valign="top"><a id="a2f111386ac4b76cd858de99478720b29" name="a2f111386ac4b76cd858de99478720b29"></a>
@@ -272,6 +273,11 @@ Macros</h2></td></tr>
 <tr class="memitem:a793fead1eb30470e219192befc88b3c9" id="r_a793fead1eb30470e219192befc88b3c9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a793fead1eb30470e219192befc88b3c9">X_META_INIT</a>&#160;&#160;&#160;{ 0, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, -1, {0}, -1, {'\0'}, {}, 0 }</td></tr>
 <tr class="separator:a793fead1eb30470e219192befc88b3c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a8224a78e5c3f1347e1321a83909b5c34" id="r_a8224a78e5c3f1347e1321a83909b5c34"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a8224a78e5c3f1347e1321a83909b5c34">SMAXControlFunction</a>) (const char *table, const char *key, void *parg)</td></tr>
+<tr class="separator:a8224a78e5c3f1347e1321a83909b5c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:abfe751f22aa718133911ffdee848f64a" id="r_abfe751f22aa718133911ffdee848f64a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#abfe751f22aa718133911ffdee848f64a">smax2xField</a> (<a class="elRef" href="../../xchange/apidoc/html/structXField.html">XField</a> *f)</td></tr>
@@ -294,6 +300,16 @@ Functions</h2></td></tr>
 <tr class="separator:a146fb2ed8512919dc91ecad6d08c74d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad960c22b119ff2493a319945a9dd55a5" id="r_ad960c22b119ff2493a319945a9dd55a5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#ad960c22b119ff2493a319945a9dd55a5">smaxConnectTo</a> (const char *server)</td></tr>
 <tr class="separator:ad960c22b119ff2493a319945a9dd55a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68d38e9d6ff5d3015f1732cb2d47718f" id="r_a68d38e9d6ff5d3015f1732cb2d47718f"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl</a> (const char *table, const char *key, const void *value, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1c7e02eda23566a7891310fd09307a70">XType</a> type, int count, const char *replyTable, const char *replyKey, int timeout)</td></tr>
+<tr class="separator:a68d38e9d6ff5d3015f1732cb2d47718f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f7823d82d7f0df97535ea2034ab27c4" id="r_a1f7823d82d7f0df97535ea2034ab27c4"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a1f7823d82d7f0df97535ea2034ab27c4">smaxControlBoolean</a> (const char *table, const char *key, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a> value, const char *replyTable, const char *replyKey, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a> defaultReply, int timeout)</td></tr>
+<tr class="separator:a1f7823d82d7f0df97535ea2034ab27c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a382280f18f6f7b534395bed3e8d6f019" id="r_a382280f18f6f7b534395bed3e8d6f019"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a382280f18f6f7b534395bed3e8d6f019">smaxControlDouble</a> (const char *table, const char *key, double value, const char *replyTable, const char *replyKey, int timeout)</td></tr>
+<tr class="separator:a382280f18f6f7b534395bed3e8d6f019"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b731a3a579c1f0ae61c5685bf660115" id="r_a1b731a3a579c1f0ae61c5685bf660115"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt</a> (const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout)</td></tr>
+<tr class="separator:a1b731a3a579c1f0ae61c5685bf660115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a293c6ef0474094cce16508489684e89c" id="r_a293c6ef0474094cce16508489684e89c"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a293c6ef0474094cce16508489684e89c">smaxControlString</a> (const char *table, const char *key, const char *value, const char *replyTable, const char *replyKey, int timeout)</td></tr>
+<tr class="separator:a293c6ef0474094cce16508489684e89c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afba357d35d2a1f13d0cf06f5ff708a99" id="r_afba357d35d2a1f13d0cf06f5ff708a99"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="../../xchange/apidoc/html/structXField.html">XField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#afba357d35d2a1f13d0cf06f5ff708a99">smaxCreate1DField</a> (const char *name, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1c7e02eda23566a7891310fd09307a70">XType</a> type, int size, const void *value)</td></tr>
 <tr class="separator:afba357d35d2a1f13d0cf06f5ff708a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13e357c3f20c0799fba6bc6c2a16c520" id="r_a13e357c3f20c0799fba6bc6c2a16c520"><td class="memItemLeft" align="right" valign="top"><a class="elRef" href="../../xchange/apidoc/html/structXField.html">XField</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a13e357c3f20c0799fba6bc6c2a16c520">smaxCreateBooleanField</a> (const char *name, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a> value)</td></tr>
@@ -476,6 +492,8 @@ Functions</h2></td></tr>
 <tr class="separator:a1c90a439b48a53555e9cfb60ce1b9102"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a097b12d3bbb43175084b0b0a2f55339c" id="r_a097b12d3bbb43175084b0b0a2f55339c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a097b12d3bbb43175084b0b0a2f55339c">smaxSetAuth</a> (const char *username, const char *password)</td></tr>
 <tr class="separator:a097b12d3bbb43175084b0b0a2f55339c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea1bd1d05827dc1b6b44734d35897f72" id="r_aea1bd1d05827dc1b6b44734d35897f72"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#aea1bd1d05827dc1b6b44734d35897f72">smaxSetControlFunction</a> (const char *table, const char *key, <a class="el" href="smax_8h.html#a8224a78e5c3f1347e1321a83909b5c34">SMAXControlFunction</a> func, void *parg)</td></tr>
+<tr class="separator:aea1bd1d05827dc1b6b44734d35897f72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d59620a1646428f41b040d1a0a91554" id="r_a5d59620a1646428f41b040d1a0a91554"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a5d59620a1646428f41b040d1a0a91554">smaxSetCoordinateAxis</a> (const char *id, int n, const <a class="el" href="structXCoordinateAxis.html">XCoordinateAxis</a> *axis)</td></tr>
 <tr class="separator:a5d59620a1646428f41b040d1a0a91554"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a04c3b8ea7ff6b8117d2dba9bf9edd52f" id="r_a04c3b8ea7ff6b8117d2dba9bf9edd52f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a04c3b8ea7ff6b8117d2dba9bf9edd52f">smaxSetCoordinateSystem</a> (const char *table, const char *key, const <a class="el" href="structXCoordinateSystem.html">XCoordinateSystem</a> *coords)</td></tr>
@@ -585,14 +603,14 @@ Functions</h2></td></tr>
 <tr class="separator:af3a5d7bc565ab7de0ac1dd8fafc93f14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae67f864946fbcd880e7b5c98b2f876c5" id="r_ae67f864946fbcd880e7b5c98b2f876c5"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#ae67f864946fbcd880e7b5c98b2f876c5">smaxValuesToString</a> (const void *value, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1c7e02eda23566a7891310fd09307a70">XType</a> type, int count, char *trybuf, int trylength)</td></tr>
 <tr class="separator:ae67f864946fbcd880e7b5c98b2f876c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89db98657eab826392d6099d21fff14c" id="r_a89db98657eab826392d6099d21fff14c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a89db98657eab826392d6099d21fff14c">smaxWaitOnAnySubscribed</a> (char **changedTable, char **changedKey, int timeout)</td></tr>
-<tr class="separator:a89db98657eab826392d6099d21fff14c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e116b41cf8cfbca058dba8476b5d573" id="r_a0e116b41cf8cfbca058dba8476b5d573"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a0e116b41cf8cfbca058dba8476b5d573">smaxWaitOnSubscribed</a> (const char *table, const char *key, int timeout)</td></tr>
-<tr class="separator:a0e116b41cf8cfbca058dba8476b5d573"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6cae99a805bf84e98390e0bea2470b7" id="r_af6cae99a805bf84e98390e0bea2470b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#af6cae99a805bf84e98390e0bea2470b7">smaxWaitOnSubscribedGroup</a> (const char *matchTable, char **changedKey, int timeout)</td></tr>
-<tr class="separator:af6cae99a805bf84e98390e0bea2470b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af54b8b5d2e79eda86b3349c3c138331c" id="r_af54b8b5d2e79eda86b3349c3c138331c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#af54b8b5d2e79eda86b3349c3c138331c">smaxWaitOnSubscribedVar</a> (const char *matchKey, char **changedTable, int timeout)</td></tr>
-<tr class="separator:af54b8b5d2e79eda86b3349c3c138331c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35c72b08b2a64630b391163f4da1f378" id="r_a35c72b08b2a64630b391163f4da1f378"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a35c72b08b2a64630b391163f4da1f378">smaxWaitOnAnySubscribed</a> (char **changedTable, char **changedKey, int timeout, sem_t *gating)</td></tr>
+<tr class="separator:a35c72b08b2a64630b391163f4da1f378"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a47571f9fdf1f1d2cab83d112ad2b9bea" id="r_a47571f9fdf1f1d2cab83d112ad2b9bea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a47571f9fdf1f1d2cab83d112ad2b9bea">smaxWaitOnSubscribed</a> (const char *table, const char *key, int timeout, sem_t *gating)</td></tr>
+<tr class="separator:a47571f9fdf1f1d2cab83d112ad2b9bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9173ea117d8a88721e0d658e3d7c0e9" id="r_ab9173ea117d8a88721e0d658e3d7c0e9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#ab9173ea117d8a88721e0d658e3d7c0e9">smaxWaitOnSubscribedGroup</a> (const char *matchTable, char **changedKey, int timeout, sem_t *gating)</td></tr>
+<tr class="separator:ab9173ea117d8a88721e0d658e3d7c0e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb58402968158d0b07c9e5057c99d159" id="r_acb58402968158d0b07c9e5057c99d159"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#acb58402968158d0b07c9e5057c99d159">smaxWaitOnSubscribedVar</a> (const char *matchKey, char **changedTable, int timeout, sem_t *gating)</td></tr>
+<tr class="separator:acb58402968158d0b07c9e5057c99d159"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a065361085eed93188b7fd3ffe3a7eaf5" id="r_a065361085eed93188b7fd3ffe3a7eaf5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a065361085eed93188b7fd3ffe3a7eaf5">smaxWaitQueueComplete</a> (int timeoutMillis)</td></tr>
 <tr class="separator:a065361085eed93188b7fd3ffe3a7eaf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76bd110891905fe4bdae6628547c50d1" id="r_a76bd110891905fe4bdae6628547c50d1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="smax_8h.html#a76bd110891905fe4bdae6628547c50d1">x2smaxField</a> (<a class="elRef" href="../../xchange/apidoc/html/structXField.html">XField</a> *f)</td></tr>
@@ -651,6 +669,31 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p>Default initialized for SMA-X medatadata structure. You should always initialize local metadata with this. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Typedef Documentation</h2>
+<a id="a8224a78e5c3f1347e1321a83909b5c34" name="a8224a78e5c3f1347e1321a83909b5c34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8224a78e5c3f1347e1321a83909b5c34">&#9670;&#160;</a></span>SMAXControlFunction</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* SMAXControlFunction) (const char *table, const char *key, void *parg)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A function which is executed when a designated control variable is updated in SMA-X. The function should pull the associated value and act on ot as desired, usually reporting completion (or an error) in an approriate related variable.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>Hash table in which the control variable resides. </td></tr>
+    <tr><td class="paramname">key</td><td>Name of the control variable. </td></tr>
+    <tr><td class="paramname">parg</td><td>Optional pointer argument to pass along with calls to the control function. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or else an appropriate error code from <code><a class="el" href="smax_8h.html">smax.h</a></code>, <code><a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html">redisx.h</a></code>, or <code><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html">xchange.h</a></code>. </dd></dl>
 
 </div>
 </div>
@@ -906,16 +949,16 @@ Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id). The function should itself check that the channel receiving notification is indeed what it expectes before acting on it, as the callback routine will be invoked for any update inside the specified table, unless the table argument refers to a specific aggregate ID of a single variable. This call only registers the callback routine for SMA-X update notifications for variables that begin with the specified stem. You will still have to subscrive to any relevant variables with <a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> to enable delivering update notifications for the variables of your choice.</p>
+<p>Add a subcriber (callback) function to process incoming PUB/SUB messages for a given SMA-X table (or id). The function should itself check that the channel receiving notification is indeed what it expectes before acting on it, as the callback routine will be invoked for any update inside the specified table, unless the table argument refers to a specific aggregate ID of a single variable. This call only registers the callback routine for SMA-X update notifications for variables that begin with the specified stem. You will still have to subscrive to any relevant variables with <a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> to enable delivering update notifications for the variables of your choice.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">idStem</td><td>Table name or ID stem for which the supplied callback function will be invoked as long as the beginning of the PUB/SUB update channel matches the given stem. Alternatively, it can be a fully qualified SMA-X ID (of the form table:key) f a single variable. </td></tr>
+    <tr><td class="paramname">idStem</td><td>Table name or ID stem for which the supplied callback function will be invoked as long as the beginning of the PUB/SUB update channel matches the given stem. Alternatively, it can be a fully qualified SMA-X ID (of the form table:key) of a single variable, or NULL to call with all updates </td></tr>
     <tr><td class="paramname">f</td><td>The function to call when there is an incoming PUB/SUB update to a channel starting with stem.</td></tr>
   </table>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS if successful, or else an approriate error code by <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4c268c33f23438af67117b09c26ec615">redisxAddSubscriber()</a></dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd></dl>
 
 <p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a4c268c33f23438af67117b09c26ec615">redisxAddSubscriber()</a>, <a class="el" href="smax_8h.html#abfefd74fb72fc51e4577d1fa5fa832f4">SMAX_UPDATES_ROOT</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32e104d7a23090f8ae0e6ea3cc55a84f">xGetAggregateID()</a>.</p>
 
@@ -999,7 +1042,7 @@ Functions</h2></td></tr>
 <dd>
 <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ad71822356ffd40ed4b1c71d065f48809">redisxConnect()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5c78c2189a76a077231016564a0cecd5">redisxInit()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a993ae780daeae021fba1866d752ba9c5">redisxInitSentinel()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aec99fb8b19d6751038bf9c4c6d04f8d0">redisxSelectDB()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a16a0aa9545e7dd5fd290dd2b4ee968f1">redisxSetHostname()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0e9eda38aa6f084ac151cbebe2886c2f">redisxSetPassword()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a37f39ede48014a2463e4c72bf6eb5a3e">redisxSetPort()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ad3aaa3b6fb5353a52a7013421baa9b89">redisxSetSocketErrorHandler()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a648557774b354ff99e279d3dcf94d240">redisxSetTcpBuf()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a3beff3a9e373a0f1de626a8e64da98cf">redisxSetUser()</a>, <a class="el" href="smax_8h.html#a0fe198db49d87d696072c261e49f7cce">SMAX_DEFAULT_HOSTNAME</a>, <a class="el" href="smax_8h.html#a71b50c2439080feef06b0b9509194eae">SMAX_SENTINEL_SERVICENAME</a>, <a class="el" href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30">smaxAddConnectHook()</a>, <a class="el" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c">smaxAddDisconnectHook()</a>, <a class="el" href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>, <a class="el" href="smax_8c.html#abc07a7599e0bac1be15bbcb6b63d4710">smaxGetProgramID()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="el" href="smax-lazy_8c.html#af3d0cff3f8a6ab745907f4544981fdd1">smaxLazyFlush()</a>, <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a>, <a class="el" href="smax_8c.html#a542b4c264a49b61a6cd25881290df1d1">smaxSetPipelineConsumer()</a>, <a class="el" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient()</a>, <a class="el" href="smax-util_8c.html#ac1095d82ecfbad50d4b05f876f2c344d">smaxSocketErrorHandler()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ad71822356ffd40ed4b1c71d065f48809">redisxConnect()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a5c78c2189a76a077231016564a0cecd5">redisxInit()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a993ae780daeae021fba1866d752ba9c5">redisxInitSentinel()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aec99fb8b19d6751038bf9c4c6d04f8d0">redisxSelectDB()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a16a0aa9545e7dd5fd290dd2b4ee968f1">redisxSetHostname()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a0e9eda38aa6f084ac151cbebe2886c2f">redisxSetPassword()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a37f39ede48014a2463e4c72bf6eb5a3e">redisxSetPort()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#ad3aaa3b6fb5353a52a7013421baa9b89">redisxSetSocketErrorHandler()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a648557774b354ff99e279d3dcf94d240">redisxSetTcpBuf()</a>, <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a3beff3a9e373a0f1de626a8e64da98cf">redisxSetUser()</a>, <a class="el" href="smax_8h.html#a0fe198db49d87d696072c261e49f7cce">SMAX_DEFAULT_HOSTNAME</a>, <a class="el" href="smax_8h.html#a71b50c2439080feef06b0b9509194eae">SMAX_SENTINEL_SERVICENAME</a>, <a class="el" href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30">smaxAddConnectHook()</a>, <a class="el" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c">smaxAddDisconnectHook()</a>, <a class="el" href="smax_8c.html#abc07a7599e0bac1be15bbcb6b63d4710">smaxGetProgramID()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="el" href="smax-lazy_8c.html#af3d0cff3f8a6ab745907f4544981fdd1">smaxLazyFlush()</a>, <a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a>, <a class="el" href="smax_8c.html#a542b4c264a49b61a6cd25881290df1d1">smaxSetPipelineConsumer()</a>, <a class="el" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient()</a>, <a class="el" href="smax-util_8c.html#ac1095d82ecfbad50d4b05f876f2c344d">smaxSocketErrorHandler()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa8cecfc5c5c054d2875c03e77b7be15d">TRUE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
 
 </div>
 </div>
@@ -1037,6 +1080,397 @@ Functions</h2></td></tr>
 <a class="el" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5">smaxSetResilient()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>, <a class="el" href="smax_8c.html#a78cf94f007034f63b609cbe72b8047b0">smaxSetServer()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
+
+</div>
+</div>
+<a id="a68d38e9d6ff5d3015f1732cb2d47718f" name="a68d38e9d6ff5d3015f1732cb2d47718f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a68d38e9d6ff5d3015f1732cb2d47718f">&#9670;&#160;</a></span>smaxControl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * smaxControl </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1c7e02eda23566a7891310fd09307a70">XType</a>&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>count</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets an SMA-X control variable, and returns the response to the monitored reply value.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>SMA-X table name </td></tr>
+    <tr><td class="paramname">key</td><td>The command keyword </td></tr>
+    <tr><td class="paramname">value</td><td>Pointer to the value to set </td></tr>
+    <tr><td class="paramname">type</td><td>The type of the value </td></tr>
+    <tr><td class="paramname">count</td><td>Number of elements in value </td></tr>
+    <tr><td class="paramname">replyTable</td><td>SMA-X table in which the reply is expected. It may also be NULL if it's the same as the table in which the control variable was set. </td></tr>
+    <tr><td class="paramname">replyKey</td><td>The keyword to monitor for responses. </td></tr>
+    <tr><td class="paramname">timeout</td><td>[s] Maximum time to wait for a response before returning NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The raw value of the replyKey after it has changed, or NULL if there was an error (errno will indicate the type of error).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-control_8c.html#a1f7823d82d7f0df97535ea2034ab27c4">smaxControlBoolean()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a382280f18f6f7b534395bed3e8d6f019">smaxControlDouble()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a293c6ef0474094cce16508489684e89c">smaxControlString()</a> </dd></dl>
+
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa93f0eb578d23995850d61f7d61c55c1">FALSE</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax-util_8c.html#a51856e0dc0261f8e44c8635d31d6193c">smaxErrorDescription()</a>, <a class="el" href="smax_8c.html#aee07f085e12283ad96f42c4d77430880">smaxShare()</a>, <a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a>, <a class="el" href="smax-sub_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#af771fbf7ea96f8051db140b1750d3a20">x_warn()</a>.</p>
+
+</div>
+</div>
+<a id="a1f7823d82d7f0df97535ea2034ab27c4" name="a1f7823d82d7f0df97535ea2034ab27c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f7823d82d7f0df97535ea2034ab27c4">&#9670;&#160;</a></span>smaxControlBoolean()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a> smaxControlBoolean </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a>&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a621c38f1f10a1c565d897e3178b16d6e">boolean</a>&#160;</td>
+          <td class="paramname"><em>defaultReply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets a boolean type SMA-X control variable, and returns the boolean response to the monitored reply, or the specified default value in case of an error.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>SMA-X table name </td></tr>
+    <tr><td class="paramname">key</td><td>The command keyword </td></tr>
+    <tr><td class="paramname">value</td><td>Pointer to the value to set </td></tr>
+    <tr><td class="paramname">replyTable</td><td>SMA-X table in which the reply is expected. It may also be NULL if it's the same as the table in which the control variable was set. </td></tr>
+    <tr><td class="paramname">replyKey</td><td>The keyword to monitor for responses. </td></tr>
+    <tr><td class="paramname">defaultReply</td><td>The value to return in case of an error </td></tr>
+    <tr><td class="paramname">timeout</td><td>[s] Maximum time to wait for a response before returning NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The boolean value of the monitored keyword after it updated, or the specified default value if there was an error (errno will indicate the type of error).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a382280f18f6f7b534395bed3e8d6f019">smaxControlDouble()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a293c6ef0474094cce16508489684e89c">smaxControlString()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a994ae91adbbffc3b55b47b0219338282">xParseBoolean()</a>.</p>
+
+</div>
+</div>
+<a id="a382280f18f6f7b534395bed3e8d6f019" name="a382280f18f6f7b534395bed3e8d6f019"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a382280f18f6f7b534395bed3e8d6f019">&#9670;&#160;</a></span>smaxControlDouble()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">double smaxControlDouble </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets a atring type SMA-X control variable, and returns the string response to the monitored reply, or NULL in case of an error.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>SMA-X table name </td></tr>
+    <tr><td class="paramname">key</td><td>The command keyword </td></tr>
+    <tr><td class="paramname">value</td><td>Pointer to the value to set </td></tr>
+    <tr><td class="paramname">replyTable</td><td>SMA-X table in which the reply is expected. It may also be NULL if it's the same as the table in which the control variable was set. </td></tr>
+    <tr><td class="paramname">replyKey</td><td>The keyword to monitor for responses. </td></tr>
+    <tr><td class="paramname">timeout</td><td>[s] Maximum time to wait for a response before returning NAN. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The double-precision value of the monitored keyword after it updated, or NAN if there was an error (errno will indicate the type of error).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-control_8c.html#a1f7823d82d7f0df97535ea2034ab27c4">smaxControlBoolean()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a382280f18f6f7b534395bed3e8d6f019">smaxControlDouble()</a> </dd></dl>
+
+<p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a8abfcc76130f3f991d124dd22d7e69bc">NAN</a>, <a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
+
+</div>
+</div>
+<a id="a1b731a3a579c1f0ae61c5685bf660115" name="a1b731a3a579c1f0ae61c5685bf660115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b731a3a579c1f0ae61c5685bf660115">&#9670;&#160;</a></span>smaxControlInt()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int smaxControlInt </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>defaultReply</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets an integer-type SMA-X control variable, and returns the integer response to the monitored reply, or the specified default value in case of an error.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>SMA-X table name </td></tr>
+    <tr><td class="paramname">key</td><td>The command keyword </td></tr>
+    <tr><td class="paramname">value</td><td>Pointer to the value to set </td></tr>
+    <tr><td class="paramname">replyTable</td><td>SMA-X table in which the reply is expected. It may also be NULL if it's the same as the table in which the control variable was set. </td></tr>
+    <tr><td class="paramname">replyKey</td><td>The keyword to monitor for responses. </td></tr>
+    <tr><td class="paramname">defaultReply</td><td>The value to return in case of an error </td></tr>
+    <tr><td class="paramname">timeout</td><td>[s] Maximum time to wait for a response before returning NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The integer value of the monitored keyword after it updated, or the specified default value if there was an error (errno will indicate the type of error).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-control_8c.html#a1f7823d82d7f0df97535ea2034ab27c4">smaxControlBoolean()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a293c6ef0474094cce16508489684e89c">smaxControlString()</a> </dd></dl>
+
+<p class="reference">References <a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>.</p>
+
+</div>
+</div>
+<a id="a293c6ef0474094cce16508489684e89c" name="a293c6ef0474094cce16508489684e89c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a293c6ef0474094cce16508489684e89c">&#9670;&#160;</a></span>smaxControlString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char * smaxControlString </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyTable</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>replyKey</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>timeout</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Sets a atring type SMA-X control variable, and returns the string response to the monitored reply, or NULL in case of an error.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>SMA-X table name </td></tr>
+    <tr><td class="paramname">key</td><td>The command keyword </td></tr>
+    <tr><td class="paramname">value</td><td>Pointer to the value to set </td></tr>
+    <tr><td class="paramname">replyTable</td><td>SMA-X table in which the reply is expected. It may also be NULL if it's the same as the table in which the control variable was set. </td></tr>
+    <tr><td class="paramname">replyKey</td><td>The keyword to monitor for responses. </td></tr>
+    <tr><td class="paramname">timeout</td><td>[s] Maximum time to wait for a response before returning NULL. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The raw string value of the monitored keyword after it updated, or NULL if there was an error (errno will indicate the type of error).</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-control_8c.html#a1f7823d82d7f0df97535ea2034ab27c4">smaxControlBoolean()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a> </dd>
+<dd>
+<a class="el" href="smax-control_8c.html#a382280f18f6f7b534395bed3e8d6f019">smaxControlDouble()</a></dd></dl>
+<dl class="section since"><dt>Since</dt><dd>1.1 </dd></dl>
+
+<p class="reference">References <a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ac39ae03ca89b115d49a12f633522dc31">x_trace_null()</a>.</p>
 
 </div>
 </div>
@@ -2859,7 +3293,7 @@ sa smaxLaxyPull() </dd></dl>
 <dd>
 <a class="el" href="smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5">smaxLazyEnd()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71">smaxRemoveSubscribers()</a>.</p>
+<p class="reference">References <a class="el" href="smax-sub_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71">smaxRemoveSubscribers()</a>.</p>
 
 </div>
 </div>
@@ -4320,7 +4754,7 @@ smaxPullNode() </dd></dl>
 </div><div class="memdoc">
 <p>Unblocks all smax_wait*() calls, which will return X_REL_PREMATURE, as a result.</p>
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0)</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a89db98657eab826392d6099d21fff14c">smaxWaitOnAnySubscribed()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#a35c72b08b2a64630b391163f4da1f378">smaxWaitOnAnySubscribed()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9">RELEASEID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
 
@@ -4434,7 +4868,7 @@ smaxPullNode() </dd></dl>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server. You should therefore also call <a class="el" href="smax_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a> as appropriate to stop notifications for variables that no longer have associated callbacks.</p>
+<p>Remove all instances of a subscriber callback function from the current list of functions processing PUB/SUB messages. This call only deactivates the callback routine, but does not stop the delivery of update notifications from the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server. You should therefore also call <a class="el" href="smax-sub_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a> as appropriate to stop notifications for variables that no longer have associated callbacks.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">f</td><td>Function to remove </td></tr>
@@ -4442,7 +4876,7 @@ smaxPullNode() </dd></dl>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if successful, or else an error (&lt;0) returned by redisxRemoveSubscriber().</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a> </dd></dl>
 
 <p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#aeda3fce11d0f9a11428ca405d1e45b69">redisxRemoveSubscribers()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 
@@ -4798,6 +5232,61 @@ sendStatus() </dd></dl>
 <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a> </dd></dl>
 
 <p class="reference">References <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a9e947ab368178c7e248b3cf8b26defa1">X_ALREADY_OPEN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>.</p>
+
+</div>
+</div>
+<a id="aea1bd1d05827dc1b6b44734d35897f72" name="aea1bd1d05827dc1b6b44734d35897f72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea1bd1d05827dc1b6b44734d35897f72">&#9670;&#160;</a></span>smaxSetControlFunction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int smaxSetControlFunction </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>table</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="smax_8h.html#a8224a78e5c3f1347e1321a83909b5c34">SMAXControlFunction</a>&#160;</td>
+          <td class="paramname"><em>func</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>parg</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Configures an SMA-X control function. The designated function will be called every time the monitored control variable is updated in the database, so it may act on the update as appropriate. If another control functions was already defined for the variable, it will be replaced with the new function. The same control function may be used with multiple control variables, given that the triggering control variable is passed to it as arguments.</p>
+<p>When the control variables are updated, the associated control functions will be called asynchronously, such that previous control calls may be executing still while new ones are called. The design allows for control functions to take their sweet time executing, without holding up other time-sensitive SMA-X processing. If simultaneous execution of control functions is undesired, the control function(s) should implement mutexing as necessary to avoid conflicts / clobbering.</p>
+<p>As a result of the asynchronous execution, there is also no guarantee of maintaining call order with respect to the order in which the control variables are updated. If two updates arrive in quick succession, it is possible that the asynchronous thread of the second one will make its call to its control function before the first one gets a chance. Thus, if order is important, you might want to process updates with a custom lower-level <code>RedisxSubscriberCall</code> wrapper instead (see <code><a class="el" href="smax-sub_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a></code>).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">table</td><td>The hash table in which the control variable resides. </td></tr>
+    <tr><td class="paramname">key</td><td>the control variable to monitor. It may not contain a sepatator. </td></tr>
+    <tr><td class="paramname">func</td><td>The new function to call if the monitored control variable receives an update, or NULL to clear a previously configured function for the given variable. </td></tr>
+    <tr><td class="paramname">parg</td><td>Optional pointer argument to pass along to the command procesing function, or NULL if the control function does not need extra data. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) </dd></dl>
+
+<p class="reference">References <a class="el" href="smax_8h.html#a341a9de00cacd431dcd8ac8622b0bf7d">SMAX_UPDATES</a>, <a class="el" href="smax-sub_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>, <a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a>, <a class="el" href="smax-sub_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a923cd66e2074f32817a3468c5617a440">X_SEP</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a28120364666ec6054159012a58ba27af">X_SEP_LENGTH</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f2359ea36bfcb29d936b1eef60a53a3">X_UNKNOWN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01a94b3210aed984dbee956fbb26fcfd">xAllocLookup()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a42e4e75cbf8f721ef4b251c692dcd7cb">xCreateField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ae0ce99c867b11bd14971031eec8ba4ad">xDestroyField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32e104d7a23090f8ae0e6ea3cc55a84f">xGetAggregateID()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3b423bf135d2ed42319abff99fda78e4">xLookupPut()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a85f2c5443ebef48499398453a39710da">xLookupRemove()</a>.</p>
 
 </div>
 </div>
@@ -6820,7 +7309,7 @@ smaxShareHex() </dd>
                         X_PARSE_ERROR        If the tokens could not be parsed in the format expected
 </pre> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173">smaxUnpackStrings()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32d6187065d543d5d6fb6e1bcd33efdc">X_LLONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aecc19edf892709b39a9c0d3d944f8f9a">X_TYPE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adcc86baacb3ddebcc529e269223274b8">xIsCharSequence()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a994ae91adbbffc3b55b47b0219338282">xParseBoolean()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7e2e177c11fe7f44ca5ce11f316c0ad9">xParseDouble()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3605bad086ec39e14f97e42e25334227">xZero()</a>.</p>
+<p class="reference">References <a class="el" href="smax-util_8c.html#a5665cd4f5087ab7a07239c30bc561173">smaxUnpackStrings()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#abe0465f7669775b6129551a7ef3300bc">X_BOOLEAN</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#afb01219635d162589ae5aadb90702bb0">X_BYTE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a849c7ccb02f63d8554323a889a3d8b4d">X_DOUBLE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a99605e05158426b1b44e924e42a1162c">X_FLOAT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a4003d7fe06200f77805c52cc7db56784">X_INT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a32d6187065d543d5d6fb6e1bcd33efdc">X_LLONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a36405f1834eb7cd51a17f103b2942e21">X_LONG</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aadbbe3ae01369cbddf4d57d430b33133">X_NULL</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adb72c72467963a6ace1632638a8a6a7b">X_RAW</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adfdc22097b12d42c040dcce8700d64b8">X_SHORT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a816c5dad11d9bfd91a795ed1af30e732">X_SIZE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2443dd783d2728a3559361fba845e533">X_STRING</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a63de1f3edab36b1a53ee312ac0711cbb">X_STRUCT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#a9b61b8b8b3ef0f7cc0b96ab499265c74">x_trace()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aecc19edf892709b39a9c0d3d944f8f9a">X_TYPE_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#af5ec26d18b20fc0da9ec9032af73fa9e">xElementSizeOf()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#adcc86baacb3ddebcc529e269223274b8">xIsCharSequence()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a994ae91adbbffc3b55b47b0219338282">xParseBoolean()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7e2e177c11fe7f44ca5ce11f316c0ad9">xParseDouble()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a13f9a2ea37f70545aeda01069a8e068c">xParseFloat()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3605bad086ec39e14f97e42e25334227">xZero()</a>.</p>
 
 </div>
 </div>
@@ -6878,7 +7367,7 @@ smaxShareHex() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Subscribes to a specific key(s) in specific group(s). Both the group and key names may contain <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> subscription patterns, e.g. '*' or '?', or bound characters in square-brackets, e.g. '[ab]'. The subscription only enables receiving update notifications from <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> for the specified variable or variables. After subscribing, you can either wait on the subscribed variables to change, or add callback functions to process subscribed variables changes, via <a class="el" href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>.</p>
+<p>Subscribes to a specific key(s) in specific group(s). Both the group and key names may contain <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> subscription patterns, e.g. '*' or '?', or bound characters in square-brackets, e.g. '[ab]'. The subscription only enables receiving update notifications from <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> for the specified variable or variables. After subscribing, you can either wait on the subscribed variables to change, or add callback functions to process subscribed variables changes, via <a class="el" href="smax-sub_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">table</td><td>Variable group pattern, i.e. hash-table names. (NULL is the same as '*'). </td></tr>
@@ -6887,19 +7376,19 @@ smaxShareHex() </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS if successfully subscribed to the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> distribution channel. X_NO_SERVICE if there is no active connection to the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14">smaxUnsubscribe()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#a0e116b41cf8cfbca058dba8476b5d573">smaxWaitOnSubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a47571f9fdf1f1d2cab83d112ad2b9bea">smaxWaitOnSubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#af6cae99a805bf84e98390e0bea2470b7">smaxWaitOnSubscribedGroup()</a> </dd>
+<a class="el" href="smax-sub_8c.html#ab9173ea117d8a88721e0d658e3d7c0e9">smaxWaitOnSubscribedGroup()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#af54b8b5d2e79eda86b3349c3c138331c">smaxWaitOnSubscribedVar()</a> </dd>
+<a class="el" href="smax-sub_8c.html#acb58402968158d0b07c9e5057c99d159">smaxWaitOnSubscribedVar()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a89db98657eab826392d6099d21fff14c">smaxWaitOnAnySubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a35c72b08b2a64630b391163f4da1f378">smaxWaitOnAnySubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a> </dd></dl>
+<a class="el" href="smax-sub_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a789f711733a55601cd71a2c0f61ec2db">redisxSubscribe()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#a789f711733a55601cd71a2c0f61ec2db">redisxSubscribe()</a>, <a class="el" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c">smaxAddDisconnectHook()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01a94b3210aed984dbee956fbb26fcfd">xAllocLookup()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#aa4405d56659397e044b6d4fdda394dfa">xCreateIntField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5e3a316b7d0c5c40ed079f3df2d9fcc9">xLookupField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3b423bf135d2ed42319abff99fda78e4">xLookupPut()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#acd6af91336f4b5501d0a0e3d5cf88ad3">xSplitID()</a>.</p>
 
 </div>
 </div>
@@ -7122,7 +7611,7 @@ smaxShareHex() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Unsubscribes from a specific key(s) in specific group(s). Both the group and key names may contain <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> subscription patterns, e.g. '*' or '?', or bound characters in square-brackets, e.g. '[ab]'. Unsubscribing will only stops the delivery of update notifications for the affected varuiables, but does not deactivate the associated callbacks for these added via <a class="el" href="smax_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>. Therefore you should also call smaxRemovesubscribers() as appropriate to deactivate actions that can no longer get triggered by updates.</p>
+<p>Unsubscribes from a specific key(s) in specific group(s). Both the group and key names may contain <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> subscription patterns, e.g. '*' or '?', or bound characters in square-brackets, e.g. '[ab]'. Unsubscribing will only stops the delivery of update notifications for the affected varuiables, but does not deactivate the associated callbacks for these added via <a class="el" href="smax-sub_8c.html#a827dd87397943f3384605f87116b630c">smaxAddSubscriber()</a>. Therefore you should also call smaxRemovesubscribers() as appropriate to deactivate actions that can no longer get triggered by updates.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">table</td><td>Variable group pattern, i.e. structure or hash-table name(s) (NULL is the same as '*'). </td></tr>
@@ -7131,11 +7620,11 @@ smaxShareHex() </dd>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>X_SUCCESS if successfully unsubscribed to the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> distribution channel. X_NO_SERVICE if there is no active connection to the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server. X_NULL if the channel argument is NULL X_NO_INIT if the SMA-X library was not initialized.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71">smaxRemoveSubscribers()</a> </dd></dl>
+<a class="el" href="smax-sub_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71">smaxRemoveSubscribers()</a> </dd></dl>
 
-<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#af64c112d9c395f1e08af52acd6f5c3ec">redisxUnsubscribe()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
+<p class="reference">References <a class="elRef" href="../../redisx/apidoc/html/redisx_8h.html#af64c112d9c395f1e08af52acd6f5c3ec">redisxUnsubscribe()</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="elRef" href="../../xchange/apidoc/html/structXField.html#a0f61d63b009d0880a89c843bd50d8d76">XField::value</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ae0ce99c867b11bd14971031eec8ba4ad">xDestroyField()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5e3a316b7d0c5c40ed079f3df2d9fcc9">xLookupField()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a85f2c5443ebef48499398453a39710da">xLookupRemove()</a>.</p>
 
 </div>
 </div>
@@ -7199,8 +7688,8 @@ smaxShareHex() </dd>
 
 </div>
 </div>
-<a id="a89db98657eab826392d6099d21fff14c" name="a89db98657eab826392d6099d21fff14c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89db98657eab826392d6099d21fff14c">&#9670;&#160;</a></span>smaxWaitOnAnySubscribed()</h2>
+<a id="a35c72b08b2a64630b391163f4da1f378" name="a35c72b08b2a64630b391163f4da1f378"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35c72b08b2a64630b391163f4da1f378">&#9670;&#160;</a></span>smaxWaitOnAnySubscribed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7221,7 +7710,13 @@ smaxShareHex() </dd>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>timeout</em>&#160;</td>
+          <td class="paramname"><em>timeout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sem_t *&#160;</td>
+          <td class="paramname"><em>gating</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -7230,30 +7725,31 @@ smaxShareHex() </dd>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>Waits until any variable was pushed on any host, returning both the host and variable name for the updated value. The variable must be already subscribed to with <a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a>, or else the wait will not receive update notifications.</p>
+<p>Waits until any variable was pushed on any host, returning both the host and variable name for the updated value. The variable must be already subscribed to with <a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a>, or else the wait will not receive update notifications.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[out]</td><td class="paramname">changedTable</td><td>Pointer to the variable that points to the string buffer for the returned table name or NULL. The lease of the buffer is for the call only. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">changedKey</td><td>Pointer to the variable that points to the string buffer for the returned variable name or NULL. The lease of the buffer is for the call only. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">gating</td><td>Optional semaphore to post after thuis wait call gains exclusive access to the notification mutex. Another thread may wait on that semaphore before it too tries to get exclusive access to SMA-X notifications via some other library call, to ensure that the wait is entered (or else fails) in a timely manner, without unwittingly being blocked by the other thread. Typically, you can set it to NULL if such cross-thread gating is not required.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if a variable was pushed on a host. X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_NO_SERVICE if the connection was broken X_GROUP_INVALID if the buffer for the returned table name is NULL. X_NAME_INVALID if the buffer for the returned variable name is NULL. X_INTERRUPTED if <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called. X_INCOMPLETE if the wait timed out.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if a variable was pushed on a host. X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_NO_SERVICE if the connection was broken X_GROUP_INVALID if the buffer for the returned table name is NULL. X_NAME_INVALID if the buffer for the returned variable name is NULL. X_INTERRUPTED if <a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called. X_INCOMPLETE if the wait timed out.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#a0e116b41cf8cfbca058dba8476b5d573">smaxWaitOnSubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a47571f9fdf1f1d2cab83d112ad2b9bea">smaxWaitOnSubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#af6cae99a805bf84e98390e0bea2470b7">smaxWaitOnSubscribedGroup()</a> </dd>
+<a class="el" href="smax-sub_8c.html#ab9173ea117d8a88721e0d658e3d7c0e9">smaxWaitOnSubscribedGroup()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
+<a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
 
-<p class="reference">References <a class="el" href="smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9">RELEASEID</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a888dbfa464548f0b65794e172713160b">X_INCOMPLETE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3942401de37f774e72393ffa73c9fb9f">X_INTERRUPTED</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a28120364666ec6054159012a58ba27af">X_SEP_LENGTH</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a2b0edfea798e9e08122f09dba5f189f8">xdprintf</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab9a9fbc1235164bfeed5fbba1f7d8692">xLastSeparator()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
+<p class="reference">References <a class="el" href="smax-private_8h.html#acb5965a4e56d8d90d76002bef3207ef9">RELEASEID</a>, <a class="el" href="smax-util_8c.html#aefcb16af3690ffe9c77224af6b394869">smaxError()</a>, <a class="el" href="smax_8c.html#a533fbe770158afe876a3dafa78ba2195">smaxGetRedis()</a>, <a class="el" href="smax_8c.html#a95cbb68e3eb751219ab3363c93a4840b">smaxIsConnected()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a888dbfa464548f0b65794e172713160b">X_INCOMPLETE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a3942401de37f774e72393ffa73c9fb9f">X_INTERRUPTED</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1324cef45d5b26097bf488ad3b7f9e7b">X_NO_INIT</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7aeb707470a6d1a45626c123e84abe86">X_NO_SERVICE</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a28120364666ec6054159012a58ba27af">X_SEP_LENGTH</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#af771fbf7ea96f8051db140b1750d3a20">x_warn()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#ab9a9fbc1235164bfeed5fbba1f7d8692">xLastSeparator()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a01d730a1a98963816de2dd73e72957a5">xStringCopyOf()</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a1f038bf7ddb58819805cfc44162cb403">xvprintf</a>.</p>
 
 </div>
 </div>
-<a id="a0e116b41cf8cfbca058dba8476b5d573" name="a0e116b41cf8cfbca058dba8476b5d573"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e116b41cf8cfbca058dba8476b5d573">&#9670;&#160;</a></span>smaxWaitOnSubscribed()</h2>
+<a id="a47571f9fdf1f1d2cab83d112ad2b9bea" name="a47571f9fdf1f1d2cab83d112ad2b9bea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a47571f9fdf1f1d2cab83d112ad2b9bea">&#9670;&#160;</a></span>smaxWaitOnSubscribed()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7274,7 +7770,13 @@ smaxShareHex() </dd>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>timeout</em>&#160;</td>
+          <td class="paramname"><em>timeout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sem_t *&#160;</td>
+          <td class="paramname"><em>gating</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -7286,31 +7788,32 @@ smaxShareHex() </dd>
 <p>Waits for a specific pushed entry. There must be an active subscription that includes the specified group &amp; variable, or else the call will block indefinitely.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">table</td><td>Hash table name </td></tr>
-    <tr><td class="paramname">key</td><td>Variable name to wait on. </td></tr>
-    <tr><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait.</td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">table</td><td>Hash table name </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">key</td><td>Variable name to wait on. </td></tr>
+    <tr><td class="paramdir"></td><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">gating</td><td>Optional semaphore to post after thuis wait call gains exclusive access to the notification mutex. Another thread may wait on that semaphore before it too tries to get exclusive access to SMA-X notifications via some other library call, to ensure that the wait is entered (or else fails) in a timely manner, without unwittingly being blocked by the other thread. Typically, you can set it to NULL if such cross-thread gating is not required.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if the variable was updated on some host (or owner). X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_GROUP_INVALID if the 'group' argument is NULL; X_NAME_INVALID if the 'key' argument is NULL. X_REL_PREMATURE if <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if the variable was updated on some host (or owner). X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_GROUP_INVALID if the 'group' argument is NULL; X_NAME_INVALID if the 'key' argument is NULL. X_REL_PREMATURE if <a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#a0e116b41cf8cfbca058dba8476b5d573">smaxWaitOnSubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a47571f9fdf1f1d2cab83d112ad2b9bea">smaxWaitOnSubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#af6cae99a805bf84e98390e0bea2470b7">smaxWaitOnSubscribedGroup()</a> </dd>
+<a class="el" href="smax-sub_8c.html#ab9173ea117d8a88721e0d658e3d7c0e9">smaxWaitOnSubscribedGroup()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#af54b8b5d2e79eda86b3349c3c138331c">smaxWaitOnSubscribedVar()</a> </dd>
+<a class="el" href="smax-sub_8c.html#acb58402968158d0b07c9e5057c99d159">smaxWaitOnSubscribedVar()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a89db98657eab826392d6099d21fff14c">smaxWaitOnAnySubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a35c72b08b2a64630b391163f4da1f378">smaxWaitOnAnySubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
+<a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
 
 <p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 
 </div>
 </div>
-<a id="af6cae99a805bf84e98390e0bea2470b7" name="af6cae99a805bf84e98390e0bea2470b7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af6cae99a805bf84e98390e0bea2470b7">&#9670;&#160;</a></span>smaxWaitOnSubscribedGroup()</h2>
+<a id="ab9173ea117d8a88721e0d658e3d7c0e9" name="ab9173ea117d8a88721e0d658e3d7c0e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9173ea117d8a88721e0d658e3d7c0e9">&#9670;&#160;</a></span>smaxWaitOnSubscribedGroup()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7331,7 +7834,13 @@ smaxShareHex() </dd>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>timeout</em>&#160;</td>
+          <td class="paramname"><em>timeout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sem_t *&#160;</td>
+          <td class="paramname"><em>gating</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -7345,27 +7854,28 @@ smaxShareHex() </dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">matchTable</td><td>Hash table name (e.g. owner ID) to wait on. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">changedKey</td><td>Pointer to the string that holds the name of the variable which unblocked the wait or which is set to NULL. The lease of the buffer is for the call only. The caller should copy its content if persistent storage is required. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">gating</td><td>Optional semaphore to post after thuis wait call gains exclusive access to the notification mutex. Another thread may wait on that semaphore before it too tries to get exclusive access to SMA-X notifications via some other library call, to ensure that the wait is entered (or else fails) in a timely manner, without unwittingly being blocked by the other thread. Typically, you can set it to NULL if such cross-thread gating is not required.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if a variable was updated on the host. X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_GROUP_INVALID if the table name to match is invalid. X_REL_PREMATURE if <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if a variable was updated on the host. X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_GROUP_INVALID if the table name to match is invalid. X_REL_PREMATURE if <a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#af54b8b5d2e79eda86b3349c3c138331c">smaxWaitOnSubscribedVar()</a> </dd>
+<a class="el" href="smax-sub_8c.html#acb58402968158d0b07c9e5057c99d159">smaxWaitOnSubscribedVar()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#a0e116b41cf8cfbca058dba8476b5d573">smaxWaitOnSubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a47571f9fdf1f1d2cab83d112ad2b9bea">smaxWaitOnSubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a89db98657eab826392d6099d21fff14c">smaxWaitOnAnySubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a35c72b08b2a64630b391163f4da1f378">smaxWaitOnAnySubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
+<a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
 
 <p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a48c78a0e8290b2fd3701031ebce3fa15">X_GROUP_INVALID</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 
 </div>
 </div>
-<a id="af54b8b5d2e79eda86b3349c3c138331c" name="af54b8b5d2e79eda86b3349c3c138331c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af54b8b5d2e79eda86b3349c3c138331c">&#9670;&#160;</a></span>smaxWaitOnSubscribedVar()</h2>
+<a id="acb58402968158d0b07c9e5057c99d159" name="acb58402968158d0b07c9e5057c99d159"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb58402968158d0b07c9e5057c99d159">&#9670;&#160;</a></span>smaxWaitOnSubscribedVar()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -7386,7 +7896,13 @@ smaxShareHex() </dd>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>timeout</em>&#160;</td>
+          <td class="paramname"><em>timeout</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">sem_t *&#160;</td>
+          <td class="paramname"><em>gating</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -7400,20 +7916,21 @@ smaxShareHex() </dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">matchKey</td><td>Variable name to wait on. </td></tr>
     <tr><td class="paramdir">[out]</td><td class="paramname">changedTable</td><td>Pointer to the string that holds the name of the table which unblocked the wait or which is set to NULL. The lease of the buffer is for the call only. The caller should copy its content if persistent storage is required. </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait.</td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">timeout</td><td>(s) Timeout value. 0 or negative values result in an indefinite wait. </td></tr>
+    <tr><td class="paramdir">[in,out]</td><td class="paramname">gating</td><td>Optional semaphore to post after thuis wait call gains exclusive access to the notification mutex. Another thread may wait on that semaphore before it too tries to get exclusive access to SMA-X notifications via some other library call, to ensure that the wait is entered (or else fails) in a timely manner, without unwittingly being blocked by the other thread. Typically, you can set it to NULL if such cross-thread gating is not required.</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if the variable was updated on some host (or owner). X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_NAME_INVALID if the 'key' argument is NULL. X_REL_PREMATURE if <a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called.</dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
+<dl class="section return"><dt>Returns</dt><dd>X_SUCCESS (0) if the variable was updated on some host (or owner). X_NO_INIT if the SMA-X sharing was not initialized via <a class="el" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1">smaxConnect()</a>. X_NAME_INVALID if the 'key' argument is NULL. X_REL_PREMATURE if <a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> was called.</dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43">smaxSubscribe()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#af6cae99a805bf84e98390e0bea2470b7">smaxWaitOnSubscribedGroup()</a> </dd>
+<a class="el" href="smax-sub_8c.html#ab9173ea117d8a88721e0d658e3d7c0e9">smaxWaitOnSubscribedGroup()</a> </dd>
 <dd>
-<a class="el" href="smax-easy_8c.html#a0e116b41cf8cfbca058dba8476b5d573">smaxWaitOnSubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a47571f9fdf1f1d2cab83d112ad2b9bea">smaxWaitOnSubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a89db98657eab826392d6099d21fff14c">smaxWaitOnAnySubscribed()</a> </dd>
+<a class="el" href="smax-sub_8c.html#a35c72b08b2a64630b391163f4da1f378">smaxWaitOnAnySubscribed()</a> </dd>
 <dd>
-<a class="el" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
+<a class="el" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c">smaxReleaseWaits()</a> </dd></dl>
 
 <p class="reference">References <a class="elRef" href="../../xchange/apidoc/html/xchange_8c.html#ae73aaf705dc4e7d58dfb0fd81f4805c7">x_error()</a>, <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a5426366367d169401f779c4764ba7736">X_NAME_INVALID</a>, and <a class="elRef" href="../../xchange/apidoc/html/xchange_8h.html#a7b2679c964ea5f2160380ed55654b873">X_SUCCESS</a>.</p>
 

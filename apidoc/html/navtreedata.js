@@ -60,19 +60,24 @@ var NAVTREE =
         [ "Waiting for updates", "index.html#autotoc_md40", null ],
         [ "Update callbacks", "index.html#autotoc_md41", null ]
       ] ],
-      [ "Program status / error messages via SMA-X", "index.html#autotoc_md43", [
-        [ "Broadcasting status messages from an application", "index.html#autotoc_md44", null ],
-        [ "Processing program messages", "index.html#autotoc_md45", null ]
+      [ "Remote program control via SMA-X", "index.html#autotoc_md43", [
+        [ "Server side", "index.html#autotoc_md44", null ],
+        [ "Client side", "index.html#autotoc_md45", null ],
+        [ "Complex remote control calls and return values", "index.html#autotoc_md46", null ]
       ] ],
-      [ "Optional metadata", "index.html#autotoc_md47", [
-        [ "Descriptions", "index.html#autotoc_md48", null ],
-        [ "Coordinate Systems", "index.html#autotoc_md49", null ],
-        [ "Physical units", "index.html#autotoc_md50", null ]
+      [ "Program status / error messages via SMA-X", "index.html#autotoc_md48", [
+        [ "Broadcasting status messages from an application", "index.html#autotoc_md49", null ],
+        [ "Processing program messages", "index.html#autotoc_md50", null ]
       ] ],
-      [ "Error handling", "index.html#autotoc_md52", null ],
-      [ "Debug support", "index.html#autotoc_md54", null ],
-      [ "Future plans", "index.html#autotoc_md56", null ],
-      [ "[Unreleased]", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
+      [ "Optional metadata", "index.html#autotoc_md52", [
+        [ "Descriptions", "index.html#autotoc_md53", null ],
+        [ "Coordinate Systems", "index.html#autotoc_md54", null ],
+        [ "Physical units", "index.html#autotoc_md55", null ]
+      ] ],
+      [ "Error handling", "index.html#autotoc_md57", null ],
+      [ "Debug support", "index.html#autotoc_md59", null ],
+      [ "Future plans", "index.html#autotoc_md61", null ],
+      [ "[1.0.1-rc1] - 2025-07-08", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
     ] ],
     [ "Contributing to smax-clib", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
     [ "Data Structures", "annotated.html", [
@@ -89,6 +94,7 @@ var NAVTREE =
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", "globals_func" ],
         [ "Variables", "globals_vars.html", null ],
+        [ "Typedefs", "globals_type.html", null ],
         [ "Macros", "globals_defs.html", null ]
       ] ]
     ] ]
@@ -98,7 +104,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"smax_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14"
+"smax_8c.html#a9d1e6ffa837d3582a8165e326cc44bea"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

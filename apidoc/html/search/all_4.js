@@ -1,8 +1,13 @@
 var searchData=
 [
-  ['data_0',['Sharing and pulling data',['../index.html#autotoc_md23',1,'']]],
-  ['debug_20support_1',['Debug support',['../index.html#autotoc_md54',1,'']]],
-  ['descriptions_2',['Descriptions',['../index.html#autotoc_md48',1,'']]],
-  ['disconnecting_20from_20sma_20x_3',['Connecting to / disconnecting from SMA-X',['../index.html#autotoc_md20',1,'']]],
-  ['disconnection_20hooks_4',['Connection / disconnection hooks',['../index.html#autotoc_md21',1,'']]]
+  ['against_20tt_20smax_20clib_20tt_0',['Linking your application against &lt;tt&gt;smax-clib&lt;/tt&gt;',['../index.html#autotoc_md12',1,'']]],
+  ['an_20application_1',['Broadcasting status messages from an application',['../index.html#autotoc_md49',1,'']]],
+  ['and_20pulling_20data_2',['Sharing and pulling data',['../index.html#autotoc_md23',1,'']]],
+  ['and_20return_20values_3',['Complex remote control calls and return values',['../index.html#autotoc_md46',1,'']]],
+  ['and_20sizes_4',['Flexible types and sizes',['../index.html#autotoc_md26',1,'']]],
+  ['and_20waiting_5',['Synchronization points and waiting',['../index.html#autotoc_md34',1,'']]],
+  ['application_6',['Broadcasting status messages from an application',['../index.html#autotoc_md49',1,'']]],
+  ['application_20against_20tt_20smax_20clib_20tt_7',['Linking your application against &lt;tt&gt;smax-clib&lt;/tt&gt;',['../index.html#autotoc_md12',1,'']]],
+  ['arrays_8',['Arrays',['../index.html#autotoc_md28',1,'']]],
+  ['axis_9',['axis',['../structXCoordinateSystem.html#a5275f744c5bfc9a13b31a19c7ec5346c',1,'XCoordinateSystem']]]
 ];

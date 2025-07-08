@@ -267,6 +267,13 @@
       <anchor>a793fead1eb30470e219192befc88b3c9</anchor>
       <arglist></arglist>
     </member>
+    <member kind="typedef">
+      <type>int(*</type>
+      <name>SMAXControlFunction</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a8224a78e5c3f1347e1321a83909b5c34</anchor>
+      <arglist>)(const char *table, const char *key, void *parg)</arglist>
+    </member>
     <member kind="function">
       <type>int</type>
       <name>smax2xField</name>
@@ -336,6 +343,41 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>ad960c22b119ff2493a319945a9dd55a5</anchor>
       <arglist>(const char *server)</arglist>
+    </member>
+    <member kind="function">
+      <type>char *</type>
+      <name>smaxControl</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a68d38e9d6ff5d3015f1732cb2d47718f</anchor>
+      <arglist>(const char *table, const char *key, const void *value, XType type, int count, const char *replyTable, const char *replyKey, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>boolean</type>
+      <name>smaxControlBoolean</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a1f7823d82d7f0df97535ea2034ab27c4</anchor>
+      <arglist>(const char *table, const char *key, boolean value, const char *replyTable, const char *replyKey, boolean defaultReply, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>smaxControlDouble</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a382280f18f6f7b534395bed3e8d6f019</anchor>
+      <arglist>(const char *table, const char *key, double value, const char *replyTable, const char *replyKey, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxControlInt</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a1b731a3a579c1f0ae61c5685bf660115</anchor>
+      <arglist>(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>char *</type>
+      <name>smaxControlString</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>a293c6ef0474094cce16508489684e89c</anchor>
+      <arglist>(const char *table, const char *key, const char *value, const char *replyTable, const char *replyKey, int timeout)</arglist>
     </member>
     <member kind="function">
       <type>XField *</type>
@@ -976,6 +1018,13 @@
     </member>
     <member kind="function">
       <type>int</type>
+      <name>smaxSetControlFunction</name>
+      <anchorfile>smax_8h.html</anchorfile>
+      <anchor>aea1bd1d05827dc1b6b44734d35897f72</anchor>
+      <arglist>(const char *table, const char *key, SMAXControlFunction func, void *parg)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
       <name>smaxSetCoordinateAxis</name>
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a5d59620a1646428f41b040d1a0a91554</anchor>
@@ -1356,29 +1405,29 @@
       <type>int</type>
       <name>smaxWaitOnAnySubscribed</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a89db98657eab826392d6099d21fff14c</anchor>
-      <arglist>(char **changedTable, char **changedKey, int timeout)</arglist>
+      <anchor>a35c72b08b2a64630b391163f4da1f378</anchor>
+      <arglist>(char **changedTable, char **changedKey, int timeout, sem_t *gating)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxWaitOnSubscribed</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>a0e116b41cf8cfbca058dba8476b5d573</anchor>
-      <arglist>(const char *table, const char *key, int timeout)</arglist>
+      <anchor>a47571f9fdf1f1d2cab83d112ad2b9bea</anchor>
+      <arglist>(const char *table, const char *key, int timeout, sem_t *gating)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxWaitOnSubscribedGroup</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>af6cae99a805bf84e98390e0bea2470b7</anchor>
-      <arglist>(const char *matchTable, char **changedKey, int timeout)</arglist>
+      <anchor>ab9173ea117d8a88721e0d658e3d7c0e9</anchor>
+      <arglist>(const char *matchTable, char **changedKey, int timeout, sem_t *gating)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
       <name>smaxWaitOnSubscribedVar</name>
       <anchorfile>smax_8h.html</anchorfile>
-      <anchor>af54b8b5d2e79eda86b3349c3c138331c</anchor>
-      <arglist>(const char *matchKey, char **changedTable, int timeout)</arglist>
+      <anchor>acb58402968158d0b07c9e5057c99d159</anchor>
+      <arglist>(const char *matchKey, char **changedTable, int timeout, sem_t *gating)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -1400,6 +1449,54 @@
       <anchorfile>smax_8h.html</anchorfile>
       <anchor>a65cc6cdad09f861b968e2d492abed977</anchor>
       <arglist>(XStructure *s)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
+    <name>smax-control.c</name>
+    <path>src/</path>
+    <filename>smax-control_8c.html</filename>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <member kind="function">
+      <type>char *</type>
+      <name>smaxControl</name>
+      <anchorfile>smax-control_8c.html</anchorfile>
+      <anchor>a68d38e9d6ff5d3015f1732cb2d47718f</anchor>
+      <arglist>(const char *table, const char *key, const void *value, XType type, int count, const char *replyTable, const char *replyKey, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>boolean</type>
+      <name>smaxControlBoolean</name>
+      <anchorfile>smax-control_8c.html</anchorfile>
+      <anchor>a1f7823d82d7f0df97535ea2034ab27c4</anchor>
+      <arglist>(const char *table, const char *key, boolean value, const char *replyTable, const char *replyKey, boolean defaultReply, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>double</type>
+      <name>smaxControlDouble</name>
+      <anchorfile>smax-control_8c.html</anchorfile>
+      <anchor>a382280f18f6f7b534395bed3e8d6f019</anchor>
+      <arglist>(const char *table, const char *key, double value, const char *replyTable, const char *replyKey, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxControlInt</name>
+      <anchorfile>smax-control_8c.html</anchorfile>
+      <anchor>a1b731a3a579c1f0ae61c5685bf660115</anchor>
+      <arglist>(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>char *</type>
+      <name>smaxControlString</name>
+      <anchorfile>smax-control_8c.html</anchorfile>
+      <anchor>a293c6ef0474094cce16508489684e89c</anchor>
+      <arglist>(const char *table, const char *key, const char *value, const char *replyTable, const char *replyKey, int timeout)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSetControlFunction</name>
+      <anchorfile>smax-control_8c.html</anchorfile>
+      <anchor>aea1bd1d05827dc1b6b44734d35897f72</anchor>
+      <arglist>(const char *table, const char *key, SMAXControlFunction func, void *parg)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -1686,27 +1783,6 @@
       <anchorfile>smax-easy_8c.html</anchorfile>
       <anchor>a63c421116ca043f2d0899b83d8aa91f9</anchor>
       <arglist>(const char *table, const char *key, const char **sValues, int n)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxWaitOnSubscribed</name>
-      <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>a0e116b41cf8cfbca058dba8476b5d573</anchor>
-      <arglist>(const char *table, const char *key, int timeout)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxWaitOnSubscribedGroup</name>
-      <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>af6cae99a805bf84e98390e0bea2470b7</anchor>
-      <arglist>(const char *matchTable, char **changedKey, int timeout)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxWaitOnSubscribedVar</name>
-      <anchorfile>smax-easy_8c.html</anchorfile>
-      <anchor>af54b8b5d2e79eda86b3349c3c138331c</anchor>
-      <arglist>(const char *matchKey, char **changedTable, int timeout)</arglist>
     </member>
   </compound>
   <compound kind="file">
@@ -2139,6 +2215,75 @@
     </member>
   </compound>
   <compound kind="file">
+    <name>smax-sub.c</name>
+    <path>src/</path>
+    <filename>smax-sub_8c.html</filename>
+    <includes id="smax-private_8h" name="smax-private.h" local="yes" import="no" module="no" objc="no">smax-private.h</includes>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxAddSubscriber</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>a827dd87397943f3384605f87116b630c</anchor>
+      <arglist>(const char *idStem, RedisSubscriberCall f)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxReleaseWaits</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>a14bc33c30d27be9e2954ae7831099f1c</anchor>
+      <arglist>()</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxRemoveSubscribers</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>a77d04f4fbb447f169d40b2a24fa7cf71</anchor>
+      <arglist>(RedisSubscriberCall f)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxSubscribe</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>a53614ba57a594135c13b64a2d89eaa43</anchor>
+      <arglist>(const char *table, const char *key)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxUnsubscribe</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>af3a5d7bc565ab7de0ac1dd8fafc93f14</anchor>
+      <arglist>(const char *table, const char *key)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxWaitOnAnySubscribed</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>a35c72b08b2a64630b391163f4da1f378</anchor>
+      <arglist>(char **changedTable, char **changedKey, int timeout, sem_t *gating)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxWaitOnSubscribed</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>a47571f9fdf1f1d2cab83d112ad2b9bea</anchor>
+      <arglist>(const char *table, const char *key, int timeout, sem_t *gating)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxWaitOnSubscribedGroup</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>ab9173ea117d8a88721e0d658e3d7c0e9</anchor>
+      <arglist>(const char *matchTable, char **changedKey, int timeout, sem_t *gating)</arglist>
+    </member>
+    <member kind="function">
+      <type>int</type>
+      <name>smaxWaitOnSubscribedVar</name>
+      <anchorfile>smax-sub_8c.html</anchorfile>
+      <anchor>acb58402968158d0b07c9e5057c99d159</anchor>
+      <arglist>(const char *matchKey, char **changedTable, int timeout, sem_t *gating)</arglist>
+    </member>
+  </compound>
+  <compound kind="file">
     <name>smax-tls.c</name>
     <path>src/</path>
     <filename>smax-tls_8c.html</filename>
@@ -2430,13 +2575,6 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>smaxAddSubscriber</name>
-      <anchorfile>smax_8c.html</anchorfile>
-      <anchor>a827dd87397943f3384605f87116b630c</anchor>
-      <arglist>(const char *idStem, RedisSubscriberCall f)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
       <name>smaxConnect</name>
       <anchorfile>smax_8c.html</anchorfile>
       <anchor>a146fb2ed8512919dc91ecad6d08c74d1</anchor>
@@ -2528,13 +2666,6 @@
     </member>
     <member kind="function">
       <type>int</type>
-      <name>smaxReleaseWaits</name>
-      <anchorfile>smax_8c.html</anchorfile>
-      <anchor>a14bc33c30d27be9e2954ae7831099f1c</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
       <name>smaxRemoveConnectHook</name>
       <anchorfile>smax_8c.html</anchorfile>
       <anchor>a4708c3c699781abec237045c48719f3d</anchor>
@@ -2546,13 +2677,6 @@
       <anchorfile>smax_8c.html</anchorfile>
       <anchor>a70cdc3f1bf6b97248b5b8ba6df4dc044</anchor>
       <arglist>(void(*cleanupCall)(void))</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxRemoveSubscribers</name>
-      <anchorfile>smax_8c.html</anchorfile>
-      <anchor>a77d04f4fbb447f169d40b2a24fa7cf71</anchor>
-      <arglist>(RedisSubscriberCall f)</arglist>
     </member>
     <member kind="function">
       <type>int</type>
@@ -2651,27 +2775,6 @@
       <anchorfile>smax_8c.html</anchorfile>
       <anchor>ab6a1590c953abc1c37fed841cd3a903a</anchor>
       <arglist>(const char *id, const XStructure *s)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxSubscribe</name>
-      <anchorfile>smax_8c.html</anchorfile>
-      <anchor>a53614ba57a594135c13b64a2d89eaa43</anchor>
-      <arglist>(const char *table, const char *key)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxUnsubscribe</name>
-      <anchorfile>smax_8c.html</anchorfile>
-      <anchor>af3a5d7bc565ab7de0ac1dd8fafc93f14</anchor>
-      <arglist>(const char *table, const char *key)</arglist>
-    </member>
-    <member kind="function">
-      <type>int</type>
-      <name>smaxWaitOnAnySubscribed</name>
-      <anchorfile>smax_8c.html</anchorfile>
-      <anchor>a89db98657eab826392d6099d21fff14c</anchor>
-      <arglist>(char **changedTable, char **changedKey, int timeout)</arglist>
     </member>
     <member kind="variable">
       <type>char *</type>
@@ -2912,6 +3015,10 @@
     <docanchor file="index.html">monitoring-updates</docanchor>
     <docanchor file="index.html">waiting-for-updates</docanchor>
     <docanchor file="index.html">update-callbacks</docanchor>
+    <docanchor file="index.html">remote-control</docanchor>
+    <docanchor file="index.html">server-side</docanchor>
+    <docanchor file="index.html">client-side</docanchor>
+    <docanchor file="index.html">complex-control</docanchor>
     <docanchor file="index.html">status-messages</docanchor>
     <docanchor file="index.html">smax-broadcasting</docanchor>
     <docanchor file="index.html">smax-processing-messages</docanchor>

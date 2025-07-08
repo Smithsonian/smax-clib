@@ -1,9 +1,11 @@
 var searchData=
 [
-  ['id_0',['id',['../../../redisx/apidoc/html/structRedis.html#aecb3b0d045ada529257a2fbf8f829599',1,'Redis']]],
-  ['initial_20configuration_1',['Initial configuration',['../index.html#autotoc_md16',1,'']]],
-  ['interactive_2',['interactive',['../../../redisx/apidoc/html/structRedis.html#af51011d99955d6f036a9f2c291577749',1,'Redis']]],
-  ['introduction_3',['Introduction',['../index.html#autotoc_md5',1,'']]],
-  ['iscomplete_4',['isComplete',['../structXSyncPoint.html#a0b9f91194934aba0d7936d18d4bc81cc',1,'XSyncPoint']]],
-  ['isserialized_5',['isSerialized',['../../../xchange/apidoc/html/structXField.html#aaa68a7e140a5370ed0eb52710744c341',1,'XField']]]
+  ['finishing_20up_0',['Finishing up',['../index.html#autotoc_md36',1,'']]],
+  ['firstfield_1',['firstField',['../../../xchange/apidoc/html/structXStructure.html#a501ae8af2201d9cfaa60e3af21ff58fc',1,'XStructure']]],
+  ['flexible_20types_20and_20sizes_2',['Flexible types and sizes',['../index.html#autotoc_md26',1,'']]],
+  ['for_20updates_3',['Waiting for updates',['../index.html#autotoc_md40',1,'']]],
+  ['frequency_20queries_4',['Lazy pulling (high-frequency queries)',['../index.html#autotoc_md31',1,'']]],
+  ['from_20an_20application_5',['Broadcasting status messages from an application',['../index.html#autotoc_md49',1,'']]],
+  ['from_20sma_20x_6',['Connecting to / disconnecting from SMA-X',['../index.html#autotoc_md20',1,'']]],
+  ['future_20plans_7',['Future plans',['../index.html#autotoc_md61',1,'']]]
 ];

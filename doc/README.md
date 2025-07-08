@@ -25,6 +25,7 @@ Updated for version 1.0 and later releases.
  - [Lazy pulling (high-frequency queries)](#lazy-pulling)
  - [Pipelined pulls (high volume queries)](#pipelined-pulls)
  - [Custom update handling](#update-handling)
+ - [Remote program control via SMA-X](#remote-control)
  - [Program status / error messages via SMA-X](#status-messages)
  - [Optional metadata](#optional-metadata)
  - [Error handling](#smax-error-handling)
@@ -192,10 +193,10 @@ as `bash`, or `perl` (also `python` though we recommend to use the native
 <a name="smax-configuration"></a>
 ## Initial configuration
 
-Bu default, the library assumes that the Redis server used for SMA-X runs on a machine called `smax` (e.g. you may assign
-`smax` to the IP address in `/etc/hosts`), and that the Redis is on the default port 6379/tcp. However, you can configure
-to use a specific host and/or an alternative Redis port number to use instead. 
-
+Bu default, the library assumes that the Redis server name used for SMA-X is either stored in the environment variable
+`SMAX_HOST` or is `smax` (e.g. you may assign `smax` to an IP address in `/etc/hosts`), and that the Redis is on 
+the default port 6379/tcp. However, you can configure to use a specific host and/or an alternative Redis port number 
+also, e.g.:
 
 ```c
   smaxSetServer("my-smax.example.com", 7033);
@@ -291,7 +292,7 @@ the current configuration.
 <a name="smax-connecting"></a>
 ## Connecting to / disconnecting from SMA-X 
 
-Once you have configured the connection parameters, you can connect to the server by:
+Once you have configured the connection parameters, you can connect to the configured (or default) server by:
 
 ```c
   int status = smaxConnect();
@@ -856,7 +857,7 @@ the desired variables / patterns. For example:
 
 ```c
   // Wait for foo:bar to update, or wait at most 500 ms
-  int status = smaxWaitOnSubscribedVar("foo", "bar", 500);
+  int status = smaxWaitOnSubscribedVar("foo", "bar", 500, NULL);
   if (status == X_TIMEDOUT) {
     // Wait timed out, maybe we want to try again, or do something else...
     ...
@@ -869,9 +870,13 @@ the desired variables / patterns. For example:
 
 ```
 
-Similar methods allow you to wait for updates on any subscribed variable in selected tables, or the update of
-select variables in all subscribed tables, or any of the subscribed variables to change for the wait to end
-normally (with return value 0).
+Similar methods allow you to wait for updates on any subscribed variable in selected tables, or the update of select 
+variables in all subscribed tables, or any of the subscribed variables to change for the wait to end normally (with 
+return value 0). 
+
+The last parameter (`NULL` in the above example) allows to pass a pointer to a POSIX sempahore, which can be used for 
+gating another thread, which might also want exclusive access to the SMA-X notifications, but we do not want it to
+accidentally block entering the wait in a timely manner.
 
 
 <a name="update-callbacks"></a>
@@ -924,6 +929,164 @@ callback information on a queue, and then spawn or notify a separate thread to p
 background, including discarding the copied data if it's no longer needed. Alternatively, you can launch a dedicated
 processor thread early on, and inside it wait for the updates before executing some complex action. The choice is
 yours.
+
+
+------------------------------------------------------------------------------  
+
+<a name="remote-control"></a>  
+## Remote program control via SMA-X
+
+ - [Server side](#server-side)
+ - [Client side](#client-side)
+ - [Complex remote control calls and return values](#complex-control)
+
+It is possible to use SMA-X for remote control of programs on distributed systems. In effect, any client can set 
+designated control variables / values. These variables are monitored by an appropriate server program, which acts to 
+changes to the 'commanded' values accordingly, and report the result back in a related other SMA-X variable. The 
+client thus can obtain confirmation from the response variable after it submits it requested 'command' variable.
+
+
+<a name="server-side"></a>
+### Server side
+
+On the server side, you will need a function (of `SMAXControlFunction` type), which acts when some control variable 
+changes. E.g.:
+
+```c
+  // the function will be called with the SMA-X hash table and control variable names 
+  // which triggered the call, as well as an optional user-supplied pointer argument.
+  int my_control_function(const char *table, const char *key, void *parg) {
+    // Let's assume the pointer argument defines what variable we use for the response...
+    const char *replyKey = (const char *) parg;
+    
+    // Let's say we expect an integer control value...
+    // We'll pull it from SMA-X as such, or default to -1 if the value is not an integer.
+    int value = smaxPullInt(table, key, -1);
+  
+    // We could do something with the requested value...
+    ...
+  
+    // Finally we'll write the requested (or actual) value to the reply keyword to 
+    // indicate completion.
+    return smaxShareInt(table, replyKey, value);
+  }
+```
+
+It is important to remember that each action taken on a control variable should the set the designated response
+variable exactly once, and only when the action is completed, so that the calling client can use it to confirm 
+the completed action. The same action action is free to set any number of other values in SMA-X before signaling 
+completion, thus 'returning' further data to the caller, if needed. 
+
+Next, all you have to do is specify with what control variable to use this function with and what optional pointer
+argument to pass on to it:
+
+```c
+  // We'll trigger the function whenever 'system:subsystem:control_value' changes.
+  // And we'll send a response to 'actual_value' in the same hash table.
+  int status = smaxSetControlFunction("system:subsystem", "control_value", my_control_function, "actual_value");
+  if(status < 0) {
+    // Oops, something went wrong...
+    return -1;
+  }
+```
+
+The above call will subscribe for updates to `system:subsystem:control_value` and will call `my_control_function` with
+`actual_value` as the optional argument. You may change the function called later, or undefine it by calling 
+`smaxSetControlFunction()` with `NULL` as the function pointer.
+
+Clearly, the same processing function can be used with multiple control values, if convenient, or you may specify 
+different control functions to every control value if it makes more sense for the implementation.
+
+
+<a name="client-side"></a>
+### Client side
+
+From the client side, you control the above server by setting `system:subsystem:control_value` to an appropriate
+new value, and then wait for the response in `system:subsystem:actual_value`. You can do that via `smaxControl()`
+or one of it's type-specific variants. Since in the above server example, we use integer control value and reply,
+we'll use `smaxControlInt()`:
+
+```c
+  int timeout = 5; // [s] max. time to wait for a response.
+
+  // We'll set the control value to 42, and wait for a response for up to 5 seconds, 
+  // or else return -1.
+  int reply = smaxControlInt("system:subsystem", "control_value", 42, NULL, "actual_value", -1, timeout);
+  if(reply != 42) {
+    // Oops, no luck
+    ...
+  }
+```
+
+The `NULL` as the 3rd argument is a shorthand to indicate that we expect the reply in the same hash table in which we
+set `control_value` (that is in `system:subsystem`). If we expect the response in some other location, we can specify
+the appropriate table name instead of the `NULL` pointer in the example above.
+
+
+<a name="complex-control"></a>
+### Complex remote control calls and return values
+
+As hinted earlier, the remote control via SMA-X relies on a single control variable, and a single response variable
+provides confirmation of completion back to the client. This scheme does not preclude passing multiple values to the
+server, or receiving multiple values as a response. A client may set a number of call parameters in SMA-X before 
+triggering the action on them by the designated control variable. The server will not act on the parameters alone. 
+Instead, only when the designated control (trigger) variable is set it proceeds to read all associated parameter 
+values from SMA-X.
+
+Similarly, the server may set a number of return parameters during its action, before finally setting the designated
+response variable to indicate completion. For example, consider locking a local oscillator to a designated frequency
+and sideband (two parameters). The client might do that by:
+
+```c
+  // Set the frequency and sideband parameters first...
+  smaxShareDouble("system:lo", "lock_frequency", 230.5e9);
+  smaxShareString("system:lo", "lock_sideband", "usb");
+  
+  // Then trigger the action on the remote server by setting "lock" to 1, waiting 
+  // for confirmation in "is_locked", defaulting to -1 in case of failure.
+  int reply = smaxControlInt("system:lo", "lock", 1, NULL, "is_locked", -1, timeout);
+  
+  if(reply == -1) {
+    // Oops, something went wrong
+    ...
+  }
+  else if(reply != 0) {
+    // Read the actual values sent in response in "current_frequency" and "current_sideband"
+    double freq = smaxPullDouble("system:lo", "current_frequency");
+    char *sideband = smaxPullString("system:lo", "current_sideband");
+ 
+    // Do whatever with the returned current values... 
+    ...
+    
+    // Clean up
+    if(sideband) free(sideband);
+  }
+  else {
+    fprintf(stderr, "WARNING! LO failed to lock\n");
+  }
+```
+
+And the server might process the request as:
+
+```c
+  int lock_function(const char *table, const char *key, void *parg) {
+    double freq = smaxPullDouble("system:lo", "lock_frequency");
+    char *sideband = smaxPullString("system:lo", "lock_sideband");
+    
+    // Perform the locking with the above parameters...
+    ...
+    
+    // Write back the actual frequency and sideband
+    smaxShareDouble("system:lo", "current_frequency", current_freq);
+    smaxShareString("system:lo", "current_sideband", current_sb);
+    
+    // Clean up...
+    if(sideband) free(sideband);
+    
+    // Finally indicate lock status and completion
+    return smaxShareInt("system:lo", "is_locked", is_locked);
+  }
+```
 
 
 ------------------------------------------------------------------------------  

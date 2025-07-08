@@ -32,21 +32,26 @@
       <topic label="Waiting for updates" href="index.html#autotoc_md40"/>
       <topic label="Update callbacks" href="index.html#autotoc_md41"/>
     </topic>
-    <topic label="Program status / error messages via SMA-X" href="index.html#autotoc_md43">
-      <topic label="Broadcasting status messages from an application" href="index.html#autotoc_md44"/>
-      <topic label="Processing program messages" href="index.html#autotoc_md45"/>
+    <topic label="Remote program control via SMA-X" href="index.html#autotoc_md43">
+      <topic label="Server side" href="index.html#autotoc_md44"/>
+      <topic label="Client side" href="index.html#autotoc_md45"/>
+      <topic label="Complex remote control calls and return values" href="index.html#autotoc_md46"/>
     </topic>
-    <topic label="Optional metadata" href="index.html#autotoc_md47">
-      <topic label="Descriptions" href="index.html#autotoc_md48"/>
-      <topic label="Coordinate Systems" href="index.html#autotoc_md49"/>
-      <topic label="Physical units" href="index.html#autotoc_md50"/>
+    <topic label="Program status / error messages via SMA-X" href="index.html#autotoc_md48">
+      <topic label="Broadcasting status messages from an application" href="index.html#autotoc_md49"/>
+      <topic label="Processing program messages" href="index.html#autotoc_md50"/>
     </topic>
-    <topic label="Error handling" href="index.html#autotoc_md52"/>
-    <topic label="Debug support" href="index.html#autotoc_md54"/>
-    <topic label="Future plans" href="index.html#autotoc_md56"/>
+    <topic label="Optional metadata" href="index.html#autotoc_md52">
+      <topic label="Descriptions" href="index.html#autotoc_md53"/>
+      <topic label="Coordinate Systems" href="index.html#autotoc_md54"/>
+      <topic label="Physical units" href="index.html#autotoc_md55"/>
+    </topic>
+    <topic label="Error handling" href="index.html#autotoc_md57"/>
+    <topic label="Debug support" href="index.html#autotoc_md59"/>
+    <topic label="Future plans" href="index.html#autotoc_md61"/>
   </topic>
   <topic label="Changelog" href="md_CHANGELOG.html">
-    <topic label="[Unreleased]" href="md_CHANGELOG.html#autotoc_md1"/>
+    <topic label="[1.0.1-rc1] - 2025-07-08" href="md_CHANGELOG.html#autotoc_md1"/>
   </topic>
   <topic label="Contributing to smax-clib" href="md_CONTRIBUTING.html"/>
   <topic label="Data Structures" href="annotated.html">
@@ -166,6 +171,7 @@
           <topic label="SMAX_VERSION_STRING" href="smax_8h.html#ae03823c71a349f98a176d1eb1af7a583"/>
           <topic label="SMAX_WRITES" href="smax_8h.html#af6088c6c91a1f0089000288f0214f67c"/>
           <topic label="X_META_INIT" href="smax_8h.html#a793fead1eb30470e219192befc88b3c9"/>
+          <topic label="SMAXControlFunction" href="smax_8h.html#a8224a78e5c3f1347e1321a83909b5c34"/>
           <topic label="smax2xField" href="smax_8h.html#abfe751f22aa718133911ffdee848f64a"/>
           <topic label="smax2xStruct" href="smax_8h.html#a50fef3b0daf40f7de6f52b05abd2963c"/>
           <topic label="smaxAddConnectHook" href="smax_8h.html#ad63c425cc3affdf8bc803c7ff8dd6e30"/>
@@ -176,6 +182,11 @@
           <topic label="smaxCache" href="smax_8h.html#ad8121d1e9b6ee720bc2762aa33340bf1"/>
           <topic label="smaxConnect" href="smax_8h.html#a146fb2ed8512919dc91ecad6d08c74d1"/>
           <topic label="smaxConnectTo" href="smax_8h.html#ad960c22b119ff2493a319945a9dd55a5"/>
+          <topic label="smaxControl" href="smax_8h.html#a68d38e9d6ff5d3015f1732cb2d47718f"/>
+          <topic label="smaxControlBoolean" href="smax_8h.html#a1f7823d82d7f0df97535ea2034ab27c4"/>
+          <topic label="smaxControlDouble" href="smax_8h.html#a382280f18f6f7b534395bed3e8d6f019"/>
+          <topic label="smaxControlInt" href="smax_8h.html#a1b731a3a579c1f0ae61c5685bf660115"/>
+          <topic label="smaxControlString" href="smax_8h.html#a293c6ef0474094cce16508489684e89c"/>
           <topic label="smaxCreate1DField" href="smax_8h.html#afba357d35d2a1f13d0cf06f5ff708a99"/>
           <topic label="smaxCreateBooleanField" href="smax_8h.html#a13e357c3f20c0799fba6bc6c2a16c520"/>
           <topic label="smaxCreateCoordinateSystem" href="smax_8h.html#a1d977e7e9eb45f9ce6cc338fdde9bd8f"/>
@@ -267,6 +278,7 @@
           <topic label="smaxSendStatus" href="smax_8h.html#a02c52082bf38f02dd47b563684e8208e"/>
           <topic label="smaxSendWarning" href="smax_8h.html#a1c90a439b48a53555e9cfb60ce1b9102"/>
           <topic label="smaxSetAuth" href="smax_8h.html#a097b12d3bbb43175084b0b0a2f55339c"/>
+          <topic label="smaxSetControlFunction" href="smax_8h.html#aea1bd1d05827dc1b6b44734d35897f72"/>
           <topic label="smaxSetCoordinateAxis" href="smax_8h.html#a5d59620a1646428f41b040d1a0a91554"/>
           <topic label="smaxSetCoordinateSystem" href="smax_8h.html#a04c3b8ea7ff6b8117d2dba9bf9edd52f"/>
           <topic label="smaxSetDB" href="smax_8h.html#a79fba7411b5afa132457a6828ff5ed9f"/>
@@ -321,16 +333,24 @@
           <topic label="smaxUnpackStrings" href="smax_8h.html#a5665cd4f5087ab7a07239c30bc561173"/>
           <topic label="smaxUnsubscribe" href="smax_8h.html#af3a5d7bc565ab7de0ac1dd8fafc93f14"/>
           <topic label="smaxValuesToString" href="smax_8h.html#ae67f864946fbcd880e7b5c98b2f876c5"/>
-          <topic label="smaxWaitOnAnySubscribed" href="smax_8h.html#a89db98657eab826392d6099d21fff14c"/>
-          <topic label="smaxWaitOnSubscribed" href="smax_8h.html#a0e116b41cf8cfbca058dba8476b5d573"/>
-          <topic label="smaxWaitOnSubscribedGroup" href="smax_8h.html#af6cae99a805bf84e98390e0bea2470b7"/>
-          <topic label="smaxWaitOnSubscribedVar" href="smax_8h.html#af54b8b5d2e79eda86b3349c3c138331c"/>
+          <topic label="smaxWaitOnAnySubscribed" href="smax_8h.html#a35c72b08b2a64630b391163f4da1f378"/>
+          <topic label="smaxWaitOnSubscribed" href="smax_8h.html#a47571f9fdf1f1d2cab83d112ad2b9bea"/>
+          <topic label="smaxWaitOnSubscribedGroup" href="smax_8h.html#ab9173ea117d8a88721e0d658e3d7c0e9"/>
+          <topic label="smaxWaitOnSubscribedVar" href="smax_8h.html#acb58402968158d0b07c9e5057c99d159"/>
           <topic label="smaxWaitQueueComplete" href="smax_8h.html#a065361085eed93188b7fd3ffe3a7eaf5"/>
           <topic label="x2smaxField" href="smax_8h.html#a76bd110891905fe4bdae6628547c50d1"/>
           <topic label="x2smaxStruct" href="smax_8h.html#a65cc6cdad09f861b968e2d492abed977"/>
         </topic>
       </topic>
       <topic label="src" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">
+        <topic label="smax-control.c" href="smax-control_8c.html">
+          <topic label="smaxControl" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f"/>
+          <topic label="smaxControlBoolean" href="smax-control_8c.html#a1f7823d82d7f0df97535ea2034ab27c4"/>
+          <topic label="smaxControlDouble" href="smax-control_8c.html#a382280f18f6f7b534395bed3e8d6f019"/>
+          <topic label="smaxControlInt" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115"/>
+          <topic label="smaxControlString" href="smax-control_8c.html#a293c6ef0474094cce16508489684e89c"/>
+          <topic label="smaxSetControlFunction" href="smax-control_8c.html#aea1bd1d05827dc1b6b44734d35897f72"/>
+        </topic>
         <topic label="smax-easy.c" href="smax-easy_8c.html">
           <topic label="smaxCreate1DField" href="smax-easy_8c.html#afba357d35d2a1f13d0cf06f5ff708a99"/>
           <topic label="smaxCreateBooleanField" href="smax-easy_8c.html#a13e357c3f20c0799fba6bc6c2a16c520"/>
@@ -372,9 +392,6 @@
           <topic label="smaxShareShorts" href="smax-easy_8c.html#a007815fcac77e840c851a54f97d575ae"/>
           <topic label="smaxShareString" href="smax-easy_8c.html#a5c9657c01a9b8a324a9a1d318dd18e5b"/>
           <topic label="smaxShareStrings" href="smax-easy_8c.html#a63c421116ca043f2d0899b83d8aa91f9"/>
-          <topic label="smaxWaitOnSubscribed" href="smax-easy_8c.html#a0e116b41cf8cfbca058dba8476b5d573"/>
-          <topic label="smaxWaitOnSubscribedGroup" href="smax-easy_8c.html#af6cae99a805bf84e98390e0bea2470b7"/>
-          <topic label="smaxWaitOnSubscribedVar" href="smax-easy_8c.html#af54b8b5d2e79eda86b3349c3c138331c"/>
         </topic>
         <topic label="smax-lazy.c" href="smax-lazy_8c.html">
           <topic label="smaxCache" href="smax-lazy_8c.html#ad8121d1e9b6ee720bc2762aa33340bf1"/>
@@ -443,6 +460,17 @@
           <topic label="smaxSetResilient" href="smax-resilient_8c.html#a469095a9a74a8ce5d6bbae347d7194e5"/>
           <topic label="smaxSetResilientExit" href="smax-resilient_8c.html#ae638a5b4c82119eea5ef7a0ba2cd40c1"/>
         </topic>
+        <topic label="smax-sub.c" href="smax-sub_8c.html">
+          <topic label="smaxAddSubscriber" href="smax-sub_8c.html#a827dd87397943f3384605f87116b630c"/>
+          <topic label="smaxReleaseWaits" href="smax-sub_8c.html#a14bc33c30d27be9e2954ae7831099f1c"/>
+          <topic label="smaxRemoveSubscribers" href="smax-sub_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71"/>
+          <topic label="smaxSubscribe" href="smax-sub_8c.html#a53614ba57a594135c13b64a2d89eaa43"/>
+          <topic label="smaxUnsubscribe" href="smax-sub_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14"/>
+          <topic label="smaxWaitOnAnySubscribed" href="smax-sub_8c.html#a35c72b08b2a64630b391163f4da1f378"/>
+          <topic label="smaxWaitOnSubscribed" href="smax-sub_8c.html#a47571f9fdf1f1d2cab83d112ad2b9bea"/>
+          <topic label="smaxWaitOnSubscribedGroup" href="smax-sub_8c.html#ab9173ea117d8a88721e0d658e3d7c0e9"/>
+          <topic label="smaxWaitOnSubscribedVar" href="smax-sub_8c.html#acb58402968158d0b07c9e5057c99d159"/>
+        </topic>
         <topic label="smax-tls.c" href="smax-tls_8c.html">
           <topic label="smaxDisableTLS" href="smax-tls_8c.html#aa3381437ca8fee95fcd7988f5254d3a9"/>
           <topic label="smaxSetDHCipherParams" href="smax-tls_8c.html#afa0d8bed0100a16185ff56e1d8998a40"/>
@@ -487,7 +515,6 @@
           <topic label="_POSIX_C_SOURCE" href="smax_8c.html#a3024ccd4a9af5109d24e6c57565d74a1"/>
           <topic label="smaxAddConnectHook" href="smax_8c.html#ad63c425cc3affdf8bc803c7ff8dd6e30"/>
           <topic label="smaxAddDisconnectHook" href="smax_8c.html#a65ae161b28cfe4369709fae1d3ea678c"/>
-          <topic label="smaxAddSubscriber" href="smax_8c.html#a827dd87397943f3384605f87116b630c"/>
           <topic label="smaxConnect" href="smax_8c.html#a146fb2ed8512919dc91ecad6d08c74d1"/>
           <topic label="smaxConnectTo" href="smax_8c.html#ad960c22b119ff2493a319945a9dd55a5"/>
           <topic label="smaxDisconnect" href="smax_8c.html#a9d1e6ffa837d3582a8165e326cc44bea"/>
@@ -501,10 +528,8 @@
           <topic label="smaxKeyCount" href="smax_8c.html#a7030106bbe70220c97b1e9e3a4633ff4"/>
           <topic label="smaxPull" href="smax_8c.html#afb7eec789669c3d3f416857d3615ace6"/>
           <topic label="smaxReconnect" href="smax_8c.html#aafc75a2e8b8858b8ff0f16e0e73dbd03"/>
-          <topic label="smaxReleaseWaits" href="smax_8c.html#a14bc33c30d27be9e2954ae7831099f1c"/>
           <topic label="smaxRemoveConnectHook" href="smax_8c.html#a4708c3c699781abec237045c48719f3d"/>
           <topic label="smaxRemoveDisconnectHook" href="smax_8c.html#a70cdc3f1bf6b97248b5b8ba6df4dc044"/>
-          <topic label="smaxRemoveSubscribers" href="smax_8c.html#a77d04f4fbb447f169d40b2a24fa7cf71"/>
           <topic label="smaxReset" href="smax_8c.html#ad598a39e5e05479546b24da6d2d5506b"/>
           <topic label="smaxSetAuth" href="smax_8c.html#a097b12d3bbb43175084b0b0a2f55339c"/>
           <topic label="smaxSetDB" href="smax_8c.html#a79fba7411b5afa132457a6828ff5ed9f"/>
@@ -519,9 +544,6 @@
           <topic label="smaxShareArray" href="smax_8c.html#a1b116e8ffa85c30991ce6d8afb0319e0"/>
           <topic label="smaxShareField" href="smax_8c.html#a0da1227278e6bc105c7dbdba14fd884a"/>
           <topic label="smaxShareStruct" href="smax_8c.html#ab6a1590c953abc1c37fed841cd3a903a"/>
-          <topic label="smaxSubscribe" href="smax_8c.html#a53614ba57a594135c13b64a2d89eaa43"/>
-          <topic label="smaxUnsubscribe" href="smax_8c.html#af3a5d7bc565ab7de0ac1dd8fafc93f14"/>
-          <topic label="smaxWaitOnAnySubscribed" href="smax_8c.html#a89db98657eab826392d6099d21fff14c"/>
           <topic label="GET_STRUCT" href="smax_8c.html#abc25cf33d9f3d6262a6fe3ffd94a85ae"/>
           <topic label="HGET_WITH_META" href="smax_8c.html#ac5e36a13b5d67f497b15ab44b5a315af"/>
           <topic label="HMSET_WITH_META" href="smax_8c.html#a561e3c013e65d6b0703bf1e574d7b821"/>
@@ -544,6 +566,7 @@
         <topic label="x" href="globals_func_x.html"/>
       </topic>
       <topic label="Variables" href="globals_vars.html"/>
+      <topic label="Typedefs" href="globals_type.html"/>
       <topic label="Macros" href="globals_defs.html"/>
     </topic>
   </topic>
