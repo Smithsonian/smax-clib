@@ -762,11 +762,9 @@ Server side</h3>
 <h3><a class="anchor" id="autotoc_md45"></a>
 Client side</h3>
 <p>From the client side, you control the above server by setting <code>system:subsystem:control_value</code> to an appropriate new value, and then wait for the response in <code>system:subsystem:actual_value</code>. You can do that via <code><a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a></code> or one of its type-specific variants. Since in the above server example, we use integer control value and reply, we'll use <code><a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a></code>:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">int</span> timeout = 5; <span class="comment">// [s] max. time to wait for a response.</span></div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// We&#39;ll set the control value to 42, and wait for a response for up to 5 seconds, </span></div>
+<div class="fragment"><div class="line"><span class="comment">// We&#39;ll set the control value to 42, and wait for a response for up to 5 seconds, </span></div>
 <div class="line"><span class="comment">// or else return -1.</span></div>
-<div class="line"><span class="keywordtype">int</span> reply = <a class="code hl_function" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;control_value&quot;</span>, 42, NULL, <span class="stringliteral">&quot;actual_value&quot;</span>, -1, timeout);</div>
+<div class="line"><span class="keywordtype">int</span> reply = <a class="code hl_function" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;control_value&quot;</span>, 42, NULL, <span class="stringliteral">&quot;actual_value&quot;</span>, -1, 5);</div>
 <div class="line"><span class="keywordflow">if</span>(reply != 42) {</div>
 <div class="line">  <span class="comment">// Oops, no luck</span></div>
 <div class="line">  ...</div>
@@ -790,7 +788,10 @@ Complex remote control calls and return values</h3>
 <div class="line">  <span class="comment">// Oops, something went wrong</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="line"><span class="keywordflow">else</span> <span class="keywordflow">if</span>(reply != 0) {</div>
+<div class="line"><span class="keywordflow">else</span> <span class="keywordflow">if</span>(reply == 0) {</div>
+<div class="line">  fprintf(stderr, <span class="stringliteral">&quot;WARNING! LO failed to lock\n&quot;</span>);</div>
+<div class="line">}</div>
+<div class="line"><span class="keywordflow">else</span> {</div>
 <div class="line">  <span class="comment">// Read the actual values sent in response in &quot;current_frequency&quot; and &quot;current_sideband&quot;</span></div>
 <div class="line">  <span class="keywordtype">double</span> freq = <a class="code hl_function" href="smax-easy_8c.html#aa143c2385f210cdd772f014939e1411e">smaxPullDouble</a>(<span class="stringliteral">&quot;system:lo&quot;</span>, <span class="stringliteral">&quot;current_frequency&quot;</span>);</div>
 <div class="line">  <span class="keywordtype">char</span> *sideband = <a class="code hl_function" href="smax-easy_8c.html#a41bdf6bb7bcb3f0d3cb1c0657f8da1c5">smaxPullString</a>(<span class="stringliteral">&quot;system:lo&quot;</span>, <span class="stringliteral">&quot;current_sideband&quot;</span>);</div>
@@ -800,9 +801,6 @@ Complex remote control calls and return values</h3>
 <div class="line">  </div>
 <div class="line">  <span class="comment">// Clean up</span></div>
 <div class="line">  <span class="keywordflow">if</span>(sideband) free(sideband);</div>
-<div class="line">}</div>
-<div class="line"><span class="keywordflow">else</span> {</div>
-<div class="line">  fprintf(stderr, <span class="stringliteral">&quot;WARNING! LO failed to lock\n&quot;</span>);</div>
 <div class="line">}</div>
 <div class="ttc" id="asmax-easy_8c_html_a41bdf6bb7bcb3f0d3cb1c0657f8da1c5"><div class="ttname"><a href="smax-easy_8c.html#a41bdf6bb7bcb3f0d3cb1c0657f8da1c5">smaxPullString</a></div><div class="ttdeci">char * smaxPullString(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-easy.c:329</div></div>
 </div><!-- fragment --><p>And the server might process the request as:</p>

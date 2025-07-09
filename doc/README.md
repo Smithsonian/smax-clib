@@ -1029,11 +1029,9 @@ of its type-specific variants. Since in the above server example, we use integer
 `smaxControlInt()`:
 
 ```c
-  int timeout = 5; // [s] max. time to wait for a response.
-
   // We'll set the control value to 42, and wait for a response for up to 5 seconds, 
   // or else return -1.
-  int reply = smaxControlInt("system:subsystem", "control_value", 42, NULL, "actual_value", -1, timeout);
+  int reply = smaxControlInt("system:subsystem", "control_value", 42, NULL, "actual_value", -1, 5);
   if(reply != 42) {
     // Oops, no luck
     ...
@@ -1072,7 +1070,10 @@ and sideband (two parameters). The client might do that by:
     // Oops, something went wrong
     ...
   }
-  else if(reply != 0) {
+  else if(reply == 0) {
+    fprintf(stderr, "WARNING! LO failed to lock\n");
+  }
+  else {
     // Read the actual values sent in response in "current_frequency" and "current_sideband"
     double freq = smaxPullDouble("system:lo", "current_frequency");
     char *sideband = smaxPullString("system:lo", "current_sideband");
@@ -1082,9 +1083,6 @@ and sideband (two parameters). The client might do that by:
     
     // Clean up
     if(sideband) free(sideband);
-  }
-  else {
-    fprintf(stderr, "WARNING! LO failed to lock\n");
   }
 ```
 
