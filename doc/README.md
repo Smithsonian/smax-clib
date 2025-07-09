@@ -658,7 +658,7 @@ network updating the cache. The difference is typically at the micro-seconds lev
 be preferable when you need to access SMA-X data from timing critical code blocks, where it is more important to ensure
 that the value is returned quickly, rather than whether it is a millisecond too old or not.
 
-You can also explicitly select the second behavior by using `smaxGetCached()` instead of `smaxLaxyPull()`:
+You can also explicitly select the second behavior by using `smaxGetCached()` instead of `smaxLazyPull()`:
 
 ```c
   int status = smaxGetCached("some_table", "some_data", X_INT, 3, sizes, data, &meta);
@@ -704,7 +704,7 @@ from SMA-X is suitable for obtaining at most a a few thousand values per second.
 However, sometimes you want to get access to a large number of values faster. This is what pipelined pulling is for.
 In pipelined mode, a batch of pull requests are sent to the SMA-X Redis server in quick succession, without waiting
 for responses. The values, when received are processed by a dedicated background thread. And, the user has an option
-of either waiting until all data is collected, or ask for as callback when the data is ready. 
+of either waiting until all data is collected, or asking for as callback when the data is ready. 
 
 Again it works similarly to the basic pulling, except that you submit your pull request to a queue with 
 `smaxQueue()`. For example:
@@ -945,7 +945,6 @@ designated control variables / values. These variables are monitored by an appro
 changes to the 'commanded' values accordingly, and report the result back in a related other SMA-X variable. The 
 client thus can obtain confirmation from the response variable after it submits it requested 'command' variable.
 
-
 <a name="server-side"></a>
 ### Server side
 
@@ -977,7 +976,7 @@ variable exactly once, and only when the action is completed, so that the callin
 the completed action. The same action action is free to set any number of other values in SMA-X before signaling 
 completion, thus 'returning' further data to the caller, if needed. 
 
-Next, all you have to do is specify with what control variable to use this function with and what optional pointer
+Next, all you have to do is specify what control variable to use this function with and what optional pointer
 argument to pass on to it:
 
 ```c
@@ -997,14 +996,37 @@ The above call will subscribe for updates to `system:subsystem:control_value` an
 Clearly, the same processing function can be used with multiple control values, if convenient, or you may specify 
 different control functions to every control value if it makes more sense for the implementation.
 
+One thing to watch out for on the server-side implementation is that control functions are called asynchronously and 
+immediately, each time the control variable updates. As such, a control function may be called while another, or
+even the same one, is in the middle of performing its task for a prior 'command'. You should therefore use mutexes as 
+necessary to prevent the concurrent execution of program controls as appropriate. E.g.
+
+```c
+  // A mutex to prevent concurrent execution of control calls...
+  static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+ 
+  int my_control_function(const char *table, const char *key, void *parg) {
+    // Ensure we are executing the control code exclusively, with regard to other calls
+    // to the same function, and any other control function that locks the same mutex...    
+    pthread_mutex_lock(&mutex);
+    
+    // Perform the program control
+    ...
+    
+    // We are done. Let other control calls execute now...
+    phtread_mutex_unlock(&mutex);
+  
+    return 0;
+  }
+```
 
 <a name="client-side"></a>
 ### Client side
 
-From the client side, you control the above server by setting `system:subsystem:control_value` to an appropriate
-new value, and then wait for the response in `system:subsystem:actual_value`. You can do that via `smaxControl()`
-or one of it's type-specific variants. Since in the above server example, we use integer control value and reply,
-we'll use `smaxControlInt()`:
+From the client side, you control the above server by setting `system:subsystem:control_value` to an appropriate new 
+value, and then wait for the response in `system:subsystem:actual_value`. You can do that via `smaxControl()` or one 
+of its type-specific variants. Since in the above server example, we use integer control value and reply, we'll use
+`smaxControlInt()`:
 
 ```c
   int timeout = 5; // [s] max. time to wait for a response.

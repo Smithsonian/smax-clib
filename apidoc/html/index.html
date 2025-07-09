@@ -526,7 +526,7 @@ Lazy pulling (high-frequency queries)</h2>
 <li>it will trigger a background process to update the cached value in the background with a pipelined (high-throughput) pull. However, until the new value is actually fetched, it will return the previously cached value promptly.</li>
 </ol>
 <p>The choice between the two is yours, and you can control which suits your need best. The default behavior for lazy pulls is (1), but you may call <code><a class="el" href="smax-lazy_8c.html#ad8121d1e9b6ee720bc2762aa33340bf1">smaxCache()</a></code> after the first pull of a variable, to indicate that you want to enable background cache updates (2) for it. The advantage of (1) is that it will never serve you outdated data even if there are significant network latencies &ndash; but you may have to wait a little to fetch updates. On the other hand (2) will always provide a recent value with effectively no latency, but this value may be outdated if there are delays on the network updating the cache. The difference is typically at the micro-seconds level on a local LAN. However, (2) may be preferable when you need to access SMA-X data from timing critical code blocks, where it is more important to ensure that the value is returned quickly, rather than whether it is a millisecond too old or not.</p>
-<p>You can also explicitly select the second behavior by using <code><a class="el" href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached()</a></code> instead of <code>smaxLaxyPull()</code>:</p>
+<p>You can also explicitly select the second behavior by using <code><a class="el" href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached()</a></code> instead of <code><a class="el" href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull()</a></code>:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_data&quot;</span>, X_INT, 3, sizes, data, &amp;meta);</div>
 <div class="ttc" id="asmax-lazy_8c_html_ac6c4d66145f9aa2e9fe7646538d9c1bf"><div class="ttname"><a href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached</a></div><div class="ttdeci">int smaxGetCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:442</div></div>
 </div><!-- fragment --><p>In either case, when you are done using lazy variables, you should let the library know that it no longer needs to watch updates for these, by calling either <code><a class="el" href="smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5">smaxLazyEnd()</a></code> on specific variables, or else <code><a class="el" href="smax-lazy_8c.html#af3d0cff3f8a6ab745907f4544981fdd1">smaxLazyFlush()</a></code> to stop watching updates for all lazy variables. (A successive lazy pull will automatically start watching for updates again, in case you wish to re-enable).</p>
@@ -555,7 +555,7 @@ Pipelined pulling (high volume queries)</h2>
 <li><a class="el" href="index.html#lazy-finish">Finishing up</a></li>
 </ul>
 <p>The regular pulling of data from SMA-X requires a separate round-trip for each and every request. That is, successive pulls are sent only after the responses from the prior pull has been received. A lot of the time is spent on waiting for responses to come back. With round trip times in the 100 &mu;s range, this means that this method of fetching data from SMA-X is suitable for obtaining at most a a few thousand values per second.</p>
-<p>However, sometimes you want to get access to a large number of values faster. This is what pipelined pulling is for. In pipelined mode, a batch of pull requests are sent to the SMA-X <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server in quick succession, without waiting for responses. The values, when received are processed by a dedicated background thread. And, the user has an option of either waiting until all data is collected, or ask for as callback when the data is ready.</p>
+<p>However, sometimes you want to get access to a large number of values faster. This is what pipelined pulling is for. In pipelined mode, a batch of pull requests are sent to the SMA-X <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> server in quick succession, without waiting for responses. The values, when received are processed by a dedicated background thread. And, the user has an option of either waiting until all data is collected, or asking for as callback when the data is ready.</p>
 <p>Again it works similarly to the basic pulling, except that you submit your pull request to a queue with <code><a class="el" href="smax-queue_8c.html#a2c71427a215e2253d93de24788db338d">smaxQueue()</a></code>. For example:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> d; <span class="comment">// A value we will fill</span></div>
 <div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;   <span class="comment">// (optional) metadata to fill (for the above value).</span></div>
@@ -730,7 +730,7 @@ Server side</h3>
 <div class="line">  <span class="keywordflow">return</span> <a class="code hl_function" href="smax-easy_8c.html#a77cdf4adba06f9233dd0403d973f03e1">smaxShareInt</a>(table, replyKey, value);</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>It is important to remember that each action taken on a control variable should the set the designated response variable exactly once, and only when the action is completed, so that the calling client can use it to confirm the completed action. The same action action is free to set any number of other values in SMA-X before signaling completion, thus 'returning' further data to the caller, if needed.</p>
-<p>Next, all you have to do is specify with what control variable to use this function with and what optional pointer argument to pass on to it:</p>
+<p>Next, all you have to do is specify what control variable to use this function with and what optional pointer argument to pass on to it:</p>
 <div class="fragment"><div class="line"><span class="comment">// We&#39;ll trigger the function whenever &#39;system:subsystem:control_value&#39; changes.</span></div>
 <div class="line"><span class="comment">// And we&#39;ll send a response to &#39;actual_value&#39; in the same hash table.</span></div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-control_8c.html#aea1bd1d05827dc1b6b44734d35897f72">smaxSetControlFunction</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;control_value&quot;</span>, my_control_function, <span class="stringliteral">&quot;actual_value&quot;</span>);</div>
@@ -738,13 +738,30 @@ Server side</h3>
 <div class="line">  <span class="comment">// Oops, something went wrong...</span></div>
 <div class="line">  <span class="keywordflow">return</span> -1;</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-control_8c_html_aea1bd1d05827dc1b6b44734d35897f72"><div class="ttname"><a href="smax-control_8c.html#aea1bd1d05827dc1b6b44734d35897f72">smaxSetControlFunction</a></div><div class="ttdeci">int smaxSetControlFunction(const char *table, const char *key, SMAXControlFunction func, void *parg)</div><div class="ttdef"><b>Definition</b> smax-control.c:376</div></div>
+<div class="ttc" id="asmax-control_8c_html_aea1bd1d05827dc1b6b44734d35897f72"><div class="ttname"><a href="smax-control_8c.html#aea1bd1d05827dc1b6b44734d35897f72">smaxSetControlFunction</a></div><div class="ttdeci">int smaxSetControlFunction(const char *table, const char *key, SMAXControlFunction func, void *parg)</div><div class="ttdef"><b>Definition</b> smax-control.c:383</div></div>
 </div><!-- fragment --><p>The above call will subscribe for updates to <code>system:subsystem:control_value</code> and will call <code>my_control_function</code> with <code>actual_value</code> as the optional argument. You may change the function called later, or undefine it by calling <code><a class="el" href="smax-control_8c.html#aea1bd1d05827dc1b6b44734d35897f72">smaxSetControlFunction()</a></code> with <code>NULL</code> as the function pointer.</p>
 <p>Clearly, the same processing function can be used with multiple control values, if convenient, or you may specify different control functions to every control value if it makes more sense for the implementation.</p>
-<p><a class="anchor" id="client-side"></a> </p>
+<p>One thing to watch out for on the server-side implementation is that control functions are called asynchronously and immediately, each time the control variable updates. As such, a control function may be called while another, or even the same one, is in the middle of performing its task for a prior 'command'. You should therefore use mutexes as necessary to prevent the concurrent execution of program controls as appropriate. E.g.</p>
+<div class="fragment"><div class="line"><span class="comment">// A mutex to prevent concurrent execution of control calls...</span></div>
+<div class="line"><span class="keyword">static</span> pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> my_control_function(<span class="keyword">const</span> <span class="keywordtype">char</span> *table, <span class="keyword">const</span> <span class="keywordtype">char</span> *key, <span class="keywordtype">void</span> *parg) {</div>
+<div class="line">  <span class="comment">// Ensure we are executing the control code exclusively, with regard to other calls</span></div>
+<div class="line">  <span class="comment">// to the same function, and any other control function that locks the same mutex...    </span></div>
+<div class="line">  pthread_mutex_lock(&amp;mutex);</div>
+<div class="line">  </div>
+<div class="line">  <span class="comment">// Perform the program control</span></div>
+<div class="line">  ...</div>
+<div class="line">  </div>
+<div class="line">  <span class="comment">// We are done. Let other control calls execute now...</span></div>
+<div class="line">  phtread_mutex_unlock(&amp;mutex);</div>
+<div class="line"> </div>
+<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">}</div>
+</div><!-- fragment --><p><a class="anchor" id="client-side"></a> </p>
 <h3><a class="anchor" id="autotoc_md45"></a>
 Client side</h3>
-<p>From the client side, you control the above server by setting <code>system:subsystem:control_value</code> to an appropriate new value, and then wait for the response in <code>system:subsystem:actual_value</code>. You can do that via <code><a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a></code> or one of it's type-specific variants. Since in the above server example, we use integer control value and reply, we'll use <code><a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a></code>:</p>
+<p>From the client side, you control the above server by setting <code>system:subsystem:control_value</code> to an appropriate new value, and then wait for the response in <code>system:subsystem:actual_value</code>. You can do that via <code><a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a></code> or one of its type-specific variants. Since in the above server example, we use integer control value and reply, we'll use <code><a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a></code>:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> timeout = 5; <span class="comment">// [s] max. time to wait for a response.</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// We&#39;ll set the control value to 42, and wait for a response for up to 5 seconds, </span></div>
@@ -754,7 +771,7 @@ Client side</h3>
 <div class="line">  <span class="comment">// Oops, no luck</span></div>
 <div class="line">  ...</div>
 <div class="line">}</div>
-<div class="ttc" id="asmax-control_8c_html_a1b731a3a579c1f0ae61c5685bf660115"><div class="ttname"><a href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt</a></div><div class="ttdeci">int smaxControlInt(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout)</div><div class="ttdef"><b>Definition</b> smax-control.c:237</div></div>
+<div class="ttc" id="asmax-control_8c_html_a1b731a3a579c1f0ae61c5685bf660115"><div class="ttname"><a href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt</a></div><div class="ttdeci">int smaxControlInt(const char *table, const char *key, int value, const char *replyTable, const char *replyKey, int defaultReply, int timeout)</div><div class="ttdef"><b>Definition</b> smax-control.c:244</div></div>
 </div><!-- fragment --><p>The <code>NULL</code> as the 3rd argument is a shorthand to indicate that we expect the reply in the same hash table in which we set <code>control_value</code> (that is in <code>system:subsystem</code>). If we expect the response in some other location, we can specify the appropriate table name instead of the <code>NULL</code> pointer in the example above.</p>
 <p><a class="anchor" id="complex-control"></a> </p>
 <h3><a class="anchor" id="autotoc_md46"></a>
