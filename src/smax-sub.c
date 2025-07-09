@@ -345,7 +345,7 @@ int smaxWaitOnAnySubscribed(char **changedTable, char **changedKey, int timeout,
       // If the wait returns with an error, the mutex is unlocked.
       if(status == ETIMEDOUT) {
         smaxUnlockNotify();
-        return x_error(X_INCOMPLETE, ETIMEDOUT, fn, "wait timed out");
+        return x_error(X_TIMEDOUT, ETIMEDOUT, fn, "wait timed out");
       }
       return x_error(X_INCOMPLETE, status, fn, "pthread_cond_wait() error: %s", strerror(status));
     }

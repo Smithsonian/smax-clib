@@ -46,6 +46,7 @@ typedef struct {
   const char *key;      ///< Redis hash field to monitor for update
   int timeout;          ///< [s] Timeout
   int status;           ///< Return status
+  int error_code;       ///< Standard POSIX error code (see errno.h)
   sem_t sem;            ///< Sempahore for when response is ready.
 } ControlVar;
 
@@ -67,7 +68,10 @@ static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 static void *MonitorThread(void *arg) {
   ControlVar *control = (ControlVar *) arg;
   control->status = smaxWaitOnSubscribed(control->table, control->key, control->timeout, &control->sem);
-  if(control->status != X_SUCCESS) return NULL;
+  if(control->status != X_SUCCESS) {
+    control->error_code = errno;
+    return NULL;
+  }
   return (void *) smaxPullRaw(control->table, control->key, NULL, &control->status);
 }
 
@@ -148,7 +152,10 @@ char *smaxControl(const char *table, const char *key, const void *value, XType t
   smaxUnsubscribe(reply.table, reply.key);
   sem_destroy(&reply.sem);
 
-  if(reply.status) x_warn(fn, "Got no response: %s", smaxErrorDescription(reply.status));
+  if(reply.status) {
+    x_warn(fn, "Got no response: %s", smaxErrorDescription(reply.status));
+    errno = reply.error_code;
+  }
 
   return response;
 }
