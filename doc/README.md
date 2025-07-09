@@ -1016,7 +1016,7 @@ necessary to prevent the concurrent execution of program controls as appropriate
     // We are done. Let other control calls execute now...
     phtread_mutex_unlock(&mutex);
   
-    return 0;
+    return status;
   }
 ```
 
@@ -1029,11 +1029,9 @@ of its type-specific variants. Since in the above server example, we use integer
 `smaxControlInt()`:
 
 ```c
-  int timeout = 5; // [s] max. time to wait for a response.
-
   // We'll set the control value to 42, and wait for a response for up to 5 seconds, 
   // or else return -1.
-  int reply = smaxControlInt("system:subsystem", "control_value", 42, NULL, "actual_value", -1, timeout);
+  int reply = smaxControlInt("system:subsystem", "control_value", 42, NULL, "actual_value", -1, 5);
   if(reply != 42) {
     // Oops, no luck
     ...

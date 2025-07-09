@@ -756,17 +756,15 @@ Server side</h3>
 <div class="line">  <span class="comment">// We are done. Let other control calls execute now...</span></div>
 <div class="line">  phtread_mutex_unlock(&amp;mutex);</div>
 <div class="line"> </div>
-<div class="line">  <span class="keywordflow">return</span> 0;</div>
+<div class="line">  <span class="keywordflow">return</span> status;</div>
 <div class="line">}</div>
 </div><!-- fragment --><p><a class="anchor" id="client-side"></a> </p>
 <h3><a class="anchor" id="autotoc_md45"></a>
 Client side</h3>
 <p>From the client side, you control the above server by setting <code>system:subsystem:control_value</code> to an appropriate new value, and then wait for the response in <code>system:subsystem:actual_value</code>. You can do that via <code><a class="el" href="smax-control_8c.html#a68d38e9d6ff5d3015f1732cb2d47718f">smaxControl()</a></code> or one of its type-specific variants. Since in the above server example, we use integer control value and reply, we'll use <code><a class="el" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt()</a></code>:</p>
-<div class="fragment"><div class="line"><span class="keywordtype">int</span> timeout = 5; <span class="comment">// [s] max. time to wait for a response.</span></div>
-<div class="line"> </div>
-<div class="line"><span class="comment">// We&#39;ll set the control value to 42, and wait for a response for up to 5 seconds, </span></div>
+<div class="fragment"><div class="line"><span class="comment">// We&#39;ll set the control value to 42, and wait for a response for up to 5 seconds, </span></div>
 <div class="line"><span class="comment">// or else return -1.</span></div>
-<div class="line"><span class="keywordtype">int</span> reply = <a class="code hl_function" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;control_value&quot;</span>, 42, NULL, <span class="stringliteral">&quot;actual_value&quot;</span>, -1, timeout);</div>
+<div class="line"><span class="keywordtype">int</span> reply = <a class="code hl_function" href="smax-control_8c.html#a1b731a3a579c1f0ae61c5685bf660115">smaxControlInt</a>(<span class="stringliteral">&quot;system:subsystem&quot;</span>, <span class="stringliteral">&quot;control_value&quot;</span>, 42, NULL, <span class="stringliteral">&quot;actual_value&quot;</span>, -1, 5);</div>
 <div class="line"><span class="keywordflow">if</span>(reply != 42) {</div>
 <div class="line">  <span class="comment">// Oops, no luck</span></div>
 <div class="line">  ...</div>
