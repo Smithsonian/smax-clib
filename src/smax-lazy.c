@@ -316,12 +316,6 @@ static int GetCachedAsync(const LazyMonitor *m, XType type, int count, void *val
       break;
     }
 
-    case X_STRING:
-      if(!m->meta) return x_error(X_NULL, EINVAL, fn, "m->meta is NULL");
-      if(m->meta->storeType != X_STRING) return x_error(X_TYPE_INVALID, EINVAL, fn, "wring m->type (not X_STRING): %d", m->meta->storeType);
-      smaxUnpackStrings(m->data, m->meta->storeBytes, count, (char **) value);
-      break;
-
     default:
       status = smaxStringToValues(m->data, value, type, count, &n);
       if(status <= 0) return x_trace(fn, NULL, status);
