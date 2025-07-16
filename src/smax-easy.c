@@ -422,7 +422,7 @@ char **smaxPullStrings(const char *table, const char *key, XMeta *meta, int *n) 
  * @sa smaPullLong()
  */
 int smaxPullInt(const char *table, const char *key, int defaultValue) {
-  int i=0;
+  int i = 0;
   int status = smaxPull(table, key, X_INT, 1, &i, NULL);
   return status ? defaultValue : i;
 }
@@ -442,7 +442,7 @@ int smaxPullInt(const char *table, const char *key, int defaultValue) {
  * @sa smaxPullInt()
  */
 long long smaxPullLong(const char *table, const char *key, long long defaultValue) {
-  long long l=0;
+  long long l = 0;
   int status = smaxPull(table, key, X_LLONG, 1, &l, NULL);
   return status ? defaultValue : l;
 }
