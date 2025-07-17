@@ -10,6 +10,8 @@
 # supported CodeQL languages.
 #
 name: "CodeQL Advanced"
+permissions:
+  contents: read
 
 on:
   push:
@@ -83,7 +85,7 @@ jobs:
       run: |
         make -C xchange shared
         make -C redisx shared
-        
+
     - name: Manual build
       shell: bash
       env:
@@ -91,7 +93,7 @@ jobs:
         REDISX: redisx
       run: |
         make shared
-    
+
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       with:

@@ -1,4 +1,6 @@
 name: Build
+permissions:
+  contents: read
 
 on: 
   push:
@@ -38,28 +40,27 @@ jobs:
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib
-      
+
     - name: Check out xchange dependency
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/xchange
         path: xchange
-    
+
     - name: Check out RedisX dependency
       uses: actions/checkout@v4
       with:
         repository: Smithsonian/redisx
         path: redisx
-    
+
     - name: Build static library	
       run: make -C smax-clib static
-      
+
     - name: Build xchange dependency
       run: make -C xchange shared
-      
+
     - name: Build RedisX dependency
       run: make -C redisx shared
-      
+
     - name: Build shared library
       run: make -C smax-clib shared
-
