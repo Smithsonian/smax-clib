@@ -85,7 +85,7 @@ jobs:
       run: make -C smax-clib README-smax.md
 
     - name: Generate smax-clib apidocs
-      uses: mattnotmitt/doxygen-action@v1.9.8
+      uses: mattnotmitt/doxygen-action@v1.12.0
       with:
         additional-packages: font-roboto
         working-directory: ./smax-clib
