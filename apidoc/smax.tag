@@ -3026,5 +3026,6 @@
     <docanchor file="index.html">smax-error-handling</docanchor>
     <docanchor file="index.html">smax-debug-support</docanchor>
     <docanchor file="index.html">smax-future-plans</docanchor>
+    <docanchor file="index.html">smaxlib-release-schedule</docanchor>
   </compound>
 </tagfile>

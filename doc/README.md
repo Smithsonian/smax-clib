@@ -31,6 +31,7 @@ Updated for version 1.0 and later releases.
  - [Error handling](#smax-error-handling)
  - [Debug support](#smax-debug-support)
  - [Future plans](#smax-future-plans)
+ - [Release schedule](#smaxlib-release-schedule)
 
 ------------------------------------------------------------------------------
 
@@ -1273,10 +1274,35 @@ settings.
 Some obvious ways the library could evolve and grow in the not too distant future:
 
  - Automated regression testing and coverage tracking.
- - Standardized remote program settings implementation.
 
 If you have an idea for a must have feature, please let me (Attila) know. Pull requests, for new features or fixes to
 existing ones, are especially welcome! 
+
+-----------------------------------------------------------------------------
+
+<a name="smaxlib-release-schedule"></a>
+## Release schedule
+
+A predictable release schedule and process can help manage expectations and reduce stress on adopters and developers 
+alike.
+
+__smax-clib__ will try to follow a quarterly release schedule. You may expect upcoming releases to be published around 
+__March 1__, __June 1__, __September 1__, and/or __December 1__ each year, on an as-needed basis. That means that if 
+there are outstanding bugs, or new pull requests (PRs), you may expect a release that addresses these in the upcoming 
+quarter. The dates are placeholders only, with no guarantee that a new release will actually be available every 
+quarter. If nothing of note comes up, a potential release date may pass without a release being published.
+
+New features are generally reserved for the feature releases (e.g. __1.x.0__ version bumps), although they may also be 
+rolled out in bug-fix releases as long as they do not affect the existing API -- in line with the desire to keep 
+bug-fix releases fully backwards compatible with their parent versions.
+
+In the weeks and month(s) preceding releases one or more _release candidates_ (e.g. `1.0.1-rc3`) will be published 
+temporarily on GitHub, under [Releases](https://github.com/Smithsonian/smax-clib/releases), so that changes can be 
+tested by adopters before the releases are finalized. Please use due diligence to test such release candidates with 
+your code when they become available to avoid unexpected surprises when the finalized release is published. Release 
+candidates are typically available for one week only before they are superseded either by another, or by the finalized 
+release.
+
  
 -----------------------------------------------------------------------------
 Copyright (C) 2025 Attila Kovács

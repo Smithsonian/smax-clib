@@ -142,6 +142,7 @@ Table of Contents</h2>
 <li><a class="el" href="index.html#smax-error-handling">Error handling</a></li>
 <li><a class="el" href="index.html#smax-debug-support">Debug support</a></li>
 <li><a class="el" href="index.html#smax-future-plans">Future plans</a></li>
+<li><a class="el" href="index.html#smaxlib-release-schedule">Release schedule</a></li>
 </ul>
 <hr  />
 <p><a class="anchor" id="smax-introduction"></a> </p>
@@ -515,10 +516,10 @@ Lazy pulling (high-frequency queries)</h2>
 <div class="line"><a class="code hl_struct" href="structXMeta.html">XMeta</a> meta;</div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_data&quot;</span>, X_INT, 3, sizes, data, &amp;meta);</div>
-<div class="ttc" id="asmax-lazy_8c_html_ab50222d7bbaa985fd6d004d67b0269ce"><div class="ttname"><a href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull</a></div><div class="ttdeci">int smaxLazyPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:484</div></div>
+<div class="ttc" id="asmax-lazy_8c_html_ab50222d7bbaa985fd6d004d67b0269ce"><div class="ttname"><a href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull</a></div><div class="ttdeci">int smaxLazyPull(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:478</div></div>
 </div><!-- fragment --><p>or</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561">smaxLazyPullDouble</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_var&quot;</span>);</div>
-<div class="ttc" id="asmax-lazy_8c_html_a31ed83292a29d69e1c9635b21aae7561"><div class="ttname"><a href="smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561">smaxLazyPullDouble</a></div><div class="ttdeci">double smaxLazyPullDouble(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:538</div></div>
+<div class="ttc" id="asmax-lazy_8c_html_a31ed83292a29d69e1c9635b21aae7561"><div class="ttname"><a href="smax-lazy_8c.html#a31ed83292a29d69e1c9635b21aae7561">smaxLazyPullDouble</a></div><div class="ttdeci">double smaxLazyPullDouble(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:532</div></div>
 </div><!-- fragment --><p>But, under the hood, it does something different. The first time a new variable is lazy pulled it is fetched from the <a class="elRef" href="../../redisx/apidoc/html/structRedis.html">Redis</a> database just like a regular pull. But, it also will cache the value, and watch for update notifications from the SMA-X server. Thus, as long as no update notification is received, successive calls will simply return the locally cached value. This can save big on network usage, and also provides orders of magnitude faster access so long as the variable remains unchanged.</p>
 <p>When the variable is updated in SMA-X, our client library will be notified, and one of two things can happen:</p>
 <ol type="1">
@@ -528,7 +529,7 @@ Lazy pulling (high-frequency queries)</h2>
 <p>The choice between the two is yours, and you can control which suits your need best. The default behavior for lazy pulls is (1), but you may call <code><a class="el" href="smax-lazy_8c.html#ad8121d1e9b6ee720bc2762aa33340bf1">smaxCache()</a></code> after the first pull of a variable, to indicate that you want to enable background cache updates (2) for it. The advantage of (1) is that it will never serve you outdated data even if there are significant network latencies &ndash; but you may have to wait a little to fetch updates. On the other hand (2) will always provide a recent value with effectively no latency, but this value may be outdated if there are delays on the network updating the cache. The difference is typically at the micro-seconds level on a local LAN. However, (2) may be preferable when you need to access SMA-X data from timing critical code blocks, where it is more important to ensure that the value is returned quickly, rather than whether it is a millisecond too old or not.</p>
 <p>You can also explicitly select the second behavior by using <code><a class="el" href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached()</a></code> instead of <code><a class="el" href="smax-lazy_8c.html#ab50222d7bbaa985fd6d004d67b0269ce">smaxLazyPull()</a></code>:</p>
 <div class="fragment"><div class="line"><span class="keywordtype">int</span> status = <a class="code hl_function" href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached</a>(<span class="stringliteral">&quot;some_table&quot;</span>, <span class="stringliteral">&quot;some_data&quot;</span>, X_INT, 3, sizes, data, &amp;meta);</div>
-<div class="ttc" id="asmax-lazy_8c_html_ac6c4d66145f9aa2e9fe7646538d9c1bf"><div class="ttname"><a href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached</a></div><div class="ttdeci">int smaxGetCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:442</div></div>
+<div class="ttc" id="asmax-lazy_8c_html_ac6c4d66145f9aa2e9fe7646538d9c1bf"><div class="ttname"><a href="smax-lazy_8c.html#ac6c4d66145f9aa2e9fe7646538d9c1bf">smaxGetCached</a></div><div class="ttdeci">int smaxGetCached(const char *table, const char *key, XType type, int count, void *value, XMeta *meta)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:436</div></div>
 </div><!-- fragment --><p>In either case, when you are done using lazy variables, you should let the library know that it no longer needs to watch updates for these, by calling either <code><a class="el" href="smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5">smaxLazyEnd()</a></code> on specific variables, or else <code><a class="el" href="smax-lazy_8c.html#af3d0cff3f8a6ab745907f4544981fdd1">smaxLazyFlush()</a></code> to stop watching updates for all lazy variables. (A successive lazy pull will automatically start watching for updates again, in case you wish to re-enable).</p>
 <div class="fragment"><div class="line"><span class="comment">// Lazy pull a bunch of data (typically in a loop).</span></div>
 <div class="line"><span class="keywordflow">for</span>(...) {</div>
@@ -544,7 +545,7 @@ Lazy pulling (high-frequency queries)</h2>
 <div class="line"> </div>
 <div class="line"><span class="comment">// And to stop lazy accessing all</span></div>
 <div class="line">smaxLazyFlush();</div>
-<div class="ttc" id="asmax-lazy_8c_html_a167a60b494fa9ec5b046f9da796f18b5"><div class="ttname"><a href="smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5">smaxLazyEnd</a></div><div class="ttdeci">int smaxLazyEnd(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:786</div></div>
+<div class="ttc" id="asmax-lazy_8c_html_a167a60b494fa9ec5b046f9da796f18b5"><div class="ttname"><a href="smax-lazy_8c.html#a167a60b494fa9ec5b046f9da796f18b5">smaxLazyEnd</a></div><div class="ttdeci">int smaxLazyEnd(const char *table, const char *key)</div><div class="ttdef"><b>Definition</b> smax-lazy.c:780</div></div>
 </div><!-- fragment --><hr  />
 <p><a class="anchor" id="pipelined-pulls"></a> </p>
 <h2><a class="anchor" id="autotoc_md33"></a>
@@ -949,9 +950,16 @@ Future plans</h2>
 <p>Some obvious ways the library could evolve and grow in the not too distant future:</p>
 <ul>
 <li>Automated regression testing and coverage tracking.</li>
-<li>Standardized remote program settings implementation.</li>
 </ul>
 <p>If you have an idea for a must have feature, please let me (Attila) know. Pull requests, for new features or fixes to existing ones, are especially welcome!</p>
+<hr  />
+<p><a class="anchor" id="smaxlib-release-schedule"></a> </p>
+<h2><a class="anchor" id="autotoc_md63"></a>
+Release schedule</h2>
+<p>A predictable release schedule and process can help manage expectations and reduce stress on adopters and developers alike.</p>
+<p><b>smax-clib</b> will try to follow a quarterly release schedule. You may expect upcoming releases to be published around <b>March 1</b>, <b>June 1</b>, <b>September 1</b>, and/or <b>December 1</b> each year, on an as-needed basis. That means that if there are outstanding bugs, or new pull requests (PRs), you may expect a release that addresses these in the upcoming quarter. The dates are placeholders only, with no guarantee that a new release will actually be available every quarter. If nothing of note comes up, a potential release date may pass without a release being published.</p>
+<p>New features are generally reserved for the feature releases (e.g. <b>1.x.0</b> version bumps), although they may also be rolled out in bug-fix releases as long as they do not affect the existing API &ndash; in line with the desire to keep bug-fix releases fully backwards compatible with their parent versions.</p>
+<p>In the weeks and month(s) preceding releases one or more <em>release candidates</em> (e.g. <code>1.0.1-rc3</code>) will be published temporarily on GitHub, under <a href="https://github.com/Smithsonian/smax-clib/releases">Releases</a>, so that changes can be tested by adopters before the releases are finalized. Please use due diligence to test such release candidates with your code when they become available to avoid unexpected surprises when the finalized release is published. Release candidates are typically available for one week only before they are superseded either by another, or by the finalized release.</p>
 <hr  />
 <p> Copyright (C) 2025 Attila Kovács </p>
 </div></div><!-- PageDoc -->

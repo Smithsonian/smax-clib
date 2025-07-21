@@ -77,6 +77,7 @@ var NAVTREE =
       [ "Error handling", "index.html#autotoc_md57", null ],
       [ "Debug support", "index.html#autotoc_md59", null ],
       [ "Future plans", "index.html#autotoc_md61", null ],
+      [ "Release schedule", "index.html#autotoc_md63", null ],
       [ "[Unreleased]", "../../redisx/apidoc/html/md_CHANGELOG.html#autotoc_md1", null ]
     ] ],
     [ "Contributing to smax-clib", "../../redisx/apidoc/html/md_CONTRIBUTING.html", null ],
@@ -104,7 +105,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"smax_8c.html#a9d1e6ffa837d3582a8165e326cc44bea"
+"smax_8c.html#a980232c82ed7ebf5425c60db65f828c0"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
