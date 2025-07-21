@@ -48,7 +48,7 @@ Updated for version 1.0 and later releases.
  - [Error handling](#smax-error-handling)
  - [Debug support](#smax-debug-support)
  - [Future plans](#smax-future-plans)
- - [Release schedule](#release-schedule)
+ - [Release schedule](#smaxlib-release-schedule)
 
 ------------------------------------------------------------------------------
 
@@ -1291,14 +1291,13 @@ settings.
 Some obvious ways the library could evolve and grow in the not too distant future:
 
  - Automated regression testing and coverage tracking.
- - Standardized remote program settings implementation.
 
 If you have an idea for a must have feature, please let me (Attila) know. Pull requests, for new features or fixes to
 existing ones, are especially welcome! 
 
 -----------------------------------------------------------------------------
 
-<a name="release-schedule"></a>
+<a name="smaxlib-release-schedule"></a>
 ## Release schedule
 
 A predictable release schedule and process can help manage expectations and reduce stress on adopters and developers 
