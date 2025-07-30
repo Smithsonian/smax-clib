@@ -13,6 +13,12 @@ The __smax-clib__ C/C++ client library was created, and is maintained, by Attila
 \| Harvard &amp; Smithsonian, and it is available through the 
 [Smithsonian/redisx](https://github.com/Smithsonian/smax-clib) repository on GitHub. 
 
+If you use SMA-X for your project, please cite as: 
+
+ - Kovács, Attila, Grimes, Paul K., Moriarty, Christopher, and Wilson, Robert, Journal of Astronomical Telescopes, 
+   Instruments, and Systems, Volume 11, id. 017001 (2025). (DOI:
+   [10.1117/1.JATIS.11.1.017001](https://ui.adsabs.harvard.edu/link_gateway/2025JATIS..11a7001K/doi:10.1117/1.JATIS.11.1.017001)). 
+
 This site contains various online resources that support the library:
 
 __Downloads__
