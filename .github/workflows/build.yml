@@ -36,19 +36,19 @@ jobs:
       REDISX: ../redisx
     steps:
     - name: Check out smax-clib
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/smax-clib
         path: smax-clib
 
     - name: Check out xchange dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/xchange
         path: xchange
 
     - name: Check out RedisX dependency
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/redisx
         path: redisx

@@ -37,16 +37,16 @@ jobs:
       run: sudo apt-get install libpopt-dev
 
     - name: Check out smax-clib
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Check out xchange 
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/xchange
         path: xchange
 
     - name: Check out RedisX
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
       with:
         repository: Smithsonian/redisx
         path: redisx
