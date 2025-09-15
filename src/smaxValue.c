@@ -129,6 +129,8 @@ int main(int argc, const char *argv[]) {
   id = xGetAggregateID(group, key);
   if(!id) return -1;
 
+  if(!showList) if(xSplitID(id, &key)) return -1;
+
   for(i = 0; i < repeat; i++) {
     if(i > 0 && interval > 0) {
       struct timespec sleeptime;
@@ -137,11 +139,7 @@ int main(int argc, const char *argv[]) {
       nanosleep(&sleeptime, NULL);
     }
 
-    if(showList) return printValue(id, NULL);
-    else {
-      if(xSplitID(id, &key)) return -1;
-      return printValue(id, key);
-    }
+    printValue(id, key);
   }
 
   poptFreeContext(optcon);
