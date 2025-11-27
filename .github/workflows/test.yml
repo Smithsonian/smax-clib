@@ -37,22 +37,22 @@ jobs:
       LD_LIBRARY_PATH: ${{ github.workspace }}/lib
     steps:
     - name: Check out smax-clib
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
 
     - name: Check out RedisX
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: Smithsonian/redisx
         path: redisx
 
     - name: Check out xchange
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: Smithsonian/xchange
         path: xchange
 
     - name: Check out smax-server
-      uses: actions/checkout@v5
+      uses: actions/checkout@v6
       with:
         repository: Smithsonian/smax-server
         path: smax-server
@@ -119,22 +119,22 @@ jobs:
             distro: ubuntu_latest
     steps:
       - name: Check out smax-clib
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Check out RedisX
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: Smithsonian/redisx
           path: redisx
 
       - name: Check out xchange
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: Smithsonian/xchange
           path: xchange
 
       - name: Check out smax-server
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           repository: Smithsonian/smax-server
           path: smax-server
