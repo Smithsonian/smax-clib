@@ -162,7 +162,11 @@ void smaxSocketErrorHandler(Redis *redis, enum redisx_channel channel, const cha
     fprintf(stderr, "ERROR! exiting program on SMA-X connection error.\n");
     exit(X_NO_SERVICE);
   }
+
   fprintf(stderr, "         (Further messages will be suppressed...)\n");
+
+  // Force shutdown all existing clients.
+  redisxShutdownClients(smaxGetRedis());
 
   if (pthread_create(&tid, NULL, SMAXReconnectThread, NULL) == -1) {
     perror("ERROR! SMA-X : pthread_create SMAXReconnectThread. Exiting.");
@@ -407,9 +411,12 @@ static void *SMAXReconnectThread(void *arg) {
   fprintf(stderr, "INFO: SMA-X will attempt to reconnect...\n");
 
   // Keep trying until successful
-  while(smaxReconnect() != X_SUCCESS) sleep(SMAX_RECONNECT_RETRY_SECONDS);
-
-  fprintf(stderr, "INFO: SMA-X reconnected!\n");
+  if(smaxReconnect() == X_SUCCESS) fprintf(stderr, "INFO: SMA-X reconnected!\n");
+  else {
+    perror("ERROR! SMA-X reconnection failed");
+    fprintf(stderr, "Good-bye.\n");
+    exit(1);
+  }
 
   // Wait for prior connection errors to clear up, before we exit 'reconnecting' state...
   sleep(SMAX_RECONNECT_RETRY_SECONDS);

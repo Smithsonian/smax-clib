@@ -191,8 +191,6 @@ static LazyMonitor *CreateStaging(const LazyMonitor *m) {
  * @return      X_SUCCESS (0) if successfull or else an error (&lt;0) from smaxPull().
  */
 static int QueueUpdateAsync(LazyMonitor *m) {
-  static const char *fn = "QueueUpdateAsync";
-
   LazyMonitor *staging;
   XType type;
   void *ptr;
@@ -200,14 +198,14 @@ static int QueueUpdateAsync(LazyMonitor *m) {
 
   xvprintf("SMA-X: Initiate queueing aync update for %s" X_SEP "%s\n", m->table, m->key);
 
-  if(!m) return x_error(X_NULL, EINVAL, fn, "input parameter 'm' is NULL");
+  if(!m) return x_error(X_NULL, EINVAL, "QueueUpdateAsync", "input parameter 'm' is NULL");
+
   if(m->isPending) {
     xvprintf("SMA-X: An update is already pending for %s" X_SEP "%s\n", m->table, m->key);
     return X_SUCCESS;
   }
 
   staging = CreateStaging(m);
-  if(!staging) return x_trace(fn, NULL, X_NULL);
 
   if(m->key) {
     type = X_RAW;
@@ -248,7 +246,6 @@ static int UpdateCachedAsync(LazyMonitor *m) {
   if(!m) return x_error(X_NULL, EINVAL, fn, "input parameter 'm' is NULL");
 
   staging = CreateStaging(m);
-  if(!staging) return x_trace(fn, NULL, X_NULL);
 
   if(m->key) {
     type = X_RAW;

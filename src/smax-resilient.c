@@ -43,9 +43,9 @@ static void UpdatePushRequest(const char *table, const XField *field);
 static void DestroyPushRequest(PushRequest *req);
 
 // Always initialize with FALSE...
-static boolean resilient;
+static boolean resilient = TRUE;      ///< By default we'll try to keep going if SMA-X is unreachble
 static int nPending;
-static boolean exitAfterSync = TRUE;
+static boolean exitAfterSync = TRUE;  ///< We will try send local updates to SMA-X before exiting after connection recovery.
 
 /**
  * Enables the resiliency feature of the library, which keeps track of local changes destined to the

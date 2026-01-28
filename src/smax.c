@@ -515,9 +515,6 @@ int smaxConnect() {
     return x_trace(fn, NULL, status);
   }
 
-  // By default, we'll try to reconnect to Redis if the connection is severed.
-  smaxSetResilient(TRUE);
-
   smaxUnlockConfig();
 
   xvprintf("SMA-X> opened & ready.\n");
@@ -570,8 +567,10 @@ int smaxReconnect() {
 
   xvprintf("SMA-X> reconnecting.\n");
 
-  while(redisxReconnect(redis, usePipeline) != X_SUCCESS) if(SMAX_RECONNECT_RETRY_SECONDS > 0)
-    sleep(SMAX_RECONNECT_RETRY_SECONDS);
+  while(redisxReconnect(redis, usePipeline) != X_SUCCESS) {
+    if(SMAX_RECONNECT_RETRY_SECONDS > 0) sleep(SMAX_RECONNECT_RETRY_SECONDS);
+    else sched_yield();
+  }
 
   return X_SUCCESS;
 }
