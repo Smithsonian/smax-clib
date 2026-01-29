@@ -163,10 +163,7 @@ void smaxSocketErrorHandler(Redis *redis, enum redisx_channel channel, const cha
     exit(X_NO_SERVICE);
   }
 
-  fprintf(stderr, "         (Further messages will be suppressed...)\n");
-
-  // Force shutdown all existing clients.
-  redisxShutdownClients(smaxGetRedis());
+  fprintf(stderr, "         (Further SMA-X messages will be suppressed...)\n");
 
   if (pthread_create(&tid, NULL, SMAXReconnectThread, NULL) == -1) {
     perror("ERROR! SMA-X : pthread_create SMAXReconnectThread. Exiting.");
