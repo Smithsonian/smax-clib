@@ -160,7 +160,7 @@ void smaxSocketErrorHandler(Redis *redis, enum redisx_channel channel, const cha
 
   if(!smaxIsResilient()) {
     fprintf(stderr, "ERROR! exiting program on SMA-X connection error.\n");
-    exit(X_NO_SERVICE);
+    _exit(X_NO_SERVICE);
   }
 
   fprintf(stderr, "         (Further SMA-X messages will be suppressed...)\n");
