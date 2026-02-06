@@ -1145,6 +1145,7 @@ int smaxRead(PullRequest *req, int channel) {
   if(!status && reply) {
     // Process the value
     status = smaxProcessReadResponse(reply, req);
+    if(status == REDIS_NULL) status = X_NAME_INVALID; // NULL response when not in database...
     redisxDestroyRESP(reply);
   }
 
